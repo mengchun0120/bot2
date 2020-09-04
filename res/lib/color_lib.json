@@ -1,0 +1,114 @@
+[
+    {
+        "name": "red",
+        "red": 255,
+        "green": 0,
+        "blue": 0,
+        "alpha": 255
+    },
+    {
+        "name": "green",
+        "red": 0,
+        "green": 255,
+        "blue": 0,
+        "alpha": 255
+    },
+    {
+        "name": "blue",
+        "red": 0,
+        "green": 0,
+        "blue": 255,
+        "alpha": 255
+    },
+    {
+        "name": "yellow",
+        "red": 255,
+        "green": 255,
+        "blue": 0,
+        "alpha": 255
+    },
+    {
+        "name": "playergreen",
+        "red": 0,
+        "green": 179,
+        "blue": 0,
+        "alpha": 255
+    },
+    {
+        "name": "cyan",
+        "red": 0,
+        "green": 255,
+        "blue": 255,
+        "alpha": 255
+    },
+    {
+        "name": "gold",
+        "red": 255,
+        "green": 215,
+        "blue": 0,
+        "alpha": 255
+    },
+    {
+        "name": "amber",
+        "red": 255,
+        "green": 191,
+        "blue": 0,
+        "alpha": 255
+    },
+    {
+        "name": "darkred",
+        "red": 139,
+        "green": 0,
+        "blue": 0,
+        "alpha": 255
+    },
+    {
+        "name": "normal_text_color",
+        "red": 0,
+        "green": 0,
+        "blue": 135,
+        "alpha": 255
+    },
+    {
+        "name": "hover_text_color",
+        "red": 0,
+        "green": 255,
+        "blue": 0,
+        "alpha": 255
+    },
+    {
+        "name": "pressed_text_color",
+        "red": 255,
+        "green": 128,
+        "blue": 0,
+        "alpha": 255
+    },
+    {
+        "name": "effect_ring_front_color",
+        "red": 153,
+        "green": 200,
+        "blue": 255,
+        "alpha": 150
+    },
+    {
+        "name": "effect_ring_back_color",
+        "red": 214,
+        "green": 239,
+        "blue": 255,
+        "alpha": 150
+    },
+    {
+        "name": "lightgray",
+        "red": 211,
+        "green": 211,
+        "blue": 211,
+        "alpha": 255
+    },
+    {
+        "name": "dimgray",
+        "red": 105,
+        "green": 105,
+        "blue": 105,
+        "alpha": 255
+    }
+]

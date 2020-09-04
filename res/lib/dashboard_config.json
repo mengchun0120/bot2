@@ -1,0 +1,18 @@
+{
+    "hpRect": "effect_rect",
+    "hpTexture": "health",
+    "hpGoodColor": "green",
+    "hpBadColor": "amber",
+    "hpCriticalColor": "red",
+    "hpIconX": 100.0,
+    "hpTextX": 135.0,
+    "goldRect": "effect_rect",
+    "goldTexture": "gold",
+    "goldTextColor": "gold",
+    "goldIconX": 285.0,
+    "goldTextX": 320.0,
+    "effectSpacingX": 15.0,
+    "effectStartX": 400.0,
+    "effectRingRadius": 15.0,
+    "headerTopMargin": 10.0
+}

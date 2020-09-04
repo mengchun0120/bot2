@@ -1,0 +1,38 @@
+[
+    {
+        "name": "ice_tile",
+        "texture": "tile",
+        "rect": "square40",
+        "color": "cyan",
+        "coverBreathX": 20.0,
+        "coverBreathY": 20.0,
+        "collideBreathX": 15.0,
+        "collideBreathY": 15.0,
+        "hp": 80,
+        "indestructable": false
+    },
+    {
+        "name": "clay_tile",
+        "texture": "tile",
+        "rect": "square40",
+        "color": "yellow",
+        "coverBreathX": 20.0,
+        "coverBreathY": 20.0,
+        "collideBreathX": 15.0,
+        "collideBreathY": 15.0,
+        "hp": 80,
+        "indestructable": false
+    },
+    {
+        "name": "steel_tile",
+        "texture": "tile",
+        "rect": "square40",
+        "color": "blue",
+        "coverBreathX": 20.0,
+        "coverBreathY": 20.0,
+        "collideBreathX": 15.0,
+        "collideBreathY": 15.0,
+        "hp": 0,
+        "indestructable": true
+    }
+]

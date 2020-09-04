@@ -1,0 +1,93 @@
+[
+    {
+        "name": "gold",
+        "coverBreathX": 20.0,
+        "coverBreathY": 20.0,
+        "collideBreathX": 20.0,
+        "collideBreathY": 20.0,
+        "texture": "gold",
+        "rect": "goodie_rect",
+        "effectRect": "",
+        "progressRing": "",
+        "duration": 0.0,
+        "weight": 10.0
+    },
+    {
+        "name": "health",
+        "coverBreathX": 20.0,
+        "coverBreathY": 20.0,
+        "collideBreathX": 20.0,
+        "collideBreathY": 20.0,
+        "texture": "health",
+        "rect": "goodie_rect",
+        "effectRect": "",
+        "progressRing": "",
+        "duration": 0.0,
+        "weight": 10.0
+    },
+    {
+        "name": "indestructable",
+        "coverBreathX": 20.0,
+        "coverBreathY": 20.0,
+        "collideBreathX": 20.0,
+        "collideBreathY": 20.0,
+        "texture": "indestructable",
+        "rect": "goodie_rect",
+        "effectRect": "effect_rect",
+        "progressRing": "effect_progress_ring",
+        "duration": 20000.0,
+        "weight": 10.0
+    },
+    {
+        "name": "double_experience",
+        "coverBreathX": 20.0,
+        "coverBreathY": 20.0,
+        "collideBreathX": 20.0,
+        "collideBreathY": 20.0,
+        "texture": "double_experience",
+        "rect": "goodie_rect",
+        "effectRect": "effect_rect",
+        "progressRing": "effect_progress_ring",
+        "duration": 20000.0,
+        "weight": 10.0
+    },
+    {
+        "name": "quick_shooter",
+        "coverBreathX": 20.0,
+        "coverBreathY": 20.0,
+        "collideBreathX": 20.0,
+        "collideBreathY": 20.0,
+        "texture": "quick_shooter",
+        "rect": "goodie_rect",
+        "effectRect": "effect_rect",
+        "progressRing": "effect_progress_ring",
+        "duration": 20000.0,
+        "weight": 10.0
+    },
+    {
+        "name": "quick_mover",
+        "coverBreathX": 20.0,
+        "coverBreathY": 20.0,
+        "collideBreathX": 20.0,
+        "collideBreathY": 20.0,
+        "texture": "quick_mover",
+        "rect": "goodie_rect",
+        "effectRect": "effect_rect",
+        "progressRing": "effect_progress_ring",
+        "duration": 20000.0,
+        "weight": 10.0
+    },
+    {
+        "name": "double_damage",
+        "coverBreathX": 20.0,
+        "coverBreathY": 20.0,
+        "collideBreathX": 20.0,
+        "collideBreathY": 20.0,
+        "texture": "double_damage",
+        "rect": "goodie_rect",
+        "effectRect": "effect_rect",
+        "progressRing": "effect_progress_ring",
+        "duration": 20000.0,
+        "weight": 10.0
+    }
+]

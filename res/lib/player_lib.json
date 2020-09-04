@@ -1,0 +1,34 @@
+{
+    "name": "player",
+    "coverBreathX": 48.28,
+    "coverBreathY": 48.28,
+    "collideBreathX": 21.2,
+    "collideBreathY": 21.2,
+    "hp": 100,
+    "goodieSpawnProb": 0.0,
+    "components": [
+        {
+            "texture": "base",
+            "rect": "square60",
+            "color": "playergreen",
+            "componentX": 0.0,
+            "componentY": 0.0
+        },
+        {
+            "texture": "barrel",
+            "rect": "square20",
+            "color": "green",
+            "componentX": 38.28,
+            "componentY": 0.0
+        }
+    ],
+    "movable": true,
+    "moveSpeed": 100.0,
+    "moveComponentIdx": 0,
+    "shootable": true,
+    "shootInterval": 200.0,
+    "shootPosX": 10.0,
+    "shootPosY": 0.0,
+    "shootComponentIdx": 1,
+    "missile": "green_bullet"
+}

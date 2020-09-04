@@ -1,0 +1,9 @@
+[
+    {
+        "name": "effect_progress_ring",
+        "frontColor": "effect_ring_front_color",
+        "backColor": "effect_ring_back_color",
+        "radius": 21.2,
+        "numEdges": 60
+    }
+]

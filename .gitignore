@@ -1,0 +1,6 @@
+*.un~
+dependencies/glew-2.1.0
+dependencies/glfw-3.2.1
+dependencies/include
+log.txt
+build

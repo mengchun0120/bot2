@@ -1,0 +1,10 @@
+{
+    "buttonSpacing": 20.0,
+    "buttonRect": "button",
+    "buttonTexts": [
+        "Start Game",
+        "Load Game",
+        "Settings",
+        "Exit"
+    ]
+}

@@ -1,0 +1,48 @@
+{
+	"numRows": 20,
+	"numCols": 30,
+	"player": {
+		"x": 60.0,
+		"y": 60.0,
+		"directionX": 0.0,
+		"directionY": 1.0
+	},
+	"tiles": [
+		{
+			"name": "steel_tile",
+			"x": 120.0,
+			"y": 100.0
+		},
+		{
+			"name": "clay_tile",
+			"x": 160.0,
+			"y": 100.0
+		},
+		{
+			"name": "ice_tile",
+			"x": 200.0,
+			"y": 100.0
+		},
+		{
+			"name": "steel_tile",
+			"x": 240.0,
+			"y": 100.0
+		}
+	],
+	"robots": [
+		{
+			"name": "blue_robot",
+			"x": 100.0,
+			"y": 200.0,
+			"directionX": 1.0,
+			"directionY": 0.0
+		},
+		{
+			"name": "red_robot",
+			"x": 300.0,
+			"y": 250.0,
+			"directionX": -1.0,
+			"directionY": 0.0
+		}
+	]
+}

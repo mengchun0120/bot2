@@ -1,0 +1,23 @@
+[
+    {
+        "name": "islandMapGenerator",
+        "minRowCount": 30,
+        "maxRowCount": 40,
+        "minColCount": 30,
+        "maxColCount": 40,
+        "maxRobotCount": 40,
+        "robots": [
+            "blue_robot",
+            "red_robot"
+        ],
+        "minIslandLenTiles": 2,
+        "maxIslandLenTiles": 6,
+        "minIslandDistSlots": 1,
+        "maxIslandDistSlots": 3,
+        "islandTiles": [
+            "ice_tile",
+            "clay_tile",
+            "steel_tile"
+        ]
+    }
+]

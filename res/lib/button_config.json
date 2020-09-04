@@ -1,0 +1,6 @@
+{
+    "texture": "button",
+    "normalTextColor": "normal_text_color",
+    "hoverTextColor": "hover_text_color",
+    "pressTextColor": "pressed_text_color"
+}
