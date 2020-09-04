@@ -13,13 +13,13 @@ App::App()
 
 App::~App()
 {
-    if(!m_window)
+    if (!m_window)
     {
         glfwTerminate();
     }
 }
 
-bool App::init(const std::string& appDir, const std::string& cfgFile)
+bool App::init(const std::string& appDir, const std::string& cfgFile, Screen::Type startScreenType)
 {
     if (!m_config.load(appDir, cfgFile))
     {
@@ -44,7 +44,7 @@ bool App::init(const std::string& appDir, const std::string& cfgFile)
         return false;
     }
 
-    if (!initGame())
+    if (!initGame(startScreenType))
     {
         LOG_ERROR("Failed to initialize game");
         return false;
@@ -185,7 +185,7 @@ void App::updateViewport()
     LOG_INFO("viewportWidth=%f viewportHeight=%f", m_viewportSize[0], m_viewportSize[1]);
 }
 
-bool App::initGame()
+bool App::initGame(Screen::Type startScreenType)
 {
     LOG_INFO("Initializing game");
 
@@ -201,7 +201,7 @@ bool App::initGame()
         return false;
     }
 
-    m_screenMgr.init(&m_config, &m_gameLib, &m_graphics, m_viewportSize[0], m_viewportSize[1]);
+    m_screenMgr.init(&m_config, &m_gameLib, &m_graphics, startScreenType, m_viewportSize[0], m_viewportSize[1]);
 
     LOG_INFO("Done initializing game");
 

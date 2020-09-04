@@ -88,7 +88,7 @@ int StartScreen::processInput(const InputEvent& e)
 
 int StartScreen::startGame()
 {
-    m_screenManager->switchScreen(ScreenManager::SCREEN_GAME);
+    m_screenManager->switchScreen(Screen::SCREEN_GAME);
     return 1;
 }
 

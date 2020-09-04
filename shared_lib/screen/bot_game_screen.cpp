@@ -341,7 +341,7 @@ void GameScreen::clearDeadObjects()
 
 int GameScreen::switchToStart()
 {
-    m_screenManager->switchScreen(ScreenManager::SCREEN_START);
+    m_screenManager->switchScreen(Screen::SCREEN_START);
     return 1;
 }
 

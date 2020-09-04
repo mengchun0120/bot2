@@ -14,17 +14,19 @@ struct GLFWwindow;
 
 namespace bot {
 
+class ScreenManager;
+
 class App {
 public:
     App();
 
-    ~App();
+    virtual ~App();
 
-    bool init(const std::string& appDir, const std::string& cfgFile);
+    bool init(const std::string& appDir, const std::string& cfgFile, Screen::Type startScreenType);
 
     bool run();
 
-private:
+protected:
     bool initWindow();
 
     bool initInputManager();
@@ -33,14 +35,13 @@ private:
 
     void updateViewport();
 
-    bool initGame();
+    bool initGame(Screen::Type startScreenType);
 
     bool initTimeDeltaSmoother();
 
     bool initGameLib();
 
-private:
-    static std::shared_ptr<App> k_app;
+protected:
     GLFWwindow* m_window;
     AppConfig m_config;
     float m_viewportSize[Constants::NUM_FLOATS_PER_POSITION];
@@ -48,6 +49,7 @@ private:
     Graphics m_graphics;
     TimeDeltaSmoother m_timeDeltaSmoother;
     GameLib m_gameLib;
+    InputProcessor m_inputProcessor;
     ScreenManager m_screenMgr;
 };
 

@@ -2,6 +2,7 @@
 #define INCLUDE_BOT_SCREEN_MANAGER
 
 #include "misc/bot_constants.h"
+#include "screen/bot_screen.h"
 
 namespace bot {
 
@@ -14,18 +15,12 @@ class ScreenManager;
 
 class ScreenManager {
 public:
-    enum ScreenType {
-        SCREEN_START,
-        SCREEN_GAME,
-        SCREEN_NONE
-    };
-
     ScreenManager();
 
     ~ScreenManager();
 
-    void init(const AppConfig* cfg, const GameLib* lib, Graphics* g,
-              float viewportWidth, float viewportHeight);
+    virtual bool init(const AppConfig* cfg, const GameLib* lib, Graphics* g,
+                      Screen::Type startScreenType, float viewportWidth, float viewportHeight);
 
     int update(float delta);
 
@@ -33,14 +28,14 @@ public:
 
     int processInput(const InputEvent& e);
 
-    void switchScreen(ScreenType type);
+    bool switchScreen(Screen::Type type);
 
 private:
     const GameLib* m_lib;
     const AppConfig* m_cfg;
     Graphics* m_graphics;
     float m_viewportSize[Constants::NUM_FLOATS_PER_POSITION];
-    ScreenType m_curScreenType;
+    Screen::Type m_curScreenType;
     Screen* m_prevScreen;
     Screen* m_curScreen;
 };

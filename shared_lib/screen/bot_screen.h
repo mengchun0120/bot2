@@ -3,11 +3,23 @@
 
 namespace bot {
 
-class App;
+class AppConfig;
+class GameLib;
+class Graphics;
+class ScreenManager;
 struct InputEvent;
 
 class Screen {
 public:
+    enum Type {
+        SCREEN_START,
+        SCREEN_GAME,
+        SCREEN_NONE
+    };
+
+    static Screen* create(Type type, const AppConfig* cfg, const GameLib* lib, Graphics* g,
+                          ScreenManager* screenMgr, float viewportWidth, float viewportHeight);
+
     Screen()
     {}
 

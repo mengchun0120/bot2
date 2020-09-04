@@ -2,10 +2,9 @@
 #include <cstring>
 #include <iostream>
 #include "misc/bot_log.h"
-#include "misc/bot_config.h"
 #include "app/bot_app.h"
 
-void showUsageAndExit() 
+void showUsageAndExit()
 {
     std::cerr << "Usage: bot -l logFile -c configFile -r appFolder [-v verbosity(0~5)]" << std::endl;
     exit(1);
@@ -21,7 +20,7 @@ int main(int argc, char* argv[])
     int i = 1;
     while (i < argc)
     {
-        if (strcmp(argv[i], "-l") == 0) 
+        if (strcmp(argv[i], "-l") == 0)
         {
             if (i + 1 >= argc)
             {
@@ -30,8 +29,8 @@ int main(int argc, char* argv[])
 
             logFile = argv[i + 1];
             i += 2;
-        } 
-        else if (strcmp(argv[i], "-c") == 0) 
+        }
+        else if (strcmp(argv[i], "-c") == 0)
         {
             if (i + 1 >= argc)
             {
@@ -41,7 +40,7 @@ int main(int argc, char* argv[])
             cfgFile = argv[i + 1];
             i += 2;
         }
-        else if (strcmp(argv[i], "-r") == 0) 
+        else if (strcmp(argv[i], "-r") == 0)
         {
             if (i + 1 >= argc)
             {
@@ -73,21 +72,21 @@ int main(int argc, char* argv[])
         }
     }
 
-    if (appDir.empty() || cfgFile.empty()) 
+    if (appDir.empty() || cfgFile.empty())
     {
         showUsageAndExit();
     }
 
 #ifdef ENABLE_LOG
     const char* log = logFile.empty() ? nullptr : logFile.c_str();
-    if (!bot::Logger::g_logger.init(log, verbosity)) 
+    if (!bot::Logger::g_logger.init(log, verbosity))
     {
         exit(1);
     }
 #endif
 
     bot::App app;
-    if (!app.init(appDir, cfgFile)) 
+    if (!app.init(appDir, cfgFile, bot::Screen::SCREEN_START))
     {
         exit(1);
     }
