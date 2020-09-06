@@ -14,10 +14,11 @@ public:
     enum Type {
         SCREEN_START,
         SCREEN_GAME,
+        SCREEN_SHOW_MAP,
         SCREEN_NONE
     };
 
-    static Screen* create(Type type, const AppConfig* cfg, const GameLib* lib, Graphics* g,
+    static Screen* create(Type type, const AppConfig* cfg, GameLib* lib, Graphics* g,
                           ScreenManager* screenMgr, float viewportWidth, float viewportHeight);
 
     Screen()

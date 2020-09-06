@@ -1,1 +1,1 @@
-build\bot -l log.txt -c config\bot_cfg.json -r .
+build\bot --log log.txt --cfg config\bot_cfg.json --app .

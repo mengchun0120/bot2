@@ -150,6 +150,11 @@ public:
         return m_dashboardConfigFile;
     }
 
+    void setMapFile(const std::string& mapFile)
+    {
+        m_mapFile = mapFile;
+    }
+
     const std::string& getMapFile() const
     {
         return m_mapFile;
@@ -183,6 +188,16 @@ public:
     const std::string& getMapGeneratorLib() const
     {
         return m_mapGeneratorLib;
+    }
+
+    void setMapGenerator(const std::string& generator)
+    {
+        m_mapGenerator = generator;
+    }
+
+    const std::string& getMapGenerator() const
+    {
+        return m_mapGenerator;
     }
 
 private:
@@ -226,6 +241,7 @@ private:
     std::string m_mapGeneratorLib;
     float m_mapPoolFactor;
     int m_missilePoolSize;
+    std::string m_mapGenerator;
 };
 
 } // end of namespace bot

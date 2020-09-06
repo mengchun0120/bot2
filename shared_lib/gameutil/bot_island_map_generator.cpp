@@ -84,6 +84,8 @@ bool IslandMapGenerator::generate(const char* fileName)
 
 void IslandMapGenerator::generateTiles(GeneratedMap& map)
 {
+    LOG_INFO("Generating tiles");
+
     int tileTypeCount = static_cast<int>(m_islandTiles.size());
     int totalSlotsY = map.getSlotRowCount();
     int totalSlotsX = map.getSlotColCount();
@@ -150,6 +152,8 @@ void IslandMapGenerator::generateTiles(GeneratedMap& map)
 
         islandSlotY += maxRowSlots + m_rand.get(m_minIslandDistSlots, m_maxIslandDistSlots + 1);
     }
+
+    LOG_INFO("Done generating tiles");
 }
 
 void IslandMapGenerator::generateIsland(GeneratedMap& map, const std::string* tileName, const TileTemplate* t,

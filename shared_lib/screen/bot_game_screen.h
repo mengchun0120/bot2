@@ -1,12 +1,12 @@
 #ifndef INCLUDE_BOT_GAME_SCREEN
 #define INCLUDE_BOT_GAME_SCREEN
 
-#include "screen/bot_screen.h"
 #include "gameutil/bot_game_map.h"
 #include "gameutil/bot_game_object_manager.h"
 #include "gameutil/bot_game_state.h"
 #include "gameobj/bot_dashboard.h"
 #include "widget/bot_message_box.h"
+#include "screen/bot_screen.h"
 
 namespace bot {
 
@@ -24,8 +24,8 @@ public:
 
     virtual ~GameScreen();
 
-    virtual bool init(const AppConfig& cfg, const GameLib* lib, Graphics* g,
-                      ScreenManager* screenManager, float viewportWidth, float viewportHeight);
+    bool init(const AppConfig& cfg, const GameLib* lib, Graphics* g,
+              ScreenManager* screenManager, float viewportWidth, float viewportHeight);
 
     bool loadMap(const std::string& fileName, const AppConfig& cfg);
 

@@ -51,6 +51,45 @@ void GameMap::initMap(int numRows, int numCols, int gameObjPoolSize, float viewp
     m_maxViewportY = m_mapHeight - m_viewportBreathY;
 }
 
+void GameMap::present(Graphics& g)
+{
+    static const GameObjectType LAYER_ORDER[] = {
+        GAME_OBJ_TYPE_TILE, GAME_OBJ_TYPE_GOODIE, GAME_OBJ_TYPE_MISSILE, GAME_OBJ_TYPE_ROBOT
+    };
+    static const int NUM_LAYERS = sizeof(LAYER_ORDER) / sizeof(GameObjectType);
+    static const int DONT_DRAW_FLAGS = GAME_OBJ_FLAG_DRAWN | GAME_OBJ_FLAG_DEAD;
+
+    int startRow, endRow, startCol, endCol;
+
+    getViewportRegion(startRow, endRow, startCol, endCol);
+    clearFlagsInRect(startRow, endRow, startCol, endCol, GAME_OBJ_FLAG_DRAWN);
+
+    for (int i = 0; i < NUM_LAYERS; ++i)
+    {
+        for (int r = startRow; r <= endRow; ++r)
+        {
+            for (int c = startCol; c <= endCol; ++c)
+            {
+                LinkedList<GameObjectItem>& cell = m_map[r][c];
+                GameObjectItem* item, * next;
+                for (item = cell.getFirst(); item; item = next)
+                {
+                    next = static_cast<GameObjectItem*>(item->getNext());
+
+                    GameObject* obj = item->getObj();
+                    if (obj->getType() != LAYER_ORDER[i] || obj->testFlag(DONT_DRAW_FLAGS))
+                    {
+                        continue;
+                    }
+
+                    obj->present(g);
+                    obj->setFlag(GAME_OBJ_FLAG_DRAWN);
+                }
+            }
+        }
+    }
+}
+
 void GameMap::clear()
 {
     int numRows = getNumRows();
@@ -546,6 +585,12 @@ void GameMap::updateViewport()
     m_viewportPos[1] = clamp(m_player->getPosY(), m_viewportBreathY, m_maxViewportY);
     m_viewportWorldX = m_viewportPos[0] - m_viewportBreathX;
     m_viewportWorldY = m_viewportPos[1] - m_viewportBreathY;
+}
+
+void GameMap::setViewportPos(float x, float y)
+{
+    m_viewportPos[0] = clamp(x, m_viewportBreathX, m_maxViewportX);
+    m_viewportPos[1] = clamp(y, m_viewportBreathY, m_maxViewportY);
 }
 
 } // end of namespace bot

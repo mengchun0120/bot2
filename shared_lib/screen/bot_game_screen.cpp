@@ -123,7 +123,7 @@ void GameScreen::present()
     simpleShaderProgram.setViewportSize(m_viewportSize);
     simpleShaderProgram.setViewportOrigin(m_map.getViewportPos());
 
-    static const GameObjectType LAYER_ORDER[] = {
+/*    static const GameObjectType LAYER_ORDER[] = {
         GAME_OBJ_TYPE_TILE, GAME_OBJ_TYPE_GOODIE, GAME_OBJ_TYPE_MISSILE, GAME_OBJ_TYPE_ROBOT
     };
     static const int NUM_LAYERS = sizeof(LAYER_ORDER) / sizeof(GameObjectType);
@@ -158,7 +158,8 @@ void GameScreen::present()
             }
         }
     }
-
+*/
+    m_map.present(*m_graphics);
     presentEffects();
     presentOverlay();
 }

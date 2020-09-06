@@ -14,6 +14,7 @@ namespace bot {
 class Player;
 class Robot;
 class Missile;
+class Graphics;
 
 class GameMap {
 public:
@@ -29,6 +30,8 @@ public:
     void initMap(int numRows, int numCols, int gameObjPoolSize, float viewportWidth, float viewportHeight);
 
     void clear();
+
+    void present(Graphics& g);
 
     int getNumRows() const
     {
@@ -100,6 +103,8 @@ public:
     bool isOutsideViewport(const GameObject* obj) const;
 
     void updateViewport();
+
+    void setViewportPos(float x, float y);
 
     const float* getViewportPos() const
     {

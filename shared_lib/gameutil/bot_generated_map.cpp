@@ -1,6 +1,8 @@
 #include <rapidjson/ostreamwrapper.h>
 #include <rapidjson/writer.h>
 #include <fstream>
+#include "misc/bot_log.h"
+#include "misc/bot_math_utils.h"
 #include "gametemplate/bot_tile_template.h"
 #include "gameutil/bot_generated_map.h"
 #include "gameutil/bot_game_map.h"
@@ -25,6 +27,9 @@ void GeneratedMap::initSlots()
 {
     int slotRowCount = static_cast<int>(floor(m_mapHeight / m_slotSize));
     int slotColCount = static_cast<int>(floor(m_mapWidth / m_slotSize));
+
+    LOG_INFO("slotRowCount=%d slotColCount=%d", slotRowCount, slotColCount);
+
     float y = m_slotSize / 2.0f;
 
     m_slots.resize(slotRowCount);
@@ -59,10 +64,12 @@ void GeneratedMap::addTile(const std::string* name, const TileTemplate* t, float
 {
     m_tiles.emplace_back(name, t, x, y);
 
-    int left = getSlotIndex(x - t->getCoverBreathX());
-    int right = getSlotIndex(x + t->getCoverBreathX());
-    int bottom = getSlotIndex(y - t->getCoverBreathY());
-    int top = getSlotIndex(y + t->getCoverBreathY());
+    int maxRowIdx = static_cast<int>(m_slots.size()) - 1;
+    int maxColIdx = static_cast<int>(m_slots[0].size()) - 1;
+    int left = clamp(getSlotIndex(x - t->getCoverBreathX()), 0, maxColIdx);
+    int right = clamp(getSlotIndex(x + t->getCoverBreathX()), 0, maxColIdx);
+    int bottom = clamp(getSlotIndex(y - t->getCoverBreathY()), 0, maxRowIdx);
+    int top = clamp(getSlotIndex(y + t->getCoverBreathY()), 0, maxRowIdx);
 
     for (int r = bottom; r <= top; ++r)
     {
@@ -93,6 +100,8 @@ bool GeneratedMap::write(const char* fileName)
 {
     using namespace rapidjson;
 
+    LOG_INFO("Writing map to %s", fileName);
+
     Document doc;
     toJson(doc);
 
@@ -108,6 +117,8 @@ bool GeneratedMap::write(const char* fileName)
     doc.Accept(writer);
 
     ofs.close();
+
+    LOG_INFO("Done writing map to %s", fileName);
 
     return true;
 }
@@ -131,6 +142,7 @@ void GeneratedMap::toJson(rapidjson::Document& doc)
 
     Value tiles(kArrayType);
     tiles.Reserve(m_tiles.size(), allocator);
+    int i = 0;
     for (auto& t : m_tiles)
     {
         Value tile(kObjectType);
@@ -138,6 +150,7 @@ void GeneratedMap::toJson(rapidjson::Document& doc)
         tile.AddMember("x", t.m_x, allocator);
         tile.AddMember("y", t.m_y, allocator);
         tiles.PushBack(tile, allocator);
+        ++i;
     }
     doc.AddMember("tiles", tiles, allocator);
 
@@ -156,10 +169,9 @@ void GeneratedMap::toJson(rapidjson::Document& doc)
     doc.AddMember("robots", robots, allocator);
 }
 
-void GeneratedMap::getFreeSlots(std::vector<std::pair<int,int>> freeSlots)
+void GeneratedMap::getFreeSlots(std::vector<std::pair<int,int>>& freeSlots)
 {
     int freeSlotCount = 0;
-
 
     for (auto& row: m_slots)
     {
@@ -184,8 +196,9 @@ void GeneratedMap::getFreeSlots(std::vector<std::pair<int,int>> freeSlots)
         {
             if (!row[c].m_occupied)
             {
-                freeSlots[i++].first = r;
-                freeSlots[i++].second = c;
+                freeSlots[i].first = r;
+                freeSlots[i].second = c;
+                ++i;
             }
         }
     }

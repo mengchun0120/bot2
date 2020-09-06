@@ -126,7 +126,7 @@ public:
         return m_startScreenConfig;
     }
 
-    const MapGenerator* getMapGenerator(const std::string& name) const
+    MapGenerator* getMapGenerator(const std::string& name)
     {
         return m_mapGeneratorLib.search(name);
     }

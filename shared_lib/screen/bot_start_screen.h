@@ -3,8 +3,8 @@
 
 #include <string>
 #include "misc/bot_constants.h"
-#include "screen/bot_screen.h"
 #include "widget/bot_widget_group.h"
+#include "screen/bot_screen.h"
 
 namespace bot {
 
@@ -18,7 +18,7 @@ public:
 
     virtual ~StartScreen();
 
-    virtual bool init(const GameLib* lib, float viewportWidth, float viewportHeight,
+    bool init(const GameLib* lib, float viewportWidth, float viewportHeight,
                       ScreenManager* screenManager, Graphics* graphics);
 
     virtual int update(float delta);

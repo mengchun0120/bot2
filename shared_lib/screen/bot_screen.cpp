@@ -1,10 +1,11 @@
 #include "misc/bot_log.h"
 #include "screen/bot_start_screen.h"
 #include "screen/bot_game_screen.h"
+#include "screen/bot_show_map_screen.h"
 
 namespace bot {
 
-Screen* Screen::create(Type type, const AppConfig* cfg, const GameLib* lib, Graphics* g,
+Screen* Screen::create(Type type, const AppConfig* cfg, GameLib* lib, Graphics* g,
                        ScreenManager* screenMgr, float viewportWidth, float viewportHeight)
 {
     Screen* screen = nullptr;
@@ -43,6 +44,24 @@ Screen* Screen::create(Type type, const AppConfig* cfg, const GameLib* lib, Grap
             }
 
             LOG_INFO("Done loading game screen");
+
+            break;
+        }
+        case SCREEN_SHOW_MAP:
+        {
+            LOG_INFO("Show map screen");
+
+            ShowMapScreen* showMapScreen = new ShowMapScreen();
+            if (showMapScreen->init(*cfg, lib, g, viewportWidth, viewportHeight))
+            {
+                screen = showMapScreen;
+            }
+            else
+            {
+                delete showMapScreen;
+            }
+
+            LOG_INFO("Done loading show-map screen");
 
             break;
         }

@@ -68,7 +68,7 @@ public:
     bool addRobot(const std::string* name, const AIRobotTemplate* t, int row, int col,
                   float directionX, float directionY);
 
-    void getFreeSlots(std::vector<std::pair<int,int>> freeSlots);
+    void getFreeSlots(std::vector<std::pair<int,int>>& freeSlots);
 
     bool write(const char* fileName);
 

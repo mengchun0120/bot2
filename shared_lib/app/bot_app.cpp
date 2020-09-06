@@ -1,11 +1,13 @@
 #include "misc/bot_log.h"
 #include "opengl/bot_opengl.h"
+#include "app/bot_app_config.h"
 #include "app/bot_app.h"
 
 namespace bot {
 
 App::App()
     : m_window(nullptr)
+    , m_config(nullptr)
 {
     m_viewportSize[0] = 0.0f;
     m_viewportSize[1] = 0.0f;
@@ -19,12 +21,9 @@ App::~App()
     }
 }
 
-bool App::init(const std::string& appDir, const std::string& cfgFile, Screen::Type startScreenType)
+bool App::init(const AppConfig* cfg, Screen::Type startScreenType)
 {
-    if (!m_config.load(appDir, cfgFile))
-    {
-        return false;
-    }
+    m_config = cfg;
 
     if (!initWindow())
     {
@@ -112,7 +111,7 @@ bool App::initWindow()
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    m_window = glfwCreateWindow(m_config.getWidth(), m_config.getHeight(), m_config.getTitle().c_str(),
+    m_window = glfwCreateWindow(m_config->getWidth(), m_config->getHeight(), m_config->getTitle().c_str(),
                                 NULL, NULL);
     if (!m_window)
     {
@@ -138,7 +137,7 @@ bool App::initWindow()
 
 bool App::initInputManager()
 {
-    m_inputMgr.init(m_window, m_config.getEventQueueSize(), m_viewportSize[1]);
+    m_inputMgr.init(m_window, m_config->getEventQueueSize(), m_viewportSize[1]);
 
     LOG_INFO("Done initializing input manager");
 
@@ -155,9 +154,9 @@ bool App::initOpenGL()
     glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    bool ret = m_graphics.init(m_config.getSimpleVertexShaderFile(), m_config.getSimpleFragShaderFile(),
-                               m_config.getParticleVertexShaderFile(), m_config.getParticleFragShaderFile(),
-                               m_config.getFontDir());
+    bool ret = m_graphics.init(m_config->getSimpleVertexShaderFile(), m_config->getSimpleFragShaderFile(),
+                               m_config->getParticleVertexShaderFile(), m_config->getParticleFragShaderFile(),
+                               m_config->getFontDir());
 
     if (!ret)
     {
@@ -201,7 +200,7 @@ bool App::initGame(Screen::Type startScreenType)
         return false;
     }
 
-    m_screenMgr.init(&m_config, &m_gameLib, &m_graphics, startScreenType, m_viewportSize[0], m_viewportSize[1]);
+    m_screenMgr.init(m_config, &m_gameLib, &m_graphics, startScreenType, m_viewportSize[0], m_viewportSize[1]);
 
     LOG_INFO("Done initializing game");
 
@@ -212,7 +211,7 @@ bool App::initTimeDeltaSmoother()
 {
     LOG_INFO("Initializing time-delta smoother");
 
-    m_timeDeltaSmoother.init(m_config.getTimeDeltaHistoryLen());
+    m_timeDeltaSmoother.init(m_config->getTimeDeltaHistoryLen());
 
     LOG_INFO("Done initializing time-delta smoother");
 
@@ -223,7 +222,7 @@ bool App::initGameLib()
 {
     LOG_INFO("Initializing game template libraries");
 
-    bool success = m_gameLib.load(m_viewportSize[0], m_viewportSize[1], m_config);
+    bool success = m_gameLib.load(m_viewportSize[0], m_viewportSize[1], *m_config);
 
     if (!success)
     {

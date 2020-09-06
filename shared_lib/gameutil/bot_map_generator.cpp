@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <cmath>
+#include "misc/bot_log.h"
 #include "misc/bot_json_utils.h"
 #include "structure/bot_named_map.h"
 #include "gametemplate/bot_player_template.h"
@@ -95,6 +96,8 @@ bool MapGenerator::init(const rapidjson::Value& json, const PlayerTemplate* play
 
 int MapGenerator::deployRobots(GeneratedMap& map)
 {
+    LOG_INFO("Deploying robots");
+
     std::vector<std::pair<int,int>> freeSlots;
     map.getFreeSlots(freeSlots);
 
@@ -126,6 +129,7 @@ int MapGenerator::deployRobots(GeneratedMap& map)
         int robotIdx = m_rand.get(0, robotTypeCount);
 
         randomDirection(m_rand, directionX, directionY);
+
         map.addRobot(&m_robotNames[robotIdx], m_robotTemplates[robotIdx], freeSlots[robotSlot].first,
                      freeSlots[robotSlot].second, directionX, directionY);
 
@@ -135,7 +139,9 @@ int MapGenerator::deployRobots(GeneratedMap& map)
         }
     }
 
-    return maxRobotCount;
+    LOG_INFO("Done deploying robots");
+
+    return 1;
 }
 
 } // end of namespace bot

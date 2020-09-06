@@ -28,7 +28,7 @@ ScreenManager::~ScreenManager()
     }
 }
 
-bool ScreenManager::init(const AppConfig* cfg, const GameLib* lib, Graphics* g,
+bool ScreenManager::init(const AppConfig* cfg, GameLib* lib, Graphics* g,
                          Screen::Type startScreenType, float viewportWidth, float viewportHeight)
 {
     m_lib = lib;

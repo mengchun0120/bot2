@@ -19,7 +19,7 @@ public:
 
     ~ScreenManager();
 
-    virtual bool init(const AppConfig* cfg, const GameLib* lib, Graphics* g,
+    virtual bool init(const AppConfig* cfg, GameLib* lib, Graphics* g,
                       Screen::Type startScreenType, float viewportWidth, float viewportHeight);
 
     int update(float delta);
@@ -31,7 +31,7 @@ public:
     bool switchScreen(Screen::Type type);
 
 private:
-    const GameLib* m_lib;
+    GameLib* m_lib;
     const AppConfig* m_cfg;
     Graphics* m_graphics;
     float m_viewportSize[Constants::NUM_FLOATS_PER_POSITION];

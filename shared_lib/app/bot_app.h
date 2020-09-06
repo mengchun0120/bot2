@@ -8,13 +8,12 @@
 #include "gameutil/bot_time_delta_smoother.h"
 #include "gameutil/bot_game_lib.h"
 #include "screen/bot_screen_manager.h"
-#include "app/bot_app_config.h"
 
 struct GLFWwindow;
 
 namespace bot {
 
-class ScreenManager;
+class AppConfig;
 
 class App {
 public:
@@ -22,7 +21,7 @@ public:
 
     virtual ~App();
 
-    bool init(const std::string& appDir, const std::string& cfgFile, Screen::Type startScreenType);
+    bool init(const AppConfig* cfg, Screen::Type startScreenType);
 
     bool run();
 
@@ -43,7 +42,7 @@ protected:
 
 protected:
     GLFWwindow* m_window;
-    AppConfig m_config;
+    const AppConfig* m_config;
     float m_viewportSize[Constants::NUM_FLOATS_PER_POSITION];
     InputManager m_inputMgr;
     Graphics m_graphics;

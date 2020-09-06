@@ -11,6 +11,8 @@ namespace bot {
 
 bool GameMapLoader::load(const std::string& file, float viewportWidth, float viewportHeight)
 {
+    LOG_INFO("Loading map %s", file.c_str());
+
     rapidjson::Document doc;
     if (!readJson(doc, file.c_str()))
     {
@@ -49,6 +51,8 @@ bool GameMapLoader::load(const std::string& file, float viewportWidth, float vie
         LOG_ERROR("Failed to load player");
         return false;
     }
+
+    LOG_INFO("Done loading map %s", file.c_str());
 
     return true;
 }
