@@ -8,6 +8,13 @@ namespace bot {
 class AppConfig {
 public:
     AppConfig()
+        : m_width(0)
+        , m_height(0)
+        , m_eventQueueSize(0)
+        , m_timeDeltaHistoryLen(0)
+        , m_mapPoolFactor(0)
+        , m_missilePoolSize(0)
+        , m_maxRobotCount(0)
     {}
 
     ~AppConfig()
@@ -200,6 +207,16 @@ public:
         return m_mapGenerator;
     }
 
+    int getMaxRobotCount() const
+    {
+        return m_maxRobotCount;
+    }
+
+    void setMaxRobotCount(int count)
+    {
+        m_maxRobotCount = count;
+    }
+
 private:
     bool readConfig(const std::string& cfgFile);
 
@@ -242,6 +259,7 @@ private:
     float m_mapPoolFactor;
     int m_missilePoolSize;
     std::string m_mapGenerator;
+    int m_maxRobotCount;
 };
 
 } // end of namespace bot

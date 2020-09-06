@@ -20,9 +20,9 @@ IslandMapGenerator::IslandMapGenerator()
 
 bool IslandMapGenerator::init(const rapidjson::Value& json, const PlayerTemplate* playerTemplate,
                               const NamedMap<AIRobotTemplate>& aiRobotTemplateLib,
-                              const NamedMap<TileTemplate>& tileTemplateLib)
+                              const NamedMap<TileTemplate>& tileTemplateLib, int maxRobotCount)
 {
-    if (!MapGenerator::init(json, playerTemplate, aiRobotTemplateLib, tileTemplateLib))
+    if (!MapGenerator::init(json, playerTemplate, aiRobotTemplateLib, tileTemplateLib, maxRobotCount))
     {
         return false;
     }

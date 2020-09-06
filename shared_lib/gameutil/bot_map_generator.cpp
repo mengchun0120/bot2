@@ -26,7 +26,7 @@ MapGenerator* MapGenerator::Parser::create(const std::string& name, const rapidj
     if ("islandMapGenerator" == name)
     {
         g = new IslandMapGenerator();
-        if (!g->init(elem, m_playerTemplate, m_robotTemplateLib, m_tileTemplateLib))
+        if (!g->init(elem, m_playerTemplate, m_robotTemplateLib, m_tileTemplateLib, m_maxRobotCount))
         {
             delete g;
             g = nullptr;
@@ -52,7 +52,7 @@ MapGenerator::MapGenerator()
 
 bool MapGenerator::init(const rapidjson::Value& json, const PlayerTemplate* playerTemplate,
                         const NamedMap<AIRobotTemplate>& aiRobotTemplateLib,
-                        const NamedMap<TileTemplate>& tileTemplateLib)
+                        const NamedMap<TileTemplate>& tileTemplateLib, int maxRobotCount)
 {
     std::vector<JsonParseParam> params = {
         {&m_minRowCount,   "minRowCount",   JSONTYPE_INT},
@@ -66,6 +66,11 @@ bool MapGenerator::init(const rapidjson::Value& json, const PlayerTemplate* play
     if (!parseJson(params, json))
     {
         return false;
+    }
+
+    if (maxRobotCount > 0)
+    {
+        m_maxRobotCount = maxRobotCount;
     }
 
     int count = static_cast<int>(m_robotNames.size());

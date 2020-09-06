@@ -16,7 +16,7 @@ public:
 
     virtual bool init(const rapidjson::Value& json, const PlayerTemplate* playerTemplate,
                       const NamedMap<AIRobotTemplate>& aiRobotTemplateLib,
-                      const NamedMap<TileTemplate>& tileTemplateLib);
+                      const NamedMap<TileTemplate>& tileTemplateLib, int maxRobotCount);
 
     virtual bool generate(const char* fileName);
 

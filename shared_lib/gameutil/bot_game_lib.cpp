@@ -106,7 +106,7 @@ bool GameLib::load(float viewportWidth, float viewportHeight, const AppConfig& c
     }
     LOG_INFO("Done reading player template from %s", cfg.getPlayerTemplateLib().c_str());
 
-    MapGenerator::Parser mapGeneratorParser(&m_playerTemplate, m_tileTemplateLib, m_aiRobotTemplateLib);
+    MapGenerator::Parser mapGeneratorParser(&m_playerTemplate, m_tileTemplateLib, m_aiRobotTemplateLib, cfg.getMaxRobotCount());
     ret = m_mapGeneratorLib.load(cfg.getMapGeneratorLib().c_str(), mapGeneratorParser);
     if (!ret)
     {
