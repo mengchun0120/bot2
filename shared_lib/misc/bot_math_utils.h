@@ -39,6 +39,8 @@ void calculateDirection(float& directionX, float& directionY, float srcX, float 
 
 float dist(float x1, float y1, float x2, float y2);
 
+int compare(float a, float b, float threshold);
+
 } // end of namespace bot
 
 #endif

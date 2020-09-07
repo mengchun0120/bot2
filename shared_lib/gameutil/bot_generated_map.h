@@ -12,35 +12,40 @@ namespace bot {
 
 class TileTemplate;
 class AIRobotTemplate;
+class PlayerTemplate;
+class GameObjectTemplate;
 
 class GeneratedMap {
-    struct TileItem {
-        TileItem(const std::string* name, const TileTemplate* t, float x, float y)
-            : m_name(name)
-            , m_template(t)
-            , m_x(x)
-            , m_y(y)
+    struct ObjectItem {
+        ObjectItem(const std::string* name, const GameObjectTemplate* t, float x, float y);
+
+        ~ObjectItem()
         {}
 
+        bool outsideRegion(float leftBound, float bottomBound, float rightBound, float topBound) const;
+
+        bool overlap(const ObjectItem& item) const;
+
         const std::string* m_name;
-        const TileTemplate* m_template;
+        const GameObjectTemplate* m_template;
         float m_x, m_y;
+        float m_left, m_bottom, m_right, m_top;
     };
 
-    struct RobotItem {
+    struct TileItem: public ObjectItem {
+        TileItem(const std::string* name, const TileTemplate* t, float x, float y);
+
+        ~TileItem()
+        {}
+    };
+
+    struct RobotItem: public ObjectItem {
         RobotItem(const std::string* name, const AIRobotTemplate* t, float x, float y,
-                  float directionX, float directionY)
-            : m_name(name)
-            , m_template(t)
-            , m_x(x)
-            , m_y(y)
-            , m_directionX(directionX)
-            , m_directionY(directionY)
+                  float directionX, float directionY);
+
+        ~RobotItem()
         {}
 
-        const std::string* m_name;
-        const AIRobotTemplate* m_template;
-        float m_x, m_y;
         float m_directionX, m_directionY;
     };
 
@@ -61,7 +66,7 @@ public:
     ~GeneratedMap()
     {}
 
-    void setPlayer(int row, int col, float directionX, float directionY);
+    void setPlayer(const PlayerTemplate* playerTemplate, int row, int col, float directionX, float directionY);
 
     void addTile(const std::string* name, const TileTemplate* t, float x, float y);
 
@@ -82,6 +87,8 @@ public:
         return static_cast<int>(m_slots[0].size());
     }
 
+    bool validate() const;
+
 private:
     void initSlots();
 
@@ -92,12 +99,17 @@ private:
         return static_cast<int>(floor(x / m_slotSize));
     }
 
+    bool validateInRegion() const;
+
+    bool validateOverlap() const;
+
 private:
     std::list<TileItem> m_tiles;
     std::list<RobotItem> m_robots;
     std::vector<std::vector<Slot>> m_slots;
     int m_rowCount, m_colCount;
     float m_mapWidth, m_mapHeight;
+    const PlayerTemplate* m_playerTemplate;
     float m_playerX, m_playerY;
     float m_playerDirectionX, m_playerDirectionY;
     float m_slotSize;

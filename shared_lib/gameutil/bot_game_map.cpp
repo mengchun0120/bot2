@@ -591,6 +591,8 @@ void GameMap::setViewportPos(float x, float y)
 {
     m_viewportPos[0] = clamp(x, m_viewportBreathX, m_maxViewportX);
     m_viewportPos[1] = clamp(y, m_viewportBreathY, m_maxViewportY);
+    m_viewportWorldX = m_viewportPos[0] - m_viewportBreathX;
+    m_viewportWorldY = m_viewportPos[1] - m_viewportBreathY;
 }
 
 } // end of namespace bot

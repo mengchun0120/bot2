@@ -79,7 +79,19 @@ bool IslandMapGenerator::generate(const char* fileName)
     generateTiles(map);
     MapGenerator::deployRobots(map);
 
-    return map.write(fileName);
+    if (!map.validate())
+    {
+        LOG_ERROR("Failed to validate map");
+        return false;
+    }
+
+    if (!map.write(fileName))
+    {
+        LOG_ERROR("Failed to write to map %s", fileName);
+        return false;
+    }
+
+    return true;
 }
 
 void IslandMapGenerator::generateTiles(GeneratedMap& map)

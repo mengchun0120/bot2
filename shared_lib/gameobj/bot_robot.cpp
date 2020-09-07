@@ -298,7 +298,6 @@ void Robot::updateShootAbility(GameScreen& gameScreen)
 
     if (rc == RET_CODE_OUT_OF_SIGHT)
     {
-        LOG_INFO("missile out-of-sight");
         gameObjManager.sendToDeathQueue(missile);
         return;
     }
@@ -314,16 +313,6 @@ void Robot::updateShootAbility(GameScreen& gameScreen)
 
 void Robot::processCollisions(LinkedList<GameObjectItem>& collideObjs, GameScreen& gameScreen)
 {
-    LOG_INFO("process collide");
-    for (GameObjectItem* item = collideObjs.getFirst(); item; item = static_cast<GameObjectItem*>(item->getNext()))
-    {
-        if (item->getObj()->getType() == GAME_OBJ_TYPE_GOODIE)
-        {
-            Goodie* g = static_cast<Goodie*>(item->getObj());
-            LOG_INFO("process collide goodie %p %p", g, g->getTemplate());
-        }
-    }
-
     for (GameObjectItem* item = collideObjs.getFirst(); item; item = static_cast<GameObjectItem*>(item->getNext()))
     {
         switch (item->getObj()->getType())

@@ -29,8 +29,6 @@ GLuint compileShader(GLenum type, const std::string& fileName)
 
     const GLchar* cSource = source.c_str();
 
-    LOG_INFO("Comiple %s using source:\n%s", shaderName(type), cSource);
-
     GLuint shader = glCreateShader(type);
     if (shader == 0)
     {

@@ -4,22 +4,70 @@
 #include "misc/bot_log.h"
 #include "misc/bot_math_utils.h"
 #include "gametemplate/bot_tile_template.h"
+#include "gametemplate/bot_ai_robot_template.h"
 #include "gameutil/bot_generated_map.h"
 #include "gameutil/bot_game_map.h"
 
 namespace bot {
 
+const float THRESHOLD = 0.01;
+
+GeneratedMap::ObjectItem::ObjectItem(const std::string* name, const GameObjectTemplate* t,
+                                     float x, float y)
+    : m_name(name)
+    , m_template(t)
+    , m_x(x)
+    , m_y(y)
+{
+    m_left = x - t->getCoverBreathX();
+    m_right = x + t->getCoverBreathX();
+    m_bottom = y - t->getCoverBreathY();
+    m_top = y + t->getCoverBreathY();
+}
+
+bool GeneratedMap::ObjectItem::outsideRegion(float leftBound, float bottomBound, float rightBound, float topBound) const
+{
+    return compare(m_left, leftBound, THRESHOLD) < 0 ||
+           compare(m_right, rightBound, THRESHOLD) > 0 ||
+           compare(m_bottom, bottomBound, THRESHOLD) < 0 ||
+           compare(m_top, topBound, THRESHOLD) > 0;
+}
+
+bool GeneratedMap::ObjectItem::overlap(const ObjectItem& item) const
+{
+    return compare(m_left, item.m_right, THRESHOLD) < 0 &&
+           compare(m_right, item.m_left, THRESHOLD) > 0 &&
+           compare(m_bottom, item.m_top, THRESHOLD) < 0 &&
+           compare(m_top, item.m_bottom, THRESHOLD) > 0;
+}
+
+GeneratedMap::TileItem::TileItem(const std::string* name, const TileTemplate* t, float x, float y)
+    : ObjectItem(name, t, x, y)
+{
+}
+
+GeneratedMap::RobotItem::RobotItem(const std::string* name, const AIRobotTemplate* t, float x, float y,
+                                   float directionX, float directionY)
+    : ObjectItem(name, t, x, y)
+{
+    m_directionX = directionX;
+    m_directionY = directionY;
+}
+
+
 GeneratedMap::GeneratedMap(int rowCount, int colCount, float slotSize)
     : m_rowCount(rowCount)
     , m_colCount(colCount)
-    , m_mapWidth(m_rowCount* GameMap::GRID_BREATH)
-    , m_mapHeight(m_colCount* GameMap::GRID_BREATH)
+    , m_mapWidth(m_colCount* GameMap::GRID_BREATH)
+    , m_mapHeight(m_rowCount* GameMap::GRID_BREATH)
+    , m_playerTemplate(nullptr)
     , m_playerX(0.0f)
     , m_playerY(0.0f)
     , m_playerDirectionX(0.0f)
     , m_playerDirectionY(0.0f)
     , m_slotSize(slotSize)
 {
+    LOG_INFO("mapWidth=%f mapHeight=%f", m_mapWidth, m_mapHeight);
     initSlots();
 }
 
@@ -50,9 +98,10 @@ void GeneratedMap::initSlots()
     }
 }
 
-void GeneratedMap::setPlayer(int row, int col, float directionX, float directionY)
+void GeneratedMap::setPlayer(const PlayerTemplate* playerTemplate, int row, int col, float directionX, float directionY)
 {
     Slot& slot = m_slots[row][col];
+    m_playerTemplate = playerTemplate;
     m_playerX = slot.m_x;
     m_playerY = slot.m_y;
     slot.m_occupied = true;
@@ -204,4 +253,94 @@ void GeneratedMap::getFreeSlots(std::vector<std::pair<int,int>>& freeSlots)
     }
 }
 
+bool GeneratedMap::validate() const
+{
+    return validateInRegion() && validateOverlap();
+}
+
+bool GeneratedMap::validateInRegion() const
+{
+    int i = 0;
+    for (auto& tile: m_tiles)
+    {
+        if (tile.outsideRegion(0.0f, 0.0f, m_mapWidth, m_mapHeight))
+        {
+            LOG_ERROR("Tile %d outside map: %s (%f %f %f %f %f)", i, tile.m_name->c_str(),
+                      tile.m_left, tile.m_bottom, tile.m_right, tile.m_top);
+            return false;
+        }
+        ++i;
+    }
+
+    i = 0;
+    for (auto& robot: m_robots)
+    {
+        if (robot.outsideRegion(0.0f, 0.0f, m_mapWidth, m_mapHeight))
+        {
+            LOG_ERROR("Robot %d outside map: %s (%f %f %f %f)", i, robot.m_name->c_str(),
+                      robot.m_left, robot.m_bottom, robot.m_right, robot.m_top);
+            return false;
+        }
+        ++i;
+    }
+
+    return true;
+}
+
+bool GeneratedMap::validateOverlap() const
+{
+    int i = 0;
+    for (auto it = m_tiles.begin(); it != m_tiles.end(); ++it, ++i)
+    {
+        int j = i + 1;
+        auto it1 = it;
+        for(++it1; it1 != m_tiles.end(); ++it1, ++j)
+        {
+            if (it->overlap(*it1))
+            {
+                LOG_ERROR("Tile %d (%s %f %f %f %f) overlaps with tile %d (%s %f %f %f %f)",
+                          i, it->m_name->c_str(), it->m_left, it->m_bottom, it->m_right, it->m_top,
+                          j, it1->m_name->c_str(), it1->m_left, it1->m_bottom, it1->m_right, it1->m_top);
+                return false;
+            }
+        }
+    }
+
+    i = 0;
+    for (auto it = m_robots.begin(); it != m_robots.end(); ++it, ++i)
+    {
+        int j = i + 1;
+        auto it1 = it;
+        for(++it1; it1 != m_robots.end(); ++it1, ++j)
+        {
+            if (it->overlap(*it1))
+            {
+                LOG_ERROR("Robot %d (%s %f %f %f %f) overlaps with robot %d (%s %f %f %f %f)",
+                          i, it->m_name->c_str(), it->m_left, it->m_bottom, it->m_right, it->m_top,
+                          j, it1->m_name->c_str(), it1->m_left, it1->m_bottom, it1->m_right, it1->m_top);
+                return false;
+            }
+        }
+    }
+
+    i = 0;
+    for (auto it = m_tiles.begin(); it != m_tiles.end(); ++it, ++i)
+    {
+        int j = 0;
+        for (auto it1 = m_robots.begin(); it1 != m_robots.end(); ++it1, ++j)
+        {
+            if (it->overlap(*it1))
+            {
+                LOG_ERROR("Tile %d (%s %f %f %f %f) overlaps with robot %d (%s %f %f %f %f)",
+                          i, it->m_name->c_str(), it->m_left, it->m_bottom, it->m_right, it->m_top,
+                          j, it1->m_name->c_str(), it1->m_left, it1->m_bottom, it1->m_right, it1->m_top);
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
 } // end of namespace bot
+

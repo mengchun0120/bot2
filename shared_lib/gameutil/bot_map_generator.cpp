@@ -45,6 +45,7 @@ MapGenerator::MapGenerator()
     , m_maxRowCount(0)
     , m_minColCount(0)
     , m_maxColCount(0)
+    , m_playerTemplate(nullptr)
     , m_maxRobotCount(0)
     , m_robotSlotSize(0.0f)
 {
@@ -54,6 +55,8 @@ bool MapGenerator::init(const rapidjson::Value& json, const PlayerTemplate* play
                         const NamedMap<AIRobotTemplate>& aiRobotTemplateLib,
                         const NamedMap<TileTemplate>& tileTemplateLib, int maxRobotCount)
 {
+    m_playerTemplate = playerTemplate;
+
     std::vector<JsonParseParam> params = {
         {&m_minRowCount,   "minRowCount",   JSONTYPE_INT},
         {&m_maxRowCount,   "maxRowCount",   JSONTYPE_INT},
@@ -114,7 +117,7 @@ int MapGenerator::deployRobots(GeneratedMap& map)
     float playerDirectionX, playerDirectionY;
 
     randomDirection(m_rand, playerDirectionX, playerDirectionY);
-    map.setPlayer(freeSlots[playerSlot].first, freeSlots[playerSlot].second,
+    map.setPlayer(m_playerTemplate, freeSlots[playerSlot].first, freeSlots[playerSlot].second,
                   playerDirectionX, playerDirectionY);
 
     if (lastSlot != playerSlot)

@@ -27,4 +27,16 @@ float dist(float x1, float y1, float x2, float y2)
     return sqrt(distX * distX + distY * distY);
 }
 
+int compare(float a, float b, float threshold)
+{
+    float dist = a - b;
+
+    if (abs(dist) <= threshold)
+    {
+        return 0;
+    }
+
+    return dist < 0 ? -1 : 1;
+}
+
 } // end of namespace bot

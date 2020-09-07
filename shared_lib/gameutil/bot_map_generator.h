@@ -56,6 +56,7 @@ protected:
 protected:
     int m_minRowCount, m_maxRowCount;
     int m_minColCount, m_maxColCount;
+    const PlayerTemplate* m_playerTemplate;
     std::vector<std::string> m_robotNames;
     int m_maxRobotCount;
     std::vector<const AIRobotTemplate*> m_robotTemplates;
