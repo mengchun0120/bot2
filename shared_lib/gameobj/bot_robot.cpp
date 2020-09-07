@@ -305,7 +305,6 @@ void Robot::updateShootAbility(GameScreen& gameScreen)
 
     if (rc == RET_CODE_COLLIDE)
     {
-        LOG_INFO("missile explode");
         missile->explode(gameScreen);
         return;
     }

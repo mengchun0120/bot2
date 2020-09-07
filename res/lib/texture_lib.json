@@ -50,5 +50,25 @@
     {
         "name": "double_damage",
         "file": "double_damage.png"
+    },
+    {
+        "name": "steel_tile",
+        "file": "steel_tile.png"
+    },
+    {
+        "name": "clay_tile",
+        "file": "clay_tile.png"
+    },
+    {
+        "name": "bush_tile",
+        "file": "bush_tile.png"
+    },
+    {
+        "name": "fireland_tile",
+        "file": "fireland_tile.png"
+    },
+    {
+        "name": "ice_tile",
+        "file": "ice_tile.png"
     }
 ]

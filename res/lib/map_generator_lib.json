@@ -17,7 +17,9 @@
         "islandTiles": [
             "ice_tile",
             "clay_tile",
-            "steel_tile"
+            "steel_tile",
+            "bush_tile",
+            "fireland_tile"
         ]
     }
 ]

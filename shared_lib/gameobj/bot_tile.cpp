@@ -24,9 +24,8 @@ void Tile::present(Graphics& g)
     const TileTemplate* t = static_cast<const TileTemplate*>(m_template);
     const Rectangle* rect = t->getRect();
     const Texture* texture = t->getTexture();
-    const Color* color = t->getColor();
 
-    rect->draw(g, m_pos, nullptr, nullptr, nullptr, texture->textureId(), color);
+    rect->draw(g, m_pos, nullptr, nullptr, nullptr, texture->textureId(), nullptr);
 }
 
 void Tile::update(float delta, GameScreen& screen)

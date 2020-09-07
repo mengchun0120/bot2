@@ -1,21 +1,30 @@
 [
     {
         "name": "ice_tile",
-        "texture": "tile",
+        "texture": "ice_tile",
         "rect": "square40",
-        "color": "cyan",
         "coverBreathX": 20.0,
         "coverBreathY": 20.0,
         "collideBreathX": 15.0,
         "collideBreathY": 15.0,
-        "hp": 80,
+        "hp": 20,
         "indestructable": false
     },
     {
         "name": "clay_tile",
-        "texture": "tile",
+        "texture": "clay_tile",
         "rect": "square40",
-        "color": "yellow",
+        "coverBreathX": 20.0,
+        "coverBreathY": 20.0,
+        "collideBreathX": 15.0,
+        "collideBreathY": 15.0,
+        "hp": 40,
+        "indestructable": false
+    },
+    {
+        "name": "bush_tile",
+        "texture": "bush_tile",
+        "rect": "square40",
         "coverBreathX": 20.0,
         "coverBreathY": 20.0,
         "collideBreathX": 15.0,
@@ -24,10 +33,20 @@
         "indestructable": false
     },
     {
-        "name": "steel_tile",
-        "texture": "tile",
+        "name": "fireland_tile",
+        "texture": "fireland_tile",
         "rect": "square40",
-        "color": "blue",
+        "coverBreathX": 20.0,
+        "coverBreathY": 20.0,
+        "collideBreathX": 15.0,
+        "collideBreathY": 15.0,
+        "hp": 160,
+        "indestructable": false
+    },
+    {
+        "name": "steel_tile",
+        "texture": "steel_tile",
+        "rect": "square40",
         "coverBreathX": 20.0,
         "coverBreathY": 20.0,
         "collideBreathX": 15.0,

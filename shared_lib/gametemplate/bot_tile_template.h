@@ -10,17 +10,14 @@ namespace bot {
 template <typename T> class NamedMap;
 class Texture;
 class Rectangle;
-class Color;
 
 class TileTemplate: public GameObjectTemplate {
 public:
     class Parser {
     public:
-        Parser(const NamedMap<Texture>& textureLib, const NamedMap<Rectangle>& rectLib,
-               const NamedMap<Color>& colorLib)
+        Parser(const NamedMap<Texture>& textureLib, const NamedMap<Rectangle>& rectLib)
             : m_textureLib(textureLib)
             , m_rectLib(rectLib)
-            , m_colorLib(colorLib)
         {}
 
         ~Parser()
@@ -31,7 +28,6 @@ public:
     private:
         const NamedMap<Texture>& m_textureLib;
         const NamedMap<Rectangle>& m_rectLib;
-        const NamedMap<Color>& m_colorLib;
     };
 
     TileTemplate();
@@ -40,7 +36,7 @@ public:
     {}
 
     bool init(const NamedMap<Texture>& textureLib, const NamedMap<Rectangle>& rectLib,
-              const NamedMap<Color>& colorLib, const rapidjson::Value& elem);
+              const rapidjson::Value& elem);
 
     const Texture* getTexture() const
     {
@@ -52,11 +48,6 @@ public:
         return m_rect;
     }
 
-    const Color* getColor() const
-    {
-        return m_color;
-    }
-
     int getHP() const
     {
         return m_hp;
@@ -65,7 +56,6 @@ public:
 protected:
     const Texture* m_texture;
     const Rectangle* m_rect;
-    const Color* m_color;
     int m_hp;
 };
 

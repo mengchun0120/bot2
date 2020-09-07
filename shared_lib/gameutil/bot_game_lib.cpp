@@ -34,7 +34,7 @@ bool GameLib::load(float viewportWidth, float viewportHeight, const AppConfig& c
     }
     LOG_INFO("Done loading color library from %s", cfg.getColorLib().c_str());
 
-    TileTemplate::Parser tileTemplateParser(m_textureLib, m_rectLib, m_colorLib);
+    TileTemplate::Parser tileTemplateParser(m_textureLib, m_rectLib);
     ret = m_tileTemplateLib.load(cfg.getTileTemplateLib().c_str(), tileTemplateParser);
     if (!ret)
     {

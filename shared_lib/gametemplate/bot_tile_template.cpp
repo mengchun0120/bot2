@@ -11,7 +11,7 @@ namespace bot {
 TileTemplate* TileTemplate::Parser::create(const std::string& name, const rapidjson::Value& elem)
 {
     TileTemplate* t = new TileTemplate();
-    if (!t->init(m_textureLib, m_rectLib, m_colorLib, elem))
+    if (!t->init(m_textureLib, m_rectLib, elem))
     {
         delete t;
         return nullptr;
@@ -23,13 +23,12 @@ TileTemplate::TileTemplate()
     : GameObjectTemplate(GAME_OBJ_TYPE_TILE)
     , m_texture(nullptr)
     , m_rect(nullptr)
-    , m_color(nullptr)
     , m_hp(0)
 {
 }
 
 bool TileTemplate::init(const NamedMap<Texture>& textureLib, const NamedMap<Rectangle>& rectLib,
-                        const NamedMap<Color>& colorLib, const rapidjson::Value& elem)
+                        const rapidjson::Value& elem)
 {
     std::string textureName, rectName, colorName;
     bool indestructable = false;
@@ -38,7 +37,6 @@ bool TileTemplate::init(const NamedMap<Texture>& textureLib, const NamedMap<Rect
     {
         {&textureName,        "texture",        JSONTYPE_STRING},
         {&rectName,           "rect",           JSONTYPE_STRING},
-        {&colorName,          "color",          JSONTYPE_STRING},
         {&m_coverBreathX,     "coverBreathX",   JSONTYPE_FLOAT},
         {&m_coverBreathY,     "coverBreathY",   JSONTYPE_FLOAT},
         {&m_collideBreathX,   "collideBreathX", JSONTYPE_FLOAT},
@@ -63,13 +61,6 @@ bool TileTemplate::init(const NamedMap<Texture>& textureLib, const NamedMap<Rect
     if (!m_rect)
     {
         LOG_ERROR("Failed to find rectangle %s", rectName.c_str());
-        return false;
-    }
-
-    m_color = colorLib.search(colorName);
-    if (!m_color)
-    {
-        LOG_ERROR("Failed to find color %s", colorName.c_str());
         return false;
     }
 

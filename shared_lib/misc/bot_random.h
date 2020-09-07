@@ -7,10 +7,7 @@ namespace bot {
 
 class Random {
 public:
-    Random()
-        : m_generator(std::random_device()())
-        , m_distribution(0.0, 1.0)
-    {}
+    Random();
 
     ~Random()
     {}
