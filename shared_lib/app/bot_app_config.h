@@ -137,6 +137,11 @@ public:
         return m_aiLib;
     }
 
+    const std::string& getComponentTemplateLib() const
+    {
+        return m_componentTemplateLib;
+    }
+
     const std::string& getAIRobotTemplateLib() const
     {
         return m_aiRobotTemplateLib;
@@ -247,6 +252,7 @@ private:
     std::string m_missileTemplateLib;
     std::string m_goodieTemplateLib;
     std::string m_aiLib;
+    std::string m_componentTemplateLib;
     std::string m_aiRobotTemplateLib;
     std::string m_progressRingLib;
     std::string m_playerTemplateLib;

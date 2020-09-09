@@ -1,0 +1,83 @@
+[
+    {
+        "name": "player_base",
+        "type": "base",
+        "texture": "player_base",
+        "rect": "square60",
+        "hp": 50,
+        "armor": 100,
+        "power": 100,
+        "weaponPos": [31.875, 0.0],
+        "moverPos": [26.25, 0.0]
+    },
+    {
+        "name": "player_base_gun",
+        "type": "weapon",
+        "texture": "player_base_gun",
+        "rect": "square20",
+        "damage": 20,
+        "missile": "green_bullet",
+        "firePos": [10.0, 0.0]
+    },
+    {
+        "name": "player_base_mover",
+        "type": "mover",
+        "texture": "player_base_mover",
+        "rect": "square20",
+        "speed": 150.0
+    },
+    {
+        "name": "red_base",
+        "type": "base",
+        "texture": "red_base",
+        "rect": "square60",
+        "hp": 50,
+        "armor": 100,
+        "power": 100,
+        "weaponPos": [31.875, 0.0],
+        "moverPos": [26.25, 0.0]
+    },
+    {
+        "name": "red_base_gun",
+        "type": "weapon",
+        "texture": "red_base_gun",
+        "rect": "square20",
+        "damage": 20,
+        "missile": "red_bullet",
+        "firePos": [10.0, 0.0]
+    },
+    {
+        "name": "red_base_mover",
+        "type": "mover",
+        "texture": "red_base_mover",
+        "rect": "square20",
+        "speed": 150.0
+    },
+    {
+        "name": "cyan_base",
+        "type": "base",
+        "texture": "cyan_base",
+        "rect": "square60",
+        "hp": 100,
+        "armor": 200,
+        "power": 200,
+        "weaponPos": [31.875, 0.0],
+        "moverPos": [26.25, 0.0]
+    },
+    {
+        "name": "cyan_base_gun",
+        "type": "weapon",
+        "texture": "cyan_base_gun",
+        "rect": "square20",
+        "damage": 20,
+        "missile": "blue_bullet",
+        "firePos": [10.0, 0.0]
+    },
+    {
+        "name": "cyan_base_mover",
+        "type": "mover",
+        "texture": "cyan_base_mover",
+        "rect": "square20",
+        "speed": 100.0
+    }
+]

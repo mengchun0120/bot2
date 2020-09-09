@@ -70,5 +70,41 @@
     {
         "name": "ice_tile",
         "file": "ice_tile.png"
+    },
+    {
+        "name": "player_base",
+        "file": "player_base.png"
+    },
+    {
+        "name": "player_base_gun",
+        "file": "player_base_gun.png"
+    },
+    {
+        "name": "player_base_mover",
+        "file": "player_base_mover.png"
+    },
+    {
+        "name": "red_base",
+        "file": "red_base.png"
+    },
+    {
+        "name": "red_base_gun",
+        "file": "red_base_gun.png"
+    },
+    {
+        "name": "red_base_mover",
+        "file": "red_base_mover.png"
+    },
+    {
+        "name": "cyan_base",
+        "file": "cyan_base.png"
+    },
+    {
+        "name": "cyan_base_gun",
+        "file": "cyan_base_gun.png"
+    },
+    {
+        "name": "cyan_base_mover",
+        "file": "cyan_base_mover.png"
     }
 ]

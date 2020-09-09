@@ -88,6 +88,15 @@ bool GameLib::load(float viewportWidth, float viewportHeight, const AppConfig& c
     }
     LOG_INFO("Done loading ai library from %s", cfg.getAILib().c_str());
 
+    ComponentTemplate::Parser componentParser(m_textureLib, m_rectLib, m_missileTemplateLib);
+    ret = m_componentTemplateLib.load(cfg.getComponentTemplateLib().c_str(), componentParser);
+    if (!ret)
+    {
+        LOG_ERROR("Failed to read component template from %s", cfg.getComponentTemplateLib().c_str());
+        return false;
+    }
+    LOG_INFO("Done loading component template from %s", cfg.getComponentTemplateLib().c_str());
+
     AIRobotTemplate::Parser aiRobotParser(m_textureLib, m_rectLib, m_colorLib, m_missileTemplateLib, m_aiLib);
     ret = m_aiRobotTemplateLib.load(cfg.getAIRobotTemplateLib().c_str(), aiRobotParser);
     if (!ret)

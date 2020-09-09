@@ -9,6 +9,7 @@
 #include "gametemplate/bot_tile_template.h"
 #include "gametemplate/bot_missile_template.h"
 #include "gametemplate/bot_goodie_template.h"
+#include "gametemplate/bot_component_template.h"
 #include "gametemplate/bot_ai_robot_template.h"
 #include "gametemplate/bot_animation_template.h"
 #include "gametemplate/bot_particle_effect_template.h"
@@ -22,18 +23,6 @@
 
 namespace bot {
 
-template <typename T> class NamedMap;
-class Texture;
-class Color;
-class Rectangle;
-class TileTemplate;
-class MissileTemplate;
-class GoodieTemplate;
-class AI;
-class AIRobotTemplate;
-class ParticleEffectTemplate;
-class ProgressRing;
-class MapGenerator;
 class AppConfig;
 
 class GameLib {
@@ -84,6 +73,11 @@ public:
     AI* getAI(const std::string& name)
     {
         return m_aiLib.search(name);
+    }
+
+    const NamedMap<ComponentTemplate>& getComponentTemplateLib() const
+    {
+        return m_componentTemplateLib;
     }
 
     const AIRobotTemplate* getAIRobotTemplate(const std::string& name) const
@@ -140,6 +134,7 @@ private:
     NamedMap<MissileTemplate> m_missileTemplateLib;
     NamedMap<GoodieTemplate> m_goodieTemplateLib;
     NamedMap<AI> m_aiLib;
+    NamedMap<ComponentTemplate> m_componentTemplateLib;
     NamedMap<AIRobotTemplate> m_aiRobotTemplateLib;
     NamedMap<ProgressRing> m_progressRingLib;
     PlayerTemplate m_playerTemplate;

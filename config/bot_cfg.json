@@ -22,6 +22,7 @@
     "missileTemplateLib": "missile_template_lib.json",
     "goodieTemplateLib": "goodie_template_lib.json",
     "aiLib": "ai_lib.json",
+    "componentTemplateLib": "component_lib.json",
     "aiRobotTemplateLib": "ai_robot_template_lib.json",
     "progressRingLib": "progress_ring_lib.json",
     "playerTemplateLib": "player_lib.json",
