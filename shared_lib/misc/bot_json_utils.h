@@ -41,8 +41,8 @@ bool parseJson(std::vector<std::string>& r, const rapidjson::Value& value, const
 
 bool parseJson(std::vector<JsonParseParam>& params, const rapidjson::Value& value);
 
-template <typename PROCESSOR>
-bool parseJsonArray(const rapidjson::Value& value, PROCESSOR& processor, const char* name)
+template <typename PARSER>
+bool parseJsonArray(const rapidjson::Value& value, PARSER& parser, const char* name)
 {
     if (!value.HasMember(name))
     {
@@ -58,7 +58,7 @@ bool parseJsonArray(const rapidjson::Value& value, PROCESSOR& processor, const c
     int len = arr.Capacity();
     for (int i = 0; i < len; ++i)
     {
-        if (!processor(arr[i]))
+        if (!parser(arr[i]))
         {
             return false;
         }
@@ -67,32 +67,27 @@ bool parseJsonArray(const rapidjson::Value& value, PROCESSOR& processor, const c
     return true;
 }
 
-template <typename T>
-bool parseVector(std::vector<T>& vec, const char* file)
+
+template <typename T, typename PARSER>
+bool parseJsonArray(std::vector<T>& vec, const rapidjson::Value& value, PARSER& parser, const char* name)
 {
-    rapidjson::Document doc;
-
-    if (!readJson(doc, file))
+    if (!value.HasMember(name))
     {
         return false;
     }
 
-    if (!doc.IsArray())
+    const rapidjson::Value& arr = value[name];
+    if (!arr.IsArray())
     {
-        LOG_ERROR("Invalid format: %s", file);
         return false;
     }
 
-    const rapidjson::Value& arr = doc.GetArray();
-    int numObjects = arr.Capacity();
-
-    vec.resize(numObjects);
-    for (int i = 0; i < numObjects; ++i)
+    int len = arr.Capacity();
+    vec.resize(len);
+    for (int i = 0; i < len; ++i)
     {
-        const rapidjson::Value& elem = arr[i];
-        if (!vec[i].init(elem))
+        if (!parser(vec[i], arr[i]))
         {
-            LOG_ERROR("Failed to parse the %dth object of %s", i, file);
             return false;
         }
     }

@@ -236,7 +236,6 @@ bool Player::addHP(int deltaHP)
 {
     bool ret = Robot::addHP(deltaHP);
     snprintf(m_hpStr, HP_STR_LEN, "%d", m_hp);
-    LOG_INFO("hp ratio %f", m_hpRatio);
     return ret;
 }
 

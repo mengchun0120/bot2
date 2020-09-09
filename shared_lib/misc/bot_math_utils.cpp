@@ -39,4 +39,11 @@ int compare(float a, float b, float threshold)
     return dist < 0 ? -1 : 1;
 }
 
+bool validateDirection(float directionX, float directionY)
+{
+    float const THRESHOLD = 1.0e-4f;
+    float squareSum = directionX * directionX + directionY * directionY;
+    return compare(squareSum, 1.0f, THRESHOLD) == 0;
+}
+
 } // end of namespace bot

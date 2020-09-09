@@ -10,6 +10,7 @@
 #include "gametemplate/bot_missile_template.h"
 #include "gametemplate/bot_goodie_template.h"
 #include "gametemplate/bot_component_template.h"
+#include "gametemplate/bot_robot_class.h"
 #include "gametemplate/bot_ai_robot_template.h"
 #include "gametemplate/bot_animation_template.h"
 #include "gametemplate/bot_particle_effect_template.h"
@@ -80,6 +81,11 @@ public:
         return m_componentTemplateLib;
     }
 
+    const NamedMap<RobotClass>& getRobotClassLib() const
+    {
+        return m_robotClassLib;
+    }
+
     const AIRobotTemplate* getAIRobotTemplate(const std::string& name) const
     {
         return m_aiRobotTemplateLib.search(name);
@@ -135,6 +141,7 @@ private:
     NamedMap<GoodieTemplate> m_goodieTemplateLib;
     NamedMap<AI> m_aiLib;
     NamedMap<ComponentTemplate> m_componentTemplateLib;
+    NamedMap<RobotClass> m_robotClassLib;
     NamedMap<AIRobotTemplate> m_aiRobotTemplateLib;
     NamedMap<ProgressRing> m_progressRingLib;
     PlayerTemplate m_playerTemplate;

@@ -41,6 +41,8 @@ float dist(float x1, float y1, float x2, float y2);
 
 int compare(float a, float b, float threshold);
 
+bool validateDirection(float directionX, float directionY);
+
 } // end of namespace bot
 
 #endif

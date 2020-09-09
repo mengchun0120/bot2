@@ -55,13 +55,13 @@ GLuint compileShader(GLenum type, const std::string& fileName)
 
         delete[] info;
 
-        LOG_ERROR("Compilation failed");
+        LOG_ERROR("Compilation failed for %s", fileName.c_str());
         glDeleteShader(shader);
         shader = 0;
     }
     else
     {
-        LOG_INFO("Compilation is successful");
+        LOG_INFO("Compilation is successful for %s", fileName.c_str());
     }
 
     return shader;

@@ -10,9 +10,13 @@ class BaseComponentTemplate: public ComponentTemplate {
 public:
     BaseComponentTemplate()
         : ComponentTemplate(COMPONENT_BASE)
-        , m_hp(0)
-        , m_armor(0)
-        , m_power(0)
+        , m_hp(0.0f)
+        , m_hpRestoreRate(0.0f)
+        , m_armor(0.0f)
+        , m_armorRepairRate(0.0f)
+        , m_power(0.0f)
+        , m_powerRestoreRate(0.0f)
+        , m_missileCapacity(0)
     {}
 
     virtual ~BaseComponentTemplate()
@@ -21,37 +25,49 @@ public:
     bool init(const NamedMap<Texture>& textureLib, const NamedMap<Rectangle>& rectLib,
               const rapidjson::Value& elem);
 
-    int getHP() const
+    float getHP() const
     {
         return m_hp;
     }
 
-    int getArmor() const
+    float getHPRestoreRate() const
+    {
+        return m_hpRestoreRate;
+    }
+
+    float getArmor() const
     {
         return m_armor;
     }
 
-    int getPower() const
+    float getArmorRepairRate() const
+    {
+        return m_armorRepairRate;
+    }
+
+    float getPower() const
     {
         return m_power;
     }
 
-    const float* getWeaponPos() const
+    float getPowerRestoreRate() const
     {
-        return m_weaponPos.data();
+        return m_powerRestoreRate;
     }
 
-    const float* getMoverPos() const
+    int getMissileCapacity() const
     {
-        return m_moverPos.data();
+        return m_missileCapacity;
     }
 
 protected:
-    int m_hp;
-    int m_armor;
-    int m_power;
-    std::vector<float> m_weaponPos;
-    std::vector<float> m_moverPos;
+    float m_hp;
+    float m_hpRestoreRate;
+    float m_armor;
+    float m_armorRepairRate;
+    float m_power;
+    float m_powerRestoreRate;
+    int m_missileCapacity;
 };
 
 } // end of namespace bot

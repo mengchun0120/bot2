@@ -97,6 +97,15 @@ bool GameLib::load(float viewportWidth, float viewportHeight, const AppConfig& c
     }
     LOG_INFO("Done loading component template from %s", cfg.getComponentTemplateLib().c_str());
 
+    RobotClass::Parser robotClassParser(m_componentTemplateLib);
+    ret = m_robotClassLib.load(cfg.getRobotClassLib().c_str(), robotClassParser);
+    if (!ret)
+    {
+        LOG_ERROR("Failed to read robot classes from %s", cfg.getRobotClassLib().c_str());
+        return false;
+    }
+    LOG_INFO("Done loading robot classes from %s", cfg.getRobotClassLib().c_str());
+
     AIRobotTemplate::Parser aiRobotParser(m_textureLib, m_rectLib, m_colorLib, m_missileTemplateLib, m_aiLib);
     ret = m_aiRobotTemplateLib.load(cfg.getAIRobotTemplateLib().c_str(), aiRobotParser);
     if (!ret)

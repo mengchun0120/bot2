@@ -1,0 +1,40 @@
+[
+    {
+        "name": "player",
+        "coverBreathX": 41.875,
+        "coverBreathY": 41.875,
+        "collideBreathX": 21.21,
+        "collideBreathY": 21.21,
+        "bases": [ "player_base" ],
+        "weapons": [ "player_base_gun" ],
+        "movers": [ "player_base_mover" ],
+        "weaponPos": [31.875, 0.0],
+        "moverPos": [26.25, 0.0]
+    },
+    {
+        "name": "red_robot",
+        "coverBreathX": 41.875,
+        "coverBreathY": 41.875,
+        "collideBreathX": 21.21,
+        "collideBreathY": 21.21,
+        "bases": [ "red_base" ],
+        "weapons": [ "red_base_gun" ],
+        "movers": [ "red_base_mover" ],
+        "weaponPos": [31.875, 0.0],
+        "moverPos": [26.25, 0.0]
+
+    },
+    {
+        "name": "cyan_robot",
+        "coverBreathX": 41.875,
+        "coverBreathY": 41.875,
+        "collideBreathX": 21.21,
+        "collideBreathY": 21.21,
+        "bases": [ "cyan_base" ],
+        "weapons": [ "cyan_base_gun" ],
+        "movers": [ "cyan_base_mover" ],
+        "weaponPos": [31.875, 0.0],
+        "moverPos": [26.25, 0.0]
+
+    }
+]

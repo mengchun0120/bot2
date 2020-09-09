@@ -15,11 +15,13 @@ bool BaseComponentTemplate::init(const NamedMap<Texture>& textureLib, const Name
     }
 
     std::vector<JsonParseParam> params = {
-        {&m_hp,        "hp",        JSONTYPE_INT},
-        {&m_armor,     "armor",     JSONTYPE_INT},
-        {&m_power,     "power",     JSONTYPE_INT},
-        {&m_weaponPos, "weaponPos", JSONTYPE_FLOAT_ARRAY},
-        {&m_moverPos,  "moverPos",  JSONTYPE_FLOAT_ARRAY}
+        {&m_hp,               "hp",               JSONTYPE_FLOAT},
+        {&m_hpRestoreRate,    "hpRestoreRate",    JSONTYPE_FLOAT},
+        {&m_armor,            "armor",            JSONTYPE_FLOAT},
+        {&m_armorRepairRate,  "armorRepairRate",  JSONTYPE_FLOAT},
+        {&m_power,            "power",            JSONTYPE_FLOAT},
+        {&m_powerRestoreRate, "powerRestoreRate", JSONTYPE_FLOAT},
+        {&m_missileCapacity,  "missileCapacity",  JSONTYPE_INT}
     };
 
     if (!parseJson(params, elem))

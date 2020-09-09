@@ -64,6 +64,7 @@ bool AppConfig::readConfig(const std::string& cfgFile)
         {&m_particleEffectTemplateLib, "particleEffectTemplateLib", JSONTYPE_STRING},
         {&m_aiLib,                     "aiLib",                     JSONTYPE_STRING},
         {&m_componentTemplateLib,      "componentTemplateLib",      JSONTYPE_STRING},
+        {&m_robotClassLib,             "robotClassLib",             JSONTYPE_STRING},
         {&m_aiRobotTemplateLib,        "aiRobotTemplateLib",        JSONTYPE_STRING},
         {&m_progressRingLib,           "progressRingLib",           JSONTYPE_STRING},
         {&m_playerTemplateLib,         "playerTemplateLib",         JSONTYPE_STRING},
@@ -108,6 +109,7 @@ void AppConfig::marshalConfig()
     m_goodieTemplateLib         = constructPath({ m_libDir, m_goodieTemplateLib });
     m_aiLib                     = constructPath({ m_libDir, m_aiLib });
     m_componentTemplateLib      = constructPath({ m_libDir, m_componentTemplateLib });
+    m_robotClassLib             = constructPath({ m_libDir, m_robotClassLib });
     m_aiRobotTemplateLib        = constructPath({ m_libDir, m_aiRobotTemplateLib });
     m_progressRingLib           = constructPath({ m_libDir, m_progressRingLib });
     m_playerTemplateLib         = constructPath({ m_libDir, m_playerTemplateLib });

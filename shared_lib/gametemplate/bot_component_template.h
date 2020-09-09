@@ -3,6 +3,7 @@
 
 #include <string>
 #include <rapidjson/document.h>
+#include "gameobj/bot_component_type.h"
 
 namespace bot {
 
@@ -33,13 +34,7 @@ public:
         const NamedMap<MissileTemplate>& m_missileLib;
     };
 
-    enum Type {
-        COMPONENT_BASE,
-        COMPONENT_WEAPON,
-        COMPONENT_MOVER
-    };
-
-    ComponentTemplate(Type type)
+    ComponentTemplate(ComponentType type)
         : m_type(type)
         , m_texture(nullptr)
         , m_rect(nullptr)
@@ -61,8 +56,13 @@ public:
         return m_rect;
     }
 
+    ComponentType getType() const
+    {
+        return m_type;
+    }
+
 protected:
-    Type m_type;
+    ComponentType m_type;
     const Texture* m_texture;
     const Rectangle* m_rect;
 };
