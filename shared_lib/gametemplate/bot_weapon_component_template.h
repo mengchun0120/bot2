@@ -2,6 +2,7 @@
 #define INCLUDE_BOT_WEAPON_COMPONENT_TEMPLATE
 
 #include <vector>
+#include "misc/bot_constants.h"
 #include "gametemplate/bot_component_template.h"
 
 namespace bot {
@@ -9,8 +10,17 @@ namespace bot {
 class MissileTemplate;
 
 struct FirePoint {
-    std::vector<float> m_firePos;
-    std::vector<float> m_fireDirection;
+    FirePoint();
+
+    FirePoint(const FirePoint& fp);
+
+    ~FirePoint()
+    {}
+
+    FirePoint& operator=(const FirePoint& fp);
+
+    float m_firePos[Constants::NUM_FLOATS_PER_POSITION];
+    float m_fireDirection[Constants::NUM_FLOATS_PER_POSITION];
 };
 
 class WeaponComponentTemplate: public ComponentTemplate {
@@ -18,7 +28,6 @@ public:
     WeaponComponentTemplate()
         : ComponentTemplate(COMPONENT_WEAPON)
         , m_fireDuration(0.0f)
-        , m_firePower(0.0f)
     {}
 
     virtual ~WeaponComponentTemplate()
@@ -30,11 +39,6 @@ public:
     float getFireDuration() const
     {
         return m_fireDuration;
-    }
-
-    float getFirePower() const
-    {
-        return m_firePower;
     }
 
     const std::vector<const MissileTemplate*>& getMissileTemplate() const
@@ -59,7 +63,6 @@ private:
 
 protected:
     float m_fireDuration;
-    float m_firePower;
     std::vector<const MissileTemplate*> m_missiles;
     std::vector<FirePoint> m_firePoints;
 };

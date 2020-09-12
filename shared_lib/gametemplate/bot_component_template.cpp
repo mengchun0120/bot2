@@ -9,6 +9,43 @@
 
 namespace bot {
 
+const BaseComponentTemplate* getBaseTemplate(const NamedMap<ComponentTemplate>& componentLib,
+                                             const std::string& name)
+{
+    const ComponentTemplate* t = componentLib.search(name);
+    if (!t || t->getType() != COMPONENT_BASE)
+    {
+        return nullptr;
+    }
+
+    return static_cast<const BaseComponentTemplate*>(t);
+}
+
+const WeaponComponentTemplate* getWeaponTemplate(const NamedMap<ComponentTemplate>& componentLib,
+                                                 const std::string& name)
+{
+    const ComponentTemplate* t = componentLib.search(name);
+    if (!t || t->getType() != COMPONENT_WEAPON)
+    {
+        return nullptr;
+    }
+
+    return static_cast<const WeaponComponentTemplate*>(t);
+}
+
+const MoverComponentTemplate* getMoverTemplate(const NamedMap<ComponentTemplate>& componentLib,
+                                               const std::string& name)
+{
+    const ComponentTemplate* t = componentLib.search(name);
+    if (!t || t->getType() != COMPONENT_MOVER)
+    {
+        return nullptr;
+    }
+
+    return static_cast<const MoverComponentTemplate*>(t);
+}
+
+
 ComponentTemplate* ComponentTemplate::Parser::create(const std::string& name, const rapidjson::Value& elem)
 {
     std::string type;

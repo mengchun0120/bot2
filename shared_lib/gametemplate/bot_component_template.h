@@ -11,6 +11,9 @@ template <typename T> class NamedMap;
 class Texture;
 class Rectangle;
 class MissileTemplate;
+class BaseComponentTemplate;
+class WeaponComponentTemplate;
+class MoverComponentTemplate;
 
 class ComponentTemplate {
 public:
@@ -66,6 +69,16 @@ protected:
     const Texture* m_texture;
     const Rectangle* m_rect;
 };
+
+const BaseComponentTemplate* getBaseTemplate(const NamedMap<ComponentTemplate>& componentLib,
+                                             const std::string& name);
+
+const WeaponComponentTemplate* getWeaponTemplate(const NamedMap<ComponentTemplate>& componentLib,
+                                                 const std::string& name);
+
+const MoverComponentTemplate* getMoverTemplate(const NamedMap<ComponentTemplate>& componentLib,
+                                               const std::string& name);
+
 
 } // end of namespace bot
 

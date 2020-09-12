@@ -3,25 +3,28 @@
 
 #include "misc/bot_time_utils.h"
 #include "structure/bot_linked_list.h"
-#include "gameobj/bot_game_object.h"
-#include "gameobj/bot_move_ability.h"
-#include "gameobj/bot_shoot_ability.h"
-#include "gameobj/bot_side.h"
-#include "gameobj/bot_action.h"
 #include "gameutil/bot_game_object_item.h"
 #include "gametemplate/bot_robot_template.h"
+#include "gametemplate/bot_mover_component_template.h"
+#include "gameobj/bot_game_object.h"
+#include "gameobj/bot_side.h"
+#include "gameobj/bot_action.h"
+#include "gameobj/bot_base_component.h"
+#include "gameobj/bot_weapon_component.h"
+#include "gameobj/bot_mover_component.h"
 
 namespace bot {
 
-class Ability;
-
 class Robot : public GameObject {
-    struct Component {
-        float m_pos[Constants::NUM_FLOATS_PER_POSITION];
+    enum {
+        HP_STR_LEN = 30
     };
 
 public:
-    Robot(const RobotTemplate* t);
+    Robot(const RobotTemplate* t, const BaseComponentTemplate* baseTemplate,
+          const WeaponComponentTemplate* weaponTemplate, const MoverComponentTemplate* moverTemplate,
+          const MissileTemplate* missileTemplate, float x, float y, float directionX, float directionY,
+          Side side);
 
     virtual ~Robot();
 
@@ -48,60 +51,58 @@ public:
 
     void setDirection(float directionX, float directionY);
 
-    int getHP() const
+    float getHP() const
     {
-        return m_hp;
+        return m_base.getHP();
     }
 
-    virtual bool addHP(int deltaHP);
+    float getHPRatio() const
+    {
+        return m_base.getHPRatio();
+    }
+
+    bool addHP(float delta);
+
+    void refillHP();
+
+    const char* getHPStr() const
+    {
+        return m_hpStr;
+    }
 
     const RobotTemplate* getTemplate() const
     {
         return static_cast<const RobotTemplate*>(m_template);
     }
 
-    MoveAbility* getMoveAbility()
+    void setMovingEnabled(bool enabled)
     {
-        return static_cast<MoveAbility*>(m_abilities[ABILITY_MOVE]);
+        m_mover.setMoving(enabled);
     }
 
-    const MoveAbility* getMoveAbility() const
+    bool isMoving() const
     {
-        return static_cast<const MoveAbility*>(m_abilities[ABILITY_MOVE]);
+        return m_mover.isMoving();
     }
 
-    Component* getComponentForMoveAbility();
-
-    ShootAbility* getShootAbility()
+    float getSpeed() const
     {
-        return static_cast<ShootAbility*>(m_abilities[ABILITY_SHOOT]);
+        return m_mover.getSpeed();
     }
 
-    const ShootAbility* getShootAbility() const
+    void setShootingEnabled(bool enabled)
     {
-        return static_cast<const ShootAbility*>(m_abilities[ABILITY_SHOOT]);
+        m_weapon.setFiring(enabled);
     }
 
-    bool resetShootPos();
-
-    Component* getComponentForShootAbility();
-
-    bool setMovingEnabled(bool enabled);
-
-    bool isMoving() const;
-
-    bool setShootingEnabled(bool enabled);
-
-    bool isShooting() const;
+    bool isShooting() const
+    {
+        return m_weapon.isFiring();
+    }
 
     Side getSide() const
     {
         return m_side;
-    }
-
-    void setSide(Side side)
-    {
-        m_side = side;
     }
 
     const TimePoint& getLastChangeActionTime() const
@@ -125,35 +126,27 @@ public:
 
     virtual void updateShootAbility(GameScreen& gameScreen);
 
-    float getGoodieSpawnProb() const
-    {
-        return getTemplate()->getGoodieSpawnProb();
-    }
-
-    float getHPRatio() const
-    {
-        return m_hpRatio;
-    }
-
-    void refillHP();
-
 private:
-    void initComponents();
+    void resetWeaponPos();
 
-    void initAbilities();
+    void resetMoverPos();
 
     void processCollisions(LinkedList<GameObjectItem>& collideObjs, GameScreen& gameScreen);
 
+    void resetHPStr();
+
 protected:
-    int m_hp;
-    float m_hpRatio;
-    Side m_side;
+    BaseComponent m_base;
+    WeaponComponent m_weapon;
+    MoverComponent m_mover;
     float m_direction[Constants::NUM_FLOATS_PER_POSITION];
-    Ability* m_abilities[NUM_OF_ABILITIES];
-    std::vector<Component> m_components;
+    float m_weaponPos[Constants::NUM_FLOATS_PER_POSITION];
+    float m_moverPos[Constants::NUM_FLOATS_PER_POSITION];
+    Side m_side;
     TimePoint m_lastChangeActionTime;
     TimePoint m_lastChangeDirectionTime;
     Action m_curAction;
+    char m_hpStr[HP_STR_LEN];
 };
 
 } // end of namespace bot

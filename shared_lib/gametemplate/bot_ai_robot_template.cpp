@@ -1,11 +1,7 @@
 #include "misc/bot_log.h"
 #include "misc/bot_json_utils.h"
 #include "structure/bot_named_map.h"
-#include "opengl/bot_texture.h"
-#include "opengl/bot_color.h"
-#include "geometry/bot_rectangle.h"
 #include "ai/bot_ai.h"
-#include "gametemplate/bot_missile_template.h"
 #include "gametemplate/bot_ai_robot_template.h"
 
 namespace bot {
@@ -13,7 +9,7 @@ namespace bot {
 AIRobotTemplate* AIRobotTemplate::Parser::create(const std::string& name, const rapidjson::Value& elem)
 {
     AIRobotTemplate* t = new AIRobotTemplate();
-    if (!t->init(m_textureLib, m_rectLib, m_colorLib, m_missileLib, m_aiLib, elem))
+    if (!t->init(m_componentLib, m_aiLib, elem))
     {
         delete t;
         return nullptr;
@@ -21,11 +17,15 @@ AIRobotTemplate* AIRobotTemplate::Parser::create(const std::string& name, const 
     return t;
 }
 
-bool AIRobotTemplate::init(const NamedMap<Texture>& textureLib, const NamedMap<Rectangle>& rectLib,
-                           const NamedMap<Color>& colorLib, const NamedMap<MissileTemplate>& missileLib,
-                           const NamedMap<AI>& aiLib, const rapidjson::Value& elem)
+bool AIRobotTemplate::init(const NamedMap<ComponentTemplate>& componentLib, const NamedMap<AI>& aiLib,
+                           const rapidjson::Value& elem)
 {
-    if (!RobotTemplate::init(textureLib, rectLib, colorLib, missileLib, elem))
+    if (!RobotTemplate::init(componentLib, elem))
+    {
+        return false;
+    }
+
+    if (!parseJson(m_goodieSpawnProb, elem, "goodieSpawnProb"))
     {
         return false;
     }

@@ -42,11 +42,14 @@ public:
         return m_activeTiles.getFirst();
     }
 
-    AIRobot* createRobot(const std::string& robotName, float x, float y,
-                         float directionX, float directionY, Side side);
+    AIRobot* createRobot(const std::string& robotName, const std::string& baseName, const std::string& weaponName,
+                         const std::string& moverName, const std::string& missileName, float x, float y,
+                         float directionX, float directionY);
 
-    AIRobot* createRobot(const AIRobotTemplate* aiRobotTemplate, float x, float y,
-                         float directionX, float directionY, Side side);
+    AIRobot* createRobot(const AIRobotTemplate* aiRobotTemplate, const BaseComponentTemplate* baseTemplate,
+                         const WeaponComponentTemplate* weaponTemplate, const MoverComponentTemplate* moverTemplate,
+                         const MissileTemplate* missileTemplate, float x, float y,
+                         float directionX, float directionY);
 
     Missile* createMissile(const std::string& missileName, Robot* shooter, float x, float y,
                            float directionX, float directionY, Side side, float damageMultiplier);
@@ -98,7 +101,9 @@ public:
         return m_deadObjects.getFirst();
     }
 
-    Player* createPlayer(float x, float y, float directionX, float directionY);
+    Player* createPlayer(const BaseComponentTemplate* baseTemplate, const WeaponComponentTemplate* weaponTemplate,
+                         const MoverComponentTemplate* moverTemplate, const MissileTemplate* missileTemplate,
+                         float x, float y, float directionX, float directionY);
 
     const Player* getPlayer() const
     {
@@ -122,7 +127,7 @@ public:
     }
 
 private:
-    void onRobotDeath(Robot* robot);
+    void onRobotDeath(AIRobot* robot);
 
 protected:
     GameMap* m_map;

@@ -50,8 +50,9 @@ Tile* GameObjectManager::createTile(const TileTemplate* tileTemplate)
     return tile;
 }
 
-AIRobot* GameObjectManager::createRobot(const std::string& robotName, float x, float y,
-                                        float directionX, float directionY, Side side)
+AIRobot* GameObjectManager::createRobot(const std::string& robotName, const std::string& baseName, const std::string& weaponName,
+                                        const std::string& moverName, const std::string& missileName, float x, float y,
+                                        float directionX, float directionY)
 {
     const AIRobotTemplate* aiRobotTemplate = m_lib->getAIRobotTemplate(robotName);
     if (!aiRobotTemplate)
@@ -60,16 +61,45 @@ AIRobot* GameObjectManager::createRobot(const std::string& robotName, float x, f
         return nullptr;
     }
 
-    return createRobot(aiRobotTemplate, x, y, directionX, directionY, side);
+    const BaseComponentTemplate* baseTemplate = m_lib->getBaseTemplate(baseName);
+    if (!baseTemplate)
+    {
+        LOG_ERROR("Failed to find base template %s", baseName.c_str());
+        return nullptr;
+    }
+
+    const WeaponComponentTemplate* weaponTemplate = m_lib->getWeaponTemplate(weaponName);
+    if (!weaponTemplate)
+    {
+        LOG_ERROR("Failed to find weapon template %s", weaponName.c_str());
+        return nullptr;
+    }
+
+    const MoverComponentTemplate* moverTemplate = m_lib->getMoverTemplate(moverName);
+    if (!moverTemplate)
+    {
+        LOG_ERROR("Failed to find mover template %s", moverName.c_str());
+        return nullptr;
+    }
+
+    const MissileTemplate* missileTemplate = m_lib->getMissileTemplate(missileName);
+    if (!missileTemplate)
+    {
+        LOG_ERROR("Failed to find missile template %s", missileName.c_str());
+        return nullptr;
+    }
+
+    return createRobot(aiRobotTemplate, baseTemplate, weaponTemplate, moverTemplate, missileTemplate,
+                       x, y, directionX, directionY);
 }
 
-AIRobot* GameObjectManager::createRobot(const AIRobotTemplate* aiRobotTemplate, float x, float y,
-                                        float directionX, float directionY, Side side)
+AIRobot* GameObjectManager::createRobot(const AIRobotTemplate* aiRobotTemplate, const BaseComponentTemplate* baseTemplate,
+                                        const WeaponComponentTemplate* weaponTemplate, const MoverComponentTemplate* moverTemplate,
+                                        const MissileTemplate* missileTemplate, float x, float y,
+                                        float directionX, float directionY)
 {
-    AIRobot* robot = new AIRobot(aiRobotTemplate);
-    robot->setPos(x, y);
-    robot->setDirection(directionX, directionY);
-    robot->setSide(side);
+    AIRobot* robot = new AIRobot(aiRobotTemplate, baseTemplate, weaponTemplate, moverTemplate, missileTemplate,
+                                 x, y, directionX, directionY);
 
     m_activeRobots.add(robot);
     ++m_aiRobotCount;
@@ -116,12 +146,12 @@ ParticleEffect* GameObjectManager::createParticleEffect(const ParticleEffectTemp
     return effect;
 }
 
-Player* GameObjectManager::createPlayer(float x, float y, float directionX, float directionY)
+Player* GameObjectManager::createPlayer(const BaseComponentTemplate* baseTemplate, const WeaponComponentTemplate* weaponTemplate,
+                                        const MoverComponentTemplate* moverTemplate, const MissileTemplate* missileTemplate,
+                                        float x, float y, float directionX, float directionY)
 {
-    m_player = new Player(&m_lib->getPlayerTemplate());
-    m_player->setPos(x, y);
-    m_player->setDirection(directionX, directionY);
-    m_player->setSide(SIDE_PLAYER);
+    m_player = new Player(&m_lib->getPlayerTemplate(), baseTemplate, weaponTemplate, moverTemplate,
+                          missileTemplate, x, y, directionX, directionY);
     return m_player;
 }
 
@@ -157,7 +187,7 @@ void GameObjectManager::sendToDeathQueue(GameObject* obj)
             Robot* robot = static_cast<Robot*>(obj);
             if (robot->getSide() == SIDE_AI) {
                 m_activeRobots.unlink(robot);
-                onRobotDeath(robot);
+                onRobotDeath(static_cast<AIRobot*>(robot));
                 m_deadObjects.add(obj);
                 --m_aiRobotCount;
             }
@@ -238,7 +268,7 @@ void GameObjectManager::clearActiveObjects()
     m_activeParticleEffect.clear(particleEffectDeallocator);
 }
 
-void GameObjectManager::onRobotDeath(Robot* robot)
+void GameObjectManager::onRobotDeath(AIRobot* robot)
 {
     Goodie* goodie = createGoodie(robot->getGoodieSpawnProb(), robot->getPosX(), robot->getPosY());
     if (goodie)

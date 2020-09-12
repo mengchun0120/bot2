@@ -7,19 +7,15 @@
 
 namespace bot {
 
+class ComponentTemplate;
 class AI;
 
 class AIRobotTemplate : public RobotTemplate {
 public:
     class Parser {
     public:
-        Parser(const NamedMap<Texture>& textureLib, const NamedMap<Rectangle>& rectLib,
-               const NamedMap<Color>& colorLib, const NamedMap<MissileTemplate>& missileLib,
-               const NamedMap<AI>& aiLib)
-            : m_textureLib(textureLib)
-            , m_rectLib(rectLib)
-            , m_colorLib(colorLib)
-            , m_missileLib(missileLib)
+        Parser(const NamedMap<ComponentTemplate>& componentLib, const NamedMap<AI>& aiLib)
+            : m_componentLib(componentLib)
             , m_aiLib(aiLib)
         {}
 
@@ -29,35 +25,31 @@ public:
         AIRobotTemplate* create(const std::string& name, const rapidjson::Value& elem);
 
     private:
-        const NamedMap<Texture>& m_textureLib;
-        const NamedMap<Rectangle>& m_rectLib;
-        const NamedMap<Color>& m_colorLib;
-        const NamedMap<MissileTemplate>& m_missileLib;
+        const NamedMap<ComponentTemplate>& m_componentLib;
         const NamedMap<AI>& m_aiLib;
     };
 
-    static AIRobotTemplate* create(const rapidjson::Value& elem);
-
     AIRobotTemplate()
-        : m_ai(nullptr)
+        : RobotTemplate()
+        , m_ai(nullptr)
     {}
 
-    bool init(const NamedMap<Texture>& textureLib, const NamedMap<Rectangle>& rectLib,
-              const NamedMap<Color>& colorLib, const NamedMap<MissileTemplate>& missileLib,
-              const NamedMap<AI>& aiLib, const rapidjson::Value& elem);
+    bool init(const NamedMap<ComponentTemplate>& componentLib, const NamedMap<AI>& aiLib,
+              const rapidjson::Value& elem);
 
     AI* getAI() const
     {
         return m_ai;
     }
 
-    void setAI(AI* ai)
+    float getGoodieSpawnProb() const
     {
-        m_ai = ai;
+        return m_goodieSpawnProb;
     }
 
 protected:
     AI* m_ai;
+    float m_goodieSpawnProb;
 };
 
 } // end of namespace bot

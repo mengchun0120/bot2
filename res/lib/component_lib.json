@@ -18,7 +18,6 @@
         "texture": "player_base_gun",
         "rect": "square20",
         "fireDuration": 200.0,
-        "firePower": 10.0,
         "missiles": ["green_bullet"],
         "firePoints": [
             {
@@ -53,7 +52,6 @@
         "texture": "red_base_gun",
         "rect": "square20",
         "fireDuration": 400.0,
-        "firePower": 5.0,
         "missiles": ["red_bullet"],
         "firePoints": [
             {
@@ -88,7 +86,6 @@
         "texture": "cyan_base_gun",
         "rect": "square20",
         "fireDuration": 200.0,
-        "firePower": 10.0,
         "missiles": ["blue_bullet"],
         "firePoints": [
             {

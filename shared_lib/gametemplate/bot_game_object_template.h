@@ -1,6 +1,7 @@
 #ifndef INCLUDE_BOT_GAME_OBJECT_TEMPLATE
 #define INCLUDE_BOT_GAME_OBJECT_TEMPLATE
 
+#include <rapidjson/document.h>
 #include "gameobj/bot_game_object_type.h"
 #include "gameobj/bot_game_object_flag.h"
 
@@ -17,6 +18,8 @@ public:
     {
         return m_type;
     }
+
+    bool init(const rapidjson::Value& elem);
 
     float getCoverBreathX() const
     {

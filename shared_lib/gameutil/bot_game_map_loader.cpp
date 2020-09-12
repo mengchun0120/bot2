@@ -122,14 +122,18 @@ bool GameMapLoader::addTile(const std::string& name, float x, float y)
 
 bool GameMapLoader::loadRobots(const rapidjson::Value& mapJson)
 {
-    std::string name;
+    std::string name, baseName, weaponName, moverName, missileName;
     float x, y, directionX, directionY;
     std::vector<JsonParseParam> params = {
-        {&name,       "name",       JSONTYPE_STRING},
-        {&x,          "x",          JSONTYPE_FLOAT},
-        {&y,          "y",          JSONTYPE_FLOAT},
-        {&directionX, "directionX", JSONTYPE_FLOAT},
-        {&directionY, "directionY", JSONTYPE_FLOAT}
+        {&name,        "name",       JSONTYPE_STRING},
+        {&baseName,    "base",       JSONTYPE_STRING},
+        {&weaponName,  "weapon",     JSONTYPE_STRING},
+        {&moverName,   "mover",      JSONTYPE_STRING},
+        {&missileName, "missile",    JSONTYPE_STRING},
+        {&x,           "x",          JSONTYPE_FLOAT},
+        {&y,           "y",          JSONTYPE_FLOAT},
+        {&directionX,  "directionX", JSONTYPE_FLOAT},
+        {&directionY,  "directionY", JSONTYPE_FLOAT}
     };
 
     auto parser = [&](const rapidjson::Value& item)->bool
@@ -139,7 +143,8 @@ bool GameMapLoader::loadRobots(const rapidjson::Value& mapJson)
             return false;
         }
 
-        return addRobot(name, x, y, directionX, directionY);
+        return addRobot(name, baseName, weaponName, moverName, missileName,
+                        x, y, directionX, directionY);
     };
 
     if (!parseJsonArray(mapJson, parser, "robots"))
@@ -150,9 +155,12 @@ bool GameMapLoader::loadRobots(const rapidjson::Value& mapJson)
     return true;
 }
 
-bool GameMapLoader::addRobot(const std::string& name, float x, float y, float directionX, float directionY)
+bool GameMapLoader::addRobot(const std::string& name, const std::string& baseName, const std::string& weaponName,
+                             const std::string& moverName, const std::string& missileName,
+                             float x, float y, float directionX, float directionY)
 {
-    AIRobot* robot = m_gameObjManager.createRobot(name, x, y, directionX, directionY, SIDE_AI);
+    AIRobot* robot = m_gameObjManager.createRobot(name, baseName, weaponName, moverName, missileName,
+                                                  x, y, directionX, directionY);
     if (!robot)
     {
         return false;

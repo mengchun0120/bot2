@@ -4,8 +4,10 @@
 
 namespace bot {
 
-AIRobot::AIRobot(const AIRobotTemplate* t)
-    : Robot(t)
+AIRobot::AIRobot(const AIRobotTemplate* t, const BaseComponentTemplate* baseTemplate,
+                 const WeaponComponentTemplate* weaponTemplate, const MoverComponentTemplate* moverTemplate,
+                 const MissileTemplate* missileTemplate, float x, float y, float directionX, float directionY)
+    : Robot(t, baseTemplate, weaponTemplate, moverTemplate, missileTemplate, x, y, directionX, directionY, SIDE_AI)
 {
 }
 

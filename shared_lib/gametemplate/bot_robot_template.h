@@ -4,180 +4,89 @@
 #include <vector>
 #include <rapidjson/document.h>
 #include "misc/bot_constants.h"
-#include "gametemplate/bot_move_ability_template.h"
-#include "gametemplate/bot_shoot_ability_template.h"
 #include "gametemplate/bot_game_object_template.h"
 
 namespace bot {
 
 template <typename T> class NamedMap;
-class Texture;
-class Rectangle;
-class Color;
-class MissileTemplate;
+class ComponentTemplate;
+class BaseComponentTemplate;
+class WeaponComponentTemplate;
+class MoverComponentTemplate;
 
 class RobotTemplate: public GameObjectTemplate {
 public:
-    struct ComponentTemplate {
-        const Texture* m_texture;
-        const Rectangle* m_rect;
-        const Color* m_color;
-        float m_pos[Constants::NUM_FLOATS_PER_POSITION];
-        int m_index;
-    };
-
-    static const int MAX_COMPONENTS = 4;
-
     RobotTemplate();
 
     virtual ~RobotTemplate();
 
-    bool init(const NamedMap<Texture>& textureLib, const NamedMap<Rectangle>& rectLib,
-              const NamedMap<Color>& colorLib, const NamedMap<MissileTemplate>& missileLib,
-              const rapidjson::Value& elem);
+    bool init(const NamedMap<ComponentTemplate>& componentLib, const rapidjson::Value& elem);
 
-    int getNumComponents() const
+    int getBaseCount() const
     {
-        return static_cast<int>(m_components.size());
+        return static_cast<int>(m_bases.size());
     }
 
-    void setNumComponents(int numComponents);
-
-    const ComponentTemplate& getComponent(int componentIdx) const
+    const BaseComponentTemplate* getBaseTemplate(int idx) const
     {
-        return m_components[componentIdx];
+        return m_bases[idx];
     }
 
-    const Texture* getComponentTexture(int componentIdx) const
+    int getWeaponCount() const
     {
-        return m_components[componentIdx].m_texture;
+        return static_cast<int>(m_weapons.size());
     }
 
-    void setComponentTexture(int componentIdx, const Texture* texture)
+    const WeaponComponentTemplate* getWeaponTemplate(int idx) const
     {
-        m_components[componentIdx].m_texture = texture;
+        return m_weapons[idx];
     }
 
-    const Rectangle* getComponentRect(int componentIdx) const
+    int getMoverCount() const
     {
-        return m_components[componentIdx].m_rect;
+        return static_cast<int>(m_movers.size());
     }
 
-    void setComponentRect(int componentIdx, const Rectangle* rect)
+    const MoverComponentTemplate* getMoverTemplate(int idx) const
     {
-        m_components[componentIdx].m_rect = rect;
+        return m_movers[idx];
     }
 
-    const Color* getComponentColor(int componentIdx) const
+    float getWeaponPosX() const
     {
-        return m_components[componentIdx].m_color;
+        return m_weaponPos[0];
     }
 
-    void setComponentColor(int componentIdx, const Color* color)
+    float getWeaponPosY() const
     {
-        m_components[componentIdx].m_color = color;
+        return m_weaponPos[1];
     }
 
-    const float* getComponentPos(int componentIdx) const
+    float getMoverPosX() const
     {
-        return m_components[componentIdx].m_pos;
+        return m_moverPos[0];
     }
 
-    float getComponentPosX(int componentIdx) const
+    float getMoverPosY() const
     {
-        return m_components[componentIdx].m_pos[0];
-    }
-
-    void setComponentPosX(int componentIdx, float x)
-    {
-        m_components[componentIdx].m_pos[0] = x;
-    }
-
-    float getComponentPosY(int componentIdx) const
-    {
-        return m_components[componentIdx].m_pos[1];
-    }
-
-    void setComponentPosY(int componentIdx, float y)
-    {
-        m_components[componentIdx].m_pos[1] = y;
-    }
-
-    const MoveAbilityTemplate* getMoveAbilityTemplate() const
-    {
-        return static_cast<MoveAbilityTemplate*>(m_abilityTemplates[ABILITY_MOVE]);
-    }
-
-    void setMoveAbilityTemplate(float speed);
-
-    const ShootAbilityTemplate* getShootAbilityTemplate() const
-    {
-        return static_cast<ShootAbilityTemplate*>(m_abilityTemplates[ABILITY_SHOOT]);
-    }
-
-    void setShootAbilityTemplate(float shootInterval, float shootPosX, float shootPosY,
-                                 const MissileTemplate* missileTemplate);
-
-    const ComponentTemplate* getComponentForMoveAbility() const
-    {
-        return m_attachComponents[ABILITY_MOVE];
-    }
-
-    void setComponentForMoveAbility(int componentIdx)
-    {
-        m_attachComponents[ABILITY_MOVE] = &m_components[componentIdx];
-    }
-
-    const ComponentTemplate* getComponentForShootAbility() const
-    {
-        return m_attachComponents[ABILITY_SHOOT];
-    }
-
-    void setComponentForShootAbility(int componentIdx)
-    {
-        m_attachComponents[ABILITY_SHOOT] = &m_components[componentIdx];
-    }
-
-    int getHP() const
-    {
-        return m_hp;
-    }
-
-    void setHP(int hp)
-    {
-        m_hp = hp;
-    }
-
-    float getGoodieSpawnProb() const
-    {
-        return m_goodieSpawnProb;
-    }
-
-    void setGoodieSpawnProb(float goodieSpawnProb)
-    {
-        m_goodieSpawnProb = goodieSpawnProb;
+        return m_moverPos[1];
     }
 
 protected:
-    void initComponents();
+    bool initComponents(const NamedMap<ComponentTemplate>& componentLib, const rapidjson::Value& elem);
 
-    void initAbilityTemplates();
+    bool initBases(const NamedMap<ComponentTemplate>& componentLib, const std::vector<std::string>& baseNames);
 
-    bool parseBaseAttributes(const rapidjson::Value& elem);
+    bool initWeapons(const NamedMap<ComponentTemplate>& componentLib, const std::vector<std::string>& weaponNames);
 
-    bool parseComponents(const NamedMap<Texture>& textureLib, const NamedMap<Rectangle>& rectLib,
-                         const NamedMap<Color>& colorLib, const rapidjson::Value& elem);
-
-    bool parseMoveAbility(const rapidjson::Value& elem);
-
-    bool parseShootAbility(const NamedMap<MissileTemplate>& missileLib, const rapidjson::Value& elem);
+    bool initMovers(const NamedMap<ComponentTemplate>& componentLib, const std::vector<std::string>& moverNames);
 
 protected:
-    std::vector<ComponentTemplate> m_components;
-    int m_hp;
-    AbilityTemplate* m_abilityTemplates[NUM_OF_ABILITIES];
-    ComponentTemplate* m_attachComponents[NUM_OF_ABILITIES];
-    float m_goodieSpawnProb;
+    std::vector<const BaseComponentTemplate*> m_bases;
+    std::vector<const WeaponComponentTemplate*> m_weapons;
+    std::vector<const MoverComponentTemplate*> m_movers;
+    std::vector<float> m_weaponPos;
+    std::vector<float> m_moverPos;
 };
 
 } // end of namespace bot

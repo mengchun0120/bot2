@@ -12,9 +12,7 @@ public:
 
     virtual ~PlayerTemplate();
 
-    bool init(const std::string& playerTemplateFile, const NamedMap<Texture>& textureLib,
-              const NamedMap<Rectangle>& rectLib, const NamedMap<Color>& colorLib,
-              const NamedMap<MissileTemplate>& missileLib);
+    bool init(const std::string& playerTemplateFile, const NamedMap<ComponentTemplate>& componentLib);
 };
 
 } // end of namespace bot

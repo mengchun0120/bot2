@@ -11,7 +11,9 @@ class AIRobotTemplate;
 
 class AIRobot : public Robot {
 public:
-    AIRobot(const AIRobotTemplate* t);
+    AIRobot(const AIRobotTemplate* t, const BaseComponentTemplate* baseTemplate,
+            const WeaponComponentTemplate* weaponTemplate, const MoverComponentTemplate* moverTemplate,
+            const MissileTemplate* missileTemplate, float x, float y, float directionX, float directionY);
 
     virtual ~AIRobot()
     {}
@@ -24,6 +26,11 @@ public:
     virtual void present(Graphics& g);
 
     virtual void update(float delta, GameScreen& screen);
+
+    float getGoodieSpawnProb() const
+    {
+        return getTemplate()->getGoodieSpawnProb();
+    }
 };
 
 } // end of namespace bot

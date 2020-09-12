@@ -1,6 +1,7 @@
 #ifndef INCLUDE_BOT_BASE_COMPONENT
 #define INCLUDE_BOT_BASE_COMPONENT
 
+#include "misc/bot_time_utils.h"
 #include "gametemplate/bot_base_component_template.h"
 #include "gameobj/bot_component.h"
 
@@ -18,7 +19,7 @@ public:
         return static_cast<const BaseComponentTemplate*>(m_template);
     }
 
-    virtual bool update();
+    virtual void update(GameScreen& screen);
 
     float getHP() const
     {
@@ -28,6 +29,7 @@ public:
     void restoreHP()
     {
         m_hp = getTemplate()->getHP();
+        m_hpRatio = 1.0f;
     }
 
     void addHP(float delta);
@@ -35,6 +37,11 @@ public:
     void clearHP()
     {
         m_hp = 0.0f;
+    }
+
+    float getHPRatio() const
+    {
+        return m_hpRatio;
     }
 
     float getArmor() const
@@ -73,8 +80,10 @@ public:
 
 protected:
     float m_hp;
+    float m_hpRatio;
     float m_armor;
     float m_power;
+    TimePoint m_lastUpdateTime;
 };
 
 } // end of namespace bot

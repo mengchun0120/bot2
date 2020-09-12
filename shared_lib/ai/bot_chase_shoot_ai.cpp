@@ -199,14 +199,7 @@ void ChaseShootAI::applyChaseAction(Robot& robot, float delta, GameScreen& scree
 
     if (!resetChaseDirection(robot, delta, screen))
     {
-        if (robot.getShootAbility())
-        {
-            resetAction(robot, ACTION_SHOOT);
-        }
-        else
-        {
-            resetAction(robot, ACTION_NONE);
-        }
+        resetAction(robot, ACTION_SHOOT);
     }
 }
 
@@ -246,7 +239,7 @@ bool ChaseShootAI::tryFirstDirection(Robot& robot, float& directionX, float& dir
 {
     GameMap& map = screen.getMap();
     Player* player = map.getPlayer();
-    float speed = robot.getMoveAbility()->getSpeed();
+    float speed = robot.getSpeed();
     float speedX, speedY;
     float newDelta;
 
@@ -270,7 +263,7 @@ int ChaseShootAI::findNewDirection(Robot& robot, float delta, float refDirection
     int numTries = sortDirections(tryDirections, refDirectionX, refDirectionY);
 
     GameMap& map = screen.getMap();
-    float speed = robot.getMoveAbility()->getSpeed();
+    float speed = robot.getSpeed();
     float speedX, speedY;
     float newDelta;
 

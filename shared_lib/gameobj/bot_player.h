@@ -1,6 +1,7 @@
 #ifndef INCLUDE_BOT_PLAYER
 #define INCLUDE_BOT_PLAYER
 
+#include <string>
 #include "gametemplate/bot_player_template.h"
 #include "gameobj/bot_goodie_effect.h"
 #include "gameobj/bot_robot.h"
@@ -11,14 +12,14 @@ class Goodie;
 class GameObjectManager;
 
 class Player : public Robot {
-private:
     enum {
-        HP_STR_LEN = 11,
-        GOLD_STR_LEN = 9
+        GOLD_STR_LEN = 30
     };
 
 public:
-    Player(const PlayerTemplate* playerTemplate);
+    Player(const PlayerTemplate* playerTemplate, const BaseComponentTemplate* baseTemplate,
+           const WeaponComponentTemplate* weaponTemplate, const MoverComponentTemplate* moverTemplate,
+           const MissileTemplate* missileTemplate, float x, float y, float directionX, float directionY);
 
     virtual ~Player();
 
@@ -39,11 +40,6 @@ public:
     }
 
     virtual bool addHP(int deltaHP);
-
-    const char* getHPStr() const
-    {
-        return m_hpStr;
-    }
 
     int getGoldCount() const
     {
@@ -68,15 +64,16 @@ private:
 
     void expireEffect(GoodieEffect* goodie);
 
+    void resetGoldStr();
+
 private:
     std::vector<GoodieEffect> m_effects;
     GoodieEffect* m_firstActiveEffect;
     GoodieEffect* m_firstFreeEffect;
     int m_activeEffectCount;
-    int m_goldCount;
     long long m_experience;
     float m_experienceMultiplier;
-    char m_hpStr[HP_STR_LEN];
+    int m_goldCount;
     char m_goldStr[GOLD_STR_LEN];
 };
 

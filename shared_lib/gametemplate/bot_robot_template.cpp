@@ -1,10 +1,9 @@
 #include "misc/bot_log.h"
 #include "misc/bot_json_utils.h"
 #include "structure/bot_named_map.h"
-#include "opengl/bot_texture.h"
-#include "opengl/bot_color.h"
-#include "geometry/bot_rectangle.h"
-#include "gametemplate/bot_missile_template.h"
+#include "gametemplate/bot_base_component_template.h"
+#include "gametemplate/bot_weapon_component_template.h"
+#include "gametemplate/bot_mover_component_template.h"
 #include "gametemplate/bot_robot_template.h"
 
 namespace bot {
@@ -12,40 +11,20 @@ namespace bot {
 RobotTemplate::RobotTemplate()
     : GameObjectTemplate(GAME_OBJ_TYPE_ROBOT)
 {
-    initAbilityTemplates();
 }
 
 RobotTemplate::~RobotTemplate()
 {
-    for (int i = 0; i < NUM_OF_ABILITIES; ++i)
-    {
-        if (!m_abilityTemplates[i])
-        {
-            delete m_abilityTemplates[i];
-        }
-    }
 }
 
-bool RobotTemplate::init(const NamedMap<Texture>& textureLib, const NamedMap<Rectangle>& rectLib,
-                         const NamedMap<Color>& colorLib, const NamedMap<MissileTemplate>& missileLib,
-                         const rapidjson::Value& elem)
+bool RobotTemplate::init(const NamedMap<ComponentTemplate>& componentLib, const rapidjson::Value& elem)
 {
-    if (!parseBaseAttributes(elem))
+    if (!GameObjectTemplate::init(elem))
     {
         return false;
     }
 
-    if (!parseComponents(textureLib, rectLib, colorLib, elem))
-    {
-        return false;
-    }
-
-    if (!parseMoveAbility(elem))
-    {
-        return false;
-    }
-
-    if (!parseShootAbility(missileLib, elem))
+    if (!initComponents(componentLib, elem))
     {
         return false;
     }
@@ -53,147 +32,15 @@ bool RobotTemplate::init(const NamedMap<Texture>& textureLib, const NamedMap<Rec
     return true;
 }
 
-void RobotTemplate::setNumComponents(int numComponents)
+bool RobotTemplate::initComponents(const NamedMap<ComponentTemplate>& componentLib, const rapidjson::Value& elem)
 {
-    m_components.resize(numComponents);
-    initComponents();
-}
-
-void RobotTemplate::initComponents()
-{
-    int numComponents = getNumComponents();
-
-    for (int i = 0; i < numComponents; ++i) {
-        m_components[i].m_index = i;
-        m_components[i].m_texture = nullptr;
-        m_components[i].m_pos[0] = 0.0f;
-        m_components[i].m_pos[1] = 0.0f;
-    }
-}
-
-void RobotTemplate::initAbilityTemplates()
-{
-    for (int i = 0; i < NUM_OF_ABILITIES; ++i) {
-        m_abilityTemplates[i] = nullptr;
-        m_attachComponents[i] = nullptr;
-    }
-}
-
-void RobotTemplate::setMoveAbilityTemplate(float speed)
-{
-    MoveAbilityTemplate* moveAbility = new MoveAbilityTemplate(speed);
-    m_abilityTemplates[ABILITY_MOVE] = moveAbility;
-}
-
-void RobotTemplate::setShootAbilityTemplate(float shootInterval, float shootPosX, float shootPosY,
-                                            const MissileTemplate* missileTemplate)
-{
-    ShootAbilityTemplate* shootAbility = new ShootAbilityTemplate(shootInterval, shootPosX,
-                                                                  shootPosY, missileTemplate);
-
-    m_abilityTemplates[ABILITY_SHOOT] = shootAbility;
-}
-
-bool RobotTemplate::parseBaseAttributes(const rapidjson::Value& elem)
-{
-    std::vector<JsonParseParam> robotParams =
-    {
-        {&m_coverBreathX,    "coverBreathX",    JSONTYPE_FLOAT},
-        {&m_coverBreathY,    "coverBreathY",    JSONTYPE_FLOAT},
-        {&m_collideBreathX,  "collideBreathX",  JSONTYPE_FLOAT},
-        {&m_collideBreathY,  "collideBreathY",  JSONTYPE_FLOAT},
-        {&m_hp,              "hp",              JSONTYPE_INT},
-        {&m_goodieSpawnProb, "goodieSpawnProb", JSONTYPE_FLOAT}
-    };
-
-    if (!parseJson(robotParams, elem))
-    {
-        return false;
-    }
-
-    return true;
-}
-
-bool RobotTemplate::parseComponents(const NamedMap<Texture>& textureLib, const NamedMap<Rectangle>& rectLib,
-                                    const NamedMap<Color>& colorLib, const rapidjson::Value& elem)
-{
-    if (!elem.HasMember("components"))
-    {
-        LOG_ERROR("Components missing");
-        return false;
-    }
-
-    if (!elem["components"].IsArray())
-    {
-        LOG_ERROR("Components must be an array");
-        return false;
-    }
-
-    const rapidjson::Value& components = elem["components"];
-    int numComponents = components.Capacity();
-    std::string textureName, rectName, colorName;
-    float componentX = 0.0f, componentY = 0.0f;
-
-    std::vector<JsonParseParam> componentParams =
-    {
-        {&textureName, "texture",    JSONTYPE_STRING},
-        {&rectName,    "rect",       JSONTYPE_STRING},
-        {&colorName,   "color",      JSONTYPE_STRING},
-        {&componentX,  "componentX", JSONTYPE_FLOAT},
-        {&componentY,  "componentY", JSONTYPE_FLOAT}
-    };
-
-    m_components.resize(numComponents);
-    for (int i = 0; i < numComponents; ++i)
-    {
-        if (!parseJson(componentParams, components[i]))
-        {
-            return false;
-        }
-
-        const Texture* texture = textureLib.search(textureName);
-        if (!texture)
-        {
-            LOG_ERROR("Failed to find texture %s", textureName.c_str());
-            return false;
-        }
-
-        const Rectangle* rect = rectLib.search(rectName);
-        if (!rect)
-        {
-            LOG_ERROR("Failed to find rect %s", rectName.c_str());
-            return false;
-        }
-
-        const Color* color = colorLib.search(colorName);
-        if (!color)
-        {
-            LOG_ERROR("Failed to find color %s", colorName.c_str());
-            return false;
-        }
-
-        m_components[i].m_index = i;
-        m_components[i].m_texture = texture;
-        m_components[i].m_rect = rect;
-        m_components[i].m_color = color;
-        m_components[i].m_pos[0] = componentX;
-        m_components[i].m_pos[1] = componentY;
-    }
-
-    return true;
-}
-
-bool RobotTemplate::parseMoveAbility(const rapidjson::Value& elem)
-{
-    bool movable = false;
-    float moveSpeed = 0.0f;
-    int moveComponentIdx = 0;
-
-    std::vector<JsonParseParam> params =
-    {
-        {&movable,            "movable",            JSONTYPE_BOOL},
-        {&moveSpeed,          "moveSpeed",          JSONTYPE_FLOAT},
-        {&moveComponentIdx,   "moveComponentIdx",   JSONTYPE_INT}
+    std::vector<std::string> baseNames, weaponNames, moverNames;
+    std::vector<JsonParseParam> params = {
+        {&baseNames,   "bases",     JSONTYPE_STRING_ARRAY},
+        {&weaponNames, "weapons",   JSONTYPE_STRING_ARRAY},
+        {&moverNames,  "movers",    JSONTYPE_STRING_ARRAY},
+        {&m_weaponPos, "weaponPos", JSONTYPE_FLOAT_ARRAY},
+        {&m_moverPos,  "moverPos",  JSONTYPE_FLOAT_ARRAY}
     };
 
     if (!parseJson(params, elem))
@@ -201,68 +48,127 @@ bool RobotTemplate::parseMoveAbility(const rapidjson::Value& elem)
         return false;
     }
 
-    if (!movable)
+    if (m_weaponPos.size() != Constants::NUM_FLOATS_PER_POSITION)
     {
-        return true;
-    }
-
-    if (moveComponentIdx < 0 || moveComponentIdx >= getNumComponents())
-    {
-        LOG_ERROR("moveComponentIdx out of range");
+        LOG_ERROR("weaponPos has wrong size");
         return false;
     }
 
-    MoveAbilityTemplate* moveAbility = new MoveAbilityTemplate(moveSpeed);
-    m_abilityTemplates[ABILITY_MOVE] = moveAbility;
-    m_attachComponents[ABILITY_MOVE] = &m_components[moveComponentIdx];
+    if (m_moverPos.size() != Constants::NUM_FLOATS_PER_POSITION)
+    {
+        LOG_ERROR("moverPos has wrong size");
+        return false;
+    }
+
+    if (!initBases(componentLib, baseNames))
+    {
+        LOG_ERROR("Failed to initialize bases");
+        return false;
+    }
+
+    if (!initWeapons(componentLib, weaponNames))
+    {
+        LOG_ERROR("Failed to initialize weapons");
+        return false;
+    }
+
+    if (!initMovers(componentLib, moverNames))
+    {
+        LOG_ERROR("Failed to initialize movers");
+        return false;
+    }
 
     return true;
 }
 
-bool RobotTemplate::parseShootAbility(const NamedMap<MissileTemplate>& missileLib, const rapidjson::Value& elem)
+bool RobotTemplate::initBases(const NamedMap<ComponentTemplate>& componentLib, const std::vector<std::string>& baseNames)
 {
-    bool shootable = false;
-    float shootInterval = 0.0f, shootPosX = 0.0f, shootPosY = 0.0f;
-    int shootComponentIdx = 0;
-    std::string missileName;
-
-    std::vector<JsonParseParam> params =
+    int baseCount = static_cast<int>(baseNames.size());
+    if (baseCount == 0)
     {
-        {&shootable,          "shootable",          JSONTYPE_BOOL},
-        {&shootInterval,      "shootInterval",      JSONTYPE_FLOAT},
-        {&shootPosX,          "shootPosX",          JSONTYPE_FLOAT},
-        {&shootPosY,          "shootPosY",          JSONTYPE_FLOAT},
-        {&shootComponentIdx,  "shootComponentIdx",  JSONTYPE_INT},
-        {&missileName,        "missile",            JSONTYPE_STRING}
-    };
-
-    if (!parseJson(params, elem))
-    {
+        LOG_ERROR("Base-array is empty");
         return false;
     }
 
-    if (!shootable)
+    m_bases.resize(baseCount);
+    for (int i = 0; i < baseCount; ++i)
+    {
+        const bot::ComponentTemplate* t = componentLib.search(baseNames[i]);
+        if (!t)
+        {
+            LOG_ERROR("Failed to find base %s", baseNames[i].c_str());
+            return false;
+        }
+
+        if (t->getType() != COMPONENT_BASE)
+        {
+            LOG_ERROR("Wrong type for base: %d", static_cast<int>(t->getType()));
+            return false;
+        }
+
+        m_bases[i] = static_cast<const BaseComponentTemplate*>(t);
+    }
+
+    return true;
+}
+
+bool RobotTemplate::initWeapons(const NamedMap<ComponentTemplate>& componentLib, const std::vector<std::string>& weaponNames)
+{
+    int weaponCount = static_cast<int>(weaponNames.size());
+    if (weaponCount == 0)
+    {
+        LOG_ERROR("Weapon-array is empty");
+        return false;
+    }
+
+    m_weapons.resize(weaponCount);
+    for (int i = 0; i < weaponCount; ++i)
+    {
+        const ComponentTemplate* t = componentLib.search(weaponNames[i]);
+        if (!t)
+        {
+            LOG_ERROR("Failed to find weapon %s", weaponNames[i].c_str());
+            return false;
+        }
+
+        if (t->getType() != COMPONENT_WEAPON)
+        {
+            LOG_ERROR("Wrong type for weapon: %d", static_cast<int>(t->getType()));
+            return false;
+        }
+
+        m_weapons[i] = static_cast<const WeaponComponentTemplate*>(t);
+    }
+
+    return true;
+}
+
+bool RobotTemplate::initMovers(const NamedMap<ComponentTemplate>& componentLib, const std::vector<std::string>& moverNames)
+{
+    int moverCount = static_cast<int>(moverNames.size());
+    if (moverCount == 0)
     {
         return true;
     }
 
-    if (shootComponentIdx < 0 || shootComponentIdx >= getNumComponents())
+    m_movers.resize(moverCount);
+    for (int i = 0; i < moverCount; ++i)
     {
-        LOG_ERROR("shootComponentIdx out of range");
-        return false;
-    }
+        const ComponentTemplate* t = componentLib.search(moverNames[i]);
+        if (!t)
+        {
+            LOG_ERROR("Failed to find mover %s", moverNames[i].c_str());
+            return false;
+        }
 
-    const MissileTemplate* missile = missileLib.search(missileName);
-    if (!missile)
-    {
-        LOG_ERROR("Couldn't find missile %s", missileName.c_str());
-        return false;
-    }
+        if (t->getType() != COMPONENT_MOVER)
+        {
+            LOG_ERROR("Wrong type for mover: %d", static_cast<int>(t->getType()));
+            return false;
+        }
 
-    ShootAbilityTemplate* shootAbility = new ShootAbilityTemplate(shootInterval, shootPosX,
-                                                                  shootPosY, missile);
-    m_abilityTemplates[ABILITY_SHOOT] = shootAbility;
-    m_attachComponents[ABILITY_SHOOT] = &m_components[shootComponentIdx];
+        m_movers[i] = static_cast<const MoverComponentTemplate*>(t);
+    }
 
     return true;
 }

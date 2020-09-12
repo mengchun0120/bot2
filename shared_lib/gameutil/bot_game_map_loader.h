@@ -33,7 +33,9 @@ private:
 
     bool loadRobots(const rapidjson::Value& mapJson);
 
-    bool addRobot(const std::string& name, float x, float y, float directionX, float directionY);
+    bool addRobot(const std::string& name, const std::string& baseName, const std::string& weaponName,
+                  const std::string& moverName, const std::string& missileName,
+                  float x, float y, float directionX, float directionY);
 
     bool loadPlayer(const rapidjson::Value& mapJson);
 

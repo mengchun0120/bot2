@@ -6,19 +6,20 @@
 
 namespace bot {
 
-Player::Player(const PlayerTemplate* playerTemplate)
-    : Robot(static_cast<const RobotTemplate*>(playerTemplate))
+Player::Player(const PlayerTemplate* playerTemplate, const BaseComponentTemplate* baseTemplate,
+               const WeaponComponentTemplate* weaponTemplate, const MoverComponentTemplate* moverTemplate,
+               const MissileTemplate* missileTemplate, float x, float y, float directionX, float directionY)
+    : Robot(playerTemplate, baseTemplate, weaponTemplate, moverTemplate, missileTemplate, x, y, directionX, directionY, SIDE_PLAYER)
     , m_experience(0l)
     , m_experienceMultiplier(1.0f)
+    , m_goldCount(0)
 {
     initEffects();
-    snprintf(m_hpStr, HP_STR_LEN, "%d", m_hp);
-    snprintf(m_goldStr, GOLD_STR_LEN, "%d", m_goldCount);
+    resetGoldStr();
 }
 
 Player::~Player()
 {
-
 }
 
 void Player::present(Graphics& g)
@@ -71,11 +72,10 @@ void Player::applyInstantaneousEffect(Goodie* goodie)
     {
     case GOODIE_GOLD:
         m_goldCount++;
-        snprintf(m_goldStr, GOLD_STR_LEN, "%d", m_goldCount);
+        resetGoldStr();
         break;
     case GOODIE_HEALTH:
         refillHP();
-        snprintf(m_hpStr, HP_STR_LEN, "%d", m_hp);
         break;
     default:
         LOG_ERROR("Goodie type %d is NOT instantaneous!", static_cast<int>(goodie->getGoodieType()));
@@ -104,20 +104,17 @@ void Player::applyNonInstantaneousEffect(Goodie* goodie)
         }
         case GOODIE_QUICK_MOVER:
         {
-            MoveAbility* moveAbility = getMoveAbility();
-            moveAbility->setSpeedMultiplier(2.0f);
+            m_mover.setSpeedMultiplier(2.0f);
             break;
         }
         case GOODIE_QUICK_SHOOTER:
         {
-            ShootAbility* shootAbility = getShootAbility();
-            shootAbility->setShootSpeedMultiplier(0.5f);
+            m_weapon.setFireDurationMultiplier(0.5f);
             break;
         }
         case GOODIE_DOUBLE_DAMAGE:
         {
-            ShootAbility* shootAbility = getShootAbility();
-            shootAbility->setDamageMultiplier(2.0f);
+            m_weapon.setDamageMultiplier(2.0f);
             break;
         }
         default:
@@ -173,20 +170,17 @@ void Player::expireEffect(GoodieEffect* effect)
         }
         case GOODIE_QUICK_MOVER:
         {
-            MoveAbility* moveAbility = getMoveAbility();
-            moveAbility->setSpeedMultiplier(1.0f);
+            m_mover.setSpeedMultiplier(1.0f);
             break;
         }
         case GOODIE_QUICK_SHOOTER:
         {
-            ShootAbility* shootAbility = getShootAbility();
-            shootAbility->setShootSpeedMultiplier(1.0f);
+            m_weapon.setFireDurationMultiplier(1.0f);
             break;
         }
         case GOODIE_DOUBLE_DAMAGE:
         {
-            ShootAbility* shootAbility = getShootAbility();
-            shootAbility->setDamageMultiplier(1.0f);
+            m_weapon.setDamageMultiplier(1.0f);
             break;
         }
         default:
@@ -232,11 +226,9 @@ void Player::updateEffects()
     }
 }
 
-bool Player::addHP(int deltaHP)
+void Player::resetGoldStr()
 {
-    bool ret = Robot::addHP(deltaHP);
-    snprintf(m_hpStr, HP_STR_LEN, "%d", m_hp);
-    return ret;
+    snprintf(m_goldStr, sizeof(m_goldStr), "%d", m_goldCount);
 }
 
 } // end of namespace bot

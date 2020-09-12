@@ -1,6 +1,9 @@
 #include "misc/bot_log.h"
 #include "misc/bot_json_utils.h"
 #include "gameutil/bot_game_lib.h"
+#include "gametemplate/bot_base_component_template.h"
+#include "gametemplate/bot_weapon_component_template.h"
+#include "gametemplate/bot_mover_component_template.h"
 #include "app/bot_app_config.h"
 
 namespace bot {
@@ -89,7 +92,7 @@ bool GameLib::load(float viewportWidth, float viewportHeight, const AppConfig& c
     LOG_INFO("Done loading ai library from %s", cfg.getAILib().c_str());
 
     ComponentTemplate::Parser componentParser(m_textureLib, m_rectLib, m_missileTemplateLib);
-    ret = m_componentTemplateLib.load(cfg.getComponentTemplateLib().c_str(), componentParser);
+    ret = m_componentLib.load(cfg.getComponentTemplateLib().c_str(), componentParser);
     if (!ret)
     {
         LOG_ERROR("Failed to read component template from %s", cfg.getComponentTemplateLib().c_str());
@@ -97,16 +100,7 @@ bool GameLib::load(float viewportWidth, float viewportHeight, const AppConfig& c
     }
     LOG_INFO("Done loading component template from %s", cfg.getComponentTemplateLib().c_str());
 
-    RobotClass::Parser robotClassParser(m_componentTemplateLib);
-    ret = m_robotClassLib.load(cfg.getRobotClassLib().c_str(), robotClassParser);
-    if (!ret)
-    {
-        LOG_ERROR("Failed to read robot classes from %s", cfg.getRobotClassLib().c_str());
-        return false;
-    }
-    LOG_INFO("Done loading robot classes from %s", cfg.getRobotClassLib().c_str());
-
-    AIRobotTemplate::Parser aiRobotParser(m_textureLib, m_rectLib, m_colorLib, m_missileTemplateLib, m_aiLib);
+    AIRobotTemplate::Parser aiRobotParser(m_componentLib, m_aiLib);
     ret = m_aiRobotTemplateLib.load(cfg.getAIRobotTemplateLib().c_str(), aiRobotParser);
     if (!ret)
     {
@@ -115,8 +109,7 @@ bool GameLib::load(float viewportWidth, float viewportHeight, const AppConfig& c
     }
     LOG_INFO("Done loading ai-robot template library from %s", cfg.getAIRobotTemplateLib().c_str());
 
-    ret = m_playerTemplate.init(cfg.getPlayerTemplateLib(), m_textureLib, m_rectLib,
-                                m_colorLib, m_missileTemplateLib);
+    ret = m_playerTemplate.init(cfg.getPlayerTemplateLib(), m_componentLib);
     if (!ret)
     {
         LOG_ERROR("Failed to read player template from %s", cfg.getPlayerTemplateLib().c_str())
@@ -168,6 +161,39 @@ bool GameLib::load(float viewportWidth, float viewportHeight, const AppConfig& c
     LOG_INFO("Done loading start-screen config from %s", cfg.getStartScreenConfigFile().c_str());
 
     return true;
+}
+
+const BaseComponentTemplate* GameLib::getBaseTemplate(const std::string& name) const
+{
+    ComponentTemplate* t = m_componentLib.search(name);
+    if (!t || t->getType() != COMPONENT_BASE)
+    {
+        return nullptr;
+    }
+
+    return static_cast<const BaseComponentTemplate*>(t);
+}
+
+const WeaponComponentTemplate* GameLib::getWeaponTemplate(const std::string& name) const
+{
+    ComponentTemplate* t = m_componentLib.search(name);
+    if (!t || t->getType() != COMPONENT_WEAPON)
+    {
+        return nullptr;
+    }
+
+    return static_cast<const WeaponComponentTemplate*>(t);
+}
+
+const MoverComponentTemplate* GameLib::getMoverTemplate(const std::string& name) const
+{
+    ComponentTemplate* t = m_componentLib.search(name);
+    if (!t || t->getType() != COMPONENT_MOVER)
+    {
+        return nullptr;
+    }
+
+    return static_cast<const MoverComponentTemplate*>(t);
 }
 
 } // end of namespace bot

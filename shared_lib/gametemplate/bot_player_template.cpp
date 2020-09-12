@@ -1,5 +1,7 @@
 #include "misc/bot_log.h"
 #include "misc/bot_json_utils.h"
+#include "structure/bot_named_map.h"
+#include "gametemplate/bot_component_template.h"
 #include "gametemplate/bot_player_template.h"
 
 namespace bot {
@@ -14,9 +16,7 @@ PlayerTemplate::~PlayerTemplate()
 {
 }
 
-bool PlayerTemplate::init(const std::string& playerTemplateFile, const NamedMap<Texture>& textureLib,
-                          const NamedMap<Rectangle>& rectLib, const NamedMap<Color>& colorLib,
-                          const NamedMap<MissileTemplate>& missileLib)
+bool PlayerTemplate::init(const std::string& playerTemplateFile, const NamedMap<ComponentTemplate>& componentLib)
 {
     rapidjson::Document doc;
     if (!readJson(doc, playerTemplateFile.c_str()))
@@ -32,7 +32,7 @@ bool PlayerTemplate::init(const std::string& playerTemplateFile, const NamedMap<
 
     const rapidjson::Value& playerJson = doc.GetObject();
 
-    if (!RobotTemplate::init(textureLib, rectLib, colorLib, missileLib, playerJson))
+    if (!RobotTemplate::init(componentLib, playerJson))
     {
         return false;
     }

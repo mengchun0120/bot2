@@ -10,7 +10,6 @@
 #include "gametemplate/bot_missile_template.h"
 #include "gametemplate/bot_goodie_template.h"
 #include "gametemplate/bot_component_template.h"
-#include "gametemplate/bot_robot_class.h"
 #include "gametemplate/bot_ai_robot_template.h"
 #include "gametemplate/bot_animation_template.h"
 #include "gametemplate/bot_particle_effect_template.h"
@@ -25,6 +24,9 @@
 namespace bot {
 
 class AppConfig;
+class BaseComponentTemplate;
+class WeaponComponentTemplate;
+class MoverComponentTemplate;
 
 class GameLib {
 public:
@@ -76,15 +78,11 @@ public:
         return m_aiLib.search(name);
     }
 
-    const NamedMap<ComponentTemplate>& getComponentTemplateLib() const
-    {
-        return m_componentTemplateLib;
-    }
+    const BaseComponentTemplate* getBaseTemplate(const std::string& name) const;
 
-    const NamedMap<RobotClass>& getRobotClassLib() const
-    {
-        return m_robotClassLib;
-    }
+    const WeaponComponentTemplate* getWeaponTemplate(const std::string& name) const;
+
+    const MoverComponentTemplate* getMoverTemplate(const std::string& name) const;
 
     const AIRobotTemplate* getAIRobotTemplate(const std::string& name) const
     {
@@ -140,8 +138,7 @@ private:
     NamedMap<MissileTemplate> m_missileTemplateLib;
     NamedMap<GoodieTemplate> m_goodieTemplateLib;
     NamedMap<AI> m_aiLib;
-    NamedMap<ComponentTemplate> m_componentTemplateLib;
-    NamedMap<RobotClass> m_robotClassLib;
+    NamedMap<ComponentTemplate> m_componentLib;
     NamedMap<AIRobotTemplate> m_aiRobotTemplateLib;
     NamedMap<ProgressRing> m_progressRingLib;
     PlayerTemplate m_playerTemplate;

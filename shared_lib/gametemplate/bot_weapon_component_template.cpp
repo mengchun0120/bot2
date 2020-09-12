@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "misc/bot_log.h"
 #include "misc/bot_constants.h"
 #include "misc/bot_json_utils.h"
@@ -10,6 +11,24 @@
 
 namespace bot {
 
+FirePoint::FirePoint()
+{
+    std::fill(m_firePos, m_firePos + sizeof(m_firePos), 0.0f);
+    std::fill(m_fireDirection, m_fireDirection + sizeof(m_fireDirection), 0.0f);
+}
+
+FirePoint::FirePoint(const FirePoint& fp)
+{
+    *this = fp;
+}
+
+FirePoint& FirePoint::operator=(const FirePoint& fp)
+{
+    std::copy(fp.m_firePos, fp.m_firePos + sizeof(fp.m_firePos), m_firePos);
+    std::copy(fp.m_fireDirection, fp.m_fireDirection + sizeof(fp.m_fireDirection), m_firePos);
+    return *this;
+}
+
 bool WeaponComponentTemplate::init(const NamedMap<Texture>& textureLib, const NamedMap<Rectangle>& rectLib,
                                    const NamedMap<MissileTemplate>& missileLib, const rapidjson::Value& elem)
 {
@@ -18,12 +37,7 @@ bool WeaponComponentTemplate::init(const NamedMap<Texture>& textureLib, const Na
         return false;
     }
 
-    std::vector<JsonParseParam> params = {
-        {&m_fireDuration, "fireDuration", JSONTYPE_FLOAT},
-        {&m_firePower,    "firePower",    JSONTYPE_FLOAT}
-    };
-
-    if (!parseJson(params, elem))
+    if (!parseJson(m_fireDuration, elem, "fireDuration"))
     {
         return false;
     }
@@ -110,8 +124,10 @@ bool WeaponComponentTemplate::initFirePoints(const rapidjson::Value& elem)
             return false;
         }
 
-        p.m_firePos.swap(firePos);
-        p.m_fireDirection.swap(fireDirection);
+        p.m_firePos[0] = firePos[0];
+        p.m_firePos[1] = firePos[1];
+        p.m_fireDirection[0] = fireDirection[0];
+        p.m_fireDirection[1] = fireDirection[1];
 
         return true;
     };

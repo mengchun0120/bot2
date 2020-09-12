@@ -6,6 +6,7 @@
 namespace bot {
 
 class Graphics;
+class GameScreen;
 
 class Component {
 public:
@@ -18,7 +19,7 @@ public:
 
     void present(Graphics& g, const float* pos, const float* direction);
 
-    virtual bool update() = 0;
+    virtual void update(GameScreen& screen) = 0;
 
 protected:
     const ComponentTemplate* m_template;
