@@ -97,6 +97,11 @@ public:
         return m_mapDir;
     }
 
+    const std::string& getSaveDir() const
+    {
+        return m_saveDir;
+    }
+
     const std::string& getTextureLib() const
     {
         return m_textureLib;
@@ -160,6 +165,11 @@ public:
     const std::string& getPlayerTemplateLib() const
     {
         return m_playerTemplateLib;
+    }
+
+    const std::string& getPlayerDataFile() const
+    {
+        return m_playerDataFile;
     }
 
     const std::string& getDashboardConfigFile() const
@@ -240,6 +250,7 @@ private:
     std::string m_glslDir;
     std::string m_fontDir;
     std::string m_textureDir;
+    std::string m_saveDir;
     int m_width;
     int m_height;
     std::string m_title;
@@ -262,6 +273,7 @@ private:
     std::string m_aiRobotTemplateLib;
     std::string m_progressRingLib;
     std::string m_playerTemplateLib;
+    std::string m_playerDataFile;
     std::string m_dashboardConfigFile;
     std::string m_buttonConfigFile;
     std::string m_startScreenConfigFile;

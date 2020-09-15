@@ -10,6 +10,7 @@ namespace bot {
 
 class Goodie;
 class GameObjectManager;
+class PlayerData;
 
 class Player : public Robot {
     enum {
@@ -17,7 +18,7 @@ class Player : public Robot {
     };
 
 public:
-    Player(const PlayerTemplate* playerTemplate, const BaseComponentTemplate* baseTemplate,
+    Player(const PlayerTemplate* playerTemplate, PlayerData& playerData, const BaseComponentTemplate* baseTemplate,
            const WeaponComponentTemplate* weaponTemplate, const MoverComponentTemplate* moverTemplate,
            const MissileTemplate* missileTemplate, float x, float y, float directionX, float directionY);
 
@@ -67,6 +68,7 @@ private:
     void resetGoldStr();
 
 private:
+    PlayerData& m_playerData;
     std::vector<GoodieEffect> m_effects;
     GoodieEffect* m_firstActiveEffect;
     GoodieEffect* m_firstFreeEffect;

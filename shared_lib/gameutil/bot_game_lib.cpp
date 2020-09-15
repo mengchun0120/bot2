@@ -117,6 +117,14 @@ bool GameLib::load(float viewportWidth, float viewportHeight, const AppConfig& c
     }
     LOG_INFO("Done reading player template from %s", cfg.getPlayerTemplateLib().c_str());
 
+    ret = m_playerData.load(cfg.getPlayerDataFile(), m_componentLib, m_missileTemplateLib);
+    if (!ret)
+    {
+        LOG_ERROR("Failed to load player data from %s", cfg.getPlayerDataFile().c_str());
+        return false;
+    }
+    LOG_ERROR("Done loading player data from %s", cfg.getPlayerDataFile().c_str());
+
     MapGenerator::Parser mapGeneratorParser(&m_playerTemplate, m_tileTemplateLib, m_aiRobotTemplateLib, cfg.getMaxRobotCount());
     ret = m_mapGeneratorLib.load(cfg.getMapGeneratorLib().c_str(), mapGeneratorParser);
     if (!ret)

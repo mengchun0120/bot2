@@ -14,6 +14,7 @@
 #include "gametemplate/bot_animation_template.h"
 #include "gametemplate/bot_particle_effect_template.h"
 #include "gametemplate/bot_player_template.h"
+#include "gameutil/bot_player_data.h"
 #include "gameutil/bot_map_generator.h"
 #include "gameobj/bot_progress_ring.h"
 #include "gameobj/bot_dashboard_config.h"
@@ -94,6 +95,16 @@ public:
         return m_playerTemplate;
     }
 
+    const PlayerData& getPlayerData() const
+    {
+        return m_playerData;
+    }
+
+    PlayerData& getPlayerData()
+    {
+        return m_playerData;
+    }
+
     const NamedMap<GoodieTemplate>& getGoodieTemplateLib() const
     {
         return m_goodieTemplateLib;
@@ -142,6 +153,7 @@ private:
     NamedMap<AIRobotTemplate> m_aiRobotTemplateLib;
     NamedMap<ProgressRing> m_progressRingLib;
     PlayerTemplate m_playerTemplate;
+    PlayerData m_playerData;
     NamedMap<MapGenerator> m_mapGeneratorLib;
     DashboardConfig m_dashboardConfig;
     ButtonConfig m_buttonConfig;

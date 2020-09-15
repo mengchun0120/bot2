@@ -46,6 +46,7 @@ bool AppConfig::readConfig(const std::string& cfgFile)
         {&m_mapDir,                    "mapDir",                    JSONTYPE_STRING},
         {&m_glslDir,                   "glslDir",                   JSONTYPE_STRING},
         {&m_fontDir,                   "fontDir",                   JSONTYPE_STRING},
+        {&m_saveDir,                   "saveDir",                   JSONTYPE_STRING},
         {&m_width,                     "width",                     JSONTYPE_INT},
         {&m_height,                    "height",                    JSONTYPE_INT},
         {&m_title,                     "title",                     JSONTYPE_STRING},
@@ -68,6 +69,7 @@ bool AppConfig::readConfig(const std::string& cfgFile)
         {&m_aiRobotTemplateLib,        "aiRobotTemplateLib",        JSONTYPE_STRING},
         {&m_progressRingLib,           "progressRingLib",           JSONTYPE_STRING},
         {&m_playerTemplateLib,         "playerTemplateLib",         JSONTYPE_STRING},
+        {&m_playerDataFile,            "playerDataFile",            JSONTYPE_STRING},
         {&m_dashboardConfigFile,       "dashboardConfig",           JSONTYPE_STRING},
         {&m_buttonConfigFile,          "buttonConfig",              JSONTYPE_STRING},
         {&m_startScreenConfigFile,     "startScreenConfig",         JSONTYPE_STRING},
@@ -96,6 +98,7 @@ void AppConfig::marshalConfig()
     m_glslDir                   = constructPath({ m_resDir, m_glslDir });
     m_fontDir                   = constructPath({ m_resDir, m_fontDir });
     m_textureDir                = constructPath({ m_resDir, m_textureDir });
+    m_saveDir                   = constructPath({ m_appDir, m_saveDir });
     m_simpleVertexShaderFile    = constructPath({ m_glslDir, m_simpleVertexShaderFile });
     m_simpleFragShaderFile      = constructPath({ m_glslDir, m_simpleFragShaderFile });
     m_particleVertexShaderFile  = constructPath({ m_glslDir, m_particleVertexShaderFile });
@@ -113,6 +116,7 @@ void AppConfig::marshalConfig()
     m_aiRobotTemplateLib        = constructPath({ m_libDir, m_aiRobotTemplateLib });
     m_progressRingLib           = constructPath({ m_libDir, m_progressRingLib });
     m_playerTemplateLib         = constructPath({ m_libDir, m_playerTemplateLib });
+    m_playerDataFile            = constructPath({ m_saveDir, m_playerDataFile });
     m_dashboardConfigFile       = constructPath({ m_libDir, m_dashboardConfigFile });
     m_buttonConfigFile          = constructPath({ m_libDir, m_buttonConfigFile });
     m_startScreenConfigFile     = constructPath({ m_libDir, m_startScreenConfigFile });

@@ -1,0 +1,2 @@
+sudo apt-get install cmake xorg-dev libglu1-mesa-dev libglfw3-dev libglew-dev
+-lglfw -lGL -lglew -lm -lXrandr -lXi -lX11 -lXxf86vm -lpthread
