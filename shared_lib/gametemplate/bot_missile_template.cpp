@@ -4,8 +4,8 @@
 #include "opengl/bot_texture.h"
 #include "opengl/bot_color.h"
 #include "geometry/bot_rectangle.h"
+#include "gametemplate/bot_particle_effect_template.h"
 #include "gametemplate/bot_missile_template.h"
-#include "app/bot_app.h"
 
 namespace bot {
 
@@ -24,10 +24,9 @@ MissileTemplate* MissileTemplate::Parser::create(const std::string& name, const 
 MissileTemplate::MissileTemplate()
     : GameObjectTemplate(GAME_OBJ_TYPE_MISSILE)
     , m_speed(0.0f)
-    , m_explosionPower(0)
+    , m_explosionPower(0.0f)
+    , m_explosionPowerPerLevel(0.0f)
     , m_explosionBreath(0.0f)
-    , m_texture(nullptr)
-    , m_rect(nullptr)
     , m_color(nullptr)
     , m_explosionTemplate(nullptr)
 {
@@ -40,24 +39,26 @@ bool MissileTemplate::init(const NamedMap<Texture>& textureLib,
                            const NamedMap<Color>& colorLib,
                            const rapidjson::Value& elem)
 {
-    std::string textureName;
-    std::string rectName;
-    std::string colorName;
-    std::string explosionEffectName;
+    if (!GameObjectTemplate::init(elem))
+    {
+        return false;
+    }
 
+    if (!SingleUnitTemplate::init(textureLib, rectLib, elem))
+    {
+        return false;
+    }
+
+    float speed, explosionPower, explosionPowerPerLevel = 0.0f, explosionBreath;
+    std::string colorName, explosionEffectName;
     std::vector<JsonParseParam> params =
     {
-        {&m_coverBreathX,       "coverBreathX",       JSONTYPE_FLOAT},
-        {&m_coverBreathY,       "coverBreathY",       JSONTYPE_FLOAT},
-        {&m_collideBreathX,     "collideBreathX",     JSONTYPE_FLOAT},
-        {&m_collideBreathY,     "collideBreathY",     JSONTYPE_FLOAT},
-        {&m_speed,              "speed",              JSONTYPE_FLOAT},
-        {&m_explosionPower,     "explosionPower",     JSONTYPE_INT},
-        {&m_explosionBreath,    "explosionBreath",    JSONTYPE_FLOAT},
-        {&textureName,          "texture",            JSONTYPE_STRING},
-        {&rectName,             "rect",               JSONTYPE_STRING},
-        {&colorName,            "color",              JSONTYPE_STRING},
-        {&explosionEffectName,  "explosionEffect",   JSONTYPE_STRING}
+        {&speed,                    "speed",                  JSONTYPE_FLOAT},
+        {&explosionPower,           "explosionPower",         JSONTYPE_FLOAT},
+        {&explosionPowerPerLevel,   "explosionPowerPerLevel", JSONTYPE_FLOAT, false},
+        {&explosionBreath,          "explosionBreath",        JSONTYPE_FLOAT},
+        {&colorName,                "color",                  JSONTYPE_STRING},
+        {&explosionEffectName,      "explosionEffect",        JSONTYPE_STRING}
     };
 
     if (!parseJson(params, elem))
@@ -65,17 +66,12 @@ bool MissileTemplate::init(const NamedMap<Texture>& textureLib,
         return false;
     }
 
-    m_texture = textureLib.search(textureName);
-    if (!m_texture)
+    bool success = setSpeed(speed) &&
+                   setExplosionPower(explosionPower) &&
+                   setExplosionPowerPerLevel(explosionPowerPerLevel) &&
+                   setExplosionBreath(explosionBreath);
+    if (!success)
     {
-        LOG_ERROR("Couldn't find texture %s", textureName.c_str());
-        return false;
-    }
-
-    m_rect = rectLib.search(rectName);
-    if (!m_rect)
-    {
-        LOG_ERROR("Couldn't find rect %s", rectName.c_str());
         return false;
     }
 
@@ -93,6 +89,54 @@ bool MissileTemplate::init(const NamedMap<Texture>& textureLib,
         return false;
     }
 
+    return true;
+}
+
+bool MissileTemplate::setSpeed(float speed)
+{
+    if (speed < 0.0f)
+    {
+        LOG_ERROR("Invalid speed %f", speed);
+        return false;
+    }
+
+    m_speed = speed;
+    return true;
+}
+
+bool MissileTemplate::setExplosionPower(int explosionPower)
+{
+    if (explosionPower < 0.0f)
+    {
+        LOG_ERROR("Invalid explosion power %f", explosionPower);
+        return false;
+    }
+
+    m_explosionPower = explosionPower;
+    return true;
+}
+
+bool MissileTemplate::setExplosionPowerPerLevel(float powerPerLevel)
+{
+    if (powerPerLevel < 0.0f)
+    {
+        LOG_ERROR("Invalid explosion-power-per-level %f", powerPerLevel);
+        return false;
+    }
+
+    m_explosionPowerPerLevel = powerPerLevel;
+    return true;
+}
+
+bool MissileTemplate::setExplosionBreath(float explosionBreath)
+{
+    if (explosionBreath <= 0.0f)
+    {
+        LOG_ERROR("Invalid explosion-breath %f", explosionBreath);
+        return false;
+    }
+
+    m_explosionBreath = explosionBreath;
     return true;
 }
 

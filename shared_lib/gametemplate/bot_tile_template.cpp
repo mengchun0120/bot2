@@ -2,7 +2,6 @@
 #include "misc/bot_json_utils.h"
 #include "structure/bot_named_map.h"
 #include "opengl/bot_texture.h"
-#include "opengl/bot_color.h"
 #include "geometry/bot_rectangle.h"
 #include "gametemplate/bot_tile_template.h"
 
@@ -21,28 +20,32 @@ TileTemplate* TileTemplate::Parser::create(const std::string& name, const rapidj
 
 TileTemplate::TileTemplate()
     : GameObjectTemplate(GAME_OBJ_TYPE_TILE)
-    , m_texture(nullptr)
-    , m_rect(nullptr)
-    , m_hp(0)
+    , m_hp(0.0f)
+    , m_hpPerLevel(0.0f)
 {
 }
 
 bool TileTemplate::init(const NamedMap<Texture>& textureLib, const NamedMap<Rectangle>& rectLib,
                         const rapidjson::Value& elem)
 {
-    std::string textureName, rectName, colorName;
+    if (!GameObjectTemplate::init(elem))
+    {
+        return false;
+    }
+
+    if (!SingleUnitTemplate::init(textureLib, rectLib, elem))
+    {
+        return false;
+    }
+
+    float hp, hpPerLevel;
     bool indestructable = false;
 
     std::vector<JsonParseParam> params =
     {
-        {&textureName,        "texture",        JSONTYPE_STRING},
-        {&rectName,           "rect",           JSONTYPE_STRING},
-        {&m_coverBreathX,     "coverBreathX",   JSONTYPE_FLOAT},
-        {&m_coverBreathY,     "coverBreathY",   JSONTYPE_FLOAT},
-        {&m_collideBreathX,   "collideBreathX", JSONTYPE_FLOAT},
-        {&m_collideBreathY,   "collideBreathY", JSONTYPE_FLOAT},
-        {&m_hp,               "hp",             JSONTYPE_INT},
-        {&indestructable,     "indestructable", JSONTYPE_BOOL}
+        {&hp,             "hp",             JSONTYPE_FLOAT},
+        {&hpPerLevel,     "hpPerLevel",     JSONTYPE_FLOAT},
+        {&indestructable, "indestructable", JSONTYPE_BOOL}
     };
 
     if (!parseJson(params, elem))
@@ -50,29 +53,45 @@ bool TileTemplate::init(const NamedMap<Texture>& textureLib, const NamedMap<Rect
         return false;
     }
 
-    m_texture = textureLib.search(textureName);
-    if (!m_texture)
+    bool success = setHP(hp) && setHPPerLevel(hpPerLevel);
+    if (!success)
     {
-        LOG_ERROR("Failed to find texture %s", textureName.c_str());
-        return false;
-    }
-
-    m_rect = rectLib.search(rectName);
-    if (!m_rect)
-    {
-        LOG_ERROR("Failed to find rectangle %s", rectName.c_str());
         return false;
     }
 
     if (indestructable)
     {
-        setFlag(GAME_OBJ_FLAG_INDESTRUCTABLE);
+        setFlags(GAME_OBJ_FLAG_INDESTRUCTABLE);
     }
     else
     {
-        clearFlag(GAME_OBJ_FLAG_INDESTRUCTABLE);
+        clearFlags(GAME_OBJ_FLAG_INDESTRUCTABLE);
     }
 
+    return true;
+}
+
+bool TileTemplate::setHP(float hp)
+{
+    if (hp < 0.0f)
+    {
+        LOG_ERROR("Invalid hp %f", m_hp);
+        return false;
+    }
+
+    m_hp = hp;
+    return true;
+}
+
+bool TileTemplate::setHPPerLevel(float hpPerLevel)
+{
+    if (hpPerLevel < 0.0f)
+    {
+        LOG_ERROR("Invalid hp-per-level %f", m_hpPerLevel);
+        return false;
+    }
+
+    m_hpPerLevel = hpPerLevel;
     return true;
 }
 

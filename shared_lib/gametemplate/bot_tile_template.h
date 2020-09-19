@@ -2,16 +2,12 @@
 #define INCLUDE_BOT_TILE_TEMPLATE
 
 #include <string>
-#include <rapidjson/document.h>
 #include "gametemplate/bot_game_object_template.h"
+#include "gametemplate/bot_sinlge_unit_template.h"
 
 namespace bot {
 
-template <typename T> class NamedMap;
-class Texture;
-class Rectangle;
-
-class TileTemplate: public GameObjectTemplate {
+class TileTemplate: public GameObjectTemplate, public SingleUnitTemplate {
 public:
     class Parser {
     public:
@@ -38,25 +34,18 @@ public:
     bool init(const NamedMap<Texture>& textureLib, const NamedMap<Rectangle>& rectLib,
               const rapidjson::Value& elem);
 
-    const Texture* getTexture() const
+    float getHP(int level) const
     {
-        return m_texture;
+        return m_hp + (level - 1) * m_hpPerLevel;
     }
 
-    const Rectangle* getRect() const
-    {
-        return m_rect;
-    }
+    bool setHP(float hp);
 
-    int getHP() const
-    {
-        return m_hp;
-    }
+    bool setHPPerLevel(float hpPerLevel);
 
 protected:
-    const Texture* m_texture;
-    const Rectangle* m_rect;
-    int m_hp;
+    float m_hp;
+    float m_hpPerLevel;
 };
 
 } // end of namespace bot

@@ -9,12 +9,13 @@
 #include "gametemplate/bot_tile_template.h"
 #include "gametemplate/bot_missile_template.h"
 #include "gametemplate/bot_goodie_template.h"
-#include "gametemplate/bot_component_template.h"
 #include "gametemplate/bot_ai_robot_template.h"
 #include "gametemplate/bot_animation_template.h"
 #include "gametemplate/bot_particle_effect_template.h"
+#include "gametemplate/bot_base_template.h"
+#include "gametemplate/bot_weapon_template.h"
+#include "gametemplate/bot_mover_template.h"
 #include "gametemplate/bot_player_template.h"
-#include "gameutil/bot_player_data.h"
 #include "gameutil/bot_map_generator.h"
 #include "gameobj/bot_progress_ring.h"
 #include "gameobj/bot_dashboard_config.h"
@@ -25,9 +26,6 @@
 namespace bot {
 
 class AppConfig;
-class BaseComponentTemplate;
-class WeaponComponentTemplate;
-class MoverComponentTemplate;
 
 class GameLib {
 public:
@@ -79,11 +77,20 @@ public:
         return m_aiLib.search(name);
     }
 
-    const BaseComponentTemplate* getBaseTemplate(const std::string& name) const;
+    const NamedMap<BaseTemplate>& getBaseTemplateLib() const
+    {
+        return m_baseTemplateLib;
+    }
 
-    const WeaponComponentTemplate* getWeaponTemplate(const std::string& name) const;
+    const NamedMap<WeaponTemplate>& getWeaponTemplateLib() const
+    {
+        return m_weaponTemplateLib;
+    }
 
-    const MoverComponentTemplate* getMoverTemplate(const std::string& name) const;
+    const NamedMap<MoverTemplate>& getMoverTemplateLib() const
+    {
+        return m_moverTemplateLib;
+    }
 
     const AIRobotTemplate* getAIRobotTemplate(const std::string& name) const
     {
@@ -93,16 +100,6 @@ public:
     const PlayerTemplate& getPlayerTemplate() const
     {
         return m_playerTemplate;
-    }
-
-    const PlayerData& getPlayerData() const
-    {
-        return m_playerData;
-    }
-
-    PlayerData& getPlayerData()
-    {
-        return m_playerData;
     }
 
     const NamedMap<GoodieTemplate>& getGoodieTemplateLib() const
@@ -149,11 +146,12 @@ private:
     NamedMap<MissileTemplate> m_missileTemplateLib;
     NamedMap<GoodieTemplate> m_goodieTemplateLib;
     NamedMap<AI> m_aiLib;
-    NamedMap<ComponentTemplate> m_componentLib;
+    NamedMap<BaseTemplate> m_baseTemplateLib;
+    NamedMap<WeaponTemplate> m_weaponTemplateLib;
+    NamedMap<MoverTemplate> m_moverTemplateLib;
     NamedMap<AIRobotTemplate> m_aiRobotTemplateLib;
     NamedMap<ProgressRing> m_progressRingLib;
     PlayerTemplate m_playerTemplate;
-    PlayerData m_playerData;
     NamedMap<MapGenerator> m_mapGeneratorLib;
     DashboardConfig m_dashboardConfig;
     ButtonConfig m_buttonConfig;

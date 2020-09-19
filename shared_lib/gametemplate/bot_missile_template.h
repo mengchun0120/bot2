@@ -2,18 +2,15 @@
 #define INCLUDE_BOT_MISSILE_TEMPLATE
 
 #include <string>
-#include <rapidjson/document.h>
 #include "gametemplate/bot_game_object_template.h"
+#include "gametemplate/bot_single_unit_template.h"
 
 namespace bot {
 
-template <typename T> class NamedMap;
-class Texture;
-class Rectangle;
 class ParticleEffectTemplate;
 class Color;
 
-class MissileTemplate : public GameObjectTemplate {
+class MissileTemplate : public GameObjectTemplate, public SingleUnitTemplate {
 public:
     class Parser {
     public:
@@ -51,30 +48,23 @@ public:
         return m_speed;
     }
 
-    void setSpeed(float speed)
+    bool setSpeed(float speed);
+
+    int getExplosionPower(int level) const
     {
-        m_speed = speed;
+        return m_explosionPower + m_explosionPowerPerLevel * (level - 1);
     }
 
-    int getExplosionPower() const
-    {
-        return m_explosionPower;
-    }
+    bool setExplosionPower(int explosionPower);
 
-    void setExplosionPower(int explosionPower)
-    {
-        m_explosionPower = explosionPower;
-    }
+    bool setExplosionPowerPerLevel(float powerPerLevel);
 
     float getExplosionBreath() const
     {
         return m_explosionBreath;
     }
 
-    void setExplosionBreath(float explosionBreath)
-    {
-        m_explosionBreath = explosionBreath;
-    }
+    bool setExplosionBreath(float explosionBreath);
 
     const ParticleEffectTemplate* getExplosionTemplate() const
     {
@@ -84,26 +74,6 @@ public:
     void setExplosionTemplate(const ParticleEffectTemplate* explosionTemplate)
     {
         m_explosionTemplate = explosionTemplate;
-    }
-
-    const Texture* getTexture() const
-    {
-        return m_texture;
-    }
-
-    void setTexture(const Texture* texture)
-    {
-        m_texture = texture;
-    }
-
-    const Rectangle* getRect() const
-    {
-        return m_rect;
-    }
-
-    void setRect(const Rectangle* rect)
-    {
-        m_rect = rect;
     }
 
     const Color* getColor() const
@@ -118,10 +88,9 @@ public:
 
 protected:
     float m_speed;
-    int m_explosionPower;
+    float m_explosionPower;
+    float m_explosionPowerPerLevel;
     float m_explosionBreath;
-    const Texture* m_texture;
-    const Rectangle* m_rect;
     const Color* m_color;
     const ParticleEffectTemplate* m_explosionTemplate;
 };

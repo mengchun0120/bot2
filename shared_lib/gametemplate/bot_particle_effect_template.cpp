@@ -29,41 +29,18 @@ ParticleEffectTemplate::ParticleEffectTemplate()
     , m_color(nullptr)
 {}
 
-bool ParticleEffectTemplate::init(float coverBreathX, float coverBreathY, int numParticles, float accelearation,
-                                  float initSpeed, float duration, float particleSize, const float* data,
-                                  const Texture* texture, const Color* color)
+bool ParticleEffectTemplate::init(const NamedMap<Texture>& textureLib, const NamedMap<Color>& colorLib,
+                                  const rapidjson::Value& elem)
 {
-    const int VERTEX_SIZE = Constants::POSITION_SIZE;
-
-    if (!m_vertexArray.load(data, numParticles, VERTEX_SIZE, VERTEX_SIZE))
+    if (!GameObjectTemplate::init(elem))
     {
         return false;
     }
 
-    setCoverBreathX(coverBreathX);
-    setCoverBreathY(coverBreathY);
-
-    m_numParticles = numParticles;
-    m_acceleration = accelearation;
-    m_initSpeed = initSpeed;
-    m_duration = duration;
-    m_particleSize = particleSize;
-    m_texture = texture;
-    m_color = color;
-
-    return true;
-}
-
-bool ParticleEffectTemplate::init(const NamedMap<Texture>& textureLib, const NamedMap<Color>& colorLib,
-                                  const rapidjson::Value& elem)
-{
     std::vector<float> data;
     std::string textureName, colorName;
-
     std::vector<JsonParseParam> params =
     {
-        {&m_coverBreathX, "coverBreathX", JSONTYPE_FLOAT},
-        {&m_coverBreathY, "coverBreathY", JSONTYPE_FLOAT},
         {&m_acceleration, "acceleration", JSONTYPE_FLOAT},
         {&m_initSpeed,    "initSpeed",    JSONTYPE_FLOAT},
         {&m_duration,     "duration",     JSONTYPE_FLOAT},

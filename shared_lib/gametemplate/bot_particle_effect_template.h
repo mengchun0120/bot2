@@ -38,9 +38,6 @@ public:
 
     bool init(const NamedMap<Texture>& textureLib, const NamedMap<Color>& colorLib, const rapidjson::Value& elem);
 
-    bool init(float coverBreathX, float coverBreathY, int numParticles, float accelearation, float initSpeed,
-              float duration, float particleSize, const float* data, const Texture* texture, const Color* color);
-
     int getNumParticles() const
     {
         return m_numParticles;

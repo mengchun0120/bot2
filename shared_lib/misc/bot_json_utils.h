@@ -10,34 +10,42 @@
 namespace bot {
 
 struct JsonParseParam {
+    JsonParseParam(void* ptr, const char* name, JsonDataType type, bool required=true)
+        : m_ptr(ptr)
+        , m_name(name)
+        , m_type(type)
+        , m_required(required)
+    {}
+
     void* m_ptr;
     const char* m_name;
     JsonDataType m_type;
+    bool m_required;
 };
 
 bool readJson(rapidjson::Document& doc, const char* fileName);
 
 int validateJson(const rapidjson::Value& value, const char* name, JsonDataType type);
 
-bool parseJson(int& r, const rapidjson::Value& value, const char* name);
+bool parseJson(int& r, const rapidjson::Value& value, const char* name, bool required=true);
 
-bool parseJson(float& r, const rapidjson::Value& value, const char* name);
+bool parseJson(float& r, const rapidjson::Value& value, const char* name, bool required=true);
 
-bool parseJson(bool& r, const rapidjson::Value& value, const char* name);
+bool parseJson(bool& r, const rapidjson::Value& value, const char* name, bool required=true);
 
-bool parseJson(double& r, const rapidjson::Value& value, const char* name);
+bool parseJson(double& r, const rapidjson::Value& value, const char* name, bool required=true);
 
-bool parseJson(std::string& r, const rapidjson::Value& value, const char* name);
+bool parseJson(std::string& r, const rapidjson::Value& value, const char* name, bool required=true);
 
-bool parseJson(std::vector<int>& r, const rapidjson::Value& value, const char* name);
+bool parseJson(std::vector<int>& r, const rapidjson::Value& value, const char* name, bool required=true);
 
-bool parseJson(std::vector<float>& r, const rapidjson::Value& value, const char* name);
+bool parseJson(std::vector<float>& r, const rapidjson::Value& value, const char* name, bool required=true);
 
-bool parseJson(std::vector<double>& r, const rapidjson::Value& value, const char* name);
+bool parseJson(std::vector<double>& r, const rapidjson::Value& value, const char* name, bool required=true);
 
-bool parseJson(std::vector<bool>& r, const rapidjson::Value& value, const char* name);
+bool parseJson(std::vector<bool>& r, const rapidjson::Value& value, const char* name, bool required=true);
 
-bool parseJson(std::vector<std::string>& r, const rapidjson::Value& value, const char* name);
+bool parseJson(std::vector<std::string>& r, const rapidjson::Value& value, const char* name, bool required=true);
 
 bool parseJson(std::vector<JsonParseParam>& params, const rapidjson::Value& value);
 

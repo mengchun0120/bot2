@@ -3,7 +3,6 @@
 
 #include <rapidjson/document.h>
 #include "gameobj/bot_game_object_type.h"
-#include "gameobj/bot_game_object_flag.h"
 
 namespace bot {
 
@@ -14,74 +13,46 @@ public:
     virtual ~GameObjectTemplate()
     {}
 
+    bool init(const rapidjson::Value& elem);
+
     GameObjectType getType() const
     {
         return m_type;
     }
 
-    bool init(const rapidjson::Value& elem);
-
-    float getCoverBreathX() const
+    float getCoverBreath() const
     {
-        return m_coverBreathX;
+        return m_coverBreath;
     }
 
-    void setCoverBreathX(float breathX)
+    bool setCoverBreath(float breath);
+
+    float getCollideBreath() const
     {
-        m_coverBreathX = breathX;
+        return m_collideBreath;
     }
 
-    float getCoverBreathY() const
-    {
-        return m_coverBreathY;
-    }
-
-    void setCoverBreathY(float breathY)
-    {
-        m_coverBreathY = breathY;
-    }
-
-    float getCollideBreathX() const
-    {
-        return m_collideBreathX;
-    }
-
-    void setCollideBreathX(float collideBreathX)
-    {
-        m_collideBreathX = collideBreathX;
-    }
-
-    float getCollideBreathY() const
-    {
-        return m_collideBreathY;
-    }
-
-    void setCollideBreathY(float collideBreathY)
-    {
-        m_collideBreathY = collideBreathY;
-    }
+    bool setCollideBreath(float breath);
 
     int getFlags() const
     {
         return m_flags;
     }
 
-    void clearFlag(GameObjectFlag flag)
+    void clearFlags(int mask)
     {
-        m_flags &= ~(static_cast<int>(flag));
+        m_flags &= ~mask;
     }
 
-    void setFlag(GameObjectFlag flag)
+    void setFlags(int mask)
     {
-        m_flags |= static_cast<int>(flag);
+        m_flags |= flag;
     }
 
 protected:
     GameObjectType m_type;
-    float m_coverBreathX;
-    float m_coverBreathY;
-    float m_collideBreathX;
-    float m_collideBreathY;
+    float m_coverBreath;
+    float m_collideBreath;
     int m_flags;
 };
 
