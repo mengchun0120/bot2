@@ -1,3 +1,5 @@
+#include <algorithm>
+#include <cmath>
 #include "misc/bot_log.h"
 #include "misc/bot_json_utils.h"
 #include "structure/bot_named_map.h"
@@ -226,6 +228,8 @@ bool PlayerTemplate::init(const std::string& fileName, const NamedMap<Texture>& 
         return false;
     }
 
+    configCoverCollideBreath();
+
     return true;
 }
 
@@ -299,6 +303,41 @@ bool PlayerTemplate::setMoverLevel(int level)
 
     m_moverLevel = level;
     return true;
+}
+
+void PlayerTemplate::configCoverCollideBreath()
+{
+    if (!m_baseTemplate)
+    {
+        return;
+    }
+
+    const Rectangle* rect = m_baseTemplate->getRect();
+    m_coverBreath = std::max(rect->getWidth(), rect->getHeight()) / 2.0f;
+
+    if (m_weaponTemplate)
+    {
+        rect = m_weaponTemplate->getRect();
+        float d = dist(0.0f, 0.0f, m_baseTemplate->getWeaponPosX(), m_baseTemplate->getWeaponPosY());
+        float breath = d + std::max(rect->getWidth(), rect->getHeight()) / 2.0f;
+        if (breath > m_coverBreah)
+        {
+            m_coverBreath = breath;
+        }
+    }
+
+    if (m_moverTemplate)
+    {
+        rect = m_moverTemplate->getRect();
+        float d = dist(0.0f, 0.0f, m_baseTemplate->getMoverPosX(), m_baseTemplate->getMoverPosY());
+        float breath = d + std::max(rect->getWidth(), rect->getHeight()) / 2.0f;
+        if (breath > m_coverBreath)
+        {
+            m_coverBreath = breath;
+        }
+    }
+
+    m_collideBreath = m_coverBreath * sqrt(2.0) / 2.0;
 }
 
 } // end of namespace bot
