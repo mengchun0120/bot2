@@ -1,6 +1,7 @@
 #ifndef INCLUDE_BOT_BASE_TEMPLATE
 #define INCLUDE_BOT_BASE_TEMPLATE
 
+#include <string>
 #include "misc/bot_constants.h"
 #include "gametemplate/bot_single_unit_template.h"
 

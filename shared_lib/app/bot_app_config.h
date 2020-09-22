@@ -142,14 +142,19 @@ public:
         return m_aiLib;
     }
 
-    const std::string& getComponentTemplateLib() const
+    const std::string& getBaseTemplateLib() const
     {
-        return m_componentTemplateLib;
+        return m_baseTemplateLib;
     }
 
-    const std::string& getRobotClassLib() const
+    const std::string& getWeaponTemplateLib() const
     {
-        return m_robotClassLib;
+        return m_weaponTemplateLib;
+    }
+
+    const std::string& getMoverTemplateLib() const
+    {
+        return m_moverTemplateLib;
     }
 
     const std::string& getAIRobotTemplateLib() const
@@ -165,11 +170,6 @@ public:
     const std::string& getPlayerTemplateLib() const
     {
         return m_playerTemplateLib;
-    }
-
-    const std::string& getPlayerDataFile() const
-    {
-        return m_playerDataFile;
     }
 
     const std::string& getDashboardConfigFile() const
@@ -268,12 +268,12 @@ private:
     std::string m_missileTemplateLib;
     std::string m_goodieTemplateLib;
     std::string m_aiLib;
-    std::string m_componentTemplateLib;
-    std::string m_robotClassLib;
+    std::string m_baseTemplateLib;
+    std::string m_weaponTemplateLib;
+    std::string m_moverTemplateLib;
     std::string m_aiRobotTemplateLib;
     std::string m_progressRingLib;
     std::string m_playerTemplateLib;
-    std::string m_playerDataFile;
     std::string m_dashboardConfigFile;
     std::string m_buttonConfigFile;
     std::string m_startScreenConfigFile;

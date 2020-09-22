@@ -80,6 +80,18 @@ FirePoint& FirePoint::operator=(const FirePoint& fp)
     return *this;
 }
 
+WeaponTemplate* WeaponTemplate::Parser::create(std::string& name, const rapidjson::Value& elem)
+{
+    WeaponTemplate* t = new WeaponTemplate();
+    if (!t->init(m_textureLib, m_rectLib, m_missileLib, elem))
+    {
+        delete t;
+        return nullptr;
+    }
+
+    return t;
+}
+
 WeaponTemplate::WeaponTemplate()
     : m_fireDuration(0.0f)
     , m_fireDurReductionPerLevel(0.0f)

@@ -1,6 +1,7 @@
 #ifndef INCLUDE_BOT_WEAPON_TEMPLATE
 #define INCLUDE_BOT_WEAPON_TEMPLATE
 
+#include <string>
 #include <vector>
 #include "misc/bot_constants.h"
 #include "gametemplate/bot_single_unit_template.h"
@@ -27,9 +28,11 @@ class WeaponTemplate: public SingleUnitTemplate {
 public:
     class Parser {
     public:
-        Parser(const NamedMap<Texture>& textureLib, const NamedMap<Rectangle>& rectLib)
+        Parser(const NamedMap<Texture>& textureLib, const NamedMap<Rectangle>& rectLib,
+               const NamedMap<MissileTemplate>& missileLib)
             : m_textureLib(textureLib)
             , m_rectLib(rectLib)
+            , m_missileLib(missileLib)
         {}
 
         ~Parser()
@@ -40,6 +43,7 @@ public:
     private:
         const NamedMap<Texture>& m_textureLib;
         const NamedMap<Rectangle>& m_rectLib;
+        const NamedMap<MissileTemplate>& m_missileLib;
     };
 
 public:

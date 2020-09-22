@@ -7,6 +7,18 @@
 
 namespace bot {
 
+MoverTemplate* MoverTemplate::Parser::create(const std::string& name, const rapidjson::Value& elem)
+{
+    MoverTemplate* t = new MoverTemplate();
+    if (!t->init(m_textureLib, m_rectLib, elem))
+    {
+        delete t;
+        return nullptr;
+    }
+
+    return t;
+}
+
 bool MoverTemplate::init(const NamedMap<Texture>& textureLib, const NamedMap<Rectangle>& rectLib,
                          const rapidjson::Value& elem)
 {

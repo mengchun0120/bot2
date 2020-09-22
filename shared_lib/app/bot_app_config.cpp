@@ -64,12 +64,12 @@ bool AppConfig::readConfig(const std::string& cfgFile)
         {&m_goodieTemplateLib,         "goodieTemplateLib",         JSONTYPE_STRING},
         {&m_particleEffectTemplateLib, "particleEffectTemplateLib", JSONTYPE_STRING},
         {&m_aiLib,                     "aiLib",                     JSONTYPE_STRING},
-        {&m_componentTemplateLib,      "componentTemplateLib",      JSONTYPE_STRING},
-        {&m_robotClassLib,             "robotClassLib",             JSONTYPE_STRING},
+        {&m_baseTemplateLib,           "baseTemplateLib",           JSONTYPE_STRING},
+        {&m_weaponTemplateLib,         "weaponTemplateLib",         JSONTYPE_STRING},
+        {&m_moverTemplateLib,          "moverTemplateLib",          JSONTYPE_STRING},
         {&m_aiRobotTemplateLib,        "aiRobotTemplateLib",        JSONTYPE_STRING},
         {&m_progressRingLib,           "progressRingLib",           JSONTYPE_STRING},
         {&m_playerTemplateLib,         "playerTemplateLib",         JSONTYPE_STRING},
-        {&m_playerDataFile,            "playerDataFile",            JSONTYPE_STRING},
         {&m_dashboardConfigFile,       "dashboardConfig",           JSONTYPE_STRING},
         {&m_buttonConfigFile,          "buttonConfig",              JSONTYPE_STRING},
         {&m_startScreenConfigFile,     "startScreenConfig",         JSONTYPE_STRING},
@@ -111,12 +111,12 @@ void AppConfig::marshalConfig()
     m_missileTemplateLib        = constructPath({ m_libDir, m_missileTemplateLib });
     m_goodieTemplateLib         = constructPath({ m_libDir, m_goodieTemplateLib });
     m_aiLib                     = constructPath({ m_libDir, m_aiLib });
-    m_componentTemplateLib      = constructPath({ m_libDir, m_componentTemplateLib });
-    m_robotClassLib             = constructPath({ m_libDir, m_robotClassLib });
+    m_baseTemplateLib           = constructPath({ m_libDir, m_baseTemplateLib });
+    m_weaponTemplateLib         = constructPath({ m_libDir, m_weaponTemplateLib });
+    m_moverTemplateLib          = constructPath({ m_libDir, m_moverTemplateLib });
     m_aiRobotTemplateLib        = constructPath({ m_libDir, m_aiRobotTemplateLib });
     m_progressRingLib           = constructPath({ m_libDir, m_progressRingLib });
     m_playerTemplateLib         = constructPath({ m_libDir, m_playerTemplateLib });
-    m_playerDataFile            = constructPath({ m_saveDir, m_playerDataFile });
     m_dashboardConfigFile       = constructPath({ m_libDir, m_dashboardConfigFile });
     m_buttonConfigFile          = constructPath({ m_libDir, m_buttonConfigFile });
     m_startScreenConfigFile     = constructPath({ m_libDir, m_startScreenConfigFile });
