@@ -52,7 +52,7 @@ bool Base::init(const BaseTemplate* t, int level, float x, float y, float direct
     m_power = m_maxPower;
     m_powerRestoreRate = t->getPowerRestoreRate(level);
 
-    updateWeaponMoverPos(x, y, directionX, directionY);
+    setWeaponMoverPos(x, y, directionX, directionY);
 
     m_lastUpdateTime = Clock::now();
 
@@ -82,7 +82,15 @@ void Base::present(Graphics& g, const float* pos, const float* direction)
     t->getRect()->draw(g, pos, direction, nullptr, nullptr, t->getTexture()->textureId(), nullptr);
 }
 
-void Base::updateWeaponMoverPos(float x, float y, float directionX, float directionY)
+void Base::shiftWeaponMoverPos(float deltaX, float deltaY)
+{
+    m_weaponPos[0] += deltaX;
+    m_weaponPos[1] += deltaY;
+    m_moverPos[0] += deltaX;
+    m_moverPos[1] += deltaY;
+}
+
+void Base::setWeaponMoverPos(float x, float y, float directionX, float directionY)
 {
     float dx = m_baseTemplate->getWeaponPosX();
     float dy = m_baseTemplate->getWeaponPosY();

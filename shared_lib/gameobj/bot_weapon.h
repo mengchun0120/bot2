@@ -1,25 +1,30 @@
-#ifndef INCLUDE_BOT_WEAPON_COMPONENT
-#define INCLUDE_BOT_WEAPON_COMPONENT
+#ifndef INCLUDE_BOT_WEAPON
+#define INCLUDE_BOT_WEAPON
 
 #include "misc/bot_time_utils.h"
-#include "gametemplate/bot_weapon_component_template.h"
-#include "gameobj/bot_component.h"
 
 namespace bot {
 
-class WeaponComponent: public Component {
-public:
-    WeaponComponent(const WeaponComponentTemplate* weaponTemplate, const MissileTemplate* missileTemplate);
+class WeaponTemplate;
+class MissileTemplate;
+class GameScreen;
+class Base;
+class Graphics;
 
-    virtual ~WeaponComponent()
+class Weapon {
+public:
+    Weapon();
+
+    virtual ~Weapon()
     {}
 
-    const WeaponComponentTemplate* getTemplate() const
-    {
-        return static_cast<const WeaponComponentTemplate*>(m_template);
-    }
+    bool init(const WeaponTemplate* weaponTemplate, int weaponLevel,
+              const MissileTemplate* missileTemplate, int missileLevel,
+              float weaponX, float weaponY, float directionX, float directionY);
 
-    virtual void update(GameScreen& screen);
+    void update(GameScreen& screen, Base& base);
+
+    void present(Graphics& g, const float* pos, const float* direction);
 
     bool isFiring() const
     {
@@ -35,26 +40,24 @@ public:
 
     void setFirePoints(float weaponX, float weaponY, float directionX, float directionY);
 
-    float getFireDuration() const
-    {
-        return getTemplate()->getFireDuration() * m_fireDurationMultiplier;
-    }
+    bool setFireDurationMultiplier(float multiplier);
 
-    void setFireDurationMultiplier(float multiplier)
-    {
-        m_fireDurationMultiplier = multiplier;
-    }
+    bool setDamageMultiplier(float multiplier);
 
-    void setDamageMultiplier(float multiplier)
-    {
-        m_damageMultipler = multiplier;
-    }
+private:
+    void resetFireDuration();
+
+    void fireMissile(GameScreen& screen, Base& base);
 
 protected:
+    const WeaponTemplate* m_weaponTemplate;
+    int m_weaponLevel;
     const MissileTemplate* m_missileTemplate;
+    int m_missileLevel;
     bool m_firing;
     std::vector<FirePoint> m_firePoints;
     TimePoint m_lastFireTime;
+    float m_fireDuration;
     float m_fireDurationMultiplier;
     float m_damageMultipler;
 };

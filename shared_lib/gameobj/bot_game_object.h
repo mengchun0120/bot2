@@ -48,64 +48,54 @@ public:
         m_pos[1] = y;
     }
 
-    float getCoverBreathX() const
+    float getCoverBreath() const
     {
-        return m_template->getCoverBreathX();
+        return m_template->getCoverBreath();
     }
 
-    float getCoverBreathY() const
+    float getCollideBreath() const
     {
-        return m_template->getCoverBreathY();
-    }
-
-    float getCollideBreathX() const
-    {
-        return m_template->getCollideBreathX();
-    }
-
-    float getCollideBreathY() const
-    {
-        return m_template->getCollideBreathY();
+        return m_template->getCollideBreath();
     }
 
     float getCoverLeft() const
     {
-        return m_pos[0] - m_template->getCoverBreathX();
+        return m_pos[0] - m_template->getCoverBreath();
     }
 
     float getCoverBottom() const
     {
-        return m_pos[1] - m_template->getCoverBreathY();
+        return m_pos[1] - m_template->getCoverBreath();
     }
 
     float getCoverRight() const
     {
-        return m_pos[0] + m_template->getCoverBreathX();
+        return m_pos[0] + m_template->getCoverBreath();
     }
 
     float getCoverTop() const
     {
-        return m_pos[1] + m_template->getCoverBreathY();
+        return m_pos[1] + m_template->getCoverBreath();
     }
 
     float getCollideLeft() const
     {
-        return m_pos[0] - m_template->getCollideBreathX();
+        return m_pos[0] - m_template->getCollideBreath();
     }
 
     float getCollideBottom() const
     {
-        return m_pos[1] - m_template->getCollideBreathY();
+        return m_pos[1] - m_template->getCollideBreath();
     }
 
     float getCollideRight() const
     {
-        return m_pos[0] + m_template->getCollideBreathX();
+        return m_pos[0] + m_template->getCollideBreath();
     }
 
     float getCollideTop() const
     {
-        return m_pos[1] + m_template->getCollideBreathY();
+        return m_pos[1] + m_template->getCollideBreath();
     }
 
     int getCoverStartRow() const

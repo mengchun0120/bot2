@@ -1,24 +1,25 @@
-#ifndef INCLUDE_BOT_MOVER_COMPONENT
-#define INCLUDE_BOT_MOVER_COMPONENT
-
-#include "gametemplate/bot_mover_component_template.h"
-#include "gameobj/bot_component.h"
+#ifndef INCLUDE_BOT_MOVER
+#define INCLUDE_BOT_MOVER
 
 namespace bot {
 
-class MoverComponent: public Component {
-public:
-    MoverComponent(const MoverComponentTemplate* t);
+class MoverTemplate;
+class GameScreen;
+class Robot;
+class Graphics;
 
-    virtual ~MoverComponent()
+class Mover {
+public:
+    Mover();
+
+    virtual ~Mover()
     {}
 
-    const MoverComponentTemplate* getTemplate() const
-    {
-        return static_cast<const MoverComponentTemplate*>(m_template);
-    }
+    bool init(const MoverTemplate* moverTemplate, int moverLevel);
 
-    virtual void update(GameScreen& screen);
+    void update(GameScreen& screen, Robot& robot, float delta);
+
+    void present(Graphics& g, const float* pos, const float* direction);
 
     bool isMoving() const
     {
@@ -32,16 +33,19 @@ public:
 
     float getSpeed() const
     {
-        return getTemplate()->getSpeed() * m_speedMultiplier;
+        return m_speed;
     }
 
-    void setSpeedMultiplier(float multiplier)
-    {
-        m_speedMultiplier = multiplier;
-    }
+    bool setSpeedMultiplier(float multiplier);
+
+private:
+    void resetSpeed();
 
 protected:
+    const MoverTemplate* m_moverTemplate;
+    int m_moverLevel;
     bool m_moving;
+    float m_speed;
     float m_speedMultiplier;
 };
 

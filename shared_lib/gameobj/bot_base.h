@@ -93,7 +93,9 @@ public:
         return m_moverPos;
     }
 
-    void updateWeaponMoverPos(float x, float y, float directionX, float directionY);
+    void shiftWeaponMoverPos(float deltaX, float deltaY);
+
+    void setWeaponMoverPos(float x, float y, float directionX, float directionY);
 
 protected:
     const BaseTemplate* m_baseTemplate;
