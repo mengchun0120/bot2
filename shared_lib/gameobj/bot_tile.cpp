@@ -1,23 +1,38 @@
-#include "misc/bot_math_utils.h"
 #include "geometry/bot_rectangle.h"
-#include "opengl/bot_simple_shader_program.h"
 #include "opengl/bot_texture.h"
-#include "opengl/bot_color.h"
+#include "opengl/bot_graphics.h"
+#include "gametemplate/bot_tile_template.h"
 #include "gameobj/bot_tile.h"
 
 namespace bot {
 
-Tile::Tile(const TileTemplate* tileTemplate)
-    : GameObject(tileTemplate)
-    , m_hp(tileTemplate->getHP())
+Tile::Tile()
+    : m_hp(0.0f)
+    , m_level(1)
 {
-    m_flags = tileTemplate->getFlags();
     m_pos[0] = 0.0f;
     m_pos[1] = 0.0f;
 }
 
-Tile::~Tile()
-{}
+bool Tile::init(const TileTemplate* tileTemplate, int level, float x, float y)
+{
+    if (!GameObject::init(tileTemplate, x, y))
+    {
+        return false;
+    }
+
+    if (level < 1)
+    {
+        LOG_ERROR("Invalid tile level %d", level);
+        return false;
+    }
+
+    m_level = level;
+    m_hp = tileTemplate->getHP(level);
+    m_flags = tileTemplate->getFlags();
+
+    return true;
+}
 
 void Tile::present(Graphics& g)
 {
@@ -49,10 +64,5 @@ bool Tile::addHP(int deltaHP)
     return m_hp > 0;
 }
 
-void Tile::setPos(float x, float y)
-{
-    m_pos[0] = x;
-    m_pos[1] = y;
-}
-
 } // end of namespace bot
+

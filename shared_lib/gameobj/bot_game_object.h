@@ -14,10 +14,12 @@ class Graphics;
 
 class GameObject: public DoubleLinkedItem {
 public:
-    GameObject(const GameObjectTemplate* t);
+    GameObject();
 
     virtual ~GameObject()
     {}
+
+    bool init(const GameObjectTemplate* t, float x, float y);
 
     GameObjectType getType() const
     {

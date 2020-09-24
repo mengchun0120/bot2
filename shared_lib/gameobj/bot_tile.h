@@ -1,8 +1,6 @@
 #ifndef INCLUDE_BOT_TILE
 #define INCLUDE_BOT_TILE
 
-#include "misc/bot_constants.h"
-#include "gametemplate/bot_tile_template.h"
 #include "gameobj/bot_game_object.h"
 
 namespace bot {
@@ -11,20 +9,16 @@ class TileTemplate;
 
 class Tile : public GameObject {
 public:
-    Tile(const TileTemplate* tileTemplate);
+    Tile();
 
-    virtual ~Tile();
+    virtual ~Tile()
+    {}
 
-    const TileTemplate* getTemplate() const
-    {
-        return static_cast<const TileTemplate*>(m_template);
-    }
+    bool init(const TileTemplate* tileTemplate, int level, float x, float y);
 
     virtual void present(Graphics& g);
 
     virtual void update(float delta, GameScreen& screen);
-
-    void setPos(float x, float y);
 
     int getHP() const
     {
@@ -35,6 +29,7 @@ public:
 
 protected:
     int m_hp;
+    int m_level;
 };
 
 } // end of namespace bot
