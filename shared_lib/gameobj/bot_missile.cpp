@@ -1,5 +1,6 @@
 #include "misc/bot_log.h"
 #include "opengl/bot_texture.h"
+#include "opengl/bot_graphics.h"
 #include "geometry/bot_rectangle.h"
 #include "gameutil/bot_collide.h"
 #include "gameobj/bot_robot.h"
@@ -10,31 +11,42 @@
 namespace bot {
 
 Missile::Missile()
-    : GameObject(nullptr)
-    , m_shooter(nullptr)
-    , m_side(SIDE_UNKNOWN)
-    , m_damageMultiplier(1.0f)
+    : m_shooter(nullptr)
+    , m_damage(0.0f)
 {
     m_direction[0] = 0.0f;
     m_direction[1] = 0.0f;
 }
 
-Missile::Missile(const MissileTemplate* t)
-    : GameObject(t)
-    , m_shooter(nullptr)
-    , m_side(SIDE_UNKNOWN)
+bool Missile::init(const MissileTemplate* t, const Robot* shooter, float damage, float x, float y,
+                   float directionX, float directionY)
 {
-    m_direction[0] = 0.0f;
-    m_direction[1] = 0.0f;
-}
+    if (!GameObject::init(t, x, y))
+    {
+        return false;
+    }
 
-Missile::~Missile()
-{
+    if (!shooter)
+    {
+        LOG_ERROR("shooter is null");
+        return false;
+    }
+
+    if (damage <= 0.0f)
+    {
+        LOG_ERROR("Invalid damage %f", damage);
+        return false;
+    }
+
+    setDirection(directionX, directionY);
+    m_shooter = shooter;
+    m_damage = damage;
+    return true;
 }
 
 void Missile::present(Graphics& g)
 {
-    const MissileTemplate* t = getTemplate();
+    const MissileTemplate* t = static_cast<const MissileTemplate*>(m_template);
     t->getRect()->draw(g, m_pos, m_direction, nullptr, nullptr, t->getTexture()->textureId(), t->getColor());
 }
 
@@ -165,7 +177,7 @@ bool Missile::checkExplosion(GameObject* obj, float left, float bottom, float ri
     if (obj->getType() == GAME_OBJ_TYPE_ROBOT)
     {
         Robot* robot = static_cast<Robot*>(obj);
-        if (robot->getSide() == m_side)
+        if (robot->getSide() == shooter->getSide())
         {
             return true;
         }

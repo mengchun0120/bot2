@@ -1,17 +1,15 @@
 #ifndef INCLUDE_BOT_ROBOT
 #define INCLUDE_BOT_ROBOT
 
-#include "misc/bot_time_utils.h"
 #include "structure/bot_linked_list.h"
 #include "gameutil/bot_game_object_item.h"
 #include "gametemplate/bot_robot_template.h"
-#include "gametemplate/bot_mover_component_template.h"
 #include "gameobj/bot_game_object.h"
 #include "gameobj/bot_side.h"
 #include "gameobj/bot_action.h"
-#include "gameobj/bot_base_component.h"
-#include "gameobj/bot_weapon_component.h"
-#include "gameobj/bot_mover_component.h"
+#include "gameobj/bot_base.h"
+#include "gameobj/bot_weapon.h"
+#include "gameobj/bot_mover.h"
 
 namespace bot {
 
@@ -21,12 +19,15 @@ class Robot : public GameObject {
     };
 
 public:
-    Robot(const RobotTemplate* t, const BaseComponentTemplate* baseTemplate,
-          const WeaponComponentTemplate* weaponTemplate, const MoverComponentTemplate* moverTemplate,
-          const MissileTemplate* missileTemplate, float x, float y, float directionX, float directionY,
-          Side side);
+    Robot();
 
-    virtual ~Robot();
+    virtual ~Robot()
+    {}
+
+    bool init(const RobotTemplate* t, Side side, int hpLevel, int hpRestoreLevel,
+              int armorLevel, int armorRepairLevel, int powerLevel, int powerRestoreLevel,
+              int weaponLevel, int missileLevel, int moverLevel, float x, float y,
+              float directionX, float directionY);
 
     virtual void present(Graphics& g);
 
@@ -105,22 +106,6 @@ public:
         return m_side;
     }
 
-    const TimePoint& getLastChangeActionTime() const
-    {
-        return m_lastChangeActionTime;
-    }
-
-    const TimePoint& getLastChangeDirectionTime() const
-    {
-        return m_lastChangeDirectionTime;
-    }
-
-    Action getCurAction() const
-    {
-        return m_curAction;
-    }
-
-    void setCurAction(Action action);
 
     virtual bool updateMoveAbility(float delta, GameScreen& gameScreen);
 
@@ -140,12 +125,7 @@ protected:
     WeaponComponent m_weapon;
     MoverComponent m_mover;
     float m_direction[Constants::NUM_FLOATS_PER_POSITION];
-    float m_weaponPos[Constants::NUM_FLOATS_PER_POSITION];
-    float m_moverPos[Constants::NUM_FLOATS_PER_POSITION];
     Side m_side;
-    TimePoint m_lastChangeActionTime;
-    TimePoint m_lastChangeDirectionTime;
-    Action m_curAction;
     char m_hpStr[HP_STR_LEN];
 };
 

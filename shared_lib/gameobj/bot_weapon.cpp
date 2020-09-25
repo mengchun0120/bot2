@@ -11,10 +11,10 @@ namespace bot {
 
 Weapon::Weapon()
     : m_weaponTemplate(nullptr)
-    , m_weaponLevel(1)
     , m_missileTemplate(nullptr)
     , m_missileLevel(1)
     , m_firing(false)
+    , m_normalFireDuration(0.0f)
     , m_fireDuration(0.0f)
     , m_fireDurationMultiplier(1.0f)
     , m_damageMultiplier(1.0f)
@@ -31,7 +31,6 @@ bool Weapon::init(const WeaponTemplate* weaponTemplate, int weaponLevel,
         LOG_ERROR("Invalid weapon-level %d", weaponLevel);
         return false;
     }
-    m_weaponLevel = weaponLevel;
 
     m_missileTemplate = missileTemplate;
     if (missileLevel < 1)
@@ -42,6 +41,7 @@ bool Weapon::init(const WeaponTemplate* weaponTemplate, int weaponLevel,
     m_missileLevel = missileLevel;
 
     m_firing = false;
+    m_normalFireDuration = weaponTemplate->getFireDuration(m_weaponLevel);
     m_fireDurationMultiplier = 1.0f;
     m_damageMultiplier = 1.0f;
 
@@ -140,7 +140,12 @@ bool Weapon::setDamageMultiplier(float multiplier)
 
 void Weapon::resetFireDuration()
 {
-    m_fireDuration = m_weaponTemplate->getFireDuration(m_weaponLevel) * m_fireDurationMultiplier;
+    const float MIN_FIRE_DURATION = 100.0f;
+    m_fireDuration = m_normalFireDuration * m_fireDurationMultiplier;
+    if (m_fireDuration < MIN_FIRE_DURATION)
+    {
+        m_fireDuration = MIN_FIRE_DURATION;
+    }
 }
 
 void Weapon::fireMissile(GameScreen& screen, Base& base)

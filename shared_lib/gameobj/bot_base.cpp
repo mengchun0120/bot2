@@ -8,7 +8,6 @@ namespace bot {
 
 Base::Base()
     : m_baseTemplate(nullptr)
-    , m_level(1)
     , m_hp(0.0f)
     , m_maxHP(0.0f)
     , m_hpRestoreRate(0.0f)
@@ -22,7 +21,9 @@ Base::Base()
 {
 }
 
-bool Base::init(const BaseTemplate* t, int level, float x, float y, float directionX, float directionY)
+bool Base::init(const BaseTemplate* t, int hpLevel, int hpRestoreLevel, int armorLevel,
+                int armorRepairLevle, int powerLevel, int powerRestoreLevel,
+                float x, float y, float directionX, float directionY)
 {
     if (!t)
     {
@@ -30,27 +31,56 @@ bool Base::init(const BaseTemplate* t, int level, float x, float y, float direct
         return false;
     }
 
-    if (level <= 0)
+    if (hpLevel <= 0)
     {
-        LOG_ERROR("Invalid level %d", level);
+        LOG_ERROR("Invalid hp-level %d", hpLevel);
+        return false;
+    }
+
+    if (hpRestoreLevel <= 0)
+    {
+        LOG_ERROR("Invalid hp-retore-level %d", hpRestoreLevel);
+        return false;
+    }
+
+    if (armorLevel <= 0)
+    {
+        LOG_ERROR("Invalid armor-level %d", armorLevel);
+        return false;
+    }
+
+    if (armorRepairLevel <= 0)
+    {
+        LOG_ERROR("Invalid armor-repair-level %d", armorRepairLevel);
+        return false;
+    }
+
+    if (powerLevel <= 0)
+    {
+        LOG_ERROR("Invalid power-level %d", powerLevel);
+        return false;
+    }
+
+    if (powerRestoreLevel <= 0)
+    {
+        LOG_ERROR("Invalid power-restore-level %d", powerRestoreLevel);
         return false;
     }
 
     m_baseTemplate = t;
-    m_level = level;
 
-    m_maxHP = t->getHP(level);
+    m_maxHP = t->getHP(hpLevel);
     m_hp = m_maxHP;
-    m_hpRestoreRate = t->getHPRestoreRate(level);
+    m_hpRestoreRate = t->getHPRestoreRate(hpRestoreLevel);
     m_hpRatio = 1.0f;
 
-    m_maxArmor = t->getArmor(level);
+    m_maxArmor = t->getArmor(armorLevel);
     m_armor = m_maxArmor;
-    m_armorRepairRate = t->getArmorRepairRate(level);
+    m_armorRepairRate = t->getArmorRepairRate(armorRestoreLevel);
 
-    m_maxPower = t->getPower(level);
+    m_maxPower = t->getPower(powerLevel);
     m_power = m_maxPower;
-    m_powerRestoreRate = t->getPowerRestoreRate(level);
+    m_powerRestoreRate = t->getPowerRestoreRate(powerRestoreLevel);
 
     setWeaponMoverPos(x, y, directionX, directionY);
 

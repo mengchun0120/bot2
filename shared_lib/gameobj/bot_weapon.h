@@ -51,12 +51,12 @@ private:
 
 protected:
     const WeaponTemplate* m_weaponTemplate;
-    int m_weaponLevel;
     const MissileTemplate* m_missileTemplate;
     int m_missileLevel;
     bool m_firing;
     std::vector<FirePoint> m_firePoints;
     TimePoint m_lastFireTime;
+    float m_normalFireDuration;
     float m_fireDuration;
     float m_fireDurationMultiplier;
     float m_damageMultipler;

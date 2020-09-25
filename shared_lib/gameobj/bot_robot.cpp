@@ -8,39 +8,67 @@
 
 namespace bot {
 
-Robot::Robot(const RobotTemplate* t, const BaseComponentTemplate* baseTemplate,
-             const WeaponComponentTemplate* weaponTemplate, const MoverComponentTemplate* moverTemplate,
-             const MissileTemplate* missileTemplate, float x, float y, float directionX, float directionY,
-             Side side)
-    : GameObject(t)
-    , m_base(baseTemplate)
-    , m_weapon(weaponTemplate, missileTemplate)
-    , m_mover(moverTemplate)
-    , m_side(side)
-    , m_lastChangeActionTime(Clock::now())
-    , m_lastChangeDirectionTime(Clock::now())
-    , m_curAction(ACTION_NONE)
+Robot::Robot()
+    : m_side(SIDE_UNKNOWN)
 {
-    m_pos[0] = x;
-    m_pos[1] = y;
-    m_direction[0] = directionX;
-    m_direction[1] = directionY;
-
-    resetWeaponPos();
-    resetMoverPos();
-
-    resetHPStr();
+    m_direction[0] = 0.0f;
+    m_direction[1] = 0.0f;
 }
 
 Robot::~Robot()
 {
 }
 
+bool Robot::init(const RobotTemplate* t, Side side, int hpLevel, int hpRestoreLevel,
+                 int armorLevel, int armorRepairLevel, int powerLevel, int powerRestoreLevel,
+                 int weaponLevel, int missileLevel, int moverLevel, float x, float y,
+                 float directionX, float directionY)
+{
+    bool ret = GameObject::init(t, x, y);
+    if (!ret)
+    {
+        return false;
+    }
+
+    ret = m_base.init(t->getBaseTemplate(), hpLevel, hpRestoreLevel, armorLevel,
+                      armorRepairLevel, powerLevel, powerRestoreLevel, x, y,
+                      directionX, directionY);
+    if (!ret)
+    {
+        return false;
+    }
+
+    ret = m_weapon.init(t->getWeaponTemplate(), weaponLevel, t->getMissileTemplate(), missileLevel,
+                        m_base.getWeaponX(), m_base.getWeaponY(), directionX, directionY);
+    if (!ret)
+    {
+        return false;
+    }
+
+    ret = m_mover.init(t->getMoverTemplate(), moverLevel);
+    if (!ret)
+    {
+        return false;
+    }
+
+    if (side != SIDE_AI && side != SIDE_PLAYER)
+    {
+        LOG_ERROR("Invalid side %d", static_cast<int>(side));
+        return false;
+    }
+
+    m_side = side;
+
+    setDirection(directionX, directionY);
+
+    return true;
+}
+
 void Robot::present(Graphics& g)
 {
+    m_weapon.present(g, m_base.getWeaponPos(), m_direction);
     m_base.present(g, m_pos, m_direction);
-    m_weapon.present(g, m_weaponPos, m_direction);
-    m_mover.present(g, m_moverPos, m_direction);
+    m_mover.present(g, m_base.getMoverPos(), m_direction);
 }
 
 void Robot::shiftPos(float deltaX, float deltaY)

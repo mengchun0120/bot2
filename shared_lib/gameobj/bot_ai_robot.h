@@ -1,6 +1,7 @@
 #ifndef INCLUDE_BOT_AI_ROBOT
 #define INCLUDE_BOT_AI_ROBOT
 
+#include "misc/bot_time_utils.h"
 #include "gametemplate/bot_ai_robot_template.h"
 #include "gameobj/bot_robot.h"
 
@@ -31,6 +32,29 @@ public:
     {
         return getTemplate()->getGoodieSpawnProb();
     }
+
+    const TimePoint& getLastChangeActionTime() const
+    {
+        return m_lastChangeActionTime;
+    }
+
+    const TimePoint& getLastChangeDirectionTime() const
+    {
+        return m_lastChangeDirectionTime;
+    }
+
+    Action getCurAction() const
+    {
+        return m_curAction;
+    }
+
+    void setCurAction(Action action);
+
+
+private:
+    TimePoint m_lastChangeActionTime;
+    TimePoint m_lastChangeDirectionTime;
+    Action m_curAction;
 };
 
 } // end of namespace bot
