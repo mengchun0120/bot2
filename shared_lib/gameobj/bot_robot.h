@@ -1,23 +1,19 @@
 #ifndef INCLUDE_BOT_ROBOT
 #define INCLUDE_BOT_ROBOT
 
-#include "structure/bot_linked_list.h"
-#include "gameutil/bot_game_object_item.h"
-#include "gametemplate/bot_robot_template.h"
 #include "gameobj/bot_game_object.h"
 #include "gameobj/bot_side.h"
-#include "gameobj/bot_action.h"
 #include "gameobj/bot_base.h"
 #include "gameobj/bot_weapon.h"
 #include "gameobj/bot_mover.h"
 
 namespace bot {
 
-class Robot : public GameObject {
-    enum {
-        HP_STR_LEN = 30
-    };
+template <typename T> class LinkedList;
+class GameObjectItem;
+class RobotTemplate;
 
+class Robot : public GameObject {
 public:
     Robot();
 
@@ -71,11 +67,6 @@ public:
         return m_hpStr;
     }
 
-    const RobotTemplate* getTemplate() const
-    {
-        return static_cast<const RobotTemplate*>(m_template);
-    }
-
     void setMovingEnabled(bool enabled)
     {
         m_mover.setMoving(enabled);
@@ -106,27 +97,15 @@ public:
         return m_side;
     }
 
-
-    virtual bool updateMoveAbility(float delta, GameScreen& gameScreen);
-
-    virtual void updateShootAbility(GameScreen& gameScreen);
-
 private:
-    void resetWeaponPos();
-
-    void resetMoverPos();
-
     void processCollisions(LinkedList<GameObjectItem>& collideObjs, GameScreen& gameScreen);
 
-    void resetHPStr();
-
 protected:
-    BaseComponent m_base;
-    WeaponComponent m_weapon;
-    MoverComponent m_mover;
+    Base m_base;
+    Weapon m_weapon;
+    Mover m_mover;
     float m_direction[Constants::NUM_FLOATS_PER_POSITION];
     Side m_side;
-    char m_hpStr[HP_STR_LEN];
 };
 
 } // end of namespace bot

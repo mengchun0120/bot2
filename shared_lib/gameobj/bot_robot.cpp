@@ -1,7 +1,10 @@
 #include "misc/bot_log.h"
 #include "misc/bot_math_utils.h"
+#include "structure/bot_linked_list.h"
+#include "gameutil/bot_game_object_item.h"
 #include "gameutil/bot_collide.h"
 #include "gameobj/bot_missile.h"
+#include "gameobj/bot_goodie.h"
 #include "gameobj/bot_robot.h"
 #include "gameobj/bot_player.h"
 #include "screen/bot_game_screen.h"
@@ -13,10 +16,6 @@ Robot::Robot()
 {
     m_direction[0] = 0.0f;
     m_direction[1] = 0.0f;
-}
-
-Robot::~Robot()
-{
 }
 
 bool Robot::init(const RobotTemplate* t, Side side, int hpLevel, int hpRestoreLevel,
@@ -75,13 +74,8 @@ void Robot::shiftPos(float deltaX, float deltaY)
 {
     m_pos[0] += deltaX;
     m_pos[1] += deltaY;
-
-    m_weaponPos[0] += deltaX;
-    m_weaponPos[1] += deltaY;
+    m_base.shiftWeaponMoverPos(deltaX, deltaY);
     m_weapon.shiftFirePoints(deltaX, deltaY);
-
-    m_moverPos[0] += deltaX;
-    m_moverPos[1] += deltaY;
 }
 
 void Robot::setPos(float x, float y)
@@ -93,8 +87,9 @@ void Robot::setDirection(float directionX, float directionY)
 {
     m_direction[0] = directionX;
     m_direction[1] = directionY;
-    resetWeaponPos();
-    resetMoverPos();
+    m_base.setWeaponMoverPos(m_pos[0], m_pos[1], directionX, directionY);
+    m_weapon.setFirePoints(m_base.getWeaponPosX(), m_base.getWeaponPosY(),
+                           directionX, directionY);
 }
 
 bool Robot::addHP(float delta)
@@ -109,8 +104,7 @@ bool Robot::addHP(float delta)
         return true;
     }
 
-    m_base.addHP(delta);
-    resetHPStr();
+    m_base.setHP(m_base.getHP() + delta);
 
     return m_base.getHP() > 0.0f;
 }
@@ -122,46 +116,7 @@ void Robot::refillHP()
         return;
     }
 
-    m_base.restoreHP();
-    resetHPStr();
-}
-
-void Robot::setCurAction(Action action)
-{
-    m_curAction = action;
-    m_lastChangeActionTime = Clock::now();
-}
-
-bool Robot::updateMoveAbility(float delta, GameScreen& gameScreen)
-{
-    return true;
-}
-
-void Robot::updateShootAbility(GameScreen& gameScreen)
-{
-}
-
-void Robot::resetWeaponPos()
-{
-    const RobotTemplate* t = getTemplate();
-    float dx = t->getWeaponPosX();
-    float dy = t->getWeaponPosY();
-
-    rotate(dx, dy, m_direction[0], m_direction[1]);
-    m_weaponPos[0] = m_pos[0] + dx;
-    m_weaponPos[1] = m_pos[1] + dy;
-    m_weapon.setFirePoints(m_weaponPos[0], m_weaponPos[1], m_direction[0], m_direction[1]);
-}
-
-void Robot::resetMoverPos()
-{
-    const RobotTemplate* t = getTemplate();
-    float dx = t->getMoverPosX();
-    float dy = t->getMoverPosY();
-
-    rotate(dx, dy, m_direction[0], m_direction[1]);
-    m_moverPos[0] = m_pos[0] + dx;
-    m_moverPos[1] = m_pos[1] + dy;
+    m_base.refillHP();
 }
 
 void Robot::processCollisions(LinkedList<GameObjectItem>& collideObjs, GameScreen& gameScreen)
@@ -194,9 +149,5 @@ void Robot::processCollisions(LinkedList<GameObjectItem>& collideObjs, GameScree
     }
 }
 
-void Robot::resetHPStr()
-{
-    snprintf(m_hpStr, sizeof(m_hpStr), "%d", static_cast<int>(getHP()));
-}
-
 } // end of namespace bot
+

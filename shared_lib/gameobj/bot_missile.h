@@ -1,12 +1,12 @@
 #ifndef INCLUDE_BOT_MISSILE
 #define INCLUDE_BOT_MISSILE
 
+#include "gametemplate/bot_missile_template.h"
 #include "gameobj/bot_game_object.h"
 
 namespace bot {
 
 class Robot;
-class MissileTemplate;
 
 class Missile: public GameObject {
 public:
@@ -21,6 +21,11 @@ public:
     virtual void present(Graphics& g);
 
     virtual void update(float delta, GameScreen& screen);
+
+    const MissileTemplate* getTemplate() const
+    {
+        return static_cast<MissileTemplate*>(m_template);
+    }
 
     void shiftPos(float deltaX, float deltaY);
 

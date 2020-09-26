@@ -19,7 +19,7 @@ public:
     virtual ~GameObject()
     {}
 
-    bool init(const GameObjectTemplate* t, float x, float y);
+    bool init(const GameObjectTemplate* t, GameObjectType type, float x, float y);
 
     GameObjectType getType() const
     {

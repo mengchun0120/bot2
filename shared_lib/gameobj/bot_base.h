@@ -40,6 +40,11 @@ public:
         m_hp = clamp(hp, 0.0f, m_maxHP);
     }
 
+    void refillHP()
+    {
+        m_hp = m_maxHP;
+    }
+
     float getHPRatio() const
     {
         return m_hpRatio;

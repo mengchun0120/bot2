@@ -41,6 +41,7 @@ bool Missile::init(const MissileTemplate* t, const Robot* shooter, float damage,
     setDirection(directionX, directionY);
     m_shooter = shooter;
     m_damage = damage;
+
     return true;
 }
 
@@ -194,3 +195,4 @@ bool Missile::checkExplosion(GameObject* obj, float left, float bottom, float ri
 }
 
 } // end of namespace bot
+

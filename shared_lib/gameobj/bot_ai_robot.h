@@ -2,27 +2,24 @@
 #define INCLUDE_BOT_AI_ROBOT
 
 #include "misc/bot_time_utils.h"
-#include "gametemplate/bot_ai_robot_template.h"
+#include "gameobj/bot_action.h"
 #include "gameobj/bot_robot.h"
 
 namespace bot {
 
-class AI;
 class AIRobotTemplate;
 
 class AIRobot : public Robot {
 public:
-    AIRobot(const AIRobotTemplate* t, const BaseComponentTemplate* baseTemplate,
-            const WeaponComponentTemplate* weaponTemplate, const MoverComponentTemplate* moverTemplate,
-            const MissileTemplate* missileTemplate, float x, float y, float directionX, float directionY);
+    AIRobot();
 
     virtual ~AIRobot()
     {}
 
-    const AIRobotTemplate* getTemplate() const
-    {
-        return static_cast<const AIRobotTemplate*>(m_template);
-    }
+    bool init(const AIRobotTemplate* t, Side side, int hpLevel, int hpRestoreLevel,
+              int armorLevel, int armorRepairLevel, int powerLevel, int powerRestoreLevel,
+              int weaponLevel, int missileLevel, int moverLevel, float x, float y,
+              float directionX, float directionY);
 
     virtual void present(Graphics& g);
 
@@ -50,8 +47,7 @@ public:
 
     void setCurAction(Action action);
 
-
-private:
+protected:
     TimePoint m_lastChangeActionTime;
     TimePoint m_lastChangeDirectionTime;
     Action m_curAction;
