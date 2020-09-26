@@ -1,7 +1,6 @@
 #ifndef INCLUDE_BOT_GOODIE
 #define INCLUDE_BOT_GOODIE
 
-#include "misc/bot_time_utils.h"
 #include "gameobj/bot_game_object.h"
 #include "gametemplate/bot_goodie_template.h"
 
@@ -9,9 +8,13 @@ namespace bot {
 
 class Goodie : public GameObject {
 public:
-    Goodie(const GoodieTemplate* t, float x, float y);
+    Goodie()
+    {}
 
-    virtual ~Goodie();
+    virtual ~Goodie()
+    {}
+
+    bool init(const GoodieTemplate* t, float x, float y);
 
     const GoodieTemplate* getTemplate() const
     {
@@ -27,9 +30,6 @@ public:
 
     virtual void update(float delta, GameScreen& screen)
     {}
-
-private:
-    TimePoint m_startTime;
 };
 
 } // end of namespace bot

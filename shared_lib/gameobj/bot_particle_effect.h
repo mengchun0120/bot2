@@ -18,7 +18,7 @@ public:
     virtual ~ParticleEffect()
     {}
 
-    void init(const ParticleEffectTemplate* t, float x, float y);
+    bool init(const ParticleEffectTemplate* t, float x, float y);
 
     const ParticleEffectTemplate* getTemplate() const
     {

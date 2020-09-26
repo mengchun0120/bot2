@@ -1,34 +1,27 @@
-#include "misc/bot_log.h"
 #include "opengl/bot_color.h"
 #include "opengl/bot_texture.h"
 #include "opengl/bot_graphics.h"
-#include "screen/bot_game_screen.h"
 #include "gameobj/bot_particle_effect.h"
+#include "screen/bot_game_screen.h"
 
 namespace bot {
 
 ParticleEffect::ParticleEffect()
-    : GameObject(nullptr)
-    , m_startTime(Clock::now())
-    , m_duration(0.0f)
+    : m_duration(0.0f)
 {
 }
 
-ParticleEffect::ParticleEffect(const ParticleEffectTemplate* t)
-    : GameObject(t)
-    , m_startTime(Clock::now())
-    , m_duration(0.0f)
+bool ParticleEffect::init(const ParticleEffectTemplate* t, float x, float y)
 {
+    if (!GameObject::init(t, x, y))
+    {
+        return false;
+    }
 
-}
-
-void ParticleEffect::init(const ParticleEffectTemplate* t, float x, float y)
-{
-    m_template = t;
-    m_pos[0] = x;
-    m_pos[1] = y;
     m_startTime = Clock::now();
     m_duration = 0.0f;
+
+    return true;
 }
 
 void ParticleEffect::present(Graphics& g)
@@ -66,3 +59,4 @@ void ParticleEffect::update(float delta, GameScreen& screen)
 }
 
 } // end of namespace bot
+
