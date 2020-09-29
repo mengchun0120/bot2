@@ -31,7 +31,8 @@ GameMap::~GameMap()
     clear();
 }
 
-void GameMap::initMap(int numRows, int numCols, int gameObjPoolSize, float viewportWidth, float viewportHeight)
+void GameMap::initMap(int numRows, int numCols, int gameObjPoolSize,
+                      float viewportWidth, float viewportHeight)
 {
     m_gameObjItemPool.init(gameObjPoolSize);
 
@@ -54,7 +55,10 @@ void GameMap::initMap(int numRows, int numCols, int gameObjPoolSize, float viewp
 void GameMap::present(Graphics& g)
 {
     static const GameObjectType LAYER_ORDER[] = {
-        GAME_OBJ_TYPE_TILE, GAME_OBJ_TYPE_GOODIE, GAME_OBJ_TYPE_MISSILE, GAME_OBJ_TYPE_ROBOT
+        GAME_OBJ_TYPE_TILE,
+        GAME_OBJ_TYPE_GOODIE,
+        GAME_OBJ_TYPE_MISSILE,
+        GAME_OBJ_TYPE_ROBOT
     };
     static const int NUM_LAYERS = sizeof(LAYER_ORDER) / sizeof(GameObjectType);
     static const int DONT_DRAW_FLAGS = GAME_OBJ_FLAG_DRAWN | GAME_OBJ_FLAG_DEAD;
@@ -77,7 +81,9 @@ void GameMap::present(Graphics& g)
                     next = static_cast<GameObjectItem*>(item->getNext());
 
                     GameObject* obj = item->getObj();
-                    if (obj->getType() != LAYER_ORDER[i] || obj->testFlag(DONT_DRAW_FLAGS))
+                    bool dontShow = obj->getType() != LAYER_ORDER[i] ||
+                                    obj->testFlag(DONT_DRAW_FLAGS);
+                    if (dontShow)
                     {
                         continue;
                     }
@@ -105,7 +111,8 @@ void GameMap::clear()
     }
 }
 
-bool GameMap::getMapPosForGameObj(int& startRow, int& endRow, int& startCol, int& endCol, GameObject* obj) const
+bool GameMap::getMapPosForGameObj(int& startRow, int& endRow, int& startCol,
+                                  int& endCol, GameObject* obj) const
 {
     return getRectCoords(startRow, endRow, startCol, endCol,
                          obj->getCoverLeft(), obj->getCoverBottom(),
@@ -191,7 +198,8 @@ bool GameMap::repositionObject(GameObject* obj)
 {
     int newStartRow, newEndRow, newStartCol, newEndCol;
 
-    bool placeObjInMap = getMapPosForGameObj(newStartRow, newEndRow, newStartCol, newEndCol, obj);
+    bool placeObjInMap = getMapPosForGameObj(newStartRow, newEndRow, newStartCol,
+                                             newEndCol, obj);
     if (!placeObjInMap)
     {
         removeObject(obj);
@@ -222,7 +230,8 @@ bool GameMap::repositionObject(GameObject* obj)
     }
     else if (newStartRow > oldStartRow)
     {
-        removeObjectFromRect(obj, oldStartRow, newStartRow - 1, oldStartCol, oldEndCol);
+        removeObjectFromRect(obj, oldStartRow, newStartRow - 1,
+                             oldStartCol, oldEndCol);
     }
 
     if (newEndRow > oldEndRow)
@@ -239,11 +248,13 @@ bool GameMap::repositionObject(GameObject* obj)
 
     if (newStartCol < oldStartCol)
     {
-        addObjectToRect(obj, overlapStartRow, overlapEndRow, newStartCol, oldStartCol - 1);
+        addObjectToRect(obj, overlapStartRow, overlapEndRow, newStartCol,
+                        oldStartCol - 1);
     }
     else if (newStartCol > oldStartCol)
     {
-        removeObjectFromRect(obj, overlapStartRow, overlapEndRow, oldStartCol, newStartCol - 1);
+        removeObjectFromRect(obj, overlapStartRow, overlapEndRow, oldStartCol,
+                             newStartCol - 1);
     }
 
     if (newEndCol > oldEndCol)
@@ -252,7 +263,8 @@ bool GameMap::repositionObject(GameObject* obj)
     }
     else if (newEndCol < oldEndCol)
     {
-        removeObjectFromRect(obj, overlapStartRow, overlapEndRow, newEndCol + 1, oldEndCol);
+        removeObjectFromRect(obj, overlapStartRow, overlapEndRow, newEndCol + 1,
+                             oldEndCol);
     }
 
     obj->setCoverRect(newStartRow, newEndRow, newStartCol, newEndCol);
@@ -260,7 +272,8 @@ bool GameMap::repositionObject(GameObject* obj)
     return true;
 }
 
-void GameMap::addObjectToRect(GameObject* obj, int startRow, int endRow, int startCol, int endCol)
+void GameMap::addObjectToRect(GameObject* obj, int startRow, int endRow, int startCol,
+                              int endCol)
 {
     for (int r = startRow; r <= endRow; ++r)
     {
@@ -279,13 +292,15 @@ bool GameMap::removeObjectAt(GameObject* obj, int row, int col)
     GameObjectItem* prev = nullptr, * cur;
     LinkedList<GameObjectItem>& cell = m_map[row][col];
 
-    for (cur = cell.getFirst(); cur; cur = static_cast<GameObjectItem*>(cur->getNext()))
+    cur = cell.getFirst();
+    while (cur)
     {
         if (cur->getObj() == obj)
         {
             break;
         }
         prev = cur;
+        cur = static_cast<GameObjectItem*>(cur->getNext());
     }
 
     if (!cur)
@@ -299,7 +314,8 @@ bool GameMap::removeObjectAt(GameObject* obj, int row, int col)
     return true;
 }
 
-void GameMap::removeObjectFromRect(GameObject* obj, int startRow, int endRow, int startCol, int endCol)
+void GameMap::removeObjectFromRect(GameObject* obj, int startRow, int endRow,
+                                   int startCol, int endCol)
 {
     for (int r = startRow; r <= endRow; ++r)
     {
@@ -310,7 +326,8 @@ void GameMap::removeObjectFromRect(GameObject* obj, int startRow, int endRow, in
     }
 }
 
-void GameMap::getViewportRegion(int& startRow, int& endRow, int& startCol, int& endCol) const
+void GameMap::getViewportRegion(int& startRow, int& endRow, int& startCol,
+                                int& endCol) const
 {
     float left = m_viewportPos[0] - m_viewportBreathX;
     float bottom = m_viewportPos[1] - m_viewportBreathY;
@@ -319,16 +336,19 @@ void GameMap::getViewportRegion(int& startRow, int& endRow, int& startCol, int& 
     getRectCoords(startRow, endRow, startCol, endCol, left, bottom, right, top);
 }
 
-void GameMap::clearFlagsInRect(int startRow, int endRow, int startCol, int endCol, GameObjectFlag flag)
+void GameMap::clearFlagsInRect(int startRow, int endRow, int startCol, int endCol,
+                               GameObjectFlag flag)
 {
     for (int r = startRow; r <= endRow; ++r)
     {
         std::vector<LinkedList<GameObjectItem>>& row = m_map[r];
         for (int c = startCol; c <= endCol; ++c)
         {
-            for (GameObjectItem* item = row[c].getFirst(); item; item = static_cast<GameObjectItem*>(item->getNext()))
+            GameObjectItem* item = row[c].getFirst();
+            while (item)
             {
                 item->getObj()->clearFlag(static_cast<int>(flag));
+                item = static_cast<GameObjectItem*>(item->getNext());
             }
         }
     }
@@ -344,8 +364,9 @@ void GameMap::setPlayer(Player* player)
     }
 }
 
-void GameMap::getCollideRegion(int& startRow, int& endRow, int& startCol, int& endCol, const GameObject* obj,
-                               float speedX, float speedY, float delta)
+void GameMap::getCollideRegion(int& startRow, int& endRow, int& startCol, int& endCol,
+                               const GameObject* obj, float speedX, float speedY,
+                               float delta)
 {
     float left = obj->getCollideLeft();
     float right = obj->getCollideRight();
@@ -379,16 +400,23 @@ void GameMap::getCollideRegion(int& startRow, int& endRow, int& startCol, int& e
     endCol = clamp(endCol, 0, getNumCols() - 1);
 }
 
-bool GameMap::checkCollision(float& newDelta, LinkedList<GameObjectItem>* collideObjs, const Robot* robot,
-                             float speedX, float speedY, float delta)
+bool GameMap::checkCollision(float& newDelta, LinkedList<GameObjectItem>* collideObjs,
+                             const Robot* robot, float speedX, float speedY,
+                             float delta)
 {
-    bool touch = checkTouchBoundary(newDelta, m_mapWidth, m_mapHeight, robot->getPosX(), robot->getPosY(),
-                                    robot->getCollideBreathX(), robot->getCollideBreathY(), speedX, speedY, delta);
-    bool collide = checkCollideNonPassthrough(newDelta, robot, speedX, speedY, newDelta);
+    bool touch = checkTouchBoundary(newDelta, m_mapWidth, m_mapHeight,
+                                    robot->getPosX(), robot->getPosY(),
+                                    robot->getCollideBreath(),
+                                    robot->getCollideBreath(),
+                                    speedX, speedY, delta);
+
+    bool collide = checkCollideNonPassthrough(newDelta, robot, speedX, speedY,
+                                              newDelta);
     if (collideObjs)
     {
         checkCollidePassthrough(collideObjs, robot, speedX, speedY, newDelta);
     }
+
     return touch || collide;
 }
 
@@ -408,23 +436,29 @@ bool GameMap::checkCollideNonPassthrough(float& newDelta, const Robot* robot,
         std::vector<LinkedList<GameObjectItem>>& row = m_map[r];
         for (int c = startCol; c <= endCol; ++c)
         {
-            for (GameObjectItem* item = row[c].getFirst(); item; item = static_cast<GameObjectItem*>(item->getNext()))
+            GameObjectItem* item = row[c].getFirst();
+            while (item)
             {
                 GameObject* o = item->getObj();
                 bool dontCheck = o == static_cast<const GameObject*>(robot) ||
                                  o->testFlag(DONT_CHECK_FLAG) ||
-                                 (o->getType() != GAME_OBJ_TYPE_ROBOT && o->getType() != GAME_OBJ_TYPE_TILE);
+                                 (o->getType() != GAME_OBJ_TYPE_ROBOT &&
+                                  o->getType() != GAME_OBJ_TYPE_TILE);
 
                 if (dontCheck)
                 {
+                    item = static_cast<GameObjectItem*>(item->getNext())
                     continue;
                 }
 
                 float newDelta1;
-                bool collide1 = checkObjCollision(newDelta1, robot->getPosX(), robot->getPosY(),
-                                                  robot->getCollideBreathX(), robot->getCollideBreathY(),
-                                                  speedX, speedY, o->getPosX(), o->getPosY(),
-                                                  o->getCollideBreathX(), o->getCollideBreathY(), newDelta);
+                bool collide1 = checkObjCollision(
+                                    newDelta1, robot->getPosX(),robot->getPosY(),
+                                    robot->getCollideBreath(),
+                                    robot->getCollideBreath(),
+                                    speedX, speedY, o->getPosX(), o->getPosY(),
+                                    o->getCollideBreath(), o->getCollideBreath(),
+                                    newDelta);
 
                 if (collide1)
                 {
@@ -436,6 +470,7 @@ bool GameMap::checkCollideNonPassthrough(float& newDelta, const Robot* robot,
                 }
 
                 o->setFlag(GAME_OBJ_FLAG_CHECKED);
+                item = static_cast<GameObjectItem*>(item->getNext());
             }
         }
     }
@@ -443,8 +478,9 @@ bool GameMap::checkCollideNonPassthrough(float& newDelta, const Robot* robot,
     return collide;
 }
 
-void GameMap::checkCollidePassthrough(LinkedList<GameObjectItem>* collideObjs, const Robot* robot,
-                                      float speedX, float speedY, float delta)
+void GameMap::checkCollidePassthrough(LinkedList<GameObjectItem>* collideObjs,
+                                      const Robot* robot, float speedX, float speedY,
+                                      float delta)
 {
     const int DONT_CHECK_FLAG = GAME_OBJ_FLAG_CHECKED | GAME_OBJ_FLAG_DEAD;
     int startRow, endRow, startCol, endCol;
@@ -463,21 +499,26 @@ void GameMap::checkCollidePassthrough(LinkedList<GameObjectItem>* collideObjs, c
         std::vector<LinkedList<GameObjectItem>>& row = m_map[r];
         for (int c = startCol; c <= endCol; ++c)
         {
-            for (GameObjectItem* item = row[c].getFirst(); item; item = static_cast<GameObjectItem*>(item->getNext()))
+            GameObjectItem* item = row[c].getFirst();
+            while (item)
             {
                 GameObject* o = item->getObj();
                 bool check = (o->getType() == GAME_OBJ_TYPE_MISSILE ||
-                              (robot->getSide() == SIDE_PLAYER && o->getType() == GAME_OBJ_TYPE_GOODIE)) &&
-                             !o->testFlag(DONT_CHECK_FLAG);
+                              (robot->getSide() == SIDE_PLAYER &&
+                               o->getType() == GAME_OBJ_TYPE_GOODIE)) &&
+                               !o->testFlag(DONT_CHECK_FLAG);
 
                 if (!check)
                 {
+                    item = static_cast<GameObjectItem*>(item->getNext());
                     continue;
                 }
 
                 bool collide = checkRectOverlapp(left, bottom, right, top,
-                                                 o->getCollideLeft(), o->getCollideBottom(),
-                                                 o->getCollideRight(), o->getCollideTop());
+                                                 o->getCollideLeft(),
+                                                 o->getCollideBottom(),
+                                                 o->getCollideRight(),
+                                                 o->getCollideTop());
 
                 if (collide)
                 {
@@ -487,6 +528,7 @@ void GameMap::checkCollidePassthrough(LinkedList<GameObjectItem>* collideObjs, c
                 }
 
                 o->setFlag(GAME_OBJ_FLAG_CHECKED);
+                item = static_cast<GameObjectItem*>(item->getNext());
             }
         }
     }
@@ -518,22 +560,28 @@ ReturnCode GameMap::checkCollision(const Missile* missile)
         std::vector<LinkedList<GameObjectItem>>& row = m_map[r];
         for (int c = startCol; c <= endCol; ++c)
         {
-            for (GameObjectItem* item = row[c].getFirst(); item; item = static_cast<GameObjectItem*>(item->getNext()))
+            GameObjectItem* item = row[c].getFirst();
+            while (item)
             {
                 GameObject* o = item->getObj();
-                bool dontCheck = o == static_cast<const GameObject*>(missile) ||
-                                 o == static_cast<const GameObject*>(missile->getShooter()) ||
-                                 o->testFlag(DONT_CHECK_FLAG) ||
-                                 (o->getType() != GAME_OBJ_TYPE_ROBOT && o->getType() != GAME_OBJ_TYPE_TILE);
+                bool dontCheck =
+                        o == static_cast<const GameObject*>(missile) ||
+                        o == static_cast<const GameObject*>(missile->getShooter()) ||
+                        o->testFlag(DONT_CHECK_FLAG) ||
+                        (o->getType() != GAME_OBJ_TYPE_ROBOT &&
+                         o->getType() != GAME_OBJ_TYPE_TILE);
 
                 if (dontCheck)
                 {
+                    item = static_cast<GameObjectItem*>(item->getNext());
                     continue;
                 }
 
                 bool collide = checkRectOverlapp(left, bottom, right, top,
-                                                 o->getCollideLeft(), o->getCollideBottom(),
-                                                 o->getCollideRight(), o->getCollideTop());
+                                                 o->getCollideLeft(),
+                                                 o->getCollideBottom(),
+                                                 o->getCollideRight(),
+                                                 o->getCollideTop());
 
                 if (collide)
                 {
@@ -541,6 +589,7 @@ ReturnCode GameMap::checkCollision(const Missile* missile)
                 }
 
                 o->setFlag(GAME_OBJ_FLAG_CHECKED);
+                item = static_cast<GameObjectItem*>(item->getNext());
             }
         }
     }

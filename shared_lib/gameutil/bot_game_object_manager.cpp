@@ -107,30 +107,16 @@ AIRobot* GameObjectManager::createRobot(const AIRobotTemplate* aiRobotTemplate, 
     return robot;
 }
 
-Missile* GameObjectManager::createMissile(const std::string& missileName, Robot* shooter, float x, float y,
-                                          float directionX, float directionY, Side side, float damageMultiplier)
-{
-    const MissileTemplate* missileTemplate = m_lib->getMissileTemplate(missileName);
-    if (!missileTemplate)
-    {
-        LOG_ERROR("Failed to find missile template %s", missileName.c_str());
-        return nullptr;
-    }
-
-    return createMissile(missileTemplate, shooter, x, y, directionX, directionY, side, damageMultiplier);
-}
-
-Missile* GameObjectManager::createMissile(const MissileTemplate* missileTemplate, Robot* shooter, float x, float y,
-                                          float directionX, float directionY, Side side, float damageMultiplier)
+Missile* GameObjectManager::createMissile(const MissileTemplate* missileTemplate, Robot* shooter, float damage,
+                                          float x, float y, float directionX, float directionY)
 {
     Missile* missile = m_missilePool.alloc();
-    missile->clearAllFlags();
-    missile->setTemplate(missileTemplate);
-    missile->setShooter(shooter);
-    missile->setPos(x, y);
-    missile->setDirection(directionX, directionY);
-    missile->setSide(side);
-    missile->setDamageMultiplier(damageMultiplier);
+    bool ret = missile->init(missileTemplate, shooter, damage, x, y, directionX, directionY);
+    if (!ret)
+    {
+        sendToDeathQueue(missile);
+        return nullptr;
+    }
 
     m_activeMissiles.add(missile);
 

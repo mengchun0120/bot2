@@ -9,9 +9,9 @@ namespace bot {
 
 Mover::Mover()
     : m_moverTemplate(nullptr)
-    , m_moverLevel(1)
     , m_moving(false)
     , m_speed(0.0f)
+    , m_normalSpeed(0.0f)
     , m_speedMultiplier(1.0f)
 {
 }
@@ -25,28 +25,47 @@ bool Mover::init(const MoverTemplate* moverTemplate, int moverLevel)
     }
 
     m_moverTemplate = moverTemplate;
-    m_moverLevel = moverLevel;
     m_moving = false;
+    m_normalSpeed = moverTemplate->getSpeed(moverLevel);
     m_speedMultiplier = 1.0f;
     resetSpeed();
 
     return true;
 }
 
-void Mover::update(GameScreen& screen, Robot& robot, float delta)
+bool Mover::update(GameScreen& screen, Robot& robot, float delta)
 {
     if (!m_moving)
     {
         return;
     }
 
-    //TODO
+    float speedX = m_speed * robot.getDirectionX();
+    float speedY = m_speed * robot.getDirectionY();
+    float newDelta;
+    LinkedList<GameObjectItem> collideObjs;
+    GameMap& map = gameScreen.getMap();
+
+    bool collide = map.checkCollision(newDelta, &collideObjs, this,
+                                      speedX, speedY, delta);
+
+    if (!collideObjs.isEmpty())
+    {
+        robot.processCollisions(collideObjs, gameScreen);
+        map.freeGameObjList(collideObjs);
+    }
+
+    shiftPos(speedX * newDelta, speedY * newDelta);
+    map.repositionObject(&robot);
+
+    return collide;
 }
 
 void Mover::present(Graphics& g, const float* pos, const float* direction)
 {
     m_moverTemplate->getRect()->draw(g, pos, direction, nullptr, nullptr,
-                                     m_moverTemplate->getTexture()->textureId(), nullptr);
+                                     m_moverTemplate->getTexture()->textureId(),
+                                     nullptr);
 }
 
 bool Mover::setSpeedMultiplier(float multiplier)
@@ -61,11 +80,6 @@ bool Mover::setSpeedMultiplier(float multiplier)
     resetSpeed();
 
     return true;
-}
-
-void Mover::resetSpeed()
-{
-    m_speed = m_moverTemplate->getSpeed(m_moverLevel) * m_speedMultiplier;
 }
 
 } // end of namespace bot

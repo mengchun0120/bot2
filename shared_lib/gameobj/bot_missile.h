@@ -15,8 +15,8 @@ public:
     virtual ~Missile()
     {}
 
-    bool init(const MissileTemplate* t, const Robot* shooter, float damage, float x, float y,
-              float directionX, float directionY);
+    bool init(const MissileTemplate* t, const Robot* shooter, float damage,
+              float x, float y, float directionX, float directionY);
 
     virtual void present(Graphics& g);
 
@@ -45,13 +45,9 @@ public:
 
     void explode(GameScreen& gameScreen);
 
-    int getExplosionPower() const
-    {
-        return static_cast<int>(getTemplate()->getExplosionPower() * m_damageMultiplier);
-    }
-
 protected:
-    bool checkExplosion(GameObject* obj, float left, float bottom, float right, float top, int explosionPower);
+    bool checkExplosion(GameObject* obj, float left, float bottom,
+                        float right, float top);
 
 protected:
     float m_direction[Constants::NUM_FLOATS_PER_POSITION];

@@ -8,8 +8,8 @@ namespace bot {
 class WeaponTemplate;
 class MissileTemplate;
 class GameScreen;
-class Base;
 class Graphics;
+class Robot;
 
 class Weapon {
 public:
@@ -22,7 +22,7 @@ public:
               const MissileTemplate* missileTemplate, int missileLevel,
               float weaponX, float weaponY, float directionX, float directionY);
 
-    void update(GameScreen& screen, Base& base);
+    bool update(GameScreen& screen, Robot& robot);
 
     void present(Graphics& g, const float* pos, const float* direction);
 
@@ -38,7 +38,8 @@ public:
 
     void shiftFirePoints(float deltaX, float deltaY);
 
-    void setFirePoints(float weaponX, float weaponY, float directionX, float directionY);
+    void setFirePoints(float weaponX, float weaponY, float directionX,
+                       float directionY);
 
     bool setFireDurationMultiplier(float multiplier);
 
@@ -47,7 +48,9 @@ public:
 private:
     void resetFireDuration();
 
-    void fireMissile(GameScreen& screen, Base& base);
+    void resetDamage();
+
+    void fireMissile(GameScreen& screen, Robot& robot);
 
 protected:
     const WeaponTemplate* m_weaponTemplate;
@@ -59,6 +62,7 @@ protected:
     float m_normalFireDuration;
     float m_fireDuration;
     float m_fireDurationMultiplier;
+    float m_damage;
     float m_damageMultipler;
 };
 

@@ -1,7 +1,7 @@
 #ifndef INCLUDE_BOT_PLAYER
 #define INCLUDE_BOT_PLAYER
 
-#include "gametemplate/bot_player_template.h"
+#include <vector>
 #include "gameobj/bot_goodie_effect.h"
 #include "gameobj/bot_robot.h"
 
@@ -19,12 +19,8 @@ public:
 
     virtual ~Player();
 
-    bool init(const PlayerTemplate* playerTemplate, float x, float y, float directionX, float directionY);
-
-    const PlayerTemplate* getTemplate() const
-    {
-        return static_cast<const PlayerTemplate*>(m_template);
-    }
+    bool init(const PlayerTemplate* playerTemplate, float x, float y,
+              float directionX, float directionY);
 
     virtual void present(Graphics& g);
 

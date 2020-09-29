@@ -19,8 +19,9 @@ Robot::Robot()
 }
 
 bool Robot::init(const RobotTemplate* t, Side side, int hpLevel, int hpRestoreLevel,
-                 int armorLevel, int armorRepairLevel, int powerLevel, int powerRestoreLevel,
-                 int weaponLevel, int missileLevel, int moverLevel, float x, float y,
+                 int armorLevel, int armorRepairLevel, int powerLevel,
+                 int powerRestoreLevel, int weaponLevel, int missileLevel,
+                 int moverLevel, float x, float y,
                  float directionX, float directionY)
 {
     bool ret = GameObject::init(t, x, y);
@@ -37,8 +38,9 @@ bool Robot::init(const RobotTemplate* t, Side side, int hpLevel, int hpRestoreLe
         return false;
     }
 
-    ret = m_weapon.init(t->getWeaponTemplate(), weaponLevel, t->getMissileTemplate(), missileLevel,
-                        m_base.getWeaponX(), m_base.getWeaponY(), directionX, directionY);
+    ret = m_weapon.init(t->getWeaponTemplate(), weaponLevel, t->getMissileTemplate(),
+                        missileLevel, m_base.getWeaponX(), m_base.getWeaponY(),
+                        directionX, directionY);
     if (!ret)
     {
         return false;
@@ -119,9 +121,11 @@ void Robot::refillHP()
     m_base.refillHP();
 }
 
-void Robot::processCollisions(LinkedList<GameObjectItem>& collideObjs, GameScreen& gameScreen)
+void Robot::processCollisions(LinkedList<GameObjectItem>& collideObjs,
+                              GameScreen& gameScreen)
 {
-    for (GameObjectItem* item = collideObjs.getFirst(); item; item = static_cast<GameObjectItem*>(item->getNext()))
+    GameObjectItem* item = collideObjs.getFirst();
+    while (item)
     {
         switch (item->getObj()->getType())
         {
@@ -143,10 +147,23 @@ void Robot::processCollisions(LinkedList<GameObjectItem>& collideObjs, GameScree
             }
             default:
             {
-                LOG_WARN("Unexcepted game object type %d for collision", static_cast<int>(item->getObj()->getType()));
+                LOG_WARN("Unexcepted game object type %d for collision",
+                         static_cast<int>(item->getObj()->getType()));
             }
         }
+
+        item = static_cast<GameObjectItem*>(item->getNext());
     }
+}
+
+bool Robot::updateMover(float delta, GameScreen& gameScreen)
+{
+    return m_mover.update(gameScreen, *this, delta);
+}
+
+void Robot::updateWeapon(GameScreen& gameScreen)
+{
+    return m_weapon.update(gameScreen);
 }
 
 } // end of namespace bot

@@ -17,7 +17,7 @@ public:
 
     bool init(const MoverTemplate* moverTemplate, int moverLevel);
 
-    void update(GameScreen& screen, Robot& robot, float delta);
+    bool update(GameScreen& screen, Robot& robot, float delta);
 
     void present(Graphics& g, const float* pos, const float* direction);
 
@@ -39,13 +39,16 @@ public:
     bool setSpeedMultiplier(float multiplier);
 
 private:
-    void resetSpeed();
+    void resetSpeed()
+    {
+        m_speed = m_normalSpeed * m_speedMultiplier;
+    }
 
 protected:
     const MoverTemplate* m_moverTemplate;
-    int m_moverLevel;
     bool m_moving;
     float m_speed;
+    float m_normalSpeed;
     float m_speedMultiplier;
 };
 

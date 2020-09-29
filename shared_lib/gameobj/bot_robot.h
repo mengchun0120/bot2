@@ -21,8 +21,9 @@ public:
     {}
 
     bool init(const RobotTemplate* t, Side side, int hpLevel, int hpRestoreLevel,
-              int armorLevel, int armorRepairLevel, int powerLevel, int powerRestoreLevel,
-              int weaponLevel, int missileLevel, int moverLevel, float x, float y,
+              int armorLevel, int armorRepairLevel, int powerLevel,
+              int powerRestoreLevel, int weaponLevel, int missileLevel,
+              int moverLevel, float x, float y,
               float directionX, float directionY);
 
     virtual void present(Graphics& g);
@@ -57,11 +58,6 @@ public:
 
     void refillHP();
 
-    const char* getHPStr() const
-    {
-        return m_hpStr;
-    }
-
     void setMovingEnabled(bool enabled)
     {
         m_mover.setMoving(enabled);
@@ -92,8 +88,12 @@ public:
         return m_side;
     }
 
-private:
-    void processCollisions(LinkedList<GameObjectItem>& collideObjs, GameScreen& gameScreen);
+    bool updateMover(float delta, GameScreen& gameScreen);
+
+    bool updateWeapon(GameScreen& gameScreen);
+
+    void processCollisions(LinkedList<GameObjectItem>& collideObjs,
+                           GameScreen& gameScreen);
 
 protected:
     Base m_base;

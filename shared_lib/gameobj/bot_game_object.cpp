@@ -26,6 +26,11 @@ bool GameObject::init(const GameObjectTemplate* t, float x, float y)
     m_template = t;
     m_pos[0] = x;
     m_pos[1] = y;
+    m_coverStartRow = 0;
+    m_coverEndRow = 0;
+    m_coverStartCol = 0;
+    m_coverEndCol = 0;
+    m_flags = 0;
 
     return true;
 }

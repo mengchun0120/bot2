@@ -3,8 +3,6 @@
 
 #include <utility>
 #include <random>
-#include "misc/bot_time_utils.h"
-#include "gameobj/bot_action.h"
 #include "ai/bot_ai.h"
 
 namespace bot {
@@ -13,30 +11,29 @@ class ChaseShootAI : public AI {
 public:
     ChaseShootAI();
 
-    ChaseShootAI(float chaseDurationMs, float shootDurationMs, float directionChangeIntervalMs,
-                 float chaseProb, float stopChaseDist);
-
     virtual ~ChaseShootAI()
     {}
 
     virtual bool init(const rapidjson::Value& elem);
 
-    virtual void apply(Robot& robot, float delta, GameScreen& screen);
+    virtual void apply(AIRobot& robot, float delta, GameScreen& screen);
 
 protected:
-    bool tryChangeAction(Robot& robot, GameScreen& screen);
+    bool tryChangeAction(AIRobot& robot, GameScreen& screen);
 
-    void resetAction(Robot& robot, Action action);
+    void resetAction(AIRobot& robot, Action action);
 
-    void applyChaseAction(Robot& robot, float delta, GameScreen& screen);
+    void applyChaseAction(AIRobot& robot, float delta, GameScreen& screen);
 
-    void applyShootAction(Robot& robot, float delta, GameScreen& screen);
+    void applyShootAction(AIRobot& robot, float delta, GameScreen& screen);
 
-    bool resetChaseDirection(Robot& robot, float delta, GameScreen& screen);
+    bool resetChaseDirection(AIRobot& robot, float delta, GameScreen& screen);
 
-    bool tryFirstDirection(Robot& robot, float& directionX, float& directionY, float delta, GameScreen& screen);
+    bool tryFirstDirection(AIRobot& robot, float& directionX, float& directionY,
+                           float delta, GameScreen& screen);
 
-    int findNewDirection(Robot& robot, float delta, float refDirectionX, float refDirectionY, GameScreen& screen);
+    int findNewDirection(AIRobot& robot, float delta, float refDirectionX,
+                         float refDirectionY, GameScreen& screen);
 
     int sortDirections(int* result, float refDirectionX, float refDirectionY);
 

@@ -6,7 +6,7 @@
 
 namespace bot {
 
-class Robot;
+class AIRobot;
 class GameScreen;
 
 class AI {
@@ -32,7 +32,7 @@ public:
 
     virtual bool init(const rapidjson::Value& elem) = 0;
 
-    virtual void apply(Robot& robot, float delta, GameScreen& screen) = 0;
+    virtual void apply(AIRobot& robot, float delta, GameScreen& screen) = 0;
 };
 
 } // end of namespace bot

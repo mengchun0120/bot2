@@ -1,31 +1,39 @@
 #include <cstdio>
 #include "misc/bot_log.h"
 #include "screen/bot_game_screen.h"
+#include "gametemplate/bot_player_template.h"
 #include "gameobj/bot_goodie.h"
 #include "gameobj/bot_player.h"
 
 namespace bot {
 
 Player::Player()
+    : m_firstActiveEffect(nullptr)
+    , m_firstFreeEffect(nullptr)
+    , m_activeEffectCount(0)
     , m_experience(0)
     , m_experienceMultiplier(1.0f)
     , m_gold(0)
 {
-    initEffects();
-    resetGoldStr();
 }
 
 Player::~Player()
 {
 }
 
-bool Player::init(const PlayerTemplate* playerTemplate, float x, float y, float directionX, float directionY)
+bool Player::init(const PlayerTemplate* playerTemplate, float x, float y,
+                  float directionX, float directionY)
 {
-    bool ret = Robot::init(playerTemplate, SIDE_PLAYER, playerTemplate->getHPLevel(),
-                           playerTemplate->getHPRestoreLevel(), playerTemplate->getArmorLevel(),
-                           playerTemplate->getArmorRepairLevel(), playerTemplate->getPowerLevel(),
-                           playerTemplate->getPowerRestoreLevel(), playerTemplate->getWeaponLevel(),
-                           playerTemplate->getMissileLevel(), playerTemplate->getMoverLevel,
+    bool ret = Robot::init(playerTemplate, SIDE_PLAYER,
+                           playerTemplate->getHPLevel(),
+                           playerTemplate->getHPRestoreLevel(),
+                           playerTemplate->getArmorLevel(),
+                           playerTemplate->getArmorRepairLevel(),
+                           playerTemplate->getPowerLevel(),
+                           playerTemplate->getPowerRestoreLevel(),
+                           playerTemplate->getWeaponLevel(),
+                           playerTemplate->getMissileLevel(),
+                           playerTemplate->getMoverLevel,
                            x, y, directionX, directionY);
 
     if (!ret)
@@ -33,10 +41,12 @@ bool Player::init(const PlayerTemplate* playerTemplate, float x, float y, float 
         return false;
     }
 
-    m_gold = 0;
+    initEffects();
+
     m_experience = 0;
     m_experienceMultiplier = 1.0f;
-    initEffects();
+
+    m_gold = 0;
     resetGoldStr();
 
     return true;
@@ -50,14 +60,14 @@ void Player::present(Graphics& g)
 void Player::update(float delta, GameScreen& screen)
 {
     updateEffects();
-    updateMoveAbility(delta, screen);
+    updateMover(delta, screen);
 
     if (testFlag(GAME_OBJ_FLAG_DEAD))
     {
         return;
     }
 
-    updateShootAbility(screen);
+    updateWeapon(screen);
 }
 
 void Player::initEffects()
@@ -98,7 +108,8 @@ void Player::applyInstantaneousEffect(Goodie* goodie)
         refillHP();
         break;
     default:
-        LOG_ERROR("Goodie type %d is NOT instantaneous!", static_cast<int>(goodie->getGoodieType()));
+        LOG_ERROR("Goodie type %d is NOT instantaneous!",
+                  static_cast<int>(goodie->getGoodieType()));
         break;
     }
 }
@@ -139,7 +150,8 @@ void Player::applyNonInstantaneousEffect(Goodie* goodie)
         }
         default:
         {
-            LOG_ERROR("Invalid non-instantaneous goodie type %d", static_cast<int>(goodie->getGoodieType()));
+            LOG_ERROR("Invalid non-instantaneous goodie type %d",
+                      static_cast<int>(goodie->getGoodieType()));
             break;
         }
     }
@@ -205,7 +217,8 @@ void Player::expireEffect(GoodieEffect* effect)
         }
         default:
         {
-            LOG_ERROR("Invalid non-instantaneous goodie type %d", static_cast<int>(effect->getType()));
+            LOG_ERROR("Invalid non-instantaneous goodie type %d",
+                      static_cast<int>(effect->getType()));
             break;
         }
     }

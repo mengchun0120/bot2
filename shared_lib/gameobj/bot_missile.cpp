@@ -18,8 +18,8 @@ Missile::Missile()
     m_direction[1] = 0.0f;
 }
 
-bool Missile::init(const MissileTemplate* t, const Robot* shooter, float damage, float x, float y,
-                   float directionX, float directionY)
+bool Missile::init(const MissileTemplate* t, const Robot* shooter, float damage,
+                   float x, float y, float directionX, float directionY)
 {
     if (!GameObject::init(t, x, y))
     {
@@ -48,7 +48,8 @@ bool Missile::init(const MissileTemplate* t, const Robot* shooter, float damage,
 void Missile::present(Graphics& g)
 {
     const MissileTemplate* t = static_cast<const MissileTemplate*>(m_template);
-    t->getRect()->draw(g, m_pos, m_direction, nullptr, nullptr, t->getTexture()->textureId(), t->getColor());
+    t->getRect()->draw(g, m_pos, m_direction, nullptr, nullptr,
+                       t->getTexture()->textureId(), t->getColor());
 }
 
 void Missile::update(float delta, GameScreen& screen)
@@ -64,7 +65,6 @@ void Missile::update(float delta, GameScreen& screen)
 
     shiftPos(deltaX, deltaY);
 
-    LinkedList<GameObjectItem> collideObjs;
     ReturnCode rc = map.checkCollision(this);
 
     if (RET_CODE_OUT_OF_SIGHT == rc)
@@ -104,9 +104,10 @@ void Missile::explode(GameScreen& gameScreen)
 {
     const MissileTemplate* t = getTemplate();
     GameMap& map = gameScreen.getMap();
-    GameObjectManager& gameObjManager = gameScreen.getGameObjManager();
+    GameObjectManager& gameObjMgr = gameScreen.getGameObjManager();
 
-    ParticleEffect* explosion = gameObjManager.createParticleEffect(t->getExplosionTemplate(), getPosX(), getPosY());
+    ParticleEffect* explosion = gameObjMgr.createParticleEffect(
+                                    t->getExplosionTemplate(), getPosX(), getPosY());
     if (!map.addObject(explosion))
     {
         gameObjManager.sendToDeathQueue(explosion);
@@ -117,31 +118,36 @@ void Missile::explode(GameScreen& gameScreen)
     float right = m_pos[0] + t->getExplosionBreath();
     float bottom = m_pos[1] - t->getExplosionBreath();
     float top = m_pos[1] + t->getExplosionBreath();
-    int explosionPower = getExplosionPower();
 
-    if (!map.getRectCoords(startRow, endRow, startCol, endCol, left, bottom, right, top))
+    bool inBound = map.getRectCoords(startRow, endRow, startCol, endCol,
+                                     left, bottom, right, top);
+    if (!inBound)
     {
         gameObjManager.sendToDeathQueue(this);
         return;
     }
 
-    map.clearFlagsInRect(startRow, endRow, startCol, endCol, GAME_OBJ_FLAG_EXPLODE_CHECKED);
+    map.clearFlagsInRect(startRow, endRow, startCol, endCol,
+                         GAME_OBJ_FLAG_EXPLODE_CHECKED);
 
     for (int r = startRow; r <= endRow; ++r)
     {
         for (int c = startCol; c <= endCol; ++c)
         {
             LinkedList<GameObjectItem>& cell = map.getMapCell(r, c);
-            for (GameObjectItem* item = cell.getFirst(); item; item = static_cast<GameObjectItem*>(item->getNext()))
+            GameObjectItem* item = cell.getFirst();
+            while (item)
             {
                 GameObject* obj = item->getObj();
 
-                if (!checkExplosion(obj, left, bottom, right, top, explosionPower))
+                if (!checkExplosion(obj, left, bottom, right, top))
                 {
                     gameObjManager.sendToDeathQueue(obj);
                 }
 
                 obj->setFlag(GAME_OBJ_FLAG_EXPLODE_CHECKED);
+
+                item = static_cast<GameObjectItem*>(item->getNext());
             }
         }
     }
@@ -149,7 +155,8 @@ void Missile::explode(GameScreen& gameScreen)
     gameObjManager.sendToDeathQueue(this);
 }
 
-bool Missile::checkExplosion(GameObject* obj, float left, float bottom, float right, float top, int explosionPower)
+bool Missile::checkExplosion(GameObject* obj, float left, float bottom,
+                             float right, float top)
 {
     static const int UNAFFECTED_FLAGS = GAME_OBJ_FLAG_EXPLODE_CHECKED |
                                         GAME_OBJ_FLAG_INDESTRUCTABLE |
@@ -183,12 +190,12 @@ bool Missile::checkExplosion(GameObject* obj, float left, float bottom, float ri
             return true;
         }
 
-        active = robot->addHP(-explosionPower);
+        active = robot->addHP(-m_damage);
     }
     else
     {
         Tile* tile = static_cast<Tile*>(obj);
-        active = tile->addHP(-explosionPower);
+        active = tile->addHP(-m_damage);
     }
 
     return active;

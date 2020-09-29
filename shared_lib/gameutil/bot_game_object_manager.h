@@ -51,11 +51,8 @@ public:
                          const MissileTemplate* missileTemplate, float x, float y,
                          float directionX, float directionY);
 
-    Missile* createMissile(const std::string& missileName, Robot* shooter, float x, float y,
-                           float directionX, float directionY, Side side, float damageMultiplier);
-
-    Missile* createMissile(const MissileTemplate* missileTemplate, Robot* shooter, float x, float y,
-                           float directionX, float directionY, Side side, float damageMultiplier);
+    Missile* createMissile(const MissileTemplate* missileTemplate, Robot* shooter, float damage,
+                           float x, float y, float directionX, float directionY);
 
     Goodie* createGoodie(float prob, float x, float y);
 

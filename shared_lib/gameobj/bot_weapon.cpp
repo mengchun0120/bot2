@@ -3,8 +3,7 @@
 #include "opengl/bot_graphics.h"
 #include "gametempalte/bot_weapon_template.h"
 #include "gametemplate/bot_missile_template.h"
-#include "gameobj/bot_base.h"
-#include "gameobj/bot_weapon.h"
+#include "gameobj/bot_robot.h"
 #include "screen/bot_game_screen.h"
 
 namespace bot {
@@ -17,6 +16,7 @@ Weapon::Weapon()
     , m_normalFireDuration(0.0f)
     , m_fireDuration(0.0f)
     , m_fireDurationMultiplier(1.0f)
+    , m_damage(0.0f)
     , m_damageMultiplier(1.0f)
 {
 }
@@ -25,27 +25,41 @@ bool Weapon::init(const WeaponTemplate* weaponTemplate, int weaponLevel,
                   const MissileTemplate* missileTemplate, int missileLevel,
                   float weaponX, float weaponY, float directionX, float directionY)
 {
-    m_weaponTemplate = weaponTemplate;
+    if (!m_weaponTemplate)
+    {
+        LOG_ERROR("Weapon template is null");
+        return false;
+    }
+
     if (weaponLevel < 1)
     {
         LOG_ERROR("Invalid weapon-level %d", weaponLevel);
         return false;
     }
 
-    m_missileTemplate = missileTemplate;
+    if (!m_missileTemplate)
+    {
+        LOG_ERROR("Missile template is null");
+        return false;
+    }
+
     if (missileLevel < 1)
     {
         LOG_ERROR("Invalid missile-level %d", missileLevel);
         return false;
     }
+
+    m_weaponTemplate = weaponTemplate;
+    m_missileTemplate = missileTemplate;
     m_missileLevel = missileLevel;
 
     m_firing = false;
     m_normalFireDuration = weaponTemplate->getFireDuration(m_weaponLevel);
     m_fireDurationMultiplier = 1.0f;
-    m_damageMultiplier = 1.0f;
-
     resetFireDuration();
+
+    m_damageMultiplier = 1.0f;
+    resetDamage();
 
     m_firePoints.resize(m_weaponTemplate->numFirePoints());
     setFirePoints(weaponX, weaponY, directionX, directionY);
@@ -55,28 +69,34 @@ bool Weapon::init(const WeaponTemplate* weaponTemplate, int weaponLevel,
     return true;
 }
 
-void Weapon::update(GameScreen& screen, Base& base)
+bool Weapon::update(GameScreen& screen, Robot& robot)
 {
     if (!m_firing)
     {
-        return;
+        return true;
     }
 
     TimePoint now = Clock::now();
 
     if (timeDistMs(now, m_lastFireTime) < getFireDuration())
     {
-        return;
+        return true;
     }
 
-    fireMissile(screen, base);
+    if (!fireMissile(screen, base))
+    {
+        return false;
+    }
+
     m_lastFireTime = now;
+    return true;
 }
 
 void Weapon::present(Graphics& g, const float* pos, const float* direction)
 {
     m_weaponTemplate->getRect()->draw(g, pos, direction, nullptr, nullptr,
-                                      m_weaponTemplate->getTexture()->textureId, nullptr);
+                                      m_weaponTemplate->getTexture()->textureId,
+                                      nullptr);
 }
 
 void Weapon::shiftFirePoints(float deltaX, float deltaY)
@@ -88,7 +108,8 @@ void Weapon::shiftFirePoints(float deltaX, float deltaY)
     }
 }
 
-void Weapon::setFirePoints(float weaponX, float weaponY, float directionX, float directionY)
+void Weapon::setFirePoints(float weaponX, float weaponY, float directionX,
+                           float directionY)
 {
     int count = static_cast<int>(m_firePoints.size());
 
@@ -134,6 +155,7 @@ bool Weapon::setDamageMultiplier(float multiplier)
     }
 
     m_damageMultiplier = multiplier;
+    resetDamage();
 
     return true;
 }
@@ -148,9 +170,45 @@ void Weapon::resetFireDuration()
     }
 }
 
-void Weapon::fireMissile(GameScreen& screen, Base& base)
+void Weapon::resetDamage()
 {
-    //TODO
+    m_damage = m_missileTemplate->getDamage(m_missileLevel) * m_damageMultiplier;
+}
+
+bool Weapon::fireMissile(GameScreen& screen, Robot& robot)
+{
+    GameObjectManager& gameObjMgr = gameScreen.getGameObjManager();
+    GameMap& map = gameScreen.getMap();
+
+    for(auto& fp: m_firePoints)
+    {
+        Missile* missile = gameObjMgr.createMissile(
+                                     m_missileTemplate, &robot, m_damage,
+                                     fp.m_firePos[0], fp.m_firePos[1],
+                                     fp.m_fireDirection[0], fp.m_fireDirection[1]);
+        if (!missile)
+        {
+            LOG_ERROR("Failed to create missile");
+            return false;
+        }
+
+        ReturnCode rc = map.checkCollision(missile);
+
+        if (rc == RET_CODE_OUT_OF_SIGHT)
+        {
+            gameObjManager.sendToDeathQueue(missile);
+            continue;
+        }
+        else if (rc == RET_CODE_COLLIDE)
+        {
+            missile->explode(gameScreen);
+            continue;
+        }
+
+        map.addObject(missile);
+    }
+
+    return true;
 }
 
 } // end of namespace bot
