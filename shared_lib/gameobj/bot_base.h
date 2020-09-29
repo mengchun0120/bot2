@@ -11,6 +11,10 @@ class BaseTemplate;
 class Graphics;
 
 class Base {
+    enum {
+        HP_PERCENT_STR_LEN = 5
+    };
+
 public:
     Base();
 
@@ -35,19 +39,18 @@ public:
         return m_hp;
     }
 
-    void setHP(float hp)
+    void setHP(float hp);
+
+    void refillHP();
+
+    float getHPPercent() const
     {
-        m_hp = clamp(hp, 0.0f, m_maxHP);
+        return m_hpPercent;
     }
 
-    void refillHP()
+    const char* getHPPercentStr() const
     {
-        m_hp = m_maxHP;
-    }
-
-    float getHPRatio() const
-    {
-        return m_hpRatio;
+        return m_hpPercentStr;
     }
 
     float getArmor() const
@@ -104,14 +107,18 @@ public:
 
     void setWeaponMoverPos(float x, float y, float directionX, float directionY);
 
+private:
+    void resetHPPercentStr();
+
 protected:
     const BaseTemplate* m_baseTemplate;
-    float m_hp, m_maxHP, m_hpRestoreRate, m_hpRatio;
+    float m_hp, m_maxHP, m_hpRestoreRate, m_hpPercent;
     float m_armor, m_maxArmor, m_armorRepairRate;
     float m_power, m_maxPower, m_powerRestoreRate;
     TimePoint m_lastUpdateTime;
     float m_weaponPos[Constants::NUM_FLOATS_PER_POSITION];
     float m_moverPos[Constants::NUM_FLOATS_PER_POSITION];
+    char m_hpPercentStr[HP_PERCENT_STR_LEN];
 };
 
 } // end of namespace bot

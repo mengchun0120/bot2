@@ -35,12 +35,47 @@ public:
 
     bool setExperience(float experience);
 
-    int getBaseLevel() const
+    int getHPLevel() const
     {
-        return m_baseLevel;
+        return m_hpLevel;
     }
 
-    bool setBaseLevel(int level);
+    bool setHPLevel(int level);
+
+    int getHPRestoreLevel() const
+    {
+        return m_hpRestoreLevel;
+    }
+
+    bool setHPRestoreLevel(int level);
+
+    int getArmorLevel() const
+    {
+        return m_armorLevel;
+    }
+
+    bool setArmorLevel(int level);
+
+    int getArmorRepairLevel() const
+    {
+        return m_armorRepairLevel;
+    }
+
+    bool setArmorRepairLevel(int level);
+
+    int getPowerLevel() const
+    {
+        return m_powerLevel;
+    }
+
+    bool setPowerLevel(int level);
+
+    int getPowerRestoreLevel() const
+    {
+        return m_powerRestoreLevel;
+    }
+
+    bool setPowerRestoreLevel(int level);
 
     int getMissileLevel() const
     {
@@ -70,7 +105,12 @@ protected:
     MissileTemplate* m_missileTemplate;
     int m_gold;
     int m_experience;
-    int m_baseLevel;
+    int m_hpLevel;
+    int m_hpRestoreLevel;
+    int m_armorLevel;
+    int m_armorRepairLevel;
+    int m_powerLevel;
+    int m_powerRestoreLevel;
     int m_missileLevel;
     int m_weaponLevel;
     int m_moverLevel;

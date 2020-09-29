@@ -53,11 +53,6 @@ public:
         return m_base.getHP();
     }
 
-    float getHPRatio() const
-    {
-        return m_base.getHPRatio();
-    }
-
     bool addHP(float delta);
 
     void refillHP();

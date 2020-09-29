@@ -1,3 +1,4 @@
+#include <cstdio>
 #include "misc/bot_math_utils.h"
 #include "opengl/bot_texture.h"
 #include "geometry/bot_rectangle.h"
@@ -70,9 +71,8 @@ bool Base::init(const BaseTemplate* t, int hpLevel, int hpRestoreLevel, int armo
     m_baseTemplate = t;
 
     m_maxHP = t->getHP(hpLevel);
-    m_hp = m_maxHP;
+    setHP(m_maxHP);
     m_hpRestoreRate = t->getHPRestoreRate(hpRestoreLevel);
-    m_hpRatio = 1.0f;
 
     m_maxArmor = t->getArmor(armorLevel);
     m_armor = m_maxArmor;
@@ -112,6 +112,20 @@ void Base::present(Graphics& g, const float* pos, const float* direction)
     t->getRect()->draw(g, pos, direction, nullptr, nullptr, t->getTexture()->textureId(), nullptr);
 }
 
+void setHP(float hp);
+{
+    m_hp = clamp(hp, 0.0f, m_maxHP);
+    m_hpPercent = m_hp / m_maxHP * 100.0f;
+    resetHPPercentStr();
+}
+
+void refillHP();
+{
+    m_hp = m_maxHP;
+    m_hpPercent = 100.0f;
+    resetHPPercentStr();
+}
+
 void Base::shiftWeaponMoverPos(float deltaX, float deltaY)
 {
     m_weaponPos[0] += deltaX;
@@ -134,6 +148,11 @@ void Base::setWeaponMoverPos(float x, float y, float directionX, float direction
     rotate(dx, dy, directionX, directionY);
     m_moverPos[0] = x + dx;
     m_moverPos[1] = y + dy;
+}
+
+void Base::resetHPPercentStr()
+{
+    snprintf(m_hpPercentStr, sizeof(m_hpPercentStr), "%d%%", static_cast<int>(m_hpPercent));
 }
 
 } // end of namespace bot

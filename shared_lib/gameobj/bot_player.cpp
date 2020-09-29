@@ -6,13 +6,10 @@
 
 namespace bot {
 
-Player::Player(const PlayerTemplate* playerTemplate, const BaseComponentTemplate* baseTemplate,
-               const WeaponComponentTemplate* weaponTemplate, const MoverComponentTemplate* moverTemplate,
-               const MissileTemplate* missileTemplate, float x, float y, float directionX, float directionY)
-    : Robot(playerTemplate, baseTemplate, weaponTemplate, moverTemplate, missileTemplate, x, y, directionX, directionY, SIDE_PLAYER)
-    , m_experience(0l)
+Player::Player()
+    , m_experience(0)
     , m_experienceMultiplier(1.0f)
-    , m_goldCount(0)
+    , m_gold(0)
 {
     initEffects();
     resetGoldStr();
@@ -20,6 +17,29 @@ Player::Player(const PlayerTemplate* playerTemplate, const BaseComponentTemplate
 
 Player::~Player()
 {
+}
+
+bool Player::init(const PlayerTemplate* playerTemplate, float x, float y, float directionX, float directionY)
+{
+    bool ret = Robot::init(playerTemplate, SIDE_PLAYER, playerTemplate->getHPLevel(),
+                           playerTemplate->getHPRestoreLevel(), playerTemplate->getArmorLevel(),
+                           playerTemplate->getArmorRepairLevel(), playerTemplate->getPowerLevel(),
+                           playerTemplate->getPowerRestoreLevel(), playerTemplate->getWeaponLevel(),
+                           playerTemplate->getMissileLevel(), playerTemplate->getMoverLevel,
+                           x, y, directionX, directionY);
+
+    if (!ret)
+    {
+        return false;
+    }
+
+    m_gold = 0;
+    m_experience = 0;
+    m_experienceMultiplier = 1.0f;
+    initEffects();
+    resetGoldStr();
+
+    return true;
 }
 
 void Player::present(Graphics& g)
@@ -71,7 +91,7 @@ void Player::applyInstantaneousEffect(Goodie* goodie)
     switch (goodie->getGoodieType())
     {
     case GOODIE_GOLD:
-        m_goldCount++;
+        m_gold++;
         resetGoldStr();
         break;
     case GOODIE_HEALTH:
@@ -228,7 +248,7 @@ void Player::updateEffects()
 
 void Player::resetGoldStr()
 {
-    snprintf(m_goldStr, sizeof(m_goldStr), "%d", m_goldCount);
+    snprintf(m_goldStr, sizeof(m_goldStr), "%d", m_gold);
 }
 
 } // end of namespace bot

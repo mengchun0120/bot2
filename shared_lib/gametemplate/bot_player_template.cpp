@@ -202,13 +202,22 @@ bool PlayerTemplate::init(const std::string& fileName, const NamedMap<Texture>& 
         return false;
     }
 
-    int gold, experience, baseLevel, missileLevel, weaponLevel, moverLevel;
+    int gold, experience;
+    int hpLevel, hpRestoreLevel;
+    int armorLevel, armorRepairLevel;
+    int powerLevel, powerRestoreLevel;
+    int missileLevel, weaponLevel, moverLevel;
     std::vector<JsonParseParam> params = {
-        {&gold,         "gold",         JSONTYPE_INT},
-        {&expereince,   "experience",   JSONTYPE_INT},
-        {&baseLevel,    "baseLevel",    JSONTYPE_INT},
-        {&missileLevel, "missileLevel", JSONTYPE_INT},
-        {&weaponLevel,  "weaponLevel",  JSONTYPE_INT},
+        {&gold,              "gold",              JSONTYPE_INT},
+        {&expereince,        "experience",        JSONTYPE_INT},
+        {&hpLevel,           "hpLevel",           JSONTYPE_INT},
+        {&hpRestoreLevel,    "hpRestoreLevel",    JSONTYPE_INT},
+        {&armorLevel,        "armorLevel",        JSONTYPE_INT},
+        {&armorRepairLevel,  "armorRepairLevel",  JSONTYPE_INT},
+        {&powerLevel,        "powerLevel",        JSONTYPE_INT},
+        {&powerRestoreLevel, "powerRestoreLevel", JSONTYPE_INT},
+        {&missileLevel,      "missileLevel",      JSONTYPE_INT},
+        {&weaponLevel,       "weaponLevel",       JSONTYPE_INT},
         {&moverLevel,   "moverLevel",   JSONTYPE_INT}
     };
 
@@ -219,7 +228,12 @@ bool PlayerTemplate::init(const std::string& fileName, const NamedMap<Texture>& 
 
     bool success = setGold(gold) &&
                    setExperience(experience) &&
-                   setBaseLevel(baseLevel) &&
+                   setHPLevel(hpLevel) &&
+                   setHPRestoreLevel(hpRestoreLevel) &&
+                   setArmorLevel(armorLevel) &&
+                   setArmorRepairLevel(armorRepairLevel) &&
+                   setPowerLevel(powerLevel) &&
+                   setPowerRestoreLevel(powerRestoreLevel) &&
                    setMissileLevel(missileLevel) &&
                    setWeaponLevel(weaponLevel) &&
                    setMoverLevel(moverLevel);
@@ -257,15 +271,75 @@ bool PlayerTemplate::setExperience(float experience)
     return true;
 }
 
-bool PlayerTemplate::setBaseLevel(int level)
+bool PlayerTemplate::setHPLevel(int level)
 {
     if (level < 1)
     {
-        LOG_ERROR("Invalid base-level %d", level);
+        LOG_ERROR("Invalid hp-level %d", level);
         return false;
     }
 
-    m_baseLevel = level;
+    m_hpLevel = level;
+    return true;
+}
+
+bool PlayerTemplate::setHPRestoreLevel(int level)
+{
+    if (level < 1)
+    {
+        LOG_ERROR("Invalid hp-restore-level %d", level);
+        return false;
+    }
+
+    m_hpRestoreLevel = level;
+    return true;
+}
+
+bool PlayerTemplate::setArmorLevel(int level)
+{
+    if (level < 1)
+    {
+        LOG_ERROR("Invalid armor-level %d", level);
+        return false;
+    }
+
+    m_armorLevel = level;
+    return true;
+}
+
+bool PlayerTemplate::setArmorRepairLevel(int level)
+{
+    if (level < 1)
+    {
+        LOG_ERROR("Invalid armor-repair-level %d", level);
+        return false;
+    }
+
+    m_armorRepairLevel = level;
+    return true;
+}
+
+bool PlayerTemplate::setPowerLevel(int level)
+{
+    if (level < 1)
+    {
+        LOG_ERROR("Invalid power-level %d", level);
+        return false;
+    }
+
+    m_powerLevel = level;
+    return true;
+}
+
+bool PlayerTemplate::setPowerRestoreLevel(int level)
+{
+    if (level < 1)
+    {
+        LOG_ERROR("Invalid power-restore-level %d", level);
+        return false;
+    }
+
+    m_powerRestoreLevel = level;
     return true;
 }
 
