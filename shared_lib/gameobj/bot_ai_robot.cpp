@@ -11,13 +11,15 @@ AIRobot::AIRobot()
 {
 }
 
-bool AIRobot::init(const AIRobotTemplate* t, Side side, int hpLevel, int hpRestoreLevel,
-                   int armorLevel, int armorRepairLevel, int powerLevel, int powerRestoreLevel,
-                   int weaponLevel, int missileLevel, int moverLevel, float x, float y,
+bool AIRobot::init(const AIRobotTemplate* t, Side side, int hpLevel,
+                   int hpRestoreLevel, int armorLevel, int armorRepairLevel,
+                   int powerLevel, int powerRestoreLevel, int weaponLevel,
+                   int missileLevel, int moverLevel, float x, float y,
                    float directionX, float directionY)
 {
-    bool ret = Robot::init(t, side, hpLevel, hpRestoreLevel, armorLevel, armorRepairLevel,
-                           powerLevel, powerRestoreLevel, weaponLevel, missileLevel, moverLevel,
+    bool ret = Robot::init(t, side, hpLevel, hpRestoreLevel, armorLevel,
+                           armorRepairLevel, powerLevel, powerRestoreLevel,
+                           weaponLevel, missileLevel, moverLevel,
                            x, y, directionX, directionY);
 
     if (!ret)

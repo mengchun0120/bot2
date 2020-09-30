@@ -9,7 +9,8 @@
 
 namespace bot {
 
-AIRobotTemplate* AIRobotTemplate::Parser::create(const std::string& name, const rapidjson::Value& elem)
+AIRobotTemplate* AIRobotTemplate::Parser::create(const std::string& name,
+                                                 const rapidjson::Value& elem)
 {
     AIRobotTemplate* t = new AIRobotTemplate();
     if (!t->init(m_baseLib, m_weaponLib, m_moverLib, m_aiLib, elem))
@@ -26,8 +27,10 @@ AIRobotTemplate::AIRobotTemplate()
 {
 }
 
-bool AIRobotTemplate::init(const NamedMap<BaseTemplate>& baseLib, const NamedMap<WeaponTemplate>& weaponLib,
-                           const NamedMap<MoverTemplate>& moverLib, const NamedMap<AI>& aiLib,
+bool AIRobotTemplate::init(const NamedMap<BaseTemplate>& baseLib,
+                           const NamedMap<WeaponTemplate>& weaponLib,
+                           const NamedMap<MoverTemplate>& moverLib,
+                           const NamedMap<AI>& aiLib,
                            const rapidjson::Value& elem)
 {
     if (!RobotTemplate::init(baseLib, weaponLib, moverLib, elem))

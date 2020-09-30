@@ -12,8 +12,10 @@ class AIRobotTemplate : public RobotTemplate {
 public:
     class Parser {
     public:
-        Parser(const NamedMap<BaseTemplate>& baseLib, const NamedMap<WeaponTemplate>& weaponLib,
-               const NamedMap<MoverTemplate>& moverLib, const NamedMap<AI>& aiLib)
+        Parser(const NamedMap<BaseTemplate>& baseLib,
+               const NamedMap<WeaponTemplate>& weaponLib,
+               const NamedMap<MoverTemplate>& moverLib,
+               const NamedMap<AI>& aiLib)
             : m_baseLib(baseLib)
             , m_weaponLib(weaponLib)
             , m_moverLib(moverLib)
@@ -37,8 +39,10 @@ public:
     virtual ~AIRobotTemplate()
     {}
 
-    bool init(const NamedMap<BaseTemplate>& baseLib, const NamedMap<WeaponTemplate>& weaponLib,
-              const NamedMap<MoverTemplate>& moverLib, const NamedMap<AI>& aiLib,
+    bool init(const NamedMap<BaseTemplate>& baseLib,
+              const NamedMap<WeaponTemplate>& weaponLib,
+              const NamedMap<MoverTemplate>& moverLib,
+              const NamedMap<AI>& aiLib,
               const rapidjson::Value& elem);
 
     AI* getAI() const

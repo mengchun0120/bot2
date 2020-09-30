@@ -57,11 +57,6 @@ public:
         return m_tileTemplateLib.search(name);
     }
 
-    const ParticleEffectTemplate* getParticleEffectTemplate(const std::string& name) const
-    {
-        return m_particleEffectTemplateLib.search(name);
-    }
-
     const MissileTemplate* getMissileTemplate(const std::string& name) const
     {
         return m_missileTemplateLib.search(name);

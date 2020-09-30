@@ -42,16 +42,22 @@ public:
         return m_activeTiles.getFirst();
     }
 
-    AIRobot* createRobot(const std::string& robotName, const std::string& baseName, const std::string& weaponName,
-                         const std::string& moverName, const std::string& missileName, float x, float y,
-                         float directionX, float directionY);
+    AIRobot* createRobot(const std::string& robotName, Side side,
+                         int hpLevel, int hpRestoreLevel,
+                         int armorLevel, int armorRepairLevel,
+                         int powerLevel, int powerRestoreLevel,
+                         int weaponLevel, int missileLevel, int moverLevel,
+                         float x, float y, float directionX, float directionY);
 
-    AIRobot* createRobot(const AIRobotTemplate* aiRobotTemplate, const BaseComponentTemplate* baseTemplate,
-                         const WeaponComponentTemplate* weaponTemplate, const MoverComponentTemplate* moverTemplate,
-                         const MissileTemplate* missileTemplate, float x, float y,
-                         float directionX, float directionY);
+    AIRobot* createRobot(const AIRobotTemplate* aiRobotTemplate, Side side,
+                         int hpLevel, int hpRestoreLevel,
+                         int armorLevel, int armorRepairLevel,
+                         int powerLevel, int powerRestoreLevel,
+                         int weaponLevel, int missileLevel, int moverLevel,
+                         float x, float y, float directionX, float directionY);
 
-    Missile* createMissile(const MissileTemplate* missileTemplate, Robot* shooter, float damage,
+    Missile* createMissile(const MissileTemplate* missileTemplate,
+                           Robot* shooter, float damage,
                            float x, float y, float directionX, float directionY);
 
     Goodie* createGoodie(float prob, float x, float y);
@@ -66,7 +72,8 @@ public:
         return m_activeMissiles.getFirst();
     }
 
-    ParticleEffect* createParticleEffect(const ParticleEffectTemplate* t, float x, float y);
+    ParticleEffect* createParticleEffect(const ParticleEffectTemplate* t,
+                                         float x, float y);
 
     ParticleEffect* getFirstParticleEffect()
     {
@@ -98,9 +105,9 @@ public:
         return m_deadObjects.getFirst();
     }
 
-    Player* createPlayer(const BaseComponentTemplate* baseTemplate, const WeaponComponentTemplate* weaponTemplate,
-                         const MoverComponentTemplate* moverTemplate, const MissileTemplate* missileTemplate,
-                         float x, float y, float directionX, float directionY);
+    Player* createPlayer(const PlayerTemplate* playerTemplate,
+                         float x, float y,
+                         float directionX, float directionY);
 
     const Player* getPlayer() const
     {
