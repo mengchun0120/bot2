@@ -19,14 +19,17 @@ void randomDirection(Random& rand, float& directionX, float& directionY)
     directionY = static_cast<float>(sin(theta));
 }
 
-MapGenerator* MapGenerator::Parser::create(const std::string& name, const rapidjson::Value& elem)
+MapGenerator* MapGenerator::Parser::create(const std::string& name,
+                                           const rapidjson::Value& elem)
 {
     MapGenerator* g = nullptr;
 
     if ("islandMapGenerator" == name)
     {
         g = new IslandMapGenerator();
-        if (!g->init(elem, m_playerTemplate, m_robotTemplateLib, m_tileTemplateLib, m_maxRobotCount))
+        bool ret = g->init(elem, m_playerTemplate, m_robotTemplateLib,
+                           m_tileTemplateLib, m_maxRobotCount);
+        if (!ret)
         {
             delete g;
             g = nullptr;
@@ -51,19 +54,45 @@ MapGenerator::MapGenerator()
 {
 }
 
-bool MapGenerator::init(const rapidjson::Value& json, const PlayerTemplate* playerTemplate,
+bool MapGenerator::init(const rapidjson::Value& json,
+                        const PlayerTemplate* playerTemplate,
                         const NamedMap<AIRobotTemplate>& aiRobotTemplateLib,
-                        const NamedMap<TileTemplate>& tileTemplateLib, int maxRobotCount)
+                        const NamedMap<TileTemplate>& tileTemplateLib,
+                        int maxRobotCount)
 {
     m_playerTemplate = playerTemplate;
 
     std::vector<JsonParseParam> params = {
-        {&m_minRowCount,   "minRowCount",   JSONTYPE_INT},
-        {&m_maxRowCount,   "maxRowCount",   JSONTYPE_INT},
-        {&m_minColCount,   "minColCount",   JSONTYPE_INT},
-        {&m_maxColCount,   "maxColCount",   JSONTYPE_INT},
-        {&m_maxRobotCount, "maxRobotCount", JSONTYPE_INT},
-        {&m_robotNames,    "robots",        JSONTYPE_STRING_ARRAY},
+        {
+            &m_minRowCount,
+            "minRowCount",
+            JSONTYPE_INT
+        },
+        {
+            &m_maxRowCount,
+            "maxRowCount",
+            JSONTYPE_INT
+        },
+        {
+            &m_minColCount,
+            "minColCount",
+            JSONTYPE_INT
+        },
+        {
+            &m_maxColCount,
+            "maxColCount",
+            JSONTYPE_INT
+        },
+        {
+            &m_maxRobotCount,
+            "maxRobotCount",
+            JSONTYPE_INT
+        },
+        {
+            &m_robotNames,
+            "robots",
+            JSONTYPE_STRING_ARRAY
+        },
     };
 
     if (!parseJson(params, json))
@@ -78,9 +107,7 @@ bool MapGenerator::init(const rapidjson::Value& json, const PlayerTemplate* play
 
     int count = static_cast<int>(m_robotNames.size());
 
-    m_robotSlotSize = 2.0f * std::max(playerTemplate->getCoverBreathX(),
-                                      playerTemplate->getCoverBreathY());
-
+    m_robotSlotSize = 2.0f * playerTemplate->getCoverBreath();
     m_robotTemplates.resize(count);
     for (int i = 0; i < count; ++i)
     {
@@ -92,7 +119,7 @@ bool MapGenerator::init(const rapidjson::Value& json, const PlayerTemplate* play
         }
         m_robotTemplates[i] = t;
 
-        float slotSize = 2.0f * std::max(t->getCoverBreathX(), t->getCoverBreathY());
+        float slotSize = 2.0f * t->getCoverBreath();
         if (m_robotSlotSize < slotSize)
         {
             m_robotSlotSize = slotSize;
@@ -117,8 +144,8 @@ int MapGenerator::deployRobots(GeneratedMap& map)
     float playerDirectionX, playerDirectionY;
 
     randomDirection(m_rand, playerDirectionX, playerDirectionY);
-    map.setPlayer(m_playerTemplate, freeSlots[playerSlot].first, freeSlots[playerSlot].second,
-                  playerDirectionX, playerDirectionY);
+    map.setPlayer(m_playerTemplate, freeSlots[playerSlot].first,
+                  freeSlots[playerSlot].second, playerDirectionX, playerDirectionY);
 
     if (lastSlot != playerSlot)
     {
@@ -138,8 +165,9 @@ int MapGenerator::deployRobots(GeneratedMap& map)
 
         randomDirection(m_rand, directionX, directionY);
 
-        map.addRobot(&m_robotNames[robotIdx], m_robotTemplates[robotIdx], freeSlots[robotSlot].first,
-                     freeSlots[robotSlot].second, directionX, directionY);
+        map.addRobot(&m_robotNames[robotIdx], m_robotTemplates[robotIdx],
+                     freeSlots[robotSlot].first, freeSlots[robotSlot].second,
+                     directionX, directionY);
 
         if (robotSlot != lastSlot)
         {

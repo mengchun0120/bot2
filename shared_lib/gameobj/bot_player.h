@@ -7,6 +7,7 @@
 
 namespace bot {
 
+class PlayerTemplate;
 class Goodie;
 
 class Player : public Robot {

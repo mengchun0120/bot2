@@ -14,21 +14,26 @@ public:
     virtual ~IslandMapGenerator()
     {}
 
-    virtual bool init(const rapidjson::Value& json, const PlayerTemplate* playerTemplate,
+    virtual bool init(const rapidjson::Value& json,
+                      const PlayerTemplate* playerTemplate,
                       const NamedMap<AIRobotTemplate>& aiRobotTemplateLib,
-                      const NamedMap<TileTemplate>& tileTemplateLib, int maxRobotCount);
+                      const NamedMap<TileTemplate>& tileTemplateLib,
+                      int maxRobotCount);
 
     virtual bool generate(const char* fileName);
 
 private:
     void generateTiles(GeneratedMap& map);
 
-    void generateIsland(GeneratedMap& map, const std::string* tileName, const TileTemplate* t,
-                        int islandSlotX, int islandSlotY, int rows, int cols);
+    void generateIsland(GeneratedMap& map, const std::string* tileName,
+                        const TileTemplate* t, int islandSlotX, int islandSlotY,
+                        int rows, int cols);
 
 private:
-    int m_minIslandLenTiles, m_maxIslandLenTiles;   // min and max length of islands in terms of tiles
-    int m_minIslandDistSlots, m_maxIslandDistSlots; // min and max distance between islands in terms of slots
+    // min and max length of islands in terms of tiles
+    int m_minIslandLenTiles, m_maxIslandLenTiles;
+    // min and max distance between islands in terms of slots
+    int m_minIslandDistSlots, m_maxIslandDistSlots;
     std::vector<std::string> m_islandTiles;
     float m_maxTileWidth, m_maxTileHeight;
     std::vector<const TileTemplate*> m_islandTileTemplates;

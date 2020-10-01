@@ -38,8 +38,8 @@ bool Robot::init(const RobotTemplate* t, Side side, int hpLevel, int hpRestoreLe
         return false;
     }
 
-    ret = m_weapon.init(t->getWeaponTemplate(), weaponLevel, t->getMissileTemplate(),
-                        missileLevel, m_base.getWeaponX(), m_base.getWeaponY(),
+    ret = m_weapon.init(t->getWeaponTemplate(), weaponLevel, missileLevel,
+                        m_base.getWeaponPosX(), m_base.getWeaponPosY(),
                         directionX, directionY);
     if (!ret)
     {
@@ -161,9 +161,9 @@ bool Robot::updateMover(float delta, GameScreen& gameScreen)
     return m_mover.update(gameScreen, *this, delta);
 }
 
-void Robot::updateWeapon(GameScreen& gameScreen)
+bool Robot::updateWeapon(GameScreen& gameScreen)
 {
-    return m_weapon.update(gameScreen);
+    return m_weapon.update(gameScreen, *this);
 }
 
 } // end of namespace bot

@@ -18,21 +18,45 @@ IslandMapGenerator::IslandMapGenerator()
 {
 }
 
-bool IslandMapGenerator::init(const rapidjson::Value& json, const PlayerTemplate* playerTemplate,
+bool IslandMapGenerator::init(const rapidjson::Value& json,
+                              const PlayerTemplate* playerTemplate,
                               const NamedMap<AIRobotTemplate>& aiRobotTemplateLib,
-                              const NamedMap<TileTemplate>& tileTemplateLib, int maxRobotCount)
+                              const NamedMap<TileTemplate>& tileTemplateLib,
+                              int maxRobotCount)
 {
-    if (!MapGenerator::init(json, playerTemplate, aiRobotTemplateLib, tileTemplateLib, maxRobotCount))
+    bool ret = MapGenerator::init(json, playerTemplate, aiRobotTemplateLib,
+                                  tileTemplateLib, maxRobotCount);
+    if (!ret)
     {
         return false;
     }
 
     std::vector<JsonParseParam> params = {
-        {&m_minIslandLenTiles,  "minIslandLenTiles",  JSONTYPE_INT},
-        {&m_maxIslandLenTiles,  "maxIslandLenTiles",  JSONTYPE_INT},
-        {&m_minIslandDistSlots, "minIslandDistSlots", JSONTYPE_INT},
-        {&m_maxIslandDistSlots, "maxIslandDistSlots", JSONTYPE_INT},
-        {&m_islandTiles,        "islandTiles",        JSONTYPE_STRING_ARRAY},
+        {
+            &m_minIslandLenTiles,
+            "minIslandLenTiles",
+            JSONTYPE_INT
+        },
+        {
+            &m_maxIslandLenTiles,
+            "maxIslandLenTiles",
+            JSONTYPE_INT
+        },
+        {
+            &m_minIslandDistSlots,
+            "minIslandDistSlots",
+            JSONTYPE_INT
+        },
+        {
+            &m_maxIslandDistSlots,
+            "maxIslandDistSlots",
+            JSONTYPE_INT
+        },
+        {
+            &m_islandTiles,
+            "islandTiles",
+            JSONTYPE_STRING_ARRAY
+        },
     };
 
     if (!parseJson(params, json))
@@ -53,13 +77,13 @@ bool IslandMapGenerator::init(const rapidjson::Value& json, const PlayerTemplate
         }
         m_islandTileTemplates[i] = t;
 
-        float tileWidth = t->getCoverBreathX() * 2.0f;
+        float tileWidth = t->getCoverBreath() * 2.0f;
         if (tileWidth > m_maxTileWidth)
         {
             m_maxTileWidth = tileWidth;
         }
 
-        float tileHeight = t->getCoverBreathY() * 2.0f;
+        float tileHeight = t->getCoverBreath() * 2.0f;
         if (tileHeight > m_maxTileHeight)
         {
             m_maxTileHeight = tileHeight;
@@ -103,11 +127,19 @@ void IslandMapGenerator::generateTiles(GeneratedMap& map)
     int totalSlotsX = map.getSlotColCount();
     int islandSlotY = m_rand.get(m_minIslandDistSlots, m_maxIslandDistSlots + 1);
     // min and max vertical len of island in terms of slots
-    int minIslandLenYSlots = static_cast<int>(ceil(m_minIslandLenTiles * m_maxTileHeight / m_robotSlotSize));
-    int maxIslandLenYSlots = static_cast<int>(ceil(m_maxIslandLenTiles * m_maxTileHeight / m_robotSlotSize));
+    int minIslandLenYSlots =
+                 static_cast<int>(ceil(m_minIslandLenTiles *
+                                       m_maxTileHeight / m_robotSlotSize));
+    int maxIslandLenYSlots =
+                 static_cast<int>(ceil(m_maxIslandLenTiles *
+                                       m_maxTileHeight / m_robotSlotSize));
     // min and max horizontal len of island in terms of slots
-    int minIslandLenXSlots = static_cast<int>(ceil(m_minIslandLenTiles * m_maxTileWidth / m_robotSlotSize));
-    int maxIslandLenXSlots = static_cast<int>(ceil(m_maxIslandLenTiles * m_maxTileWidth / m_robotSlotSize));
+    int minIslandLenXSlots =
+                 static_cast<int>(ceil(m_minIslandLenTiles *
+                                       m_maxTileWidth / m_robotSlotSize));
+    int maxIslandLenXSlots =
+                 static_cast<int>(ceil(m_maxIslandLenTiles *
+                                       m_maxTileWidth / m_robotSlotSize));
 
     while (true)
     {
@@ -127,10 +159,12 @@ void IslandMapGenerator::generateTiles(GeneratedMap& map)
         {
             int tileTypeIdx = m_rand.get(0, tileTypeCount);
             const TileTemplate* t = m_islandTileTemplates[tileTypeIdx];
-            float tileHeight = t->getCoverBreathY() * 2.0f;
-            float tileWidth = t->getCoverBreathX() * 2.0f;
+            float tileHeight = t->getCoverBreath() * 2.0f;
+            float tileWidth = t->getCoverBreath() * 2.0f;
 
-            int maxRowTiles = static_cast<int>(ceil(maxRowSlots * m_robotSlotSize / tileHeight));
+            int maxRowTiles =
+                     static_cast<int>(ceil(maxRowSlots *
+                                      m_robotSlotSize / tileHeight));
             if (maxRowTiles > m_maxIslandLenTiles)
             {
                 maxRowTiles = m_maxIslandLenTiles;
@@ -147,7 +181,9 @@ void IslandMapGenerator::generateTiles(GeneratedMap& map)
                 maxColSlots = maxIslandLenXSlots;
             }
 
-            int maxColTiles = static_cast<int>(ceil(maxColSlots * m_robotSlotSize / tileWidth));
+            int maxColTiles =
+                     static_cast<int>(ceil(maxColSlots *
+                                      m_robotSlotSize / tileWidth));
             if (maxColTiles > m_maxIslandLenTiles)
             {
                 maxColTiles = m_maxIslandLenTiles;
@@ -156,25 +192,30 @@ void IslandMapGenerator::generateTiles(GeneratedMap& map)
             int rows = m_rand.get(m_minIslandLenTiles, maxRowTiles + 1);
             int cols = m_rand.get(m_minIslandLenTiles, maxColTiles + 1);
 
-            generateIsland(map, &m_islandTiles[tileTypeIdx], t, islandSlotX, islandSlotY, rows, cols);
+            generateIsland(map, &m_islandTiles[tileTypeIdx], t,
+                           islandSlotX, islandSlotY, rows, cols);
 
             int colSlots = static_cast<int>(ceil(cols * tileWidth / m_robotSlotSize));
-            islandSlotX += colSlots + m_rand.get(m_minIslandDistSlots, m_maxIslandDistSlots + 1);
+            islandSlotX += colSlots + m_rand.get(m_minIslandDistSlots,
+                                                 m_maxIslandDistSlots + 1);
         }
 
-        islandSlotY += maxRowSlots + m_rand.get(m_minIslandDistSlots, m_maxIslandDistSlots + 1);
+        islandSlotY += maxRowSlots + m_rand.get(m_minIslandDistSlots,
+                                                m_maxIslandDistSlots + 1);
     }
 
     LOG_INFO("Done generating tiles");
 }
 
-void IslandMapGenerator::generateIsland(GeneratedMap& map, const std::string* tileName, const TileTemplate* t,
-                                        int islandSlotX, int islandSlotY, int rows, int cols)
+void IslandMapGenerator::generateIsland(
+                            GeneratedMap& map, const std::string* tileName,
+                            const TileTemplate* t, int islandSlotX, int islandSlotY,
+                            int rows, int cols)
 {
-    float tileHeight = t->getCoverBreathY() * 2.0f;
-    float tileWidth = t->getCoverBreathX() * 2.0f;
-    float startX = islandSlotX * m_robotSlotSize + t->getCoverBreathX();
-    float y = islandSlotY * m_robotSlotSize + t->getCoverBreathY();
+    float tileHeight = t->getCoverBreath() * 2.0f;
+    float tileWidth = t->getCoverBreath() * 2.0f;
+    float startX = islandSlotX * m_robotSlotSize + t->getCoverBreath();
+    float y = islandSlotY * m_robotSlotSize + t->getCoverBreath();
 
     for (int r = 0; r < rows; ++r)
     {

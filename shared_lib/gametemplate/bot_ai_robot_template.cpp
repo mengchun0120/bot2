@@ -65,7 +65,7 @@ bool AIRobotTemplate::init(const NamedMap<BaseTemplate>& baseLib,
     return true;
 }
 
-bool AIRobotTemplate::setGoodieSpawProb(float prob)
+bool AIRobotTemplate::setGoodieSpawnProb(float prob)
 {
     if (prob < 0.0f || prob > 1.0f)
     {

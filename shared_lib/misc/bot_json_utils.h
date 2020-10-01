@@ -27,25 +27,35 @@ bool readJson(rapidjson::Document& doc, const char* fileName);
 
 int validateJson(const rapidjson::Value& value, const char* name, JsonDataType type);
 
-bool parseJson(int& r, const rapidjson::Value& value, const char* name, bool required=true);
+bool parseJson(int& r, const rapidjson::Value& value,
+               const char* name, bool required=true);
 
-bool parseJson(float& r, const rapidjson::Value& value, const char* name, bool required=true);
+bool parseJson(float& r, const rapidjson::Value& value,
+               const char* name, bool required=true);
 
-bool parseJson(bool& r, const rapidjson::Value& value, const char* name, bool required=true);
+bool parseJson(bool& r, const rapidjson::Value& value,
+               const char* name, bool required=true);
 
-bool parseJson(double& r, const rapidjson::Value& value, const char* name, bool required=true);
+bool parseJson(double& r, const rapidjson::Value& value,
+               const char* name, bool required=true);
 
-bool parseJson(std::string& r, const rapidjson::Value& value, const char* name, bool required=true);
+bool parseJson(std::string& r, const rapidjson::Value& value,
+               const char* name, bool required=true);
 
-bool parseJson(std::vector<int>& r, const rapidjson::Value& value, const char* name, bool required=true);
+bool parseJson(std::vector<int>& r, const rapidjson::Value& value,
+               const char* name, bool required=true);
 
-bool parseJson(std::vector<float>& r, const rapidjson::Value& value, const char* name, bool required=true);
+bool parseJson(std::vector<float>& r, const rapidjson::Value& value,
+               const char* name, bool required=true);
 
-bool parseJson(std::vector<double>& r, const rapidjson::Value& value, const char* name, bool required=true);
+bool parseJson(std::vector<double>& r, const rapidjson::Value& value,
+               const char* name, bool required=true);
 
-bool parseJson(std::vector<bool>& r, const rapidjson::Value& value, const char* name, bool required=true);
+bool parseJson(std::vector<bool>& r, const rapidjson::Value& value,
+               const char* name, bool required=true);
 
-bool parseJson(std::vector<std::string>& r, const rapidjson::Value& value, const char* name, bool required=true);
+bool parseJson(std::vector<std::string>& r, const rapidjson::Value& value,
+               const char* name, bool required=true);
 
 bool parseJson(std::vector<JsonParseParam>& params, const rapidjson::Value& value);
 
@@ -77,7 +87,8 @@ bool parseJsonArray(const rapidjson::Value& value, PARSER& parser, const char* n
 
 
 template <typename T, typename PARSER>
-bool parseJsonArray(std::vector<T>& vec, const rapidjson::Value& value, PARSER& parser, const char* name)
+bool parseJsonArray(std::vector<T>& vec, const rapidjson::Value& value,
+                    PARSER& parser, const char* name)
 {
     if (!value.HasMember(name))
     {

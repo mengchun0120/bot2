@@ -33,7 +33,7 @@ bool Player::init(const PlayerTemplate* playerTemplate, float x, float y,
                            playerTemplate->getPowerRestoreLevel(),
                            playerTemplate->getWeaponLevel(),
                            playerTemplate->getMissileLevel(),
-                           playerTemplate->getMoverLevel,
+                           playerTemplate->getMoverLevel(),
                            x, y, directionX, directionY);
 
     if (!ret)

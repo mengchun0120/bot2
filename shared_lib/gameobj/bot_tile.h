@@ -25,11 +25,11 @@ public:
         return m_hp;
     }
 
-    bool addHP(int deltaHP);
+    bool addHP(float deltaHP);
 
 protected:
-    int m_hp;
-    int m_level;
+    float m_hp;
+    float m_maxHP;
 };
 
 } // end of namespace bot

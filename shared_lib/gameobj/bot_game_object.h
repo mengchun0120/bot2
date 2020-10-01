@@ -3,8 +3,6 @@
 
 #include "misc/bot_constants.h"
 #include "structure/bot_double_linked_item.h"
-#include "gameobj/bot_game_object_type.h"
-#include "gameobj/bot_game_object_flag.h"
 #include "gametemplate/bot_game_object_template.h"
 
 namespace bot {
@@ -19,7 +17,7 @@ public:
     virtual ~GameObject()
     {}
 
-    bool init(const GameObjectTemplate* t, GameObjectType type, float x, float y);
+    bool init(const GameObjectTemplate* t, float x, float y);
 
     GameObjectType getType() const
     {

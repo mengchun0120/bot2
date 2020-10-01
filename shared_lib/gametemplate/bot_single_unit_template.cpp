@@ -7,13 +7,22 @@
 
 namespace bot {
 
-bool SingleUnitTemplate::init(const NamedMap<Texture>& textureLib, const NamedMap<Rectangle>& rectLib,
+bool SingleUnitTemplate::init(const NamedMap<Texture>& textureLib,
+                              const NamedMap<Rectangle>& rectLib,
                               const rapidjson::Value& elem)
 {
     std::string textureName, rectName;
     std::vector<JsonParseParam> params = {
-        {&textureName, "texture", JSONTYPE_STRING}
-        {&rectName,    "rect",    JSONTYPE_STRING}
+        {
+            &textureName,
+            "texture",
+            JSONTYPE_STRING
+        },
+        {
+            &rectName,
+            "rect",
+            JSONTYPE_STRING
+        }
     };
 
     if (!parseJson(params, elem))

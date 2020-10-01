@@ -23,8 +23,8 @@ public:
     ~Dashboard()
     {}
 
-    void init(const Player* player, const DashboardConfig* cfg, float viewportHeight,
-              const TextSystem& textSys);
+    void init(const Player* player, const DashboardConfig* cfg,
+              float viewportHeight, const TextSystem& textSys);
 
     void draw(Graphics& g);
 

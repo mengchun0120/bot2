@@ -17,8 +17,10 @@ public:
     virtual ~RobotTemplate()
     {}
 
-    bool init(const NamedMap<BaseTemplate>& baseLib, const NamedMap<WeaponTemplate>& weaponLib,
-              const NamedMap<MoverTemplate>& moverLib, const rapidjson::Value& elem);
+    bool init(const NamedMap<BaseTemplate>& baseLib,
+              const NamedMap<WeaponTemplate>& weaponLib,
+              const NamedMap<MoverTemplate>& moverLib,
+              const rapidjson::Value& elem);
 
     const BaseTemplate* getBaseTemplate() const
     {

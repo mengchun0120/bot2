@@ -25,7 +25,8 @@ public:
     bool load(const std::string& file, float viewportWidth, float viewportHeight);
 
 private:
-    bool initMap(const rapidjson::Value& mapJson, float viewportWidth, float viewportHeight);
+    bool initMap(const rapidjson::Value& mapJson, float viewportWidth,
+                 float viewportHeight);
 
     bool loadTiles(const rapidjson::Value& mapJson);
 
@@ -33,9 +34,10 @@ private:
 
     bool loadRobots(const rapidjson::Value& mapJson);
 
-    bool addRobot(const std::string& name, const std::string& baseName, const std::string& weaponName,
-                  const std::string& moverName, const std::string& missileName,
-                  float x, float y, float directionX, float directionY);
+    bool addRobot(const std::string& name, const std::string& baseName,
+                  const std::string& weaponName, const std::string& moverName,
+                  const std::string& missileName, float x, float y,
+                  float directionX, float directionY);
 
     bool loadPlayer(const rapidjson::Value& mapJson);
 

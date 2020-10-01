@@ -123,7 +123,7 @@ bool ChaseShootAI::tryChangeAction(AIRobot& robot, GameScreen& screen)
         case ACTION_SHOOT:
         {
             float elapsedTime = elapsedTimeMs(robot.getLastChangeActionTime());
-            rollDice = d > m_stopChaseDist && elpasedTime >= m_shootDurationMs;
+            rollDice = d > m_stopChaseDist && elapsedTime >= m_shootDurationMs;
             break;
         }
         default:
@@ -210,7 +210,7 @@ void ChaseShootAI::applyShootAction(AIRobot& robot, float delta, GameScreen& scr
     robot.updateWeapon(screen);
 }
 
-bool ChaseShootAI::resetChaseDirection(Robot& robot, float delta, GameScreen& screen)
+bool ChaseShootAI::resetChaseDirection(AIRobot& robot, float delta, GameScreen& screen)
 {
     float firstDirectionX, firstDirectionY;
 
@@ -231,7 +231,7 @@ bool ChaseShootAI::resetChaseDirection(Robot& robot, float delta, GameScreen& sc
     return true;
 }
 
-bool ChaseShootAI::tryFirstDirection(Robot& robot, float& directionX,
+bool ChaseShootAI::tryFirstDirection(AIRobot& robot, float& directionX,
                                      float& directionY, float delta,
                                      GameScreen& screen)
 {
@@ -255,7 +255,7 @@ bool ChaseShootAI::tryFirstDirection(Robot& robot, float& directionX,
     return true;
 }
 
-int ChaseShootAI::findNewDirection(Robot& robot, float delta, float refDirectionX,
+int ChaseShootAI::findNewDirection(AIRobot& robot, float delta, float refDirectionX,
                                    float refDirectionY, GameScreen& screen)
 {
     int tryDirections[4];

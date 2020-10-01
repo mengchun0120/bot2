@@ -40,7 +40,7 @@ public:
         return m_hp + m_hpPerLevel * (level - 1);
     }
 
-    void setHP(float hp);
+    bool setHP(float hp);
 
     bool setHPPerLevel(float hpPerLevel);
 
@@ -89,15 +89,6 @@ public:
 
     bool setPowerRestoreRatePerLevel(float ratePerLevel);
 
-    int getMissileCapacity(int level) const
-    {
-        return m_missileCapacity + m_missileCapacityPerLevel * (level - 1);
-    }
-
-    bool setMissileCapacity(int capacity);
-
-    bool setMissileCapacityPerLevel(int capacityPerLevel);
-
     float getWeaponPosX() const
     {
         return m_weaponPos[0];
@@ -143,8 +134,6 @@ protected:
     float m_powerPerLevel;
     float m_powerRestoreRate;
     float m_powerRestoreRatePerLevel;
-    int m_missileCapacity;
-    int m_missileCapacityPerLevel;
     float m_weaponPos[Constants::NUM_FLOATS_PER_POSITION];
     float m_moverPos[Constants::NUM_FLOATS_PER_POSITION];
 };

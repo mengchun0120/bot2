@@ -2,17 +2,20 @@
 #include <cmath>
 #include "misc/bot_log.h"
 #include "misc/bot_json_utils.h"
+#include "misc/bot_math_utils.h"
 #include "structure/bot_named_map.h"
 #include "opengl/bot_texture.h"
 #include "geometry/bot_rectangle.h"
 #include "gametemplate/bot_base_template.h"
 #include "gametemplate/bot_weapon_template.h"
 #include "gametemplate/bot_mover_template.h"
+#include "gametemplate/bot_missile_template.h"
 #include "gametemplate/bot_player_template.h"
 
 namespace bot {
 
-BaseTemplate* parseBaseTemplate(const NamedMap<Texture>& textureLib, const NamedMap<Rectangle>& rectLib,
+BaseTemplate* parseBaseTemplate(const NamedMap<Texture>& textureLib,
+                                const NamedMap<Rectangle>& rectLib,
                                 const rapidjson::Value& elem)
 {
     const char name[] = "base";
@@ -40,9 +43,12 @@ BaseTemplate* parseBaseTemplate(const NamedMap<Texture>& textureLib, const Named
     return t;
 }
 
-MissileTemplate* parseMissileTemplate(const NamedMap<Texture>& textureLib, const NamedMap<Rectangle>& rectLib,
-                                      const NamedMap<ParticleEffectTemplate>& particleLib, const NamedMap<Color>& colorLib,
-                                      const rapidjson::Value& elem)
+MissileTemplate* parseMissileTemplate(
+                            const NamedMap<Texture>& textureLib,
+                            const NamedMap<Rectangle>& rectLib,
+                            const NamedMap<ParticleEffectTemplate>& particleLib,
+                            const NamedMap<Color>& colorLib,
+                            const rapidjson::Value& elem)
 {
     const char name[] = "missile";
 
@@ -69,8 +75,10 @@ MissileTemplate* parseMissileTemplate(const NamedMap<Texture>& textureLib, const
     return t;
 }
 
-WeaponTemplate* parseWeaponTemplate(const NamedMap<Texture>& textureLib, const NamedMap<Rectangle>& rectLib,
-                                    const MissileTemplate* missileTemplate, const rapidjson::Value& elem)
+WeaponTemplate* parseWeaponTemplate(const NamedMap<Texture>& textureLib,
+                                    const NamedMap<Rectangle>& rectLib,
+                                    const MissileTemplate* missileTemplate,
+                                    const rapidjson::Value& elem)
 {
     const char name[] = "weapon";
 
@@ -97,7 +105,8 @@ WeaponTemplate* parseWeaponTemplate(const NamedMap<Texture>& textureLib, const N
     return t;
 }
 
-MoverTemplate* parseMoverTemplate(const NamedMap<Texture>& textureLib, const NamedMap<Rectangle>& rectLib,
+MoverTemplate* parseMoverTemplate(const NamedMap<Texture>& textureLib,
+                                  const NamedMap<Rectangle>& rectLib,
                                   const rapidjson::Value& elem)
 {
     const char name[] = "mover";
@@ -130,7 +139,12 @@ PlayerTemplate::PlayerTemplate()
     , m_missileTemplate(nullptr)
     , m_gold(0)
     , m_experience(0L)
-    , m_baseLevel(1)
+    , m_hpLevel(1)
+    , m_hpRestoreLevel(1)
+    , m_armorLevel(1)
+    , m_armorRepairLevel(1)
+    , m_powerLevel(1)
+    , m_powerRestoreLevel(1)
     , m_missileLevel(1)
     , m_weaponLevel(1)
     , m_moverLevel(1)
@@ -160,12 +174,14 @@ PlayerTemplate::~PlayerTemplate()
     }
 }
 
-bool PlayerTemplate::init(const std::string& fileName, const NamedMap<Texture>& textureLib,
-                          const NamedMap<Rectangle>& rectLib, const NamedMap<ParticleEffectTemplate>& particleLib,
-                          const NamedMap<Color>& color)
+bool PlayerTemplate::init(const std::string& fileName,
+                          const NamedMap<Texture>& textureLib,
+                          const NamedMap<Rectangle>& rectLib,
+                          const NamedMap<ParticleEffectTemplate>& particleLib,
+                          const NamedMap<Color>& colorLib)
 {
     rapidjson::Document doc;
-    if (!readJson(doc, playerTemplateFile.c_str()))
+    if (!readJson(doc, fileName.c_str()))
     {
         return false;
     }
@@ -184,13 +200,15 @@ bool PlayerTemplate::init(const std::string& fileName, const NamedMap<Texture>& 
         return false;
     }
 
-    m_missileTemplate = parseMissileTemplate(textureLib, rectLib, elem);
+    m_missileTemplate = parseMissileTemplate(textureLib, rectLib, particleLib,
+                                             colorLib, elem);
     if (!m_missileTemplate)
     {
         return false;
     }
 
-    m_weaponTemplate = parseWeaponTemplate(textureLib, rectLib, m_missileTemplate, elem);
+    m_weaponTemplate = parseWeaponTemplate(textureLib, rectLib,
+                                           m_missileTemplate, elem);
     if (!m_weaponTemplate)
     {
         return false;
@@ -208,17 +226,61 @@ bool PlayerTemplate::init(const std::string& fileName, const NamedMap<Texture>& 
     int powerLevel, powerRestoreLevel;
     int missileLevel, weaponLevel, moverLevel;
     std::vector<JsonParseParam> params = {
-        {&gold,              "gold",              JSONTYPE_INT},
-        {&expereince,        "experience",        JSONTYPE_INT},
-        {&hpLevel,           "hpLevel",           JSONTYPE_INT},
-        {&hpRestoreLevel,    "hpRestoreLevel",    JSONTYPE_INT},
-        {&armorLevel,        "armorLevel",        JSONTYPE_INT},
-        {&armorRepairLevel,  "armorRepairLevel",  JSONTYPE_INT},
-        {&powerLevel,        "powerLevel",        JSONTYPE_INT},
-        {&powerRestoreLevel, "powerRestoreLevel", JSONTYPE_INT},
-        {&missileLevel,      "missileLevel",      JSONTYPE_INT},
-        {&weaponLevel,       "weaponLevel",       JSONTYPE_INT},
-        {&moverLevel,   "moverLevel",   JSONTYPE_INT}
+        {
+            &gold,
+            "gold",
+            JSONTYPE_INT
+        },
+        {
+            &experience,
+            "experience",
+            JSONTYPE_INT
+        },
+        {
+            &hpLevel,
+            "hpLevel",
+            JSONTYPE_INT
+        },
+        {
+            &hpRestoreLevel,
+            "hpRestoreLevel",
+            JSONTYPE_INT
+        },
+        {
+            &armorLevel,
+            "armorLevel",
+            JSONTYPE_INT
+        },
+        {
+            &armorRepairLevel,
+            "armorRepairLevel",
+            JSONTYPE_INT
+        },
+        {
+            &powerLevel,
+            "powerLevel",
+            JSONTYPE_INT
+        },
+        {
+            &powerRestoreLevel,
+            "powerRestoreLevel",
+            JSONTYPE_INT
+        },
+        {
+            &missileLevel,
+            "missileLevel",
+            JSONTYPE_INT
+        },
+        {
+            &weaponLevel,
+            "weaponLevel",
+            JSONTYPE_INT
+        },
+        {
+            &moverLevel,
+            "moverLevel",
+            JSONTYPE_INT
+        }
     };
 
     if (!parseJson(params, elem))
@@ -237,7 +299,7 @@ bool PlayerTemplate::init(const std::string& fileName, const NamedMap<Texture>& 
                    setMissileLevel(missileLevel) &&
                    setWeaponLevel(weaponLevel) &&
                    setMoverLevel(moverLevel);
-    if (!sucess)
+    if (!success)
     {
         return false;
     }
@@ -387,14 +449,15 @@ void PlayerTemplate::configCoverCollideBreath()
     }
 
     const Rectangle* rect = m_baseTemplate->getRect();
-    m_coverBreath = std::max(rect->getWidth(), rect->getHeight()) / 2.0f;
+    m_coverBreath = std::max(rect->width(), rect->height()) / 2.0f;
 
     if (m_weaponTemplate)
     {
         rect = m_weaponTemplate->getRect();
-        float d = dist(0.0f, 0.0f, m_baseTemplate->getWeaponPosX(), m_baseTemplate->getWeaponPosY());
-        float breath = d + std::max(rect->getWidth(), rect->getHeight()) / 2.0f;
-        if (breath > m_coverBreah)
+        float d = dist(0.0f, 0.0f, m_baseTemplate->getWeaponPosX(),
+                       m_baseTemplate->getWeaponPosY());
+        float breath = d + std::max(rect->width(), rect->height()) / 2.0f;
+        if (breath > m_coverBreath)
         {
             m_coverBreath = breath;
         }
@@ -403,8 +466,9 @@ void PlayerTemplate::configCoverCollideBreath()
     if (m_moverTemplate)
     {
         rect = m_moverTemplate->getRect();
-        float d = dist(0.0f, 0.0f, m_baseTemplate->getMoverPosX(), m_baseTemplate->getMoverPosY());
-        float breath = d + std::max(rect->getWidth(), rect->getHeight()) / 2.0f;
+        float d = dist(0.0f, 0.0f, m_baseTemplate->getMoverPosX(),
+                       m_baseTemplate->getMoverPosY());
+        float breath = d + std::max(rect->width(), rect->height()) / 2.0f;
         if (breath > m_coverBreath)
         {
             m_coverBreath = breath;

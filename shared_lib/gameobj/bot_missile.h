@@ -24,7 +24,12 @@ public:
 
     const MissileTemplate* getTemplate() const
     {
-        return static_cast<MissileTemplate*>(m_template);
+        return static_cast<const MissileTemplate*>(m_template);
+    }
+
+    const Robot* getShooter() const
+    {
+        return m_shooter;
     }
 
     void shiftPos(float deltaX, float deltaY);

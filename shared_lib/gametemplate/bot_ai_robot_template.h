@@ -57,7 +57,7 @@ public:
         return m_goodieSpawnProb;
     }
 
-    bool setGoodieSpawProb(float prob);
+    bool setGoodieSpawnProb(float prob);
 
 protected:
     AI* m_ai;

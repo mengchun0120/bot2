@@ -7,7 +7,8 @@
 
 namespace bot {
 
-BaseTemplate* BaseTemplate::Parser::create(std::string& name, const rapidjson::Value& elem)
+BaseTemplate* BaseTemplate::Parser::create(std::string& name,
+                                           const rapidjson::Value& elem)
 {
     BaseTemplate* t = new BaseTemplate();
     if (!t->init(m_textureLib, m_rectLib, elem))
@@ -19,7 +20,7 @@ BaseTemplate* BaseTemplate::Parser::create(std::string& name, const rapidjson::V
     return t;
 }
 
-BaseTemplate();
+BaseTemplate::BaseTemplate()
     : m_hp(0.0f)
     , m_hpPerLevel(0.0f)
     , m_hpRestoreRate(0.0f)
@@ -32,40 +33,105 @@ BaseTemplate();
     , m_powerPerLevel(0.0f)
     , m_powerRestoreRate(0.0f)
     , m_powerRestoreRatePerLevel(0.0f)
-    , m_missileCapacity(0)
-    , m_missileCapacityPerLevel(0)
 {}
 
-bool BaseComponentTemplate::init(const NamedMap<Texture>& textureLib, const NamedMap<Rectangle>& rectLib,
-                                 const rapidjson::Value& elem)
+bool BaseTemplate::init(const NamedMap<Texture>& textureLib,
+                        const NamedMap<Rectangle>& rectLib,
+                        const rapidjson::Value& elem)
 {
     if (!SingleUnitTemplate::init(textureLib, rectLib, elem))
     {
         return false;
     }
 
-    float hp, hpPerLevel = 0.0f, hpRestoreRate = 0.0f, hpRestoreRatePerLevel = 0.0f;
-    float armor = 0.0f, armorPerLevel = 0.0f, armorRepairRate = 0.0f, armorRepairRatePerLevel = 0.0f;
-    float power = 0.0f, powerPerLevel = 0.0f, powerRestoreRate = 0.0f, powerRestoreRatePerLevel = 0.0f;
-    int missileCapacity = 0, missileCapacityPerLevel = 0;
+    float hp, hpPerLevel = 0.0f;
+    float hpRestoreRate = 0.0f, hpRestoreRatePerLevel = 0.0f;
+    float armor = 0.0f, armorPerLevel = 0.0f;
+    float armorRepairRate = 0.0f, armorRepairRatePerLevel = 0.0f;
+    float power = 0.0f, powerPerLevel = 0.0f;
+    float powerRestoreRate = 0.0f, powerRestoreRatePerLevel = 0.0f;
     std::vector<float> weaponPos, moverPos;
     std::vector<JsonParseParam> params = {
-        {&hp,                       "hp",                       JSONTYPE_FLOAT},
-        {&hpPerLevel,               "hpPerLevel",               JSONTYPE_FLOAT, false},
-        {&hpRestoreRate,            "hpRestoreRate",            JSONTYPE_FLOAT, false},
-        {&hpRestoreRatePerLevel,    "hpRestoreRatePerLevel",    JSONTYPE_FLOAT, false},
-        {&armor,                    "armor",                    JSONTYPE_FLOAT, false},
-        {&armorPerLevel,            "armorPerLevel",            JSONTYPE_FLOAT, false},
-        {&armorRepairRate,          "armorRepairRate",          JSONTYPE_FLOAT, false},
-        {&armorRepairRatePerLevel,  "armorRepairRatePerLevel",  JSONTYPE_FLOAT, false},
-        {&power,                    "power",                    JSONTYPE_FLOAT, false},
-        {&powerPerLevel,            "powerPerLevel",            JSONTYPE_FLOAT, false},
-        {&powerRestoreRate,         "powerRestoreRate",         JSONTYPE_FLOAT, false},
-        {&powerRestoreRatePerLevel, "powerRestoreRatePerLevel", JSONTYPE_FLOAT, false},
-        {&missileCapacity,          "missileCapacity",          JSONTYPE_INT,   false},
-        {&missileCapacityPerLevel,  "missileCapacityPerLevel",  JSONTYPE_INT,   false},
-        {&weaponPos,                "weaponPos",                JSONTYPE_FLOAT_ARRAY},
-        {&moverPos,                 "moverPos",                 JSONTYPE_FLOAT_ARRAY}
+        {
+            &hp,
+            "hp",
+            JSONTYPE_FLOAT
+        },
+        {
+            &hpPerLevel,
+            "hpPerLevel",
+            JSONTYPE_FLOAT,
+            false},
+        {
+            &hpRestoreRate,
+            "hpRestoreRate",
+            JSONTYPE_FLOAT,
+            false
+        },
+        {
+            &hpRestoreRatePerLevel,
+            "hpRestoreRatePerLevel",
+            JSONTYPE_FLOAT,
+            false
+        },
+        {
+            &armor,
+            "armor",
+            JSONTYPE_FLOAT,
+            false
+        },
+        {
+            &armorPerLevel,
+            "armorPerLevel",
+            JSONTYPE_FLOAT,
+            false
+        },
+        {
+            &armorRepairRate,
+            "armorRepairRate",
+            JSONTYPE_FLOAT,
+            false
+        },
+        {
+            &armorRepairRatePerLevel,
+            "armorRepairRatePerLevel",
+            JSONTYPE_FLOAT,
+            false
+        },
+        {
+            &power,
+            "power",
+            JSONTYPE_FLOAT,
+            false
+        },
+        {
+            &powerPerLevel,
+            "powerPerLevel",
+            JSONTYPE_FLOAT,
+            false
+        },
+        {
+            &powerRestoreRate,
+            "powerRestoreRate",
+            JSONTYPE_FLOAT,
+            false
+        },
+        {
+            &powerRestoreRatePerLevel,
+            "powerRestoreRatePerLevel",
+            JSONTYPE_FLOAT,
+            false
+        },
+        {
+            &weaponPos,
+            "weaponPos",
+            JSONTYPE_FLOAT_ARRAY
+        },
+        {
+            &moverPos,
+            "moverPos",
+            JSONTYPE_FLOAT_ARRAY
+        }
     };
 
     if (!parseJson(params, elem))
@@ -96,9 +162,7 @@ bool BaseComponentTemplate::init(const NamedMap<Texture>& textureLib, const Name
                    setPower(power) &&
                    setPowerPerLevel(powerPerLevel) &&
                    setPowerRestoreRate(powerRestoreRate) &&
-                   setPowerRestoreRatePerLevel(powerRestoreRatePerLevel) &&
-                   setMissileCapacity(missileCapacity) &&
-                   setMissileCapacityPerLevel(missileCapacityPerLevel);
+                   setPowerRestoreRatePerLevel(powerRestoreRatePerLevel);
     if (!success)
     {
         return false;
@@ -251,30 +315,6 @@ bool BaseTemplate::setPowerRestoreRatePerLevel(float ratePerLevel)
     }
 
     m_powerRestoreRatePerLevel = ratePerLevel;
-    return true;
-}
-
-bool BaseTemplate::setMissileCapacity(int capacity)
-{
-    if (capacity < 0)
-    {
-        LOG_ERROR("Invalid missile capacity %d", capacity);
-        return false;
-    }
-
-    m_missileCapacity = capacity;
-    return true;
-}
-
-bool BaseTemplate::setMissileCapacityPerLevel(int capacityPerLevel)
-{
-    if (capacityPerLevel < 0)
-    {
-        LOG_ERROR("Invalid missile-capacity-per-level %d", capacityPerLevel);
-        return false;
-    }
-
-    m_missileCapacityPerLevel = capacityPerLevel;
     return true;
 }
 

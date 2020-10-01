@@ -447,7 +447,7 @@ bool GameMap::checkCollideNonPassthrough(float& newDelta, const Robot* robot,
 
                 if (dontCheck)
                 {
-                    item = static_cast<GameObjectItem*>(item->getNext())
+                    item = static_cast<GameObjectItem*>(item->getNext());
                     continue;
                 }
 

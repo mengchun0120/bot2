@@ -46,7 +46,7 @@ public:
 
     void setFlags(int mask)
     {
-        m_flags |= flag;
+        m_flags |= mask;
     }
 
 protected:

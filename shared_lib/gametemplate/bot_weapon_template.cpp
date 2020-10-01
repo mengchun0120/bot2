@@ -7,11 +7,11 @@
 #include "opengl/bot_texture.h"
 #include "geometry/bot_rectangle.h"
 #include "gametemplate/bot_missile_template.h"
-#include "gametemplate/bot_weapon_component_template.h"
+#include "gametemplate/bot_weapon_template.h"
 
 namespace bot {
 
-bool initFirePoints(std::vector<FirePoints>& firePoints, const rapidjson::Value& elem)
+bool initFirePoints(std::vector<FirePoint>& firePoints, const rapidjson::Value& elem)
 {
     std::vector<float> firePos;
     std::vector<float> fireDirection;
@@ -62,25 +62,8 @@ bool initFirePoints(std::vector<FirePoints>& firePoints, const rapidjson::Value&
     return true;
 }
 
-FirePoint::FirePoint()
-{
-    std::fill(m_firePos, m_firePos + sizeof(m_firePos), 0.0f);
-    std::fill(m_fireDirection, m_fireDirection + sizeof(m_fireDirection), 0.0f);
-}
-
-FirePoint::FirePoint(const FirePoint& fp)
-{
-    *this = fp;
-}
-
-FirePoint& FirePoint::operator=(const FirePoint& fp)
-{
-    std::copy(fp.m_firePos, fp.m_firePos + sizeof(fp.m_firePos), m_firePos);
-    std::copy(fp.m_fireDirection, fp.m_fireDirection + sizeof(fp.m_fireDirection), m_firePos);
-    return *this;
-}
-
-WeaponTemplate* WeaponTemplate::Parser::create(std::string& name, const rapidjson::Value& elem)
+WeaponTemplate* WeaponTemplate::Parser::create(std::string& name,
+                                               const rapidjson::Value& elem)
 {
     WeaponTemplate* t = new WeaponTemplate();
     if (!t->init(m_textureLib, m_rectLib, m_missileLib, elem))
@@ -98,8 +81,10 @@ WeaponTemplate::WeaponTemplate()
     , m_missileTemplate(nullptr)
 {}
 
-bool WeaponTemplate::init(const NamedMap<Texture>& textureLib, const NamedMap<Rectangle>& rectLib,
-                          const NamedMap<MissileTemplate>& missileLib, const rapidjson::Value& elem)
+bool WeaponTemplate::init(const NamedMap<Texture>& textureLib,
+                          const NamedMap<Rectangle>& rectLib,
+                          const NamedMap<MissileTemplate>& missileLib,
+                          const rapidjson::Value& elem)
 {
     if (!SingleUnitTemplate::init(textureLib, rectLib, elem))
     {
@@ -109,9 +94,9 @@ bool WeaponTemplate::init(const NamedMap<Texture>& textureLib, const NamedMap<Re
     float fireDuration, fireDurReductionPerLevel = 0.0f;
     std::string missileName;
     std::vector<JsonParseParam> params = {
-        {&fireDuration,             "fireDuration",             JSONTYPE_FLOAT},
-        {&fireDurReductionPerLevel, "fireDurReductionPerLevel", JSONTYPE_FLOAT,  false},
-        {&missileName,              "missile",                  JSONTYPE_STRING, false}
+        {&fireDuration, "fireDuration", JSONTYPE_FLOAT},
+        {&fireDurReductionPerLevel, "fireDurReductionPerLevel", JSONTYPE_FLOAT, false},
+        {&missileName, "missile", JSONTYPE_STRING, false}
     };
 
     if (!parseJson(params, elem))
@@ -138,8 +123,10 @@ bool WeaponTemplate::init(const NamedMap<Texture>& textureLib, const NamedMap<Re
     return true;
 }
 
-bool WeaponTemplate::init(const NamedMap<Texture>& textureLib, const NamedMap<Rectangle>& rectLib,
-                          const MissileTemplate* missileTemplate, const rapidjson::Value& elem)
+bool WeaponTemplate::init(const NamedMap<Texture>& textureLib,
+                          const NamedMap<Rectangle>& rectLib,
+                          const MissileTemplate* missileTemplate,
+                          const rapidjson::Value& elem)
 {
     if (!SingleUnitTemplate::init(textureLib, rectLib, elem))
     {
@@ -148,7 +135,7 @@ bool WeaponTemplate::init(const NamedMap<Texture>& textureLib, const NamedMap<Re
 
     float fireDuration, fireDurReductionPerLevel = 0.0f;
     std::vector<JsonParseParam> params = {
-        {&fireDuration,             "fireDuration",             JSONTYPE_FLOAT},
+        {&fireDuration, "fireDuration", JSONTYPE_FLOAT},
         {&fireDurReductionPerLevel, "fireDurReductionPerLevel", JSONTYPE_FLOAT,  false}
     };
 

@@ -17,12 +17,14 @@ class GameObjectTemplate;
 
 class GeneratedMap {
     struct ObjectItem {
-        ObjectItem(const std::string* name, const GameObjectTemplate* t, float x, float y);
+        ObjectItem(const std::string* name, const GameObjectTemplate* t,
+                   float x, float y);
 
         ~ObjectItem()
         {}
 
-        bool outsideRegion(float leftBound, float bottomBound, float rightBound, float topBound) const;
+        bool outsideRegion(float leftBound, float bottomBound,
+                           float rightBound, float topBound) const;
 
         bool overlap(const ObjectItem& item) const;
 
@@ -66,7 +68,8 @@ public:
     ~GeneratedMap()
     {}
 
-    void setPlayer(const PlayerTemplate* playerTemplate, int row, int col, float directionX, float directionY);
+    void setPlayer(const PlayerTemplate* playerTemplate, int row, int col,
+                   float directionX, float directionY);
 
     void addTile(const std::string* name, const TileTemplate* t, float x, float y);
 

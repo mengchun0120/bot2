@@ -37,25 +37,25 @@ bool Mover::update(GameScreen& screen, Robot& robot, float delta)
 {
     if (!m_moving)
     {
-        return;
+        return false;
     }
 
     float speedX = m_speed * robot.getDirectionX();
     float speedY = m_speed * robot.getDirectionY();
     float newDelta;
     LinkedList<GameObjectItem> collideObjs;
-    GameMap& map = gameScreen.getMap();
+    GameMap& map = screen.getMap();
 
-    bool collide = map.checkCollision(newDelta, &collideObjs, this,
+    bool collide = map.checkCollision(newDelta, &collideObjs, &robot,
                                       speedX, speedY, delta);
 
     if (!collideObjs.isEmpty())
     {
-        robot.processCollisions(collideObjs, gameScreen);
+        robot.processCollisions(collideObjs, screen);
         map.freeGameObjList(collideObjs);
     }
 
-    shiftPos(speedX * newDelta, speedY * newDelta);
+    robot.shiftPos(speedX * newDelta, speedY * newDelta);
     map.repositionObject(&robot);
 
     return collide;

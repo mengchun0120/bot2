@@ -3,6 +3,7 @@
 
 #include <utility>
 #include <random>
+#include "gameobj/bot_action.h"
 #include "ai/bot_ai.h"
 
 namespace bot {

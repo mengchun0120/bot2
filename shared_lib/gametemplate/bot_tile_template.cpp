@@ -4,10 +4,12 @@
 #include "opengl/bot_texture.h"
 #include "geometry/bot_rectangle.h"
 #include "gametemplate/bot_tile_template.h"
+#include "gameobj/bot_game_object_flag.h"
 
 namespace bot {
 
-TileTemplate* TileTemplate::Parser::create(const std::string& name, const rapidjson::Value& elem)
+TileTemplate* TileTemplate::Parser::create(const std::string& name,
+                                           const rapidjson::Value& elem)
 {
     TileTemplate* t = new TileTemplate();
     if (!t->init(m_textureLib, m_rectLib, elem))
@@ -25,7 +27,8 @@ TileTemplate::TileTemplate()
 {
 }
 
-bool TileTemplate::init(const NamedMap<Texture>& textureLib, const NamedMap<Rectangle>& rectLib,
+bool TileTemplate::init(const NamedMap<Texture>& textureLib,
+                        const NamedMap<Rectangle>& rectLib,
                         const rapidjson::Value& elem)
 {
     if (!GameObjectTemplate::init(elem))
@@ -40,12 +43,23 @@ bool TileTemplate::init(const NamedMap<Texture>& textureLib, const NamedMap<Rect
 
     float hp, hpPerLevel;
     bool indestructable = false;
-
     std::vector<JsonParseParam> params =
     {
-        {&hp,             "hp",             JSONTYPE_FLOAT},
-        {&hpPerLevel,     "hpPerLevel",     JSONTYPE_FLOAT},
-        {&indestructable, "indestructable", JSONTYPE_BOOL}
+        {
+            &hp,
+            "hp",
+            JSONTYPE_FLOAT
+        },
+        {
+            &hpPerLevel,
+            "hpPerLevel",
+            JSONTYPE_FLOAT
+        },
+        {
+            &indestructable,
+            "indestructable",
+            JSONTYPE_BOOL
+        }
     };
 
     if (!parseJson(params, elem))

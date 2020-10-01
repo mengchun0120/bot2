@@ -11,13 +11,15 @@ namespace bot {
 RobotTemplate::RobotTemplate()
     : GameObjectTemplate(GAME_OBJ_TYPE_ROBOT)
     , m_baseTemplate(nullptr)
-    , m_weponTemplate(nullptr)
+    , m_weaponTemplate(nullptr)
     , m_moverTemplate(nullptr)
 {
 }
 
-bool RobotTemplate::init(const NamedMap<BaseTemplate>& baseLib, const NamedMap<WeaponTemplate>& weaponLib,
-                         const NamedMap<MoverTemplate>& moverLib, const rapidjson::Value& elem)
+bool RobotTemplate::init(const NamedMap<BaseTemplate>& baseLib,
+                         const NamedMap<WeaponTemplate>& weaponLib,
+                         const NamedMap<MoverTemplate>& moverLib,
+                         const rapidjson::Value& elem)
 {
     if (!GameObjectTemplate::init(elem))
     {

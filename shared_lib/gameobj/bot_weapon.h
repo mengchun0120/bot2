@@ -1,7 +1,9 @@
 #ifndef INCLUDE_BOT_WEAPON
 #define INCLUDE_BOT_WEAPON
 
+#include <vector>
 #include "misc/bot_time_utils.h"
+#include "gameobj/bot_fire_point.h"
 
 namespace bot {
 
@@ -19,8 +21,8 @@ public:
     {}
 
     bool init(const WeaponTemplate* weaponTemplate, int weaponLevel,
-              const MissileTemplate* missileTemplate, int missileLevel,
-              float weaponX, float weaponY, float directionX, float directionY);
+              int missileLevel, float weaponX, float weaponY,
+              float directionX, float directionY);
 
     bool update(GameScreen& screen, Robot& robot);
 
@@ -50,7 +52,7 @@ private:
 
     void resetDamage();
 
-    void fireMissile(GameScreen& screen, Robot& robot);
+    bool fireMissile(GameScreen& screen, Robot& robot);
 
 protected:
     const WeaponTemplate* m_weaponTemplate;
@@ -63,7 +65,7 @@ protected:
     float m_fireDuration;
     float m_fireDurationMultiplier;
     float m_damage;
-    float m_damageMultipler;
+    float m_damageMultiplier;
 };
 
 } // end of namespace bot

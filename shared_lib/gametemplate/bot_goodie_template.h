@@ -50,9 +50,12 @@ public:
     virtual ~GoodieTemplate()
     {}
 
-    bool init(const std::string& name, const NamedMap<Rectangle>& rectLib,
-              const NamedMap<Texture>& textureLib, const NamedMap<Color>& colorLib,
-              const NamedMap<ProgressRing>& ringLib, const rapidjson::Value& elem);
+    bool init(const std::string& name,
+              const NamedMap<Rectangle>& rectLib,
+              const NamedMap<Texture>& textureLib,
+              const NamedMap<Color>& colorLib,
+              const NamedMap<ProgressRing>& ringLib,
+              const rapidjson::Value& elem);
 
     GoodieType getGoodieType() const
     {

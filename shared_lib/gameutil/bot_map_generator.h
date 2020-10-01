@@ -17,8 +17,10 @@ class MapGenerator {
 public:
     class Parser {
     public:
-        Parser(const PlayerTemplate* playerTemplate, const NamedMap<TileTemplate>& tileTemplateLib,
-               const NamedMap<AIRobotTemplate>& robotTemplateLib, int maxRobotCount)
+        Parser(const PlayerTemplate* playerTemplate,
+               const NamedMap<TileTemplate>& tileTemplateLib,
+               const NamedMap<AIRobotTemplate>& robotTemplateLib,
+               int maxRobotCount)
             : m_playerTemplate(playerTemplate)
             , m_tileTemplateLib(tileTemplateLib)
             , m_robotTemplateLib(robotTemplateLib)
@@ -39,9 +41,11 @@ public:
     virtual ~MapGenerator()
     {}
 
-    virtual bool init(const rapidjson::Value& json, const PlayerTemplate* playerTemplate,
+    virtual bool init(const rapidjson::Value& json,
+                      const PlayerTemplate* playerTemplate,
                       const NamedMap<AIRobotTemplate>& aiRobotTemplateLib,
-                      const NamedMap<TileTemplate>& tileTemplateLib, int maxRobotCount);
+                      const NamedMap<TileTemplate>& tileTemplateLib,
+                      int maxRobotCount);
 
     virtual bool generate(const char* fileName) = 0;
 

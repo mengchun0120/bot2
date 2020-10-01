@@ -2,12 +2,11 @@
 #define INCLUDE_BOT_AI_ROBOT
 
 #include "misc/bot_time_utils.h"
+#include "gametemplate/bot_ai_robot_template.h"
 #include "gameobj/bot_action.h"
 #include "gameobj/bot_robot.h"
 
 namespace bot {
-
-class AIRobotTemplate;
 
 class AIRobot : public Robot {
 public:
@@ -20,6 +19,11 @@ public:
               int armorLevel, int armorRepairLevel, int powerLevel,
               int powerRestoreLevel, int weaponLevel, int missileLevel,
               int moverLevel, float x, float y, float directionX, float directionY);
+
+    const AIRobotTemplate* getTemplate() const
+    {
+        return static_cast<const AIRobotTemplate*>(m_template);
+    }
 
     virtual void present(Graphics& g);
 

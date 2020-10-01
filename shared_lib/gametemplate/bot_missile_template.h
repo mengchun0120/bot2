@@ -14,8 +14,10 @@ class MissileTemplate : public GameObjectTemplate, public SingleUnitTemplate {
 public:
     class Parser {
     public:
-        Parser(const NamedMap<Texture>& textureLib, const NamedMap<Rectangle>& rectLib,
-               const NamedMap<ParticleEffectTemplate>& particleEffectLib, const NamedMap<Color>& colorLib)
+        Parser(const NamedMap<Texture>& textureLib,
+               const NamedMap<Rectangle>& rectLib,
+               const NamedMap<ParticleEffectTemplate>& particleEffectLib,
+               const NamedMap<Color>& colorLib)
             : m_textureLib(textureLib)
             , m_rectLib(rectLib)
             , m_particleEffectLib(particleEffectLib)
@@ -39,8 +41,10 @@ public:
     virtual ~MissileTemplate()
     {}
 
-    bool init(const NamedMap<Texture>& textureLib, const NamedMap<Rectangle>& rectLib,
-              const NamedMap<ParticleEffectTemplate>& particleEffectLib, const NamedMap<Color>& colorLib,
+    bool init(const NamedMap<Texture>& textureLib,
+              const NamedMap<Rectangle>& rectLib,
+              const NamedMap<ParticleEffectTemplate>& particleEffectLib,
+              const NamedMap<Color>& colorLib,
               const rapidjson::Value& elem);
 
     float getSpeed() const
@@ -50,14 +54,14 @@ public:
 
     bool setSpeed(float speed);
 
-    int getExplosionPower(int level) const
+    int getDamage(int level) const
     {
-        return m_explosionPower + m_explosionPowerPerLevel * (level - 1);
+        return m_damage + m_damagePerLevel * (level - 1);
     }
 
-    bool setExplosionPower(int explosionPower);
+    bool setDamage(int damage);
 
-    bool setExplosionPowerPerLevel(float powerPerLevel);
+    bool setDamagePerLevel(float damagePerLevel);
 
     float getExplosionBreath() const
     {
@@ -88,8 +92,8 @@ public:
 
 protected:
     float m_speed;
-    float m_explosionPower;
-    float m_explosionPowerPerLevel;
+    float m_damage;
+    float m_damagePerLevel;
     float m_explosionBreath;
     const Color* m_color;
     const ParticleEffectTemplate* m_explosionTemplate;

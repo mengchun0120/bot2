@@ -12,20 +12,22 @@ namespace bot {
 
 const float THRESHOLD = 0.01;
 
-GeneratedMap::ObjectItem::ObjectItem(const std::string* name, const GameObjectTemplate* t,
+GeneratedMap::ObjectItem::ObjectItem(const std::string* name,
+                                     const GameObjectTemplate* t,
                                      float x, float y)
     : m_name(name)
     , m_template(t)
     , m_x(x)
     , m_y(y)
 {
-    m_left = x - t->getCoverBreathX();
-    m_right = x + t->getCoverBreathX();
-    m_bottom = y - t->getCoverBreathY();
-    m_top = y + t->getCoverBreathY();
+    m_left = x - t->getCoverBreath();
+    m_right = x + t->getCoverBreath();
+    m_bottom = y - t->getCoverBreath();
+    m_top = y + t->getCoverBreath();
 }
 
-bool GeneratedMap::ObjectItem::outsideRegion(float leftBound, float bottomBound, float rightBound, float topBound) const
+bool GeneratedMap::ObjectItem::outsideRegion(float leftBound, float bottomBound,
+                                             float rightBound, float topBound) const
 {
     return compare(m_left, leftBound, THRESHOLD) < 0 ||
            compare(m_right, rightBound, THRESHOLD) > 0 ||
@@ -41,12 +43,14 @@ bool GeneratedMap::ObjectItem::overlap(const ObjectItem& item) const
            compare(m_top, item.m_bottom, THRESHOLD) > 0;
 }
 
-GeneratedMap::TileItem::TileItem(const std::string* name, const TileTemplate* t, float x, float y)
+GeneratedMap::TileItem::TileItem(const std::string* name, const TileTemplate* t,
+                                 float x, float y)
     : ObjectItem(name, t, x, y)
 {
 }
 
-GeneratedMap::RobotItem::RobotItem(const std::string* name, const AIRobotTemplate* t, float x, float y,
+GeneratedMap::RobotItem::RobotItem(const std::string* name, const AIRobotTemplate* t,
+                                   float x, float y,
                                    float directionX, float directionY)
     : ObjectItem(name, t, x, y)
 {
@@ -98,7 +102,8 @@ void GeneratedMap::initSlots()
     }
 }
 
-void GeneratedMap::setPlayer(const PlayerTemplate* playerTemplate, int row, int col, float directionX, float directionY)
+void GeneratedMap::setPlayer(const PlayerTemplate* playerTemplate, int row, int col,
+                             float directionX, float directionY)
 {
     Slot& slot = m_slots[row][col];
     m_playerTemplate = playerTemplate;
@@ -109,16 +114,17 @@ void GeneratedMap::setPlayer(const PlayerTemplate* playerTemplate, int row, int 
     m_playerDirectionY = directionY;
 }
 
-void GeneratedMap::addTile(const std::string* name, const TileTemplate* t, float x, float y)
+void GeneratedMap::addTile(const std::string* name, const TileTemplate* t,
+                           float x, float y)
 {
     m_tiles.emplace_back(name, t, x, y);
 
     int maxRowIdx = static_cast<int>(m_slots.size()) - 1;
     int maxColIdx = static_cast<int>(m_slots[0].size()) - 1;
-    int left = clamp(getSlotIndex(x - t->getCoverBreathX()), 0, maxColIdx);
-    int right = clamp(getSlotIndex(x + t->getCoverBreathX()), 0, maxColIdx);
-    int bottom = clamp(getSlotIndex(y - t->getCoverBreathY()), 0, maxRowIdx);
-    int top = clamp(getSlotIndex(y + t->getCoverBreathY()), 0, maxRowIdx);
+    int left = clamp(getSlotIndex(x - t->getCoverBreath()), 0, maxColIdx);
+    int right = clamp(getSlotIndex(x + t->getCoverBreath()), 0, maxColIdx);
+    int bottom = clamp(getSlotIndex(y - t->getCoverBreath()), 0, maxRowIdx);
+    int top = clamp(getSlotIndex(y + t->getCoverBreath()), 0, maxRowIdx);
 
     for (int r = bottom; r <= top; ++r)
     {
@@ -130,7 +136,8 @@ void GeneratedMap::addTile(const std::string* name, const TileTemplate* t, float
     }
 }
 
-bool GeneratedMap::addRobot(const std::string* name, const AIRobotTemplate* t, int row, int col,
+bool GeneratedMap::addRobot(const std::string* name, const AIRobotTemplate* t,
+                            int row, int col,
                             float directionX, float directionY)
 {
     Slot& slot = m_slots[row][col];
@@ -265,7 +272,8 @@ bool GeneratedMap::validateInRegion() const
     {
         if (tile.outsideRegion(0.0f, 0.0f, m_mapWidth, m_mapHeight))
         {
-            LOG_ERROR("Tile %d outside map: %s (%f %f %f %f %f)", i, tile.m_name->c_str(),
+            LOG_ERROR("Tile %d outside map: %s (%f %f %f %f %f)",
+                      i, tile.m_name->c_str(),
                       tile.m_left, tile.m_bottom, tile.m_right, tile.m_top);
             return false;
         }
@@ -277,7 +285,8 @@ bool GeneratedMap::validateInRegion() const
     {
         if (robot.outsideRegion(0.0f, 0.0f, m_mapWidth, m_mapHeight))
         {
-            LOG_ERROR("Robot %d outside map: %s (%f %f %f %f)", i, robot.m_name->c_str(),
+            LOG_ERROR("Robot %d outside map: %s (%f %f %f %f)",
+                      i, robot.m_name->c_str(),
                       robot.m_left, robot.m_bottom, robot.m_right, robot.m_top);
             return false;
         }
@@ -298,9 +307,12 @@ bool GeneratedMap::validateOverlap() const
         {
             if (it->overlap(*it1))
             {
-                LOG_ERROR("Tile %d (%s %f %f %f %f) overlaps with tile %d (%s %f %f %f %f)",
-                          i, it->m_name->c_str(), it->m_left, it->m_bottom, it->m_right, it->m_top,
-                          j, it1->m_name->c_str(), it1->m_left, it1->m_bottom, it1->m_right, it1->m_top);
+                LOG_ERROR("Tile %d (%s %f %f %f %f) overlaps with tile"
+                          " %d (%s %f %f %f %f)",
+                          i, it->m_name->c_str(), it->m_left,
+                          it->m_bottom, it->m_right, it->m_top,
+                          j, it1->m_name->c_str(), it1->m_left,
+                          it1->m_bottom, it1->m_right, it1->m_top);
                 return false;
             }
         }
@@ -315,9 +327,12 @@ bool GeneratedMap::validateOverlap() const
         {
             if (it->overlap(*it1))
             {
-                LOG_ERROR("Robot %d (%s %f %f %f %f) overlaps with robot %d (%s %f %f %f %f)",
-                          i, it->m_name->c_str(), it->m_left, it->m_bottom, it->m_right, it->m_top,
-                          j, it1->m_name->c_str(), it1->m_left, it1->m_bottom, it1->m_right, it1->m_top);
+                LOG_ERROR("Robot %d (%s %f %f %f %f) overlaps with robot"
+                          " %d (%s %f %f %f %f)",
+                          i, it->m_name->c_str(), it->m_left,
+                          it->m_bottom, it->m_right, it->m_top,
+                          j, it1->m_name->c_str(), it1->m_left,
+                          it1->m_bottom, it1->m_right, it1->m_top);
                 return false;
             }
         }
@@ -331,9 +346,12 @@ bool GeneratedMap::validateOverlap() const
         {
             if (it->overlap(*it1))
             {
-                LOG_ERROR("Tile %d (%s %f %f %f %f) overlaps with robot %d (%s %f %f %f %f)",
-                          i, it->m_name->c_str(), it->m_left, it->m_bottom, it->m_right, it->m_top,
-                          j, it1->m_name->c_str(), it1->m_left, it1->m_bottom, it1->m_right, it1->m_top);
+                LOG_ERROR("Tile %d (%s %f %f %f %f) overlaps with robot"
+                          " %d (%s %f %f %f %f)",
+                          i, it->m_name->c_str(), it->m_left,
+                          it->m_bottom, it->m_right, it->m_top,
+                          j, it1->m_name->c_str(), it1->m_left,
+                          it1->m_bottom, it1->m_right, it1->m_top);
                 return false;
             }
         }

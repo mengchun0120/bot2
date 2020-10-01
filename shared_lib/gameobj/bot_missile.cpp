@@ -110,7 +110,7 @@ void Missile::explode(GameScreen& gameScreen)
                                     t->getExplosionTemplate(), getPosX(), getPosY());
     if (!map.addObject(explosion))
     {
-        gameObjManager.sendToDeathQueue(explosion);
+        gameObjMgr.sendToDeathQueue(explosion);
     }
 
     int startRow, endRow, startCol, endCol;
@@ -123,7 +123,7 @@ void Missile::explode(GameScreen& gameScreen)
                                      left, bottom, right, top);
     if (!inBound)
     {
-        gameObjManager.sendToDeathQueue(this);
+        gameObjMgr.sendToDeathQueue(this);
         return;
     }
 
@@ -142,7 +142,7 @@ void Missile::explode(GameScreen& gameScreen)
 
                 if (!checkExplosion(obj, left, bottom, right, top))
                 {
-                    gameObjManager.sendToDeathQueue(obj);
+                    gameObjMgr.sendToDeathQueue(obj);
                 }
 
                 obj->setFlag(GAME_OBJ_FLAG_EXPLODE_CHECKED);
@@ -152,7 +152,7 @@ void Missile::explode(GameScreen& gameScreen)
         }
     }
 
-    gameObjManager.sendToDeathQueue(this);
+    gameObjMgr.sendToDeathQueue(this);
 }
 
 bool Missile::checkExplosion(GameObject* obj, float left, float bottom,
@@ -185,7 +185,7 @@ bool Missile::checkExplosion(GameObject* obj, float left, float bottom,
     if (obj->getType() == GAME_OBJ_TYPE_ROBOT)
     {
         Robot* robot = static_cast<Robot*>(obj);
-        if (robot->getSide() == shooter->getSide())
+        if (robot->getSide() == m_shooter->getSide())
         {
             return true;
         }

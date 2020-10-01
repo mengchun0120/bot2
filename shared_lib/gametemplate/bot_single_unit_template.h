@@ -32,7 +32,7 @@ public:
         m_texture = texture;
     }
 
-    const Rectangle* getRectangle() const
+    const Rectangle* getRect() const
     {
         return m_rect;
     }

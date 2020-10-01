@@ -1,17 +1,18 @@
+#include "misc/bot_log.h"
+#include "misc/bot_math_utils.h"
 #include "geometry/bot_rectangle.h"
 #include "opengl/bot_texture.h"
 #include "opengl/bot_graphics.h"
 #include "gametemplate/bot_tile_template.h"
+#include "gameobj/bot_game_object_flag.h"
 #include "gameobj/bot_tile.h"
 
 namespace bot {
 
 Tile::Tile()
     : m_hp(0.0f)
-    , m_level(1)
+    , m_maxHP(0.0f)
 {
-    m_pos[0] = 0.0f;
-    m_pos[1] = 0.0f;
 }
 
 bool Tile::init(const TileTemplate* tileTemplate, int level, float x, float y)
@@ -27,8 +28,8 @@ bool Tile::init(const TileTemplate* tileTemplate, int level, float x, float y)
         return false;
     }
 
-    m_level = level;
-    m_hp = tileTemplate->getHP(level);
+    m_maxHP = tileTemplate->getHP(level);
+    m_hp = m_maxHP;
     m_flags = tileTemplate->getFlags();
 
     return true;
@@ -47,7 +48,7 @@ void Tile::update(float delta, GameScreen& screen)
 {
 }
 
-bool Tile::addHP(int deltaHP)
+bool Tile::addHP(float deltaHP)
 {
     if (testFlag(GAME_OBJ_FLAG_INDESTRUCTABLE))
     {
@@ -59,7 +60,7 @@ bool Tile::addHP(int deltaHP)
         return false;
     }
 
-    m_hp = clamp(m_hp + deltaHP, 0, getTemplate()->getHP());
+    m_hp = clamp(m_hp + deltaHP, 0.0f, m_maxHP);
 
     return m_hp > 0;
 }

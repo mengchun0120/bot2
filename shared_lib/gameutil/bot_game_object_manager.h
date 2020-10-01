@@ -19,6 +19,7 @@ class Player;
 class GameMap;
 class AppConfig;
 class GameLib;
+class PlayerTemplate;
 
 class GameObjectManager {
 public:

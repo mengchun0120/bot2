@@ -54,24 +54,50 @@ GoodieTemplate* GoodieTemplate::Parser::create(const std::string& name, const ra
     return t;
 }
 
-bool GoodieTemplate::init(const std::string& name, const NamedMap<Rectangle>& rectLib,
-                          const NamedMap<Texture>& textureLib, const NamedMap<Color>& colorLib,
-                          const NamedMap<ProgressRing>& ringLib, const rapidjson::Value& elem)
+bool GoodieTemplate::init(const std::string& name,
+                          const NamedMap<Rectangle>& rectLib,
+                          const NamedMap<Texture>& textureLib,
+                          const NamedMap<Color>& colorLib,
+                          const NamedMap<ProgressRing>& ringLib,
+                          const rapidjson::Value& elem)
 {
-    std::string textureName, rectName, effectRectName, ringName;
+    if (!GameObjectTemplate::init(elem))
+    {
+        return false;
+    }
 
+    std::string textureName, rectName, effectRectName, ringName;
     std::vector<JsonParseParam> params =
     {
-        {&textureName,      "texture",        JSONTYPE_STRING},
-        {&rectName,         "rect",           JSONTYPE_STRING},
-        {&effectRectName,   "effectRect",     JSONTYPE_STRING},
-        {&ringName,         "progressRing",   JSONTYPE_STRING},
-        {&m_coverBreathX,   "coverBreathX",   JSONTYPE_FLOAT},
-        {&m_coverBreathY,   "coverBreathY",   JSONTYPE_FLOAT},
-        {&m_collideBreathX, "collideBreathX", JSONTYPE_FLOAT},
-        {&m_collideBreathY, "collideBreathY", JSONTYPE_FLOAT},
-        {&m_duration,       "duration",       JSONTYPE_FLOAT},
-        {&m_weight,         "weight",         JSONTYPE_FLOAT}
+        {
+            &textureName,
+            "texture",
+            JSONTYPE_STRING},
+        {
+            &rectName,
+            "rect",
+            JSONTYPE_STRING
+        },
+        {
+            &effectRectName,
+            "effectRect",
+            JSONTYPE_STRING
+        },
+        {
+            &ringName,
+            "progressRing",
+            JSONTYPE_STRING
+        },
+        {
+            &m_duration,
+            "duration",
+            JSONTYPE_FLOAT
+        },
+        {
+            &m_weight,
+            "weight",
+            JSONTYPE_FLOAT
+        }
     };
 
     if (!parseJson(params, elem))

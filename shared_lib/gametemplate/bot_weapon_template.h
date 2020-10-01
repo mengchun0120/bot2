@@ -3,26 +3,12 @@
 
 #include <string>
 #include <vector>
-#include "misc/bot_constants.h"
+#include "gameobj/bot_fire_point.h"
 #include "gametemplate/bot_single_unit_template.h"
 
 namespace bot {
 
 class MissileTemplate;
-
-struct FirePoint {
-    FirePoint();
-
-    FirePoint(const FirePoint& fp);
-
-    ~FirePoint()
-    {}
-
-    FirePoint& operator=(const FirePoint& fp);
-
-    float m_firePos[Constants::NUM_FLOATS_PER_POSITION];
-    float m_fireDirection[Constants::NUM_FLOATS_PER_POSITION];
-};
 
 class WeaponTemplate: public SingleUnitTemplate {
 public:
@@ -52,11 +38,15 @@ public:
     virtual ~WeaponTemplate()
     {}
 
-    bool init(const NamedMap<Texture>& textureLib, const NamedMap<Rectangle>& rectLib,
-              const NamedMap<MissileTemplate>& missileLib, const rapidjson::Value& elem);
+    bool init(const NamedMap<Texture>& textureLib,
+              const NamedMap<Rectangle>& rectLib,
+              const NamedMap<MissileTemplate>& missileLib,
+              const rapidjson::Value& elem);
 
-    bool init(const NamedMap<Texture>& textureLib, const NamedMap<Rectangle>& rectLib,
-              const MissileTemplate* missileTemplate, const rapidjson::Value& elem);
+    bool init(const NamedMap<Texture>& textureLib,
+              const NamedMap<Rectangle>& rectLib,
+              const MissileTemplate* missileTemplate,
+              const rapidjson::Value& elem);
 
     float getFireDuration(int level) const
     {

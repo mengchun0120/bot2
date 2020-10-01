@@ -10,6 +10,7 @@ class Texture;
 class Rectangle;
 class Color;
 class ParticleEffectTemplate;
+class MissileTemplate;
 
 class PlayerTemplate: public RobotTemplate {
 public:
@@ -17,9 +18,11 @@ public:
 
     virtual ~PlayerTemplate();
 
-    bool init(const std::string& fileName, const NamedMap<Texture>& textureLib,
-              const NamedMap<Rectangle>& rectLib, const NamedMap<ParticleEffectTemplate>& particleLib,
-              const NamedMap<Color>& color);
+    bool init(const std::string& fileName,
+              const NamedMap<Texture>& textureLib,
+              const NamedMap<Rectangle>& rectLib,
+              const NamedMap<ParticleEffectTemplate>& particleLib,
+              const NamedMap<Color>& colorLib);
 
     int getGold() const
     {

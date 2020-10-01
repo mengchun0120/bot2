@@ -9,6 +9,7 @@ namespace bot {
 
 class BaseTemplate;
 class Graphics;
+class GameScreen;
 
 class Base {
     enum {
@@ -22,13 +23,8 @@ public:
     {}
 
     bool init(const BaseTemplate* t, int hpLevel, int hpRestoreLevel, int armorLevel,
-              int armorRepairLevle, int powerLevel, int powerRestoreLevel,
+              int armorRepairLevel, int powerLevel, int powerRestoreLevel,
               float x, float y, float directionX, float directionY);
-
-    int getLevel() const
-    {
-        return m_level;
-    }
 
     void update(GameScreen& screen);
 
@@ -60,7 +56,7 @@ public:
 
     void setArmor(float armor)
     {
-        m_armor = clamp(hp, 0.0f, m_maxArmor);
+        m_armor = clamp(armor, 0.0f, m_maxArmor);
     }
 
     float getPower() const

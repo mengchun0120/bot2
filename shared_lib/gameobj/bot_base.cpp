@@ -1,9 +1,11 @@
 #include <cstdio>
+#include "misc/bot_log.h"
 #include "misc/bot_math_utils.h"
 #include "opengl/bot_texture.h"
 #include "geometry/bot_rectangle.h"
 #include "gametemplate/bot_base_template.h"
 #include "gameobj/bot_base.h"
+#include "screen/bot_game_screen.h"
 
 namespace bot {
 
@@ -12,7 +14,7 @@ Base::Base()
     , m_hp(0.0f)
     , m_maxHP(0.0f)
     , m_hpRestoreRate(0.0f)
-    , m_hpRatio(0.0f)
+    , m_hpPercent(0.0f)
     , m_armor(0.0f)
     , m_maxArmor(0.0f)
     , m_armorRepairRate(0.0f)
@@ -23,7 +25,7 @@ Base::Base()
 }
 
 bool Base::init(const BaseTemplate* t, int hpLevel, int hpRestoreLevel, int armorLevel,
-                int armorRepairLevle, int powerLevel, int powerRestoreLevel,
+                int armorRepairLevel, int powerLevel, int powerRestoreLevel,
                 float x, float y, float directionX, float directionY)
 {
     if (!t)
@@ -76,7 +78,7 @@ bool Base::init(const BaseTemplate* t, int hpLevel, int hpRestoreLevel, int armo
 
     m_maxArmor = t->getArmor(armorLevel);
     m_armor = m_maxArmor;
-    m_armorRepairRate = t->getArmorRepairRate(armorRestoreLevel);
+    m_armorRepairRate = t->getArmorRepairRate(armorRepairLevel);
 
     m_maxPower = t->getPower(powerLevel);
     m_power = m_maxPower;
@@ -91,7 +93,6 @@ bool Base::init(const BaseTemplate* t, int hpLevel, int hpRestoreLevel, int armo
 
 void Base::update(GameScreen& screen)
 {
-    const BaseTemplate* t = getTemplate();
     TimePoint now = Clock::now();
     float timeDist = timeDistS(m_lastUpdateTime, now);
 
@@ -109,17 +110,19 @@ void Base::update(GameScreen& screen)
 
 void Base::present(Graphics& g, const float* pos, const float* direction)
 {
-    t->getRect()->draw(g, pos, direction, nullptr, nullptr, t->getTexture()->textureId(), nullptr);
+    m_baseTemplate->getRect()->draw(g, pos, direction, nullptr, nullptr,
+                                    m_baseTemplate->getTexture()->textureId(),
+                                    nullptr);
 }
 
-void setHP(float hp);
+void Base::setHP(float hp)
 {
     m_hp = clamp(hp, 0.0f, m_maxHP);
     m_hpPercent = m_hp / m_maxHP * 100.0f;
     resetHPPercentStr();
 }
 
-void refillHP();
+void Base::refillHP()
 {
     m_hp = m_maxHP;
     m_hpPercent = 100.0f;
@@ -152,7 +155,8 @@ void Base::setWeaponMoverPos(float x, float y, float directionX, float direction
 
 void Base::resetHPPercentStr()
 {
-    snprintf(m_hpPercentStr, sizeof(m_hpPercentStr), "%d%%", static_cast<int>(m_hpPercent));
+    snprintf(m_hpPercentStr, sizeof(m_hpPercentStr), "%d%%",
+             static_cast<int>(m_hpPercent));
 }
 
 } // end of namespace bot

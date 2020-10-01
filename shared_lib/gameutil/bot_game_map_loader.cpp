@@ -9,7 +9,8 @@
 
 namespace bot {
 
-bool GameMapLoader::load(const std::string& file, float viewportWidth, float viewportHeight)
+bool GameMapLoader::load(const std::string& file, float viewportWidth,
+                         float viewportHeight)
 {
     LOG_INFO("Loading map %s", file.c_str());
 
@@ -57,7 +58,8 @@ bool GameMapLoader::load(const std::string& file, float viewportWidth, float vie
     return true;
 }
 
-bool GameMapLoader::initMap(const rapidjson::Value& mapJson, float viewportWidth, float viewportHeight)
+bool GameMapLoader::initMap(const rapidjson::Value& mapJson, float viewportWidth,
+                            float viewportHeight)
 {
     int numRows, numCols;
 
@@ -83,9 +85,21 @@ bool GameMapLoader::loadTiles(const rapidjson::Value& mapJson)
     std::string name;
     float x, y;
     std::vector<JsonParseParam> params = {
-        {&name, "name", JSONTYPE_STRING},
-        {&x,    "x",    JSONTYPE_FLOAT},
-        {&y,    "y",    JSONTYPE_FLOAT}
+        {
+            &name,
+            "name",
+            JSONTYPE_STRING
+        },
+        {
+            &x,
+            "x",
+            JSONTYPE_FLOAT
+        },
+        {
+            &y,
+            "y",
+            JSONTYPE_FLOAT
+        }
     };
 
     auto parser = [&](const rapidjson::Value& item)->bool
@@ -125,15 +139,51 @@ bool GameMapLoader::loadRobots(const rapidjson::Value& mapJson)
     std::string name, baseName, weaponName, moverName, missileName;
     float x, y, directionX, directionY;
     std::vector<JsonParseParam> params = {
-        {&name,        "name",       JSONTYPE_STRING},
-        {&baseName,    "base",       JSONTYPE_STRING},
-        {&weaponName,  "weapon",     JSONTYPE_STRING},
-        {&moverName,   "mover",      JSONTYPE_STRING},
-        {&missileName, "missile",    JSONTYPE_STRING},
-        {&x,           "x",          JSONTYPE_FLOAT},
-        {&y,           "y",          JSONTYPE_FLOAT},
-        {&directionX,  "directionX", JSONTYPE_FLOAT},
-        {&directionY,  "directionY", JSONTYPE_FLOAT}
+        {
+            &name,
+            "name",
+            JSONTYPE_STRING
+        },
+        {
+            &baseName,
+            "base",
+            JSONTYPE_STRING
+        },
+        {
+            &weaponName,
+            "weapon",
+            JSONTYPE_STRING
+        },
+        {
+            &moverName,
+            "mover",
+            JSONTYPE_STRING
+        },
+        {
+            &missileName,
+            "missile",
+            JSONTYPE_STRING
+        },
+        {
+            &x,
+            "x",
+            JSONTYPE_FLOAT
+        },
+        {
+            &y,
+            "y",
+            JSONTYPE_FLOAT
+        },
+        {
+            &directionX,
+            "directionX",
+            JSONTYPE_FLOAT
+        },
+        {
+            &directionY,
+            "directionY",
+            JSONTYPE_FLOAT
+        }
     };
 
     auto parser = [&](const rapidjson::Value& item)->bool
@@ -155,11 +205,14 @@ bool GameMapLoader::loadRobots(const rapidjson::Value& mapJson)
     return true;
 }
 
-bool GameMapLoader::addRobot(const std::string& name, const std::string& baseName, const std::string& weaponName,
-                             const std::string& moverName, const std::string& missileName,
-                             float x, float y, float directionX, float directionY)
+bool GameMapLoader::addRobot(
+                        const std::string& name, const std::string& baseName,
+                        const std::string& weaponName, const std::string& moverName,
+                        const std::string& missileName, float x, float y,
+                        float directionX, float directionY)
 {
-    AIRobot* robot = m_gameObjManager.createRobot(name, baseName, weaponName, moverName, missileName,
+    AIRobot* robot = m_gameObjManager.createRobot(name, baseName, weaponName,
+                                                  moverName, missileName,
                                                   x, y, directionX, directionY);
     if (!robot)
     {
@@ -188,10 +241,26 @@ bool GameMapLoader::loadPlayer(const rapidjson::Value& mapJson)
 
     float x, y, directionX, directionY;
     std::vector<JsonParseParam> params = {
-        {&x,          "x",          JSONTYPE_FLOAT},
-        {&y,          "y",          JSONTYPE_FLOAT},
-        {&directionX, "directionX", JSONTYPE_FLOAT},
-        {&directionY, "directionY", JSONTYPE_FLOAT}
+        {
+            &x,
+            "x",
+            JSONTYPE_FLOAT
+        },
+        {
+            &y,
+            "y",
+            JSONTYPE_FLOAT
+        },
+        {
+            &directionX,
+            "directionX",
+            JSONTYPE_FLOAT
+        },
+        {
+            &directionY,
+            "directionY",
+            JSONTYPE_FLOAT
+        }
     };
 
     if (!parseJson(params, playerJson))
