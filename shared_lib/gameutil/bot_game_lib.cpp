@@ -1,9 +1,6 @@
 #include "misc/bot_log.h"
 #include "misc/bot_json_utils.h"
 #include "gameutil/bot_game_lib.h"
-#include "gametemplate/bot_base_component_template.h"
-#include "gametemplate/bot_weapon_component_template.h"
-#include "gametemplate/bot_mover_component_template.h"
 #include "app/bot_app_config.h"
 
 namespace bot {
@@ -41,45 +38,60 @@ bool GameLib::load(float viewportWidth, float viewportHeight, const AppConfig& c
     ret = m_tileTemplateLib.load(cfg.getTileTemplateLib().c_str(), tileTemplateParser);
     if (!ret)
     {
-        LOG_ERROR("Failed to read tile template lib from %s", cfg.getTileTemplateLib().c_str());
+        LOG_ERROR("Failed to read tile template lib from %s",
+                  cfg.getTileTemplateLib().c_str());
         return false;
     }
-    LOG_INFO("Done loading tile template library from %s", cfg.getTileTemplateLib().c_str());
+    LOG_INFO("Done loading tile template library from %s",
+             cfg.getTileTemplateLib().c_str());
 
     ParticleEffectTemplate::Parser particleEffectParser(m_textureLib, m_colorLib);
-    ret = m_particleEffectTemplateLib.load(cfg.getParticleEffectTemplateLib().c_str(), particleEffectParser);
+    ret = m_particleEffectTemplateLib.load(
+                            cfg.getParticleEffectTemplateLib().c_str(),
+                            particleEffectParser);
     if (!ret)
     {
-        LOG_ERROR("Failed to read particle effect lib from %s", cfg.getParticleEffectTemplateLib().c_str());
+        LOG_ERROR("Failed to read particle effect lib from %s",
+                  cfg.getParticleEffectTemplateLib().c_str());
         return false;
     }
-    LOG_INFO("Done loading particle effect lib from %s", cfg.getParticleEffectTemplateLib().c_str());
+    LOG_INFO("Done loading particle effect lib from %s",
+             cfg.getParticleEffectTemplateLib().c_str());
 
-    MissileTemplate::Parser missileParser(m_textureLib, m_rectLib, m_particleEffectTemplateLib, m_colorLib);
-    ret = m_missileTemplateLib.load(cfg.getMissileTemplateLib().c_str(), missileParser);
+    MissileTemplate::Parser missileParser(m_textureLib, m_rectLib,
+                                          m_particleEffectTemplateLib, m_colorLib);
+    ret = m_missileTemplateLib.load(cfg.getMissileTemplateLib().c_str(),
+                                    missileParser);
     if (!ret)
     {
-        LOG_ERROR("Failed to read missile template lib from %s", cfg.getMissileTemplateLib().c_str());
+        LOG_ERROR("Failed to read missile template lib from %s",
+                  cfg.getMissileTemplateLib().c_str());
         return false;
     }
-    LOG_INFO("Done loading missile template library from %s", cfg.getMissileTemplateLib().c_str());
+    LOG_INFO("Done loading missile template library from %s",
+             cfg.getMissileTemplateLib().c_str());
 
     ProgressRing::Parser progressRingParser(m_colorLib);
     ret = m_progressRingLib.load(cfg.getProgressRingLib().c_str(), progressRingParser);
     if (!ret)
     {
-        LOG_ERROR("Failed to read progress ring from %s", cfg.getProgressRingLib().c_str());
+        LOG_ERROR("Failed to read progress ring from %s",
+                  cfg.getProgressRingLib().c_str());
         return false;
     }
-    LOG_INFO("Done loading progress ring library from %s", cfg.getProgressRingLib().c_str());
+    LOG_INFO("Done loading progress ring library from %s",
+             cfg.getProgressRingLib().c_str());
 
-    GoodieTemplate::Parser goodieParser(m_rectLib, m_textureLib, m_colorLib, m_progressRingLib);
+    GoodieTemplate::Parser goodieParser(m_rectLib, m_textureLib,
+                                        m_colorLib, m_progressRingLib);
     if (!m_goodieTemplateLib.load(cfg.getGoodieTemplateLib().c_str(), goodieParser))
     {
-        LOG_ERROR("Failed to read goodie template lib from %s", cfg.getGoodieTemplateLib().c_str());
+        LOG_ERROR("Failed to read goodie template lib from %s",
+                  cfg.getGoodieTemplateLib().c_str());
         return false;
     }
-    LOG_INFO("Done loading goodie template lib from %s", cfg.getGoodieTemplateLib().c_str());
+    LOG_INFO("Done loading goodie template lib from %s",
+             cfg.getGoodieTemplateLib().c_str());
 
     AI::Parser aiParser;
     ret = m_aiLib.load(cfg.getAILib().c_str(), aiParser);
@@ -94,123 +106,114 @@ bool GameLib::load(float viewportWidth, float viewportHeight, const AppConfig& c
     ret = m_baseTemplateLib.load(cfg.getBaseTemplateLib().c_str(), baseParser);
     if (!ret)
     {
-        LOG_ERROR("Failed to read base-template library from %s", cfg.getBaseTemplateLib().c_str());
+        LOG_ERROR("Failed to read base-template library from %s",
+                  cfg.getBaseTemplateLib().c_str());
         return false;
     }
-    LOG_INFO("Done loading base-template library from %s", cfg.getBaseTemplateLib().c_str());
+    LOG_INFO("Done loading base-template library from %s",
+             cfg.getBaseTemplateLib().c_str());
 
     WeaponTemplate::Parser weaponParser(m_textureLib, m_rectLib, m_missileLib);
     ret = m_weaponTemplateLib.load(cfg.getWeaponTemplateLib().c_str(), weaponParser);
     if (!ret)
     {
-        LOG_ERROR("Failed to read weapon-template library from %s", cfg.getWeaponTemplateLib().c_str());
+        LOG_ERROR("Failed to read weapon-template library from %s",
+                  cfg.getWeaponTemplateLib().c_str());
         return false;
     }
-    LOG_INFO("Done loading weapon-template library from %s", cfg.getWeaponTemplateLib().c_str());
+    LOG_INFO("Done loading weapon-template library from %s",
+             cfg.getWeaponTemplateLib().c_str());
 
     MoverTemplate::Parser moverParser(m_textureLib, m_rectLib);
     ret = m_moverTemplateLib.load(cfg.getMoverTemplateLib().c_str(), moverParser);
     if (!ret)
     {
-        LOG_ERROR("Failed to read mover-template library from %s", cfg.getMoverTemplateLib().c_str());
+        LOG_ERROR("Failed to read mover-template library from %s",
+                  cfg.getMoverTemplateLib().c_str());
         return false;
     }
-    LOG_INFO("Done loading mover-template library from %s", cfg.getMoverTemplateLib().c_str());
+    LOG_INFO("Done loading mover-template library from %s",
+             cfg.getMoverTemplateLib().c_str());
 
     AIRobotTemplate::Parser aiRobotParser(m_baseLib, m_weaponLib, m_moverLib, m_aiLib);
-    ret = m_aiRobotTemplateLib.load(cfg.getAIRobotTemplateLib().c_str(), aiRobotParser);
+    ret = m_aiRobotTemplateLib.load(cfg.getAIRobotTemplateLib().c_str(),
+                                    aiRobotParser);
     if (!ret)
     {
-        LOG_ERROR("Failed to read ai-robot template lib from %s", cfg.getAIRobotTemplateLib().c_str());
+        LOG_ERROR("Failed to read ai-robot template lib from %s",
+                  cfg.getAIRobotTemplateLib().c_str());
         return false;
     }
-    LOG_INFO("Done loading ai-robot template library from %s", cfg.getAIRobotTemplateLib().c_str());
+    LOG_INFO("Done loading ai-robot template library from %s",
+             cfg.getAIRobotTemplateLib().c_str());
 
-    ret = m_playerTemplate.init(cfg.getPlayerTemplateLib(), m_textureLib, m_rectLib, m_particleEffectTemplateLib, m_colorLib);
+    ret = m_playerTemplate.init(cfg.getPlayerTemplateLib(), m_textureLib, m_rectLib,
+                                m_particleEffectTemplateLib, m_colorLib);
     if (!ret)
     {
-        LOG_ERROR("Failed to read player template from %s", cfg.getPlayerTemplateLib().c_str())
+        LOG_ERROR("Failed to read player template from %s",
+                  cfg.getPlayerTemplateLib().c_str())
         return false;
     }
-    LOG_INFO("Done reading player template from %s", cfg.getPlayerTemplateLib().c_str());
+    LOG_INFO("Done reading player template from %s",
+             cfg.getPlayerTemplateLib().c_str());
 
-    MapGenerator::Parser mapGeneratorParser(&m_playerTemplate, m_tileTemplateLib, m_aiRobotTemplateLib, cfg.getMaxRobotCount());
+    MapGenerator::Parser mapGeneratorParser(&m_playerTemplate, m_tileTemplateLib,
+                                            m_aiRobotTemplateLib,
+                                            cfg.getMaxRobotCount());
     ret = m_mapGeneratorLib.load(cfg.getMapGeneratorLib().c_str(), mapGeneratorParser);
     if (!ret)
     {
-        LOG_ERROR("Failed to load map-generator lib from %s", cfg.getMapGeneratorLib().c_str());
+        LOG_ERROR("Failed to load map-generator lib from %s",
+                  cfg.getMapGeneratorLib().c_str());
         return false;
     }
-    LOG_INFO("Done loading map-generator lib from %s", cfg.getMapGeneratorLib().c_str());
+    LOG_INFO("Done loading map-generator lib from %s",
+             cfg.getMapGeneratorLib().c_str());
 
     ret = m_dashboardConfig.init(cfg.getDashboardConfigFile(), m_textureLib, m_rectLib,
                                  m_colorLib);
     if (!ret)
     {
-        LOG_ERROR("Failed to load dashboard config from %s", cfg.getDashboardConfigFile().c_str());
+        LOG_ERROR("Failed to load dashboard config from %s",
+                  cfg.getDashboardConfigFile().c_str());
         return false;
     }
-    LOG_INFO("Done reading dashboard config from %s", cfg.getDashboardConfigFile().c_str());
+    LOG_INFO("Done reading dashboard config from %s",
+             cfg.getDashboardConfigFile().c_str());
 
     ret = m_buttonConfig.init(cfg.getButtonConfigFile(), m_textureLib, m_colorLib);
     if (!ret)
     {
-        LOG_ERROR("Failed to load button config from %s", cfg.getButtonConfigFile().c_str());
+        LOG_ERROR("Failed to load button config from %s",
+                  cfg.getButtonConfigFile().c_str());
         return false;
     }
-    LOG_INFO("Done reading button config from %s", cfg.getButtonConfigFile().c_str());
+    LOG_INFO("Done reading button config from %s",
+             cfg.getButtonConfigFile().c_str());
 
-    ret = m_messageBoxConfig.init(cfg.getMessageBoxConfigFile(), viewportWidth, viewportHeight,
-                                  m_rectLib, m_colorLib);
+    ret = m_messageBoxConfig.init(cfg.getMessageBoxConfigFile(), viewportWidth,
+                                  viewportHeight, m_rectLib, m_colorLib);
     if (!ret)
     {
-        LOG_ERROR("Failed to load message-box config from %s", cfg.getMessageBoxConfigFile().c_str());
+        LOG_ERROR("Failed to load message-box config from %s",
+                  cfg.getMessageBoxConfigFile().c_str());
         return false;
     }
-    LOG_INFO("Done loading message-box config from %s", cfg.getMessageBoxConfigFile().c_str());
+    LOG_INFO("Done loading message-box config from %s",
+             cfg.getMessageBoxConfigFile().c_str());
 
     ret = m_startScreenConfig.init(cfg.getStartScreenConfigFile(), m_rectLib);
     if (!ret)
     {
-        LOG_ERROR("Failed to load start-screen config from %s", cfg.getStartScreenConfigFile().c_str());
+        LOG_ERROR("Failed to load start-screen config from %s",
+                  cfg.getStartScreenConfigFile().c_str());
         return false;
     }
-    LOG_INFO("Done loading start-screen config from %s", cfg.getStartScreenConfigFile().c_str());
+    LOG_INFO("Done loading start-screen config from %s",
+             cfg.getStartScreenConfigFile().c_str());
 
     return true;
-}
-
-const BaseComponentTemplate* GameLib::getBaseTemplate(const std::string& name) const
-{
-    ComponentTemplate* t = m_componentLib.search(name);
-    if (!t || t->getType() != COMPONENT_BASE)
-    {
-        return nullptr;
-    }
-
-    return static_cast<const BaseComponentTemplate*>(t);
-}
-
-const WeaponComponentTemplate* GameLib::getWeaponTemplate(const std::string& name) const
-{
-    ComponentTemplate* t = m_componentLib.search(name);
-    if (!t || t->getType() != COMPONENT_WEAPON)
-    {
-        return nullptr;
-    }
-
-    return static_cast<const WeaponComponentTemplate*>(t);
-}
-
-const MoverComponentTemplate* GameLib::getMoverTemplate(const std::string& name) const
-{
-    ComponentTemplate* t = m_componentLib.search(name);
-    if (!t || t->getType() != COMPONENT_MOVER)
-    {
-        return nullptr;
-    }
-
-    return static_cast<const MoverComponentTemplate*>(t);
 }
 
 } // end of namespace bot
