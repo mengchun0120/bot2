@@ -24,8 +24,9 @@ public:
 
     virtual ~GameScreen();
 
-    bool init(const AppConfig& cfg, const GameLib* lib, Graphics* g,
-              ScreenManager* screenManager, float viewportWidth, float viewportHeight);
+    bool init(const AppConfig& cfg, const GameLib* lib,
+              Graphics* g, ScreenManager* screenManager,
+              float viewportWidth, float viewportHeight);
 
     bool loadMap(const std::string& fileName, const AppConfig& cfg);
 

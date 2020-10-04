@@ -31,8 +31,9 @@ GameScreen::~GameScreen()
 {
 }
 
-bool GameScreen::init(const AppConfig& cfg, const GameLib* lib, Graphics* g,
-                      ScreenManager* screenManager, float viewportWidth, float viewportHeight)
+bool GameScreen::init(const AppConfig& cfg, const GameLib* lib,
+                      Graphics* g, ScreenManager* screenManager,
+                      float viewportWidth, float viewportHeight)
 {
     LOG_INFO("Initializing GameScreen");
 
@@ -49,8 +50,8 @@ bool GameScreen::init(const AppConfig& cfg, const GameLib* lib, Graphics* g,
         return false;
     }
 
-    m_dashboard.init(m_map.getPlayer(), &m_lib->getDashboardConfig(), m_viewportSize[1],
-                     m_graphics->getTextSystem());
+    m_dashboard.init(m_map.getPlayer(), &m_lib->getDashboardConfig(),
+                     m_viewportSize[1], m_graphics->getTextSystem());
 
     LOG_INFO("Done loading dashboard");
 
@@ -66,8 +67,10 @@ bool GameScreen::loadMap(const std::string& fileName, const AppConfig& cfg)
 {
     LOG_INFO("Loading map from %s", fileName.c_str());
 
-    GameMapLoader mapLoader(m_map, m_gameObjManager, cfg.getMapPoolFactor());
-    if (!mapLoader.load(fileName, m_viewportSize[0], m_viewportSize[1]))
+    GameMapLoader mapLoader(m_gameObjManager, cfg.getMapPoolFactor());
+    bool success = mapLoader.load(m_map, fileName, cfg.getLevel(),
+                                  m_viewportSize[0], m_viewportSize[1]);
+    if (!success)
     {
         return false;
     }
@@ -98,9 +101,13 @@ int GameScreen::update(float delta)
     updateRobots(delta);
     updateEffects(delta);
 
-    if (player->testFlag(GAME_OBJ_FLAG_DEAD) || m_gameObjManager.getAIRobotCount() <= 0)
+    bool end = player->testFlag(GAME_OBJ_FLAG_DEAD) ||
+               m_gameObjManager.getAIRobotCount() <= 0;
+
+    if (end)
     {
-        std::string msg = player->testFlag(GAME_OBJ_FLAG_DEAD) ? "Game Over" : "You are victorious";
+        std::string msg = player->testFlag(GAME_OBJ_FLAG_DEAD) ?
+                                        "Game Over" : "You are victorious";
 
         m_state = GAME_STATE_END;
         m_map.setPlayer(nullptr);
@@ -123,8 +130,11 @@ void GameScreen::present()
     simpleShaderProgram.setViewportSize(m_viewportSize);
     simpleShaderProgram.setViewportOrigin(m_map.getViewportPos());
 
-/*    static const GameObjectType LAYER_ORDER[] = {
-        GAME_OBJ_TYPE_TILE, GAME_OBJ_TYPE_GOODIE, GAME_OBJ_TYPE_MISSILE, GAME_OBJ_TYPE_ROBOT
+    static const GameObjectType LAYER_ORDER[] = {
+        GAME_OBJ_TYPE_TILE,
+        GAME_OBJ_TYPE_GOODIE,
+        GAME_OBJ_TYPE_MISSILE,
+        GAME_OBJ_TYPE_ROBOT
     };
     static const int NUM_LAYERS = sizeof(LAYER_ORDER) / sizeof(GameObjectType);
     static const int DONT_DRAW_FLAGS = GAME_OBJ_FLAG_DRAWN | GAME_OBJ_FLAG_DEAD;
@@ -132,7 +142,8 @@ void GameScreen::present()
     int startRow, endRow, startCol, endCol;
 
     m_map.getViewportRegion(startRow, endRow, startCol, endCol);
-    m_map.clearFlagsInRect(startRow, endRow, startCol, endCol, GAME_OBJ_FLAG_DRAWN);
+    m_map.clearFlagsInRect(startRow, endRow,
+                           startCol, endCol, GAME_OBJ_FLAG_DRAWN);
 
     for (int i = 0; i < NUM_LAYERS; ++i)
     {
@@ -147,7 +158,9 @@ void GameScreen::present()
                     next = static_cast<GameObjectItem*>(item->getNext());
 
                     GameObject* obj = item->getObj();
-                    if (obj->getType() != LAYER_ORDER[i] || obj->testFlag(DONT_DRAW_FLAGS))
+                    bool dontProcess = obj->getType() != LAYER_ORDER[i] ||
+                                       obj->testFlag(DONT_DRAW_FLAGS);
+                    if (dontProcess)
                     {
                         continue;
                     }
@@ -158,7 +171,7 @@ void GameScreen::present()
             }
         }
     }
-*/
+
     m_map.present(*m_graphics);
     presentEffects();
     presentOverlay();
@@ -191,7 +204,8 @@ bool GameScreen::updateRobots(float delta)
     int startRow, endRow, startCol, endCol;
 
     m_map.getViewportRegion(startRow, endRow, startCol, endCol);
-    m_map.clearFlagsInRect(startRow, endRow, startCol, endCol, GAME_OBJ_FLAG_UPDATED);
+    m_map.clearFlagsInRect(startRow, endRow, startCol, endCol,
+                           GAME_OBJ_FLAG_UPDATED);
 
     for (int r = startRow; r <= endRow; ++r)
     {
@@ -204,9 +218,10 @@ bool GameScreen::updateRobots(float delta)
                 next = static_cast<GameObjectItem*>(item->getNext());
                 GameObject* obj = item->getObj();
 
-                bool dontUpdate = obj->getType() != GAME_OBJ_TYPE_ROBOT ||
-                                  obj->testFlag(DONT_UPDATE_FLAG) ||
-                                  obj == static_cast<GameObject*>(m_map.getPlayer());
+                bool dontUpdate =
+                         obj->getType() != GAME_OBJ_TYPE_ROBOT ||
+                         obj->testFlag(DONT_UPDATE_FLAG) ||
+                         obj == static_cast<GameObject*>(m_map.getPlayer());
                 if (dontUpdate)
                 {
                     continue;
@@ -225,7 +240,8 @@ bool GameScreen::updateRobots(float delta)
 bool GameScreen::updateMissiles(float delta)
 {
     Missile* next = nullptr;
-    for (Missile* missile = m_gameObjManager.getFirstActiveMissile(); missile; missile = next)
+    Missile* missile = m_gameObjManager.getFirstActiveMissile();
+    for (; missile; missile = next)
     {
         next = static_cast<Missile*>(missile->getNext());
         missile->update(delta, *this);
@@ -236,8 +252,9 @@ bool GameScreen::updateMissiles(float delta)
 
 void GameScreen::updateEffects(float delta)
 {
-    ParticleEffect* next = nullptr, * effect;
-    for (effect = m_gameObjManager.getFirstParticleEffect(); effect; effect = next)
+    ParticleEffect* next = nullptr;
+    ParticleEffect* effect = m_gameObjManager.getFirstParticleEffect();
+    for (; effect; effect = next)
     {
         next = static_cast<ParticleEffect*>(effect->getNext());
         effect->update(delta, *this);
@@ -252,8 +269,9 @@ void GameScreen::presentEffects()
     program.setViewportSize(m_viewportSize);
     program.setViewportOrigin(m_map.getViewportPos());
 
-    ParticleEffect* effect, * next;
-    for (effect = m_gameObjManager.getFirstParticleEffect(); effect; effect = next)
+    ParticleEffect* effect = m_gameObjManager.getFirstParticleEffect();
+    ParticleEffect* next;
+    for (; effect; effect = next)
     {
         next = static_cast<ParticleEffect*>(effect->getNext());
         effect->present(*m_graphics);
@@ -287,7 +305,9 @@ int GameScreen::handleMouseMove(const MouseMoveEvent& e)
     float destX = m_map.getWorldX(e.m_x);
     float destY = m_map.getWorldY(e.m_y);
     float directionX, directionY;
-    calculateDirection(directionX, directionY, player->getPosX(), player->getPosY(), destX, destY);
+    calculateDirection(directionX, directionY,
+                       player->getPosX(), player->getPosY(),
+                       destX, destY);
     player->setDirection(directionX, directionY);
     return 0;
 }
@@ -332,7 +352,8 @@ int GameScreen::handleKey(const KeyEvent& e)
 
 void GameScreen::clearDeadObjects()
 {
-    for (GameObject* obj = m_gameObjManager.getFirstDeadObject(); obj; obj = static_cast<GameObject*>(obj->getNext()))
+    GameObject* obj = m_gameObjManager.getFirstDeadObject();
+    for (; obj; obj = static_cast<GameObject*>(obj->getNext()))
     {
         m_map.removeObject(obj);
     }

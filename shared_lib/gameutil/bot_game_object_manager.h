@@ -110,8 +110,7 @@ public:
         return m_deadObjects.getFirst();
     }
 
-    Player* createPlayer(const PlayerTemplate* playerTemplate,
-                         float x, float y,
+    Player* createPlayer(float x, float y,
                          float directionX, float directionY);
 
     const Player* getPlayer() const

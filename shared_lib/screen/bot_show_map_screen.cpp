@@ -47,8 +47,8 @@ bool ShowMapScreen::init(const AppConfig& cfg, GameLib* lib, Graphics* g,
     m_viewportSize[1] = viewportHeight;
     m_gameObjManager.init(&m_map, cfg, m_lib);
 
-    GameMapLoader mapLoader(m_map, m_gameObjManager, cfg.getMapPoolFactor());
-    if (!mapLoader.load(mapFile, viewportWidth, viewportHeight))
+    GameMapLoader mapLoader(m_gameObjManager, cfg.getMapPoolFactor());
+    if (!mapLoader.load(m_map, mapFile, 1, viewportWidth, viewportHeight))
     {
         return false;
     }

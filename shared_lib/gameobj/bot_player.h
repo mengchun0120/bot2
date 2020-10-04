@@ -34,8 +34,6 @@ public:
         return m_firstActiveEffect;
     }
 
-    virtual bool addHP(int deltaHP);
-
     int getGold() const
     {
         return m_gold;

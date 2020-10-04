@@ -52,7 +52,10 @@ public:
         return m_curAction;
     }
 
-    void setCurAction(Action action);
+    void setCurAction(Action action)
+    {
+        m_curAction = action;
+    }
 
 protected:
     TimePoint m_lastChangeActionTime;

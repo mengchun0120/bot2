@@ -10,20 +10,13 @@
 namespace bot {
 
 bool GameMapLoader::load(GameMap& map, const std::string& mapFile,
-                         const PlayerTemplate* playerTemplate, int level,
-                         float viewportWidth, float viewportHeight)
+                         int level, float viewportWidth, float viewportHeight)
 {
     LOG_INFO("Loading map %s", mapFile.c_str());
 
     if (level < 0)
     {
         LOG_ERROR("Invalid level %d", level);
-        return false;
-    }
-
-    if (!playerTemplate)
-    {
-        LOG_ERROR("player-template is null");
         return false;
     }
 
@@ -72,7 +65,7 @@ bool GameMapLoader::load(GameMap& map, const std::string& mapFile,
         return false;
     }
 
-    if (!loadPlayer(map, mapJson, playerTemplate))
+    if (!loadPlayer(map, mapJson))
     {
         LOG_ERROR("Failed to load player");
         return false;
@@ -233,8 +226,7 @@ bool GameMapLoader::addRobot(GameMap& map, const std::string& name,
     return true;
 }
 
-bool GameMapLoader::loadPlayer(GameMap& map, const rapidjson::Value& mapJson,
-                               const PlayerTemplate* playerTemplate)
+bool GameMapLoader::loadPlayer(GameMap& map, const rapidjson::Value& mapJson)
 {
     if (!mapJson.HasMember("player"))
     {
@@ -279,8 +271,7 @@ bool GameMapLoader::loadPlayer(GameMap& map, const rapidjson::Value& mapJson,
         return false;
     }
 
-    Player* player = m_gameObjManager.createPlayer(playerTemplate,
-                                                   x, y,
+    Player* player = m_gameObjManager.createPlayer(x, y,
                                                    directionX, directionY);
     map.setPlayer(player);
 

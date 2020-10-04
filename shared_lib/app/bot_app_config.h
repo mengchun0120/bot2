@@ -12,7 +12,8 @@ public:
         , m_height(0)
         , m_eventQueueSize(0)
         , m_timeDeltaHistoryLen(0)
-        , m_mapPoolFactor(0)
+        , m_level(0)
+        , m_mapPoolFactor(0.0f)
         , m_missilePoolSize(0)
         , m_maxRobotCount(0)
     {}
@@ -187,6 +188,11 @@ public:
         return m_mapFile;
     }
 
+    int getLevel() const
+    {
+        return m_level;
+    }
+
     float getMapPoolFactor() const
     {
         return m_mapPoolFactor;
@@ -279,6 +285,7 @@ private:
     std::string m_startScreenConfigFile;
     std::string m_messageBoxConfigFile;
     std::string m_mapFile;
+    int m_level;
     std::string m_mapGeneratorLib;
     float m_mapPoolFactor;
     int m_missilePoolSize;

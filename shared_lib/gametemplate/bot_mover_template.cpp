@@ -20,6 +20,12 @@ MoverTemplate* MoverTemplate::Parser::create(const std::string& name,
     return t;
 }
 
+MoverTemplate::MoverTemplate()
+    : m_speed(0.0f)
+    , m_speedPerLevel(0.0f)
+{
+}
+
 bool MoverTemplate::init(const NamedMap<Texture>& textureLib,
                          const NamedMap<Rectangle>& rectLib,
                          const rapidjson::Value& elem)

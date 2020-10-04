@@ -23,8 +23,7 @@ public:
     {}
 
     bool load(GameMap& map, const std::string& mapFile,
-              const PlayerTemplate* playerTemplate, int level,
-              float viewportWidth, float viewportHeight);
+              int level, float viewportWidth, float viewportHeight);
 
 private:
     bool initMap(GameMap& map, const rapidjson::Value& mapJson,
@@ -42,8 +41,7 @@ private:
                   float x, float y,
                   float directionX, float directionY);
 
-    bool loadPlayer(GameMap& map, const rapidjson::Value& mapJson,
-                    const PlayerTemplate* playerTemplate);
+    bool loadPlayer(GameMap& map, const rapidjson::Value& mapJson);
 
 private:
     GameObjectManager& m_gameObjManager;

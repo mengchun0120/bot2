@@ -147,12 +147,11 @@ ParticleEffect* GameObjectManager::createParticleEffect(
     return effect;
 }
 
-Player* GameObjectManager::createPlayer(const PlayerTemplate* playerTemplate,
-                                        float x, float y,
+Player* GameObjectManager::createPlayer(float x, float y,
                                         float directionX, float directionY)
 {
     m_player = new Player();
-    bool ret = m_player->init(playerTemplate,
+    bool ret = m_player->init(&(m_lib->getPlayerTemplate()),
                               x, y,
                               directionX, directionY);
     if (!ret)
