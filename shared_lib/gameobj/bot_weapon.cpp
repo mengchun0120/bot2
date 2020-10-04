@@ -31,13 +31,13 @@ bool Weapon::init(const WeaponTemplate* weaponTemplate, int weaponLevel,
         return false;
     }
 
-    if (weaponLevel < 1)
+    if (weaponLevel < 0)
     {
         LOG_ERROR("Invalid weapon-level %d", weaponLevel);
         return false;
     }
 
-    if (missileLevel < 1)
+    if (missileLevel < 0)
     {
         LOG_ERROR("Invalid missile-level %d", missileLevel);
         return false;
@@ -88,9 +88,10 @@ bool Weapon::update(GameScreen& screen, Robot& robot)
 
 void Weapon::present(Graphics& g, const float* pos, const float* direction)
 {
-    m_weaponTemplate->getRect()->draw(g, pos, direction, nullptr, nullptr,
-                                      m_weaponTemplate->getTexture()->textureId(),
-                                      nullptr);
+    m_weaponTemplate->getRect()->draw(
+                                g, pos, direction, nullptr, nullptr,
+                                m_weaponTemplate->getTexture()->textureId(),
+                                nullptr);
 }
 
 void Weapon::shiftFirePoints(float deltaX, float deltaY)
@@ -102,8 +103,8 @@ void Weapon::shiftFirePoints(float deltaX, float deltaY)
     }
 }
 
-void Weapon::setFirePoints(float weaponX, float weaponY, float directionX,
-                           float directionY)
+void Weapon::setFirePoints(float weaponX, float weaponY,
+                           float directionX, float directionY)
 {
     int count = static_cast<int>(m_firePoints.size());
 
@@ -166,7 +167,8 @@ void Weapon::resetFireDuration()
 
 void Weapon::resetDamage()
 {
-    m_damage = m_missileTemplate->getDamage(m_missileLevel) * m_damageMultiplier;
+    m_damage = m_missileTemplate->getDamage(m_missileLevel) *
+               m_damageMultiplier;
 }
 
 bool Weapon::fireMissile(GameScreen& screen, Robot& robot)
@@ -177,9 +179,9 @@ bool Weapon::fireMissile(GameScreen& screen, Robot& robot)
     for(auto& fp: m_firePoints)
     {
         Missile* missile = gameObjMgr.createMissile(
-                                     m_missileTemplate, &robot, m_damage,
-                                     fp.m_firePos[0], fp.m_firePos[1],
-                                     fp.m_fireDirection[0], fp.m_fireDirection[1]);
+                                 m_missileTemplate, &robot, m_damage,
+                                 fp.m_firePos[0], fp.m_firePos[1],
+                                 fp.m_fireDirection[0], fp.m_fireDirection[1]);
         if (!missile)
         {
             LOG_ERROR("Failed to create missile");

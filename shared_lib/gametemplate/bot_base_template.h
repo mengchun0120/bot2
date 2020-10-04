@@ -11,7 +11,8 @@ class BaseTemplate: public SingleUnitTemplate {
 public:
     class Parser {
     public:
-        Parser(const NamedMap<Texture>& textureLib, const NamedMap<Rectangle>& rectLib)
+        Parser(const NamedMap<Texture>& textureLib,
+               const NamedMap<Rectangle>& rectLib)
             : m_textureLib(textureLib)
             , m_rectLib(rectLib)
         {}
@@ -32,12 +33,13 @@ public:
     virtual ~BaseTemplate()
     {}
 
-    bool init(const NamedMap<Texture>& textureLib, const NamedMap<Rectangle>& rectLib,
+    bool init(const NamedMap<Texture>& textureLib,
+              const NamedMap<Rectangle>& rectLib,
               const rapidjson::Value& elem);
 
     float getHP(int level) const
     {
-        return m_hp + m_hpPerLevel * (level - 1);
+        return m_hp + m_hpPerLevel * level;
     }
 
     bool setHP(float hp);
@@ -46,7 +48,7 @@ public:
 
     float getHPRestoreRate(int level) const
     {
-        return m_hpRestoreRate + m_hpRestoreRatePerLevel * (level - 1);
+        return m_hpRestoreRate + m_hpRestoreRatePerLevel * level;
     }
 
     bool setHPRestoreRate(float rate);
@@ -55,7 +57,7 @@ public:
 
     float getArmor(int level) const
     {
-        return m_armor + m_armorPerLevel * (level - 1);
+        return m_armor + m_armorPerLevel * level;
     }
 
     bool setArmor(float armor);
@@ -64,7 +66,7 @@ public:
 
     float getArmorRepairRate(int level) const
     {
-        return m_armorRepairRate + m_armorRepairRatePerLevel * (level - 1);
+        return m_armorRepairRate + m_armorRepairRatePerLevel * level;
     }
 
     bool setArmorRepairRate(float rate);
@@ -73,7 +75,7 @@ public:
 
     float getPower(int level) const
     {
-        return m_power + m_powerPerLevel * (level - 1);
+        return m_power + m_powerPerLevel * level;
     }
 
     bool setPower(float power);
@@ -82,7 +84,7 @@ public:
 
     float getPowerRestoreRate(int level) const
     {
-        return m_powerRestoreRate + m_powerRestoreRatePerLevel * (level - 1);
+        return m_powerRestoreRate + m_powerRestoreRatePerLevel * level;
     }
 
     bool setPowerRestoreRate(float rate);

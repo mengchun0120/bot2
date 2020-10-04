@@ -11,7 +11,8 @@
 
 namespace bot {
 
-bool initFirePoints(std::vector<FirePoint>& firePoints, const rapidjson::Value& elem)
+bool initFirePoints(std::vector<FirePoint>& firePoints,
+                    const rapidjson::Value& elem)
 {
     std::vector<float> firePos;
     std::vector<float> fireDirection;
@@ -94,9 +95,23 @@ bool WeaponTemplate::init(const NamedMap<Texture>& textureLib,
     float fireDuration, fireDurReductionPerLevel = 0.0f;
     std::string missileName;
     std::vector<JsonParseParam> params = {
-        {&fireDuration, "fireDuration", JSONTYPE_FLOAT},
-        {&fireDurReductionPerLevel, "fireDurReductionPerLevel", JSONTYPE_FLOAT, false},
-        {&missileName, "missile", JSONTYPE_STRING, false}
+        {
+            &fireDuration,
+            "fireDuration",
+            JSONTYPE_FLOAT
+        },
+        {
+            &fireDurReductionPerLevel,
+            "fireDurReductionPerLevel",
+            JSONTYPE_FLOAT,
+            false
+        },
+        {
+            &missileName,
+            "missile",
+            JSONTYPE_STRING,
+            false
+        }
     };
 
     if (!parseJson(params, elem))
@@ -109,7 +124,8 @@ bool WeaponTemplate::init(const NamedMap<Texture>& textureLib,
         m_missileTemplate = missileLib.search(missileName);
         if (!m_missileTemplate)
         {
-            LOG_ERROR("Failed to find missile-template %s", missileName.c_str());
+            LOG_ERROR("Failed to find missile-template %s",
+                      missileName.c_str());
             return false;
         }
     }
@@ -135,8 +151,17 @@ bool WeaponTemplate::init(const NamedMap<Texture>& textureLib,
 
     float fireDuration, fireDurReductionPerLevel = 0.0f;
     std::vector<JsonParseParam> params = {
-        {&fireDuration, "fireDuration", JSONTYPE_FLOAT},
-        {&fireDurReductionPerLevel, "fireDurReductionPerLevel", JSONTYPE_FLOAT,  false}
+        {
+            &fireDuration,
+            "fireDuration",
+            JSONTYPE_FLOAT
+        },
+        {
+            &fireDurReductionPerLevel,
+            "fireDurReductionPerLevel",
+            JSONTYPE_FLOAT,
+            false
+        }
     };
 
     if (!parseJson(params, elem))
@@ -153,6 +178,19 @@ bool WeaponTemplate::init(const NamedMap<Texture>& textureLib,
     setMissileTemplate(missileTemplate);
 
     return true;
+}
+
+float WeaponTemplate::getFireDuration(int level) const
+{
+    const float MIN_DURATION = 100.0f;
+
+    float duration = m_fireDuration - m_fireDurReductionPerLevel * level;
+    if (duration < MIN_DURATION)
+    {
+        duration = MIN_DURATION;
+    }
+
+    return duration;
 }
 
 bool WeaponTemplate::setNumFirePoints(int count)

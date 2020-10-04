@@ -22,8 +22,9 @@ public:
     virtual ~Base()
     {}
 
-    bool init(const BaseTemplate* t, int hpLevel, int hpRestoreLevel, int armorLevel,
-              int armorRepairLevel, int powerLevel, int powerRestoreLevel,
+    bool init(const BaseTemplate* t, int hpLevel, int hpRestoreLevel,
+              int armorLevel, int armorRepairLevel,
+              int powerLevel, int powerRestoreLevel,
               float x, float y, float directionX, float directionY);
 
     void update(GameScreen& screen);
@@ -101,7 +102,8 @@ public:
 
     void shiftWeaponMoverPos(float deltaX, float deltaY);
 
-    void setWeaponMoverPos(float x, float y, float directionX, float directionY);
+    void setWeaponMoverPos(float x, float y,
+                           float directionX, float directionY);
 
 private:
     void resetHPPercentStr();

@@ -18,8 +18,10 @@ class GoodieTemplate : public GameObjectTemplate {
 public:
     class Parser {
     public:
-        Parser(const NamedMap<Rectangle>& rectLib, const NamedMap<Texture>& textureLib,
-               const NamedMap<Color>& colorLib, const NamedMap<ProgressRing>& ringLib)
+        Parser(const NamedMap<Rectangle>& rectLib,
+               const NamedMap<Texture>& textureLib,
+               const NamedMap<Color>& colorLib,
+               const NamedMap<ProgressRing>& ringLib)
             : m_rectLib(rectLib)
             , m_textureLib(textureLib)
             , m_colorLib(colorLib)
@@ -29,7 +31,8 @@ public:
         ~Parser()
         {}
 
-        GoodieTemplate* create(const std::string& name, const rapidjson::Value& elem);
+        GoodieTemplate* create(const std::string& name,
+                               const rapidjson::Value& elem);
 
     private:
         const NamedMap<Rectangle>& m_rectLib;

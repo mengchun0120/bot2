@@ -15,10 +15,13 @@ public:
     virtual ~AIRobot()
     {}
 
-    bool init(const AIRobotTemplate* t, Side side, int hpLevel, int hpRestoreLevel,
-              int armorLevel, int armorRepairLevel, int powerLevel,
-              int powerRestoreLevel, int weaponLevel, int missileLevel,
-              int moverLevel, float x, float y, float directionX, float directionY);
+    bool init(const AIRobotTemplate* t, Side side,
+              int hpLevel, int hpRestoreLevel,
+              int armorLevel, int armorRepairLevel,
+              int powerLevel, int powerRestoreLevel,
+              int weaponLevel, int missileLevel,
+              int moverLevel, float x, float y,
+              float directionX, float directionY);
 
     const AIRobotTemplate* getTemplate() const
     {

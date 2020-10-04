@@ -119,8 +119,10 @@ bool GameMap::getMapPosForGameObj(int& startRow, int& endRow, int& startCol,
                          obj->getCoverRight(), obj->getCoverTop());
 }
 
-bool GameMap::getRectCoords(int& startRow, int& endRow, int& startCol, int& endCol,
-                            float left, float bottom, float right, float top) const
+bool GameMap::getRectCoords(int& startRow, int& endRow,
+                            int& startCol, int& endCol,
+                            float left, float bottom,
+                            float right, float top) const
 {
     int endCol1 = getMapCoord(right);
     if (endCol1 < 0)
@@ -176,7 +178,8 @@ bool GameMap::addObject(GameObject* obj)
 {
     int startRow, endRow, startCol, endCol;
 
-    bool placeObjInMap = getMapPosForGameObj(startRow, endRow, startCol, endCol, obj);
+    bool placeObjInMap = getMapPosForGameObj(startRow, endRow,
+                                             startCol, endCol, obj);
     if (!placeObjInMap)
     {
         return false;
@@ -198,8 +201,8 @@ bool GameMap::repositionObject(GameObject* obj)
 {
     int newStartRow, newEndRow, newStartCol, newEndCol;
 
-    bool placeObjInMap = getMapPosForGameObj(newStartRow, newEndRow, newStartCol,
-                                             newEndCol, obj);
+    bool placeObjInMap = getMapPosForGameObj(newStartRow, newEndRow,
+                                             newStartCol, newEndCol, obj);
     if (!placeObjInMap)
     {
         removeObject(obj);
@@ -218,7 +221,8 @@ bool GameMap::repositionObject(GameObject* obj)
 
     if (noOverlap)
     {
-        removeObjectFromRect(obj, oldStartRow, oldEndRow, oldStartCol, oldEndCol);
+        removeObjectFromRect(obj, oldStartRow, oldEndRow,
+                             oldStartCol, oldEndCol);
         addObjectToRect(obj, newStartRow, newEndRow, newStartCol, newEndCol);
         obj->setCoverRect(newStartRow, newEndRow, newStartCol, newEndCol);
         return true;
@@ -226,7 +230,8 @@ bool GameMap::repositionObject(GameObject* obj)
 
     if (newStartRow < oldStartRow)
     {
-        addObjectToRect(obj, newStartRow, oldStartRow - 1, newStartCol, newEndCol);
+        addObjectToRect(obj, newStartRow, oldStartRow - 1,
+                        newStartCol, newEndCol);
     }
     else if (newStartRow > oldStartRow)
     {
@@ -240,7 +245,8 @@ bool GameMap::repositionObject(GameObject* obj)
     }
     else if (newEndRow < oldEndRow)
     {
-        removeObjectFromRect(obj, newEndRow + 1, oldEndRow, oldStartCol, oldEndCol);
+        removeObjectFromRect(obj, newEndRow + 1, oldEndRow,
+                             oldStartCol, oldEndCol);
     }
 
     int overlapStartRow = std::max(newStartRow, oldStartRow);
@@ -259,12 +265,13 @@ bool GameMap::repositionObject(GameObject* obj)
 
     if (newEndCol > oldEndCol)
     {
-        addObjectToRect(obj, overlapStartRow, overlapEndRow, oldEndCol + 1, newEndCol);
+        addObjectToRect(obj, overlapStartRow, overlapEndRow,
+                        oldEndCol + 1, newEndCol);
     }
     else if (newEndCol < oldEndCol)
     {
-        removeObjectFromRect(obj, overlapStartRow, overlapEndRow, newEndCol + 1,
-                             oldEndCol);
+        removeObjectFromRect(obj, overlapStartRow, overlapEndRow,
+                             newEndCol + 1, oldEndCol);
     }
 
     obj->setCoverRect(newStartRow, newEndRow, newStartCol, newEndCol);
@@ -272,8 +279,8 @@ bool GameMap::repositionObject(GameObject* obj)
     return true;
 }
 
-void GameMap::addObjectToRect(GameObject* obj, int startRow, int endRow, int startCol,
-                              int endCol)
+void GameMap::addObjectToRect(GameObject* obj, int startRow, int endRow,
+                              int startCol, int endCol)
 {
     for (int r = startRow; r <= endRow; ++r)
     {
@@ -326,8 +333,8 @@ void GameMap::removeObjectFromRect(GameObject* obj, int startRow, int endRow,
     }
 }
 
-void GameMap::getViewportRegion(int& startRow, int& endRow, int& startCol,
-                                int& endCol) const
+void GameMap::getViewportRegion(int& startRow, int& endRow,
+                                int& startCol, int& endCol) const
 {
     float left = m_viewportPos[0] - m_viewportBreathX;
     float bottom = m_viewportPos[1] - m_viewportBreathY;
@@ -336,7 +343,8 @@ void GameMap::getViewportRegion(int& startRow, int& endRow, int& startCol,
     getRectCoords(startRow, endRow, startCol, endCol, left, bottom, right, top);
 }
 
-void GameMap::clearFlagsInRect(int startRow, int endRow, int startCol, int endCol,
+void GameMap::clearFlagsInRect(int startRow, int endRow,
+                               int startCol, int endCol,
                                GameObjectFlag flag)
 {
     for (int r = startRow; r <= endRow; ++r)
@@ -364,8 +372,10 @@ void GameMap::setPlayer(Player* player)
     }
 }
 
-void GameMap::getCollideRegion(int& startRow, int& endRow, int& startCol, int& endCol,
-                               const GameObject* obj, float speedX, float speedY,
+void GameMap::getCollideRegion(int& startRow, int& endRow,
+                               int& startCol, int& endCol,
+                               const GameObject* obj,
+                               float speedX, float speedY,
                                float delta)
 {
     float left = obj->getCollideLeft();
@@ -400,8 +410,10 @@ void GameMap::getCollideRegion(int& startRow, int& endRow, int& startCol, int& e
     endCol = clamp(endCol, 0, getNumCols() - 1);
 }
 
-bool GameMap::checkCollision(float& newDelta, LinkedList<GameObjectItem>* collideObjs,
-                             const Robot* robot, float speedX, float speedY,
+bool GameMap::checkCollision(float& newDelta,
+                             LinkedList<GameObjectItem>* collideObjs,
+                             const Robot* robot,
+                             float speedX, float speedY,
                              float delta)
 {
     bool touch = checkTouchBoundary(newDelta, m_mapWidth, m_mapHeight,
@@ -421,14 +433,16 @@ bool GameMap::checkCollision(float& newDelta, LinkedList<GameObjectItem>* collid
 }
 
 bool GameMap::checkCollideNonPassthrough(float& newDelta, const Robot* robot,
-                                         float speedX, float speedY, float delta)
+                                         float speedX, float speedY,
+                                         float delta)
 {
     const int DONT_CHECK_FLAG = GAME_OBJ_FLAG_CHECKED | GAME_OBJ_FLAG_DEAD;
     int startRow, endRow, startCol, endCol;
     bool collide = false;
 
     newDelta = delta;
-    getCollideRegion(startRow, endRow, startCol, endCol, robot, speedX, speedY, delta);
+    getCollideRegion(startRow, endRow, startCol, endCol, robot,
+                     speedX, speedY, delta);
     clearFlagsInRect(startRow, endRow, startCol, endCol, GAME_OBJ_FLAG_CHECKED);
 
     for (int r = startRow; r <= endRow; ++r)
@@ -453,12 +467,12 @@ bool GameMap::checkCollideNonPassthrough(float& newDelta, const Robot* robot,
 
                 float newDelta1;
                 bool collide1 = checkObjCollision(
-                                    newDelta1, robot->getPosX(),robot->getPosY(),
-                                    robot->getCollideBreath(),
-                                    robot->getCollideBreath(),
-                                    speedX, speedY, o->getPosX(), o->getPosY(),
-                                    o->getCollideBreath(), o->getCollideBreath(),
-                                    newDelta);
+                                newDelta1, robot->getPosX(),robot->getPosY(),
+                                robot->getCollideBreath(),
+                                robot->getCollideBreath(),
+                                speedX, speedY, o->getPosX(), o->getPosY(),
+                                o->getCollideBreath(), o->getCollideBreath(),
+                                newDelta);
 
                 if (collide1)
                 {
@@ -479,7 +493,8 @@ bool GameMap::checkCollideNonPassthrough(float& newDelta, const Robot* robot,
 }
 
 void GameMap::checkCollidePassthrough(LinkedList<GameObjectItem>* collideObjs,
-                                      const Robot* robot, float speedX, float speedY,
+                                      const Robot* robot,
+                                      float speedX, float speedY,
                                       float delta)
 {
     const int DONT_CHECK_FLAG = GAME_OBJ_FLAG_CHECKED | GAME_OBJ_FLAG_DEAD;
@@ -491,7 +506,8 @@ void GameMap::checkCollidePassthrough(LinkedList<GameObjectItem>* collideObjs,
     float bottom = robot->getCollideBottom() + deltaY;
     float top = robot->getCollideTop() + deltaY;
 
-    getCollideRegion(startRow, endRow, startCol, endCol, robot, speedX, speedY, delta);
+    getCollideRegion(startRow, endRow, startCol, endCol, robot,
+                     speedX, speedY, delta);
     clearFlagsInRect(startRow, endRow, startCol, endCol, GAME_OBJ_FLAG_CHECKED);
 
     for (int r = startRow; r <= endRow; ++r)
@@ -548,7 +564,9 @@ ReturnCode GameMap::checkCollision(const Missile* missile)
     float right = missile->getCollideRight();
     float top = missile->getCollideTop();
 
-    if (!getRectCoords(startRow, endRow, startCol, endCol, left, bottom, right, top))
+    bool inBound = getRectCoords(startRow, endRow, startCol, endCol,
+                                 left, bottom, right, top);
+    if (!inBound)
     {
         return RET_CODE_OUT_OF_SIGHT;
     }
@@ -565,11 +583,11 @@ ReturnCode GameMap::checkCollision(const Missile* missile)
             {
                 GameObject* o = item->getObj();
                 bool dontCheck =
-                        o == static_cast<const GameObject*>(missile) ||
-                        o == static_cast<const GameObject*>(missile->getShooter()) ||
-                        o->testFlag(DONT_CHECK_FLAG) ||
-                        (o->getType() != GAME_OBJ_TYPE_ROBOT &&
-                         o->getType() != GAME_OBJ_TYPE_TILE);
+                  o == static_cast<const GameObject*>(missile) ||
+                  o == static_cast<const GameObject*>(missile->getShooter()) ||
+                  o->testFlag(DONT_CHECK_FLAG) ||
+                  (o->getType() != GAME_OBJ_TYPE_ROBOT &&
+                   o->getType() != GAME_OBJ_TYPE_TILE);
 
                 if (dontCheck)
                 {
@@ -630,8 +648,10 @@ void GameMap::updateViewport()
         return;
     }
 
-    m_viewportPos[0] = clamp(m_player->getPosX(), m_viewportBreathX, m_maxViewportX);
-    m_viewportPos[1] = clamp(m_player->getPosY(), m_viewportBreathY, m_maxViewportY);
+    m_viewportPos[0] = clamp(m_player->getPosX(), m_viewportBreathX,
+                             m_maxViewportX);
+    m_viewportPos[1] = clamp(m_player->getPosY(), m_viewportBreathY,
+                             m_maxViewportY);
     m_viewportWorldX = m_viewportPos[0] - m_viewportBreathX;
     m_viewportWorldY = m_viewportPos[1] - m_viewportBreathY;
 }

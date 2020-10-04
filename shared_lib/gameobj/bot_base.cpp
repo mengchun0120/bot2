@@ -24,8 +24,9 @@ Base::Base()
 {
 }
 
-bool Base::init(const BaseTemplate* t, int hpLevel, int hpRestoreLevel, int armorLevel,
-                int armorRepairLevel, int powerLevel, int powerRestoreLevel,
+bool Base::init(const BaseTemplate* t, int hpLevel, int hpRestoreLevel,
+                int armorLevel, int armorRepairLevel,
+                int powerLevel, int powerRestoreLevel,
                 float x, float y, float directionX, float directionY)
 {
     if (!t)
@@ -34,37 +35,37 @@ bool Base::init(const BaseTemplate* t, int hpLevel, int hpRestoreLevel, int armo
         return false;
     }
 
-    if (hpLevel <= 0)
+    if (hpLevel < 0)
     {
         LOG_ERROR("Invalid hp-level %d", hpLevel);
         return false;
     }
 
-    if (hpRestoreLevel <= 0)
+    if (hpRestoreLevel < 0)
     {
         LOG_ERROR("Invalid hp-retore-level %d", hpRestoreLevel);
         return false;
     }
 
-    if (armorLevel <= 0)
+    if (armorLevel < 0)
     {
         LOG_ERROR("Invalid armor-level %d", armorLevel);
         return false;
     }
 
-    if (armorRepairLevel <= 0)
+    if (armorRepairLevel < 0)
     {
         LOG_ERROR("Invalid armor-repair-level %d", armorRepairLevel);
         return false;
     }
 
-    if (powerLevel <= 0)
+    if (powerLevel < 0)
     {
         LOG_ERROR("Invalid power-level %d", powerLevel);
         return false;
     }
 
-    if (powerRestoreLevel <= 0)
+    if (powerRestoreLevel < 0)
     {
         LOG_ERROR("Invalid power-restore-level %d", powerRestoreLevel);
         return false;
@@ -137,7 +138,8 @@ void Base::shiftWeaponMoverPos(float deltaX, float deltaY)
     m_moverPos[1] += deltaY;
 }
 
-void Base::setWeaponMoverPos(float x, float y, float directionX, float directionY)
+void Base::setWeaponMoverPos(float x, float y,
+                             float directionX, float directionY)
 {
     float dx = m_baseTemplate->getWeaponPosX();
     float dy = m_baseTemplate->getWeaponPosY();

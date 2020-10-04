@@ -7,7 +7,8 @@
 
 namespace bot {
 
-MoverTemplate* MoverTemplate::Parser::create(const std::string& name, const rapidjson::Value& elem)
+MoverTemplate* MoverTemplate::Parser::create(const std::string& name,
+                                             const rapidjson::Value& elem)
 {
     MoverTemplate* t = new MoverTemplate();
     if (!t->init(m_textureLib, m_rectLib, elem))
@@ -19,7 +20,8 @@ MoverTemplate* MoverTemplate::Parser::create(const std::string& name, const rapi
     return t;
 }
 
-bool MoverTemplate::init(const NamedMap<Texture>& textureLib, const NamedMap<Rectangle>& rectLib,
+bool MoverTemplate::init(const NamedMap<Texture>& textureLib,
+                         const NamedMap<Rectangle>& rectLib,
                          const rapidjson::Value& elem)
 {
     if (!SingleUnitTemplate::init(textureLib, rectLib, elem))
@@ -45,6 +47,19 @@ bool MoverTemplate::init(const NamedMap<Texture>& textureLib, const NamedMap<Rec
     }
 
     return true;
+}
+
+float getSpeed(int level) const;
+{
+    const float MAX_SPEED = 400.0f;
+    float speed = m_speed + m_speedPerLevel * level;
+
+    if (speed > MAX_SPEED)
+    {
+        speed = MAX_SPEED;
+    }
+
+    return speed;
 }
 
 bool MoverTemplate::setSpeed(float speed)

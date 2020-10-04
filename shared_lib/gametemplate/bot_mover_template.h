@@ -10,7 +10,8 @@ class MoverTemplate: public SingleUnitTemplate {
 public:
     class Parser {
     public:
-        Parser(const NamedMap<Texture>& textureLib, const NamedMap<Rectangle>& rectLib)
+        Parser(const NamedMap<Texture>& textureLib,
+               const NamedMap<Rectangle>& rectLib)
             : m_textureLib(textureLib)
             , m_rectLib(rectLib)
         {}
@@ -18,7 +19,8 @@ public:
         ~Parser()
         {}
 
-        MoverTemplate* create(const std::string& name, const rapidjson::Value& elem);
+        MoverTemplate* create(const std::string& name,
+                              const rapidjson::Value& elem);
 
     private:
         const NamedMap<Texture>& m_textureLib;
@@ -31,10 +33,11 @@ public:
     virtual ~MoverTemplate()
     {}
 
-    bool init(const NamedMap<Texture>& textureLib, const NamedMap<Rectangle>& rectLib,
+    bool init(const NamedMap<Texture>& textureLib,
+              const NamedMap<Rectangle>& rectLib,
               const rapidjson::Value& elem);
 
-    float getSpeed(int level) const
+    float getSpeed(int level) const;
     {
         return m_speed + m_speedPerLevel * (level - 1);
     }

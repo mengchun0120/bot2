@@ -40,8 +40,8 @@ public:
 
     void shiftFirePoints(float deltaX, float deltaY);
 
-    void setFirePoints(float weaponX, float weaponY, float directionX,
-                       float directionY);
+    void setFirePoints(float weaponX, float weaponY,
+                       float directionX, float directionY);
 
     bool setFireDurationMultiplier(float multiplier);
 

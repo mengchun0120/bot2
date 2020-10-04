@@ -27,7 +27,8 @@ public:
         ~Parser()
         {}
 
-        MissileTemplate* create(const std::string& name, const rapidjson::Value& elem);
+        MissileTemplate* create(const std::string& name,
+                                const rapidjson::Value& elem);
 
     private:
         const NamedMap<Texture>& m_textureLib;

@@ -19,7 +19,8 @@ public:
     virtual ~SingleUnitTemplate()
     {}
 
-    bool init(const NamedMap<Texture>& textureLib, const NamedMap<Rectangle>& rectLib,
+    bool init(const NamedMap<Texture>& textureLib,
+              const NamedMap<Rectangle>& rectLib,
               const rapidjson::Value& elem);
 
     const Texture* getTexture() const

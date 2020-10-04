@@ -18,7 +18,7 @@ Mover::Mover()
 
 bool Mover::init(const MoverTemplate* moverTemplate, int moverLevel)
 {
-    if (moverLevel < 1)
+    if (moverLevel < 0)
     {
         LOG_ERROR("Invalid mover-level %d", moverLevel);
         return false;
@@ -63,9 +63,10 @@ bool Mover::update(GameScreen& screen, Robot& robot, float delta)
 
 void Mover::present(Graphics& g, const float* pos, const float* direction)
 {
-    m_moverTemplate->getRect()->draw(g, pos, direction, nullptr, nullptr,
-                                     m_moverTemplate->getTexture()->textureId(),
-                                     nullptr);
+    m_moverTemplate->getRect()->draw(
+                                g, pos, direction, nullptr, nullptr,
+                                m_moverTemplate->getTexture()->textureId(),
+                                nullptr);
 }
 
 bool Mover::setSpeedMultiplier(float multiplier)

@@ -20,9 +20,11 @@ public:
     virtual ~Robot()
     {}
 
-    bool init(const RobotTemplate* t, Side side, int hpLevel, int hpRestoreLevel,
-              int armorLevel, int armorRepairLevel, int powerLevel,
-              int powerRestoreLevel, int weaponLevel, int missileLevel,
+    bool init(const RobotTemplate* t, Side side,
+              int hpLevel, int hpRestoreLevel,
+              int armorLevel, int armorRepairLevel,
+              int powerLevel, int powerRestoreLevel,
+              int weaponLevel, int missileLevel,
               int moverLevel, float x, float y,
               float directionX, float directionY);
 

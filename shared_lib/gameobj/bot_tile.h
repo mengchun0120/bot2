@@ -27,6 +27,12 @@ public:
 
     bool addHP(float deltaHP);
 
+    void setPos(float x, float y)
+    {
+        m_pos[0] = x;
+        m_pos[1] = y;
+    }
+
 protected:
     float m_hp;
     float m_maxHP;

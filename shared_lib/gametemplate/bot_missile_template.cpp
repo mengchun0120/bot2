@@ -9,10 +9,13 @@
 
 namespace bot {
 
-MissileTemplate* MissileTemplate::Parser::create(const std::string& name, const rapidjson::Value& elem)
+MissileTemplate* MissileTemplate::Parser::create(const std::string& name,
+                                                 const rapidjson::Value& elem)
 {
     MissileTemplate* t = new MissileTemplate();
-    if (!t->init(m_textureLib, m_rectLib, m_particleEffectLib, m_colorLib, elem))
+    bool ret = t->init(m_textureLib, m_rectLib, m_particleEffectLib,
+                       m_colorLib, elem);
+    if (!ret)
     {
         delete t;
         return nullptr;
@@ -33,11 +36,12 @@ MissileTemplate::MissileTemplate()
 
 }
 
-bool MissileTemplate::init(const NamedMap<Texture>& textureLib,
-                           const NamedMap<Rectangle>& rectLib,
-                           const NamedMap<ParticleEffectTemplate>& particleEffectLib,
-                           const NamedMap<Color>& colorLib,
-                           const rapidjson::Value& elem)
+bool MissileTemplate::init(
+                    const NamedMap<Texture>& textureLib,
+                    const NamedMap<Rectangle>& rectLib,
+                    const NamedMap<ParticleEffectTemplate>& particleEffectLib,
+                    const NamedMap<Color>& colorLib,
+                    const rapidjson::Value& elem)
 {
     if (!GameObjectTemplate::init(elem))
     {
@@ -53,12 +57,37 @@ bool MissileTemplate::init(const NamedMap<Texture>& textureLib,
     std::string colorName, explosionEffectName;
     std::vector<JsonParseParam> params =
     {
-        {&speed, "speed", JSONTYPE_FLOAT},
-        {&damage, "damage", JSONTYPE_FLOAT},
-        {&damagePerLevel, "damagePerLevel", JSONTYPE_FLOAT, false},
-        {&explosionBreath, "explosionBreath", JSONTYPE_FLOAT},
-        {&colorName, "color", JSONTYPE_STRING},
-        {&explosionEffectName, "explosionEffect", JSONTYPE_STRING}
+        {
+            &speed,
+            "speed",
+            JSONTYPE_FLOAT
+        },
+        {
+            &damage,
+            "damage",
+            JSONTYPE_FLOAT
+        },
+        {
+            &damagePerLevel,
+            "damagePerLevel",
+            JSONTYPE_FLOAT,
+            false
+        },
+        {
+            &explosionBreath,
+            "explosionBreath",
+            JSONTYPE_FLOAT
+        },
+        {
+            &colorName,
+            "color",
+            JSONTYPE_STRING
+        },
+        {
+            &explosionEffectName,
+            "explosionEffect",
+            JSONTYPE_STRING
+        }
     };
 
     if (!parseJson(params, elem))
@@ -85,7 +114,8 @@ bool MissileTemplate::init(const NamedMap<Texture>& textureLib,
     m_explosionTemplate = particleEffectLib.search(explosionEffectName);
     if (!m_explosionTemplate)
     {
-        LOG_ERROR("Couldn't find particle effect %s", explosionEffectName.c_str());
+        LOG_ERROR("Couldn't find particle effect %s",
+                  explosionEffectName.c_str());
         return false;
     }
 

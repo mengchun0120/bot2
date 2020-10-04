@@ -34,8 +34,10 @@ public:
     ~DashboardConfig()
     {}
 
-    bool init(const std::string& configFile, const NamedMap<Texture>& textureLib,
-              const NamedMap<Rectangle>& rectLib, const NamedMap<Color>& colorLib);
+    bool init(const std::string& configFile,
+              const NamedMap<Texture>& textureLib,
+              const NamedMap<Rectangle>& rectLib,
+              const NamedMap<Color>& colorLib);
 
     const Rectangle* getHPRect() const
     {

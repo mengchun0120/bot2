@@ -64,11 +64,14 @@ public:
         return m_map[row][col];
     }
 
-    bool getMapPosForGameObj(int& startRow, int& endRow, int& startCol, int& endCol,
+    bool getMapPosForGameObj(int& startRow, int& endRow,
+                             int& startCol, int& endCol,
                              GameObject* obj) const;
 
-    bool getRectCoords(int& startRow, int& endRow, int& startCol, int& endCol,
-                       float left, float bottom, float right, float top) const;
+    bool getRectCoords(int& startRow, int& endRow,
+                       int& startCol, int& endCol,
+                       float left, float bottom,
+                       float right, float top) const;
 
     bool addObject(GameObject* obj);
 
@@ -76,10 +79,11 @@ public:
 
     bool repositionObject(GameObject* obj);
 
-    void getViewportRegion(int& startRow, int& endRow, int& startCol,
-                           int& endCol) const;
+    void getViewportRegion(int& startRow, int& endRow,
+                           int& startCol, int& endCol) const;
 
-    void clearFlagsInRect(int startRow, int endRow, int startCol, int endCol,
+    void clearFlagsInRect(int startRow, int endRow,
+                          int startCol, int endCol,
                           GameObjectFlag flag);
 
     void setPlayer(Player* player);
@@ -94,8 +98,11 @@ public:
         return m_player;
     }
 
-    bool checkCollision(float& newDelta, LinkedList<GameObjectItem>* collideObjs,
-                        const Robot* robot, float speedX, float speedY, float delta);
+    bool checkCollision(float& newDelta,
+                        LinkedList<GameObjectItem>* collideObjs,
+                        const Robot* robot,
+                        float speedX, float speedY,
+                        float delta);
 
     // Returns RET_CODE_OUT_OF_SIGHT, RET_CODE_COLLIDE and RETCODE_OK
     ReturnCode checkCollision(const Missile* missile);

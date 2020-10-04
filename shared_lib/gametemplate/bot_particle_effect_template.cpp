@@ -8,7 +8,9 @@
 
 namespace bot {
 
-ParticleEffectTemplate* ParticleEffectTemplate::Parser::create(const std::string& name, const rapidjson::Value& elem)
+ParticleEffectTemplate* ParticleEffectTemplate::Parser::create(
+                                            const std::string& name,
+                                            const rapidjson::Value& elem)
 {
     ParticleEffectTemplate* t = new ParticleEffectTemplate();
     if (!t->init(m_textureLib, m_colorLib, elem))
@@ -29,7 +31,8 @@ ParticleEffectTemplate::ParticleEffectTemplate()
     , m_color(nullptr)
 {}
 
-bool ParticleEffectTemplate::init(const NamedMap<Texture>& textureLib, const NamedMap<Color>& colorLib,
+bool ParticleEffectTemplate::init(const NamedMap<Texture>& textureLib,
+                                  const NamedMap<Color>& colorLib,
                                   const rapidjson::Value& elem)
 {
     if (!GameObjectTemplate::init(elem))
@@ -41,13 +44,41 @@ bool ParticleEffectTemplate::init(const NamedMap<Texture>& textureLib, const Nam
     std::string textureName, colorName;
     std::vector<JsonParseParam> params =
     {
-        {&m_acceleration, "acceleration", JSONTYPE_FLOAT},
-        {&m_initSpeed,    "initSpeed",    JSONTYPE_FLOAT},
-        {&m_duration,     "duration",     JSONTYPE_FLOAT},
-        {&m_particleSize, "particleSize", JSONTYPE_FLOAT},
-        {&textureName,    "texture",      JSONTYPE_STRING},
-        {&colorName,      "color",        JSONTYPE_STRING},
-        {&data,           "particles",    JSONTYPE_FLOAT_ARRAY}
+        {
+            &m_acceleration,
+            "acceleration",
+            JSONTYPE_FLOAT
+        },
+        {
+            &m_initSpeed,
+            "initSpeed",
+            JSONTYPE_FLOAT
+        },
+        {
+            &m_duration,
+            "duration",
+            JSONTYPE_FLOAT
+        },
+        {
+            &m_particleSize,
+            "particleSize",
+            JSONTYPE_FLOAT
+        },
+        {
+            &textureName,
+            "texture",
+            JSONTYPE_STRING
+        },
+        {
+            &colorName,
+            "color",
+            JSONTYPE_STRING
+        },
+        {
+            &data,
+            "particles",
+            JSONTYPE_FLOAT_ARRAY
+        }
     };
 
     if (!parseJson(params, elem))
@@ -65,7 +96,8 @@ bool ParticleEffectTemplate::init(const NamedMap<Texture>& textureLib, const Nam
 
     if (data.size() % NUM_FLOATS_PER_PARTICLE != 0)
     {
-        LOG_ERROR("Length of particles must be multiples of %d", NUM_FLOATS_PER_PARTICLE);
+        LOG_ERROR("Length of particles must be multiples of %d",
+                  NUM_FLOATS_PER_PARTICLE);
         return false;
     }
 
@@ -86,8 +118,9 @@ bool ParticleEffectTemplate::init(const NamedMap<Texture>& textureLib, const Nam
     }
 
     const int VERTEX_SIZE = Constants::POSITION_SIZE;
-
-    if (!m_vertexArray.load(data.data(), m_numParticles, VERTEX_SIZE, VERTEX_SIZE))
+    bool ret = m_vertexArray.load(data.data(), m_numParticles,
+                                  VERTEX_SIZE, VERTEX_SIZE);
+    if (!ret)
     {
         return false;
     }

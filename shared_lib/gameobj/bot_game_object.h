@@ -38,16 +38,6 @@ public:
         return m_pos[1];
     }
 
-    void setPosX(float x)
-    {
-        m_pos[0] = x;
-    }
-
-    void setPosY(float y)
-    {
-        m_pos[1] = y;
-    }
-
     float getCoverBreath() const
     {
         return m_template->getCoverBreath();

@@ -12,7 +12,9 @@ bool Goodie::init(const GoodieTemplate* t, float x, float y)
 void Goodie::present(Graphics& g)
 {
     const GoodieTemplate* t = getTemplate();
-    t->getRect()->draw(g, m_pos, nullptr, nullptr, nullptr, t->getTexture()->textureId(), nullptr);
+
+    t->getRect()->draw(g, m_pos, nullptr, nullptr, nullptr,
+                       t->getTexture()->textureId(), nullptr);
 }
 
 } // end of namespace bot

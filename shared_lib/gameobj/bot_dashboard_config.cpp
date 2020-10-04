@@ -8,8 +8,10 @@
 
 namespace bot {
 
-bool DashboardConfig::init(const std::string& configFile, const NamedMap<Texture>& textureLib,
-                           const NamedMap<Rectangle>& rectLib, const NamedMap<Color>& colorLib)
+bool DashboardConfig::init(const std::string& configFile,
+                           const NamedMap<Texture>& textureLib,
+                           const NamedMap<Rectangle>& rectLib,
+                           const NamedMap<Color>& colorLib)
 {
     rapidjson::Document doc;
 
@@ -31,22 +33,85 @@ bool DashboardConfig::init(const std::string& configFile, const NamedMap<Texture
     std::string goldRectName, goldTextureName, goldTextColorName;
 
     std::vector<JsonParseParam> params = {
-        {&hpRectName,            "hpRect",             JSONTYPE_STRING},
-        {&hpTextureName,         "hpTexture",          JSONTYPE_STRING},
-        {&hpGoodColorName,       "hpGoodColor",        JSONTYPE_STRING},
-        {&hpBadColorName,        "hpBadColor",         JSONTYPE_STRING},
-        {&hpCriticalColorName,   "hpCriticalColor",    JSONTYPE_STRING},
-        {&m_hpIconX,             "hpIconX",            JSONTYPE_FLOAT},
-        {&m_hpTextX,             "hpTextX",            JSONTYPE_FLOAT},
-        {&goldRectName,          "goldRect",           JSONTYPE_STRING},
-        {&goldTextureName,       "goldTexture",        JSONTYPE_STRING},
-        {&goldTextColorName,     "goldTextColor",      JSONTYPE_STRING},
-        {&m_goldIconX,           "goldIconX",          JSONTYPE_FLOAT},
-        {&m_goldTextX,           "goldTextX",          JSONTYPE_FLOAT},
-        {&m_effectSpacingX,      "effectSpacingX",     JSONTYPE_FLOAT},
-        {&m_effectStartX,        "effectStartX",       JSONTYPE_FLOAT},
-        {&m_effectRingRadius,    "effectRingRadius",   JSONTYPE_FLOAT},
-        {&m_headerTopMargin,     "headerTopMargin",    JSONTYPE_FLOAT}
+        {
+            &hpRectName,
+            "hpRect",
+            JSONTYPE_STRING
+        },
+        {
+            &hpTextureName,
+            "hpTexture",
+            JSONTYPE_STRING
+        },
+        {
+            &hpGoodColorName,
+            "hpGoodColor",
+            JSONTYPE_STRING},
+        {
+            &hpBadColorName,
+            "hpBadColor",
+            JSONTYPE_STRING
+        },
+        {
+            &hpCriticalColorName,
+            "hpCriticalColor",
+            JSONTYPE_STRING
+        },
+        {
+            &m_hpIconX,
+            "hpIconX",
+            JSONTYPE_FLOAT
+        },
+        {
+            &m_hpTextX,
+            "hpTextX",
+            JSONTYPE_FLOAT
+        },
+        {
+            &goldRectName,
+            "goldRect",
+            JSONTYPE_STRING
+        },
+        {
+            &goldTextureName,
+            "goldTexture",
+            JSONTYPE_STRING
+        },
+        {
+            &goldTextColorName,
+            "goldTextColor",
+            JSONTYPE_STRING
+        },
+        {
+            &m_goldIconX,
+            "goldIconX",
+            JSONTYPE_FLOAT
+        },
+        {
+            &m_goldTextX,
+            "goldTextX",
+            JSONTYPE_FLOAT
+        },
+        {
+            &m_effectSpacingX,
+            "effectSpacingX",
+            JSONTYPE_FLOAT
+        },
+        {
+            &m_effectStartX,
+            "effectStartX",
+            JSONTYPE_FLOAT
+        },
+        {
+            &m_effectRingRadius,
+            "effectRingRadius",
+            JSONTYPE_FLOAT
+        },
+        {
+            &m_headerTopMargin,
+            "headerTopMargin",
+            JSONTYPE_FLOAT
+        }
     };
 
     if (!parseJson(params, val))
@@ -85,7 +150,8 @@ bool DashboardConfig::init(const std::string& configFile, const NamedMap<Texture
     m_hpCriticalColor = colorLib.search(hpCriticalColorName);
     if (!m_hpCriticalColor)
     {
-        LOG_ERROR("Failed to find hp critical color %s", hpCriticalColorName.c_str());
+        LOG_ERROR("Failed to find hp critical color %s",
+                  hpCriticalColorName.c_str());
         return false;
     }
 
@@ -106,7 +172,8 @@ bool DashboardConfig::init(const std::string& configFile, const NamedMap<Texture
     m_goldTextColor = colorLib.search(goldTextColorName);
     if (!m_goldTextColor)
     {
-        LOG_ERROR("Failed to find gold text color %s", goldTextColorName.c_str());
+        LOG_ERROR("Failed to find gold text color %s",
+                  goldTextColorName.c_str());
         return false;
     }
 

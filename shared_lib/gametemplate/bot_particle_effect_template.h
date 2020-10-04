@@ -16,7 +16,8 @@ class ParticleEffectTemplate: public GameObjectTemplate {
 public:
     class Parser {
     public:
-        Parser(const NamedMap<Texture>& textureLib, const NamedMap<Color>& colorLib)
+        Parser(const NamedMap<Texture>& textureLib,
+               const NamedMap<Color>& colorLib)
             : m_textureLib(textureLib)
             , m_colorLib(colorLib)
         {}
@@ -24,7 +25,8 @@ public:
         ~Parser()
         {}
 
-        ParticleEffectTemplate* create(const std::string& name, const rapidjson::Value& elem);
+        ParticleEffectTemplate* create(const std::string& name,
+                                       const rapidjson::Value& elem);
 
     private:
         const NamedMap<Texture>& m_textureLib;
@@ -36,7 +38,9 @@ public:
     virtual ~ParticleEffectTemplate()
     {}
 
-    bool init(const NamedMap<Texture>& textureLib, const NamedMap<Color>& colorLib, const rapidjson::Value& elem);
+    bool init(const NamedMap<Texture>& textureLib,
+              const NamedMap<Color>& colorLib,
+              const rapidjson::Value& elem);
 
     int getNumParticles() const
     {
@@ -91,4 +95,4 @@ protected:
 
 } // end of namespace bot
 
-#endif
+

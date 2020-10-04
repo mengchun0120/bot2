@@ -25,7 +25,8 @@ public:
         ~Parser()
         {}
 
-        AIRobotTemplate* create(const std::string& name, const rapidjson::Value& elem);
+        AIRobotTemplate* create(const std::string& name,
+                                const rapidjson::Value& elem);
 
     private:
         const NamedMap<BaseTemplate>& m_baseLib;

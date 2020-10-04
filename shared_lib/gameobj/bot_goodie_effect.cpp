@@ -38,7 +38,8 @@ void GoodieEffect::draw(Graphics& g, const float* pos) const
     if (m_template->getEffectRect())
     {
         m_template->getEffectRect()->draw(g, pos, nullptr, nullptr, nullptr,
-                                          m_template->getTexture()->textureId(), nullptr);
+                                          m_template->getTexture()->textureId(),
+                                          nullptr);
     }
 }
 

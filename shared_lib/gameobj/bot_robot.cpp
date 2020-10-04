@@ -18,9 +18,11 @@ Robot::Robot()
     m_direction[1] = 0.0f;
 }
 
-bool Robot::init(const RobotTemplate* t, Side side, int hpLevel, int hpRestoreLevel,
-                 int armorLevel, int armorRepairLevel, int powerLevel,
-                 int powerRestoreLevel, int weaponLevel, int missileLevel,
+bool Robot::init(const RobotTemplate* t, Side side,
+                 int hpLevel, int hpRestoreLevel,
+                 int armorLevel, int armorRepairLevel,
+                 int powerLevel, int powerRestoreLevel,
+                  int weaponLevel, int missileLevel,
                  int moverLevel, float x, float y,
                  float directionX, float directionY)
 {

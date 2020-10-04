@@ -11,7 +11,8 @@ class TileTemplate: public GameObjectTemplate, public SingleUnitTemplate {
 public:
     class Parser {
     public:
-        Parser(const NamedMap<Texture>& textureLib, const NamedMap<Rectangle>& rectLib)
+        Parser(const NamedMap<Texture>& textureLib,
+               const NamedMap<Rectangle>& rectLib)
             : m_textureLib(textureLib)
             , m_rectLib(rectLib)
         {}
@@ -19,7 +20,8 @@ public:
         ~Parser()
         {}
 
-        TileTemplate* create(const std::string& name, const rapidjson::Value& elem);
+        TileTemplate* create(const std::string& name,
+                             const rapidjson::Value& elem);
 
     private:
         const NamedMap<Texture>& m_textureLib;
@@ -31,7 +33,8 @@ public:
     virtual ~TileTemplate()
     {}
 
-    bool init(const NamedMap<Texture>& textureLib, const NamedMap<Rectangle>& rectLib,
+    bool init(const NamedMap<Texture>& textureLib,
+              const NamedMap<Rectangle>& rectLib,
               const rapidjson::Value& elem);
 
     float getHP(int level) const

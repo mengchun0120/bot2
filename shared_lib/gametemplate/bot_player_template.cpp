@@ -44,11 +44,11 @@ BaseTemplate* parseBaseTemplate(const NamedMap<Texture>& textureLib,
 }
 
 MissileTemplate* parseMissileTemplate(
-                            const NamedMap<Texture>& textureLib,
-                            const NamedMap<Rectangle>& rectLib,
-                            const NamedMap<ParticleEffectTemplate>& particleLib,
-                            const NamedMap<Color>& colorLib,
-                            const rapidjson::Value& elem)
+                        const NamedMap<Texture>& textureLib,
+                        const NamedMap<Rectangle>& rectLib,
+                        const NamedMap<ParticleEffectTemplate>& particleLib,
+                        const NamedMap<Color>& colorLib,
+                        const rapidjson::Value& elem)
 {
     const char name[] = "missile";
 
