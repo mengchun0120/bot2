@@ -38,9 +38,6 @@ public:
               const rapidjson::Value& elem);
 
     float getSpeed(int level) const;
-    {
-        return m_speed + m_speedPerLevel * (level - 1);
-    }
 
     bool setSpeed(float speed);
 

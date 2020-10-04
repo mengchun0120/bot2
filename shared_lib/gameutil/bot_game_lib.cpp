@@ -5,37 +5,45 @@
 
 namespace bot {
 
-bool GameLib::load(float viewportWidth, float viewportHeight, const AppConfig& cfg)
+bool GameLib::load(float viewportWidth, float viewportHeight,
+                   const AppConfig& cfg)
 {
     Texture::Parser textureParser(cfg.getTextureDir());
     bool ret = m_textureLib.load(cfg.getTextureLib().c_str(), textureParser);
     if (!ret)
     {
-        LOG_ERROR("Failed to read texture lib from %s", cfg.getTextureLib().c_str());
+        LOG_ERROR("Failed to read texture lib from %s",
+                  cfg.getTextureLib().c_str());
         return false;
     }
-    LOG_INFO("Done loading texture library from %s", cfg.getTextureLib().c_str());
+    LOG_INFO("Done loading texture library from %s",
+             cfg.getTextureLib().c_str());
 
     Rectangle::Parser rectParser;
     ret = m_rectLib.load(cfg.getRectLib().c_str(), rectParser);
     if (!ret)
     {
-        LOG_ERROR("Failed to read rect lib from %s", cfg.getRectLib().c_str());
+        LOG_ERROR("Failed to read rect lib from %s",
+                  cfg.getRectLib().c_str());
         return false;
     }
-    LOG_INFO("Done loading rectangle library from %s", cfg.getRectLib().c_str());
+    LOG_INFO("Done loading rectangle library from %s",
+             cfg.getRectLib().c_str());
 
     Color::Parser colorParser;
     ret = m_colorLib.load(cfg.getColorLib().c_str(), colorParser);
     if (!ret)
     {
-        LOG_ERROR("Failed to read color lib from %s", cfg.getColorLib().c_str());
+        LOG_ERROR("Failed to read color lib from %s",
+                  cfg.getColorLib().c_str());
         return false;
     }
-    LOG_INFO("Done loading color library from %s", cfg.getColorLib().c_str());
+    LOG_INFO("Done loading color library from %s",
+             cfg.getColorLib().c_str());
 
     TileTemplate::Parser tileTemplateParser(m_textureLib, m_rectLib);
-    ret = m_tileTemplateLib.load(cfg.getTileTemplateLib().c_str(), tileTemplateParser);
+    ret = m_tileTemplateLib.load(cfg.getTileTemplateLib().c_str(),
+                                 tileTemplateParser);
     if (!ret)
     {
         LOG_ERROR("Failed to read tile template lib from %s",
@@ -45,7 +53,8 @@ bool GameLib::load(float viewportWidth, float viewportHeight, const AppConfig& c
     LOG_INFO("Done loading tile template library from %s",
              cfg.getTileTemplateLib().c_str());
 
-    ParticleEffectTemplate::Parser particleEffectParser(m_textureLib, m_colorLib);
+    ParticleEffectTemplate::Parser particleEffectParser(m_textureLib,
+                                                        m_colorLib);
     ret = m_particleEffectTemplateLib.load(
                             cfg.getParticleEffectTemplateLib().c_str(),
                             particleEffectParser);
@@ -59,7 +68,8 @@ bool GameLib::load(float viewportWidth, float viewportHeight, const AppConfig& c
              cfg.getParticleEffectTemplateLib().c_str());
 
     MissileTemplate::Parser missileParser(m_textureLib, m_rectLib,
-                                          m_particleEffectTemplateLib, m_colorLib);
+                                          m_particleEffectTemplateLib,
+                                          m_colorLib);
     ret = m_missileTemplateLib.load(cfg.getMissileTemplateLib().c_str(),
                                     missileParser);
     if (!ret)
@@ -72,7 +82,8 @@ bool GameLib::load(float viewportWidth, float viewportHeight, const AppConfig& c
              cfg.getMissileTemplateLib().c_str());
 
     ProgressRing::Parser progressRingParser(m_colorLib);
-    ret = m_progressRingLib.load(cfg.getProgressRingLib().c_str(), progressRingParser);
+    ret = m_progressRingLib.load(cfg.getProgressRingLib().c_str(),
+                                 progressRingParser);
     if (!ret)
     {
         LOG_ERROR("Failed to read progress ring from %s",
@@ -84,7 +95,9 @@ bool GameLib::load(float viewportWidth, float viewportHeight, const AppConfig& c
 
     GoodieTemplate::Parser goodieParser(m_rectLib, m_textureLib,
                                         m_colorLib, m_progressRingLib);
-    if (!m_goodieTemplateLib.load(cfg.getGoodieTemplateLib().c_str(), goodieParser))
+    ret = m_goodieTemplateLib.load(cfg.getGoodieTemplateLib().c_str(),
+                                   goodieParser);
+    if (!ret)
     {
         LOG_ERROR("Failed to read goodie template lib from %s",
                   cfg.getGoodieTemplateLib().c_str());
@@ -113,8 +126,10 @@ bool GameLib::load(float viewportWidth, float viewportHeight, const AppConfig& c
     LOG_INFO("Done loading base-template library from %s",
              cfg.getBaseTemplateLib().c_str());
 
-    WeaponTemplate::Parser weaponParser(m_textureLib, m_rectLib, m_missileLib);
-    ret = m_weaponTemplateLib.load(cfg.getWeaponTemplateLib().c_str(), weaponParser);
+    WeaponTemplate::Parser weaponParser(m_textureLib, m_rectLib,
+                                        m_missileTemplateLib);
+    ret = m_weaponTemplateLib.load(cfg.getWeaponTemplateLib().c_str(),
+                                   weaponParser);
     if (!ret)
     {
         LOG_ERROR("Failed to read weapon-template library from %s",
@@ -125,7 +140,8 @@ bool GameLib::load(float viewportWidth, float viewportHeight, const AppConfig& c
              cfg.getWeaponTemplateLib().c_str());
 
     MoverTemplate::Parser moverParser(m_textureLib, m_rectLib);
-    ret = m_moverTemplateLib.load(cfg.getMoverTemplateLib().c_str(), moverParser);
+    ret = m_moverTemplateLib.load(cfg.getMoverTemplateLib().c_str(),
+                                  moverParser);
     if (!ret)
     {
         LOG_ERROR("Failed to read mover-template library from %s",
@@ -135,7 +151,10 @@ bool GameLib::load(float viewportWidth, float viewportHeight, const AppConfig& c
     LOG_INFO("Done loading mover-template library from %s",
              cfg.getMoverTemplateLib().c_str());
 
-    AIRobotTemplate::Parser aiRobotParser(m_baseLib, m_weaponLib, m_moverLib, m_aiLib);
+    AIRobotTemplate::Parser aiRobotParser(m_baseTemplateLib,
+                                          m_weaponTemplateLib,
+                                          m_moverTemplateLib,
+                                          m_aiLib);
     ret = m_aiRobotTemplateLib.load(cfg.getAIRobotTemplateLib().c_str(),
                                     aiRobotParser);
     if (!ret)
@@ -147,7 +166,8 @@ bool GameLib::load(float viewportWidth, float viewportHeight, const AppConfig& c
     LOG_INFO("Done loading ai-robot template library from %s",
              cfg.getAIRobotTemplateLib().c_str());
 
-    ret = m_playerTemplate.init(cfg.getPlayerTemplateLib(), m_textureLib, m_rectLib,
+    ret = m_playerTemplate.init(cfg.getPlayerTemplateLib(),
+                                m_textureLib, m_rectLib,
                                 m_particleEffectTemplateLib, m_colorLib);
     if (!ret)
     {
@@ -158,10 +178,12 @@ bool GameLib::load(float viewportWidth, float viewportHeight, const AppConfig& c
     LOG_INFO("Done reading player template from %s",
              cfg.getPlayerTemplateLib().c_str());
 
-    MapGenerator::Parser mapGeneratorParser(&m_playerTemplate, m_tileTemplateLib,
+    MapGenerator::Parser mapGeneratorParser(&m_playerTemplate,
+                                            m_tileTemplateLib,
                                             m_aiRobotTemplateLib,
                                             cfg.getMaxRobotCount());
-    ret = m_mapGeneratorLib.load(cfg.getMapGeneratorLib().c_str(), mapGeneratorParser);
+    ret = m_mapGeneratorLib.load(cfg.getMapGeneratorLib().c_str(),
+                                 mapGeneratorParser);
     if (!ret)
     {
         LOG_ERROR("Failed to load map-generator lib from %s",
@@ -171,8 +193,8 @@ bool GameLib::load(float viewportWidth, float viewportHeight, const AppConfig& c
     LOG_INFO("Done loading map-generator lib from %s",
              cfg.getMapGeneratorLib().c_str());
 
-    ret = m_dashboardConfig.init(cfg.getDashboardConfigFile(), m_textureLib, m_rectLib,
-                                 m_colorLib);
+    ret = m_dashboardConfig.init(cfg.getDashboardConfigFile(), m_textureLib,
+                                 m_rectLib, m_colorLib);
     if (!ret)
     {
         LOG_ERROR("Failed to load dashboard config from %s",
@@ -182,7 +204,8 @@ bool GameLib::load(float viewportWidth, float viewportHeight, const AppConfig& c
     LOG_INFO("Done reading dashboard config from %s",
              cfg.getDashboardConfigFile().c_str());
 
-    ret = m_buttonConfig.init(cfg.getButtonConfigFile(), m_textureLib, m_colorLib);
+    ret = m_buttonConfig.init(cfg.getButtonConfigFile(),
+                              m_textureLib, m_colorLib);
     if (!ret)
     {
         LOG_ERROR("Failed to load button config from %s",

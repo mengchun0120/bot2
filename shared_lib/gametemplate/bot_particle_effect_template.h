@@ -95,4 +95,5 @@ protected:
 
 } // end of namespace bot
 
+#endif
 

@@ -22,7 +22,8 @@ GameObjectManager::~GameObjectManager()
     delete m_player;
 }
 
-void GameObjectManager::init(GameMap* map, const AppConfig& cfg, const GameLib* lib)
+void GameObjectManager::init(GameMap* map, const AppConfig& cfg,
+                             const GameLib* lib)
 {
     m_map = map;
     m_lib = lib;
@@ -30,7 +31,8 @@ void GameObjectManager::init(GameMap* map, const AppConfig& cfg, const GameLib* 
     m_goodieGenerator.init(lib->getGoodieTemplateLib());
 }
 
-Tile* GameObjectManager::createTile(const std::string& tileName)
+Tile* GameObjectManager::createTile(const std::string& tileName, int level,
+                                    float x, float y)
 {
     const TileTemplate* tileTemplate = m_lib->getTileTemplate(tileName);
     if (!tileTemplate)
@@ -39,12 +41,20 @@ Tile* GameObjectManager::createTile(const std::string& tileName)
         return nullptr;
     }
 
-    return createTile(tileTemplate);
+    return createTile(tileTemplate, level, x, y);
 }
 
-Tile* GameObjectManager::createTile(const TileTemplate* tileTemplate)
+Tile* GameObjectManager::createTile(const TileTemplate* tileTemplate, int level,
+                                    float x, float y)
 {
-    Tile* tile = new Tile(tileTemplate);
+    Tile* tile = new Tile();
+
+    if (!tile->init(tileTemplate, level, x, y))
+    {
+        delete tile;
+        return nullptr;
+    }
+
     m_activeTiles.add(tile);
 
     return tile;
@@ -58,7 +68,8 @@ AIRobot* GameObjectManager::createRobot(
                          int weaponLevel, int missileLevel, int moverLevel,
                          float x, float y, float directionX, float directionY)
 {
-    const AIRobotTemplate* aiRobotTemplate = m_lib->getAIRobotTemplate(robotName);
+    const AIRobotTemplate* aiRobotTemplate =
+                                 m_lib->getAIRobotTemplate(robotName);
     if (!aiRobotTemplate)
     {
         LOG_ERROR("Failed to find ai-robot template %s", robotName.c_str());
@@ -103,7 +114,8 @@ AIRobot* GameObjectManager::createRobot(
 Missile* GameObjectManager::createMissile(
                             const MissileTemplate* missileTemplate,
                             Robot* shooter, float damage,
-                            float x, float y, float directionX, float directionY)
+                            float x, float y,
+                            float directionX, float directionY)
 {
     Missile* missile = m_missilePool.alloc();
     bool ret = missile->init(missileTemplate, shooter, damage,
@@ -161,8 +173,8 @@ Goodie* GameObjectManager::createGoodie(float prob, float x, float y)
     }
 
     const GoodieTemplate* t = m_lib->getGoodieTemplateLib().getObjAt(goodieIdx);
-    Goodie* goodie = new Goodie()
-    boot ret = goodie->init(t, x, y);
+    Goodie* goodie = new Goodie();
+    bool ret = goodie->init(t, x, y);
     if (!ret)
     {
         delete goodie;
@@ -223,7 +235,8 @@ void GameObjectManager::sendToDeathQueue(GameObject* obj)
         }
         default:
         {
-            LOG_ERROR("Invalid game obj type %d", static_cast<int>(obj->getType()));
+            LOG_ERROR("Invalid game obj type %d",
+                      static_cast<int>(obj->getType()));
             return;
         }
     }

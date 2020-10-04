@@ -27,11 +27,14 @@ public:
 
     ~GameObjectManager();
 
-    void init(GameMap* map, const AppConfig& cfg, const GameLib* lib);
+    void init(GameMap* map, const AppConfig& cfg,
+              const GameLib* lib);
 
-    Tile* createTile(const std::string& tileName);
+    Tile* createTile(const std::string& tileName, int level,
+                     float x, float y);
 
-    Tile* createTile(const TileTemplate* tileTemplate);
+    Tile* createTile(const TileTemplate* tileTemplate, int level,
+                     float x, float y);
 
     Tile* getFirstActiveTile()
     {
@@ -59,7 +62,8 @@ public:
 
     Missile* createMissile(const MissileTemplate* missileTemplate,
                            Robot* shooter, float damage,
-                           float x, float y, float directionX, float directionY);
+                           float x, float y,
+                           float directionX, float directionY);
 
     Goodie* createGoodie(float prob, float x, float y);
 

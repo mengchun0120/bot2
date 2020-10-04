@@ -13,36 +13,39 @@ class GameObjectManager;
 
 class GameMapLoader {
 public:
-    GameMapLoader(GameMap& map, GameObjectManager& gameObjManager, float mapPoolFactor)
-        : m_map(map)
-        , m_gameObjManager(gameObjManager)
+    GameMapLoader(GameObjectManager& gameObjManager,
+                  float mapPoolFactor)
+        : m_gameObjManager(gameObjManager)
         , m_mapPoolFactor(mapPoolFactor)
     {}
 
     ~GameMapLoader()
     {}
 
-    bool load(const std::string& file, float viewportWidth, float viewportHeight);
+    bool load(GameMap& map, const std::string& mapFile,
+              const PlayerTemplate* playerTemplate, int level,
+              float viewportWidth, float viewportHeight);
 
 private:
-    bool initMap(const rapidjson::Value& mapJson, float viewportWidth,
-                 float viewportHeight);
+    bool initMap(GameMap& map, const rapidjson::Value& mapJson,
+                 float viewportWidth, float viewportHeight);
 
-    bool loadTiles(const rapidjson::Value& mapJson);
+    bool loadTiles(GameMap& map, int level, const rapidjson::Value& mapJson);
 
-    bool addTile(const std::string& name, float x, float y);
+    bool addTile(GameMap& map, const std::string& name,
+                 int level, float x, float y);
 
-    bool loadRobots(const rapidjson::Value& mapJson);
+    bool loadRobots(GameMap& map, const rapidjson::Value& mapJson,
+                    int level);
 
-    bool addRobot(const std::string& name, const std::string& baseName,
-                  const std::string& weaponName, const std::string& moverName,
-                  const std::string& missileName, float x, float y,
+    bool addRobot(GameMap& map, const std::string& name, int level,
+                  float x, float y,
                   float directionX, float directionY);
 
-    bool loadPlayer(const rapidjson::Value& mapJson);
+    bool loadPlayer(GameMap& map, const rapidjson::Value& mapJson,
+                    const PlayerTemplate* playerTemplate);
 
 private:
-    GameMap& m_map;
     GameObjectManager& m_gameObjManager;
     float m_mapPoolFactor;
 };

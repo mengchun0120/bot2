@@ -49,7 +49,7 @@ bool MoverTemplate::init(const NamedMap<Texture>& textureLib,
     return true;
 }
 
-float getSpeed(int level) const;
+float MoverTemplate::getSpeed(int level) const
 {
     const float MAX_SPEED = 400.0f;
     float speed = m_speed + m_speedPerLevel * level;

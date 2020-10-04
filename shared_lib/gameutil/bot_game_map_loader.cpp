@@ -9,57 +9,82 @@
 
 namespace bot {
 
-bool GameMapLoader::load(const std::string& file, float viewportWidth,
-                         float viewportHeight)
+bool GameMapLoader::load(GameMap& map, const std::string& mapFile,
+                         const PlayerTemplate* playerTemplate, int level,
+                         float viewportWidth, float viewportHeight)
 {
-    LOG_INFO("Loading map %s", file.c_str());
+    LOG_INFO("Loading map %s", mapFile.c_str());
+
+    if (level < 0)
+    {
+        LOG_ERROR("Invalid level %d", level);
+        return false;
+    }
+
+    if (!playerTemplate)
+    {
+        LOG_ERROR("player-template is null");
+        return false;
+    }
+
+    if (viewportWidth < 0.0f)
+    {
+        LOG_ERROR("Invalid viewportWidth %f", viewportWidth);
+        return false;
+    }
+
+    if (viewportHeight < 0.0f)
+    {
+        LOG_ERROR("Invalid viewportHeight %f", viewportHeight);
+        return false;
+    }
 
     rapidjson::Document doc;
-    if (!readJson(doc, file.c_str()))
+    if (!readJson(doc, mapFile.c_str()))
     {
-        LOG_ERROR("Failed to open %s", file.c_str());
+        LOG_ERROR("Failed to open %s", mapFile.c_str());
         return false;
     }
 
     if (!doc.IsObject())
     {
-        LOG_ERROR("Invalid format %s", file.c_str());
+        LOG_ERROR("Invalid format %s", mapFile.c_str());
         return false;
     }
 
     rapidjson::Value mapJson = doc.GetObject();
 
-    if (!initMap(mapJson, viewportWidth, viewportHeight))
+    if (!initMap(map, mapJson, viewportWidth, viewportHeight))
     {
         LOG_ERROR("Failed to get map dimension");
         return false;
     }
 
-    if (!loadTiles(mapJson))
+    if (!loadTiles(map, level, mapJson))
     {
         LOG_ERROR("Failed to load tiles");
         return false;
     }
 
-    if (!loadRobots(mapJson))
+    if (!loadRobots(map, mapJson, level))
     {
         LOG_ERROR("Failed to load robots");
         return false;
     }
 
-    if (!loadPlayer(mapJson))
+    if (!loadPlayer(map, mapJson, playerTemplate))
     {
         LOG_ERROR("Failed to load player");
         return false;
     }
 
-    LOG_INFO("Done loading map %s", file.c_str());
+    LOG_INFO("Done loading map %s", mapFile.c_str());
 
     return true;
 }
 
-bool GameMapLoader::initMap(const rapidjson::Value& mapJson, float viewportWidth,
-                            float viewportHeight)
+bool GameMapLoader::initMap(GameMap& map, const rapidjson::Value& mapJson,
+                            float viewportWidth, float viewportHeight)
 {
     int numRows, numCols;
 
@@ -75,12 +100,13 @@ bool GameMapLoader::initMap(const rapidjson::Value& mapJson, float viewportWidth
 
     int mapPoolSize = static_cast<int>(numRows * numCols * m_mapPoolFactor);
 
-    m_map.initMap(numRows, numCols, mapPoolSize, viewportWidth, viewportHeight);
+    map.initMap(numRows, numCols, mapPoolSize, viewportWidth, viewportHeight);
 
     return true;
 }
 
-bool GameMapLoader::loadTiles(const rapidjson::Value& mapJson)
+bool GameMapLoader::loadTiles(GameMap& map, int level,
+                              const rapidjson::Value& mapJson)
 {
     std::string name;
     float x, y;
@@ -109,7 +135,7 @@ bool GameMapLoader::loadTiles(const rapidjson::Value& mapJson)
             return false;
         }
 
-        return addTile(name, x, y);
+        return addTile(map, name, level, x, y);
     };
 
     if (!parseJsonArray(mapJson, parser, "tiles"))
@@ -120,48 +146,29 @@ bool GameMapLoader::loadTiles(const rapidjson::Value& mapJson)
     return true;
 }
 
-bool GameMapLoader::addTile(const std::string& name, float x, float y)
+bool GameMapLoader::addTile(GameMap& map, const std::string& name, int level,
+                            float x, float y)
 {
-    Tile* tile = m_gameObjManager.createTile(name);
+    Tile* tile = m_gameObjManager.createTile(name, level, x, y);
     if (!tile)
     {
         return false;
     }
-    tile->setPos(x, y);
 
-    m_map.addObject(tile);
+    map.addObject(tile);
 
     return true;
 }
 
-bool GameMapLoader::loadRobots(const rapidjson::Value& mapJson)
+bool GameMapLoader::loadRobots(GameMap& map, const rapidjson::Value& mapJson,
+                               int level)
 {
-    std::string name, baseName, weaponName, moverName, missileName;
+    std::string name;
     float x, y, directionX, directionY;
     std::vector<JsonParseParam> params = {
         {
             &name,
             "name",
-            JSONTYPE_STRING
-        },
-        {
-            &baseName,
-            "base",
-            JSONTYPE_STRING
-        },
-        {
-            &weaponName,
-            "weapon",
-            JSONTYPE_STRING
-        },
-        {
-            &moverName,
-            "mover",
-            JSONTYPE_STRING
-        },
-        {
-            &missileName,
-            "missile",
             JSONTYPE_STRING
         },
         {
@@ -193,7 +200,7 @@ bool GameMapLoader::loadRobots(const rapidjson::Value& mapJson)
             return false;
         }
 
-        return addRobot(name, baseName, weaponName, moverName, missileName,
+        return addRobot(map, name, level,
                         x, y, directionX, directionY);
     };
 
@@ -205,26 +212,29 @@ bool GameMapLoader::loadRobots(const rapidjson::Value& mapJson)
     return true;
 }
 
-bool GameMapLoader::addRobot(
-                        const std::string& name, const std::string& baseName,
-                        const std::string& weaponName, const std::string& moverName,
-                        const std::string& missileName, float x, float y,
-                        float directionX, float directionY)
+bool GameMapLoader::addRobot(GameMap& map, const std::string& name,
+                             int level, float x, float y,
+                             float directionX, float directionY)
 {
-    AIRobot* robot = m_gameObjManager.createRobot(name, baseName, weaponName,
-                                                  moverName, missileName,
-                                                  x, y, directionX, directionY);
+    AIRobot* robot = m_gameObjManager.createRobot(name, SIDE_AI,
+                                                  level, 0,
+                                                  level, 0,
+                                                  level, level,
+                                                  0, level, 0,
+                                                  x, y,
+                                                  directionX, directionY);
     if (!robot)
     {
         return false;
     }
 
-    m_map.addObject(robot);
+    map.addObject(robot);
 
     return true;
 }
 
-bool GameMapLoader::loadPlayer(const rapidjson::Value& mapJson)
+bool GameMapLoader::loadPlayer(GameMap& map, const rapidjson::Value& mapJson,
+                               const PlayerTemplate* playerTemplate)
 {
     if (!mapJson.HasMember("player"))
     {
@@ -269,8 +279,10 @@ bool GameMapLoader::loadPlayer(const rapidjson::Value& mapJson)
         return false;
     }
 
-    Player* player = m_gameObjManager.createPlayer(x, y, directionX, directionY);
-    m_map.setPlayer(player);
+    Player* player = m_gameObjManager.createPlayer(playerTemplate,
+                                                   x, y,
+                                                   directionX, directionY);
+    map.setPlayer(player);
 
     return true;
 }
