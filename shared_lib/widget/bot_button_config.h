@@ -21,7 +21,8 @@ public:
     ~ButtonConfig()
     {}
 
-    bool init(const std::string& configFile, const NamedMap<Texture>& textureLib,
+    bool init(const std::string& configFile,
+              const NamedMap<Texture>& textureLib,
               const NamedMap<Color>& colorLib);
 
     const Texture* getTexture() const

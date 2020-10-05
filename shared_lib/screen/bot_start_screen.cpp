@@ -21,8 +21,9 @@ StartScreen::~StartScreen()
 {
 }
 
-bool StartScreen::init(const GameLib* lib, float viewportWidth, float viewportHeight,
-                       ScreenManager* screenManager, Graphics* graphics)
+bool StartScreen::init(const GameLib* lib, float viewportWidth,
+                       float viewportHeight, ScreenManager* screenManager,
+                       Graphics* graphics)
 {
     m_lib = lib;
     m_graphics = graphics;

@@ -21,7 +21,8 @@ public:
     virtual ~Button()
     {}
 
-    bool init(const ButtonConfig* cfg, const Rectangle* rect, const std::string& text);
+    bool init(const ButtonConfig* cfg, const Rectangle* rect,
+              const std::string& text);
 
     void setActionFunc(const ActionFunc& actionFunc)
     {

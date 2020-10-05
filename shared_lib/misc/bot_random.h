@@ -14,7 +14,8 @@ public:
 
     int get(int lower, int upper)
     {
-        return lower + static_cast<int>(m_distribution(m_generator) * (upper - lower));
+        return lower + static_cast<int>(m_distribution(m_generator) *
+                                        (upper - lower));
     }
 
     float get(float lower, float upper)

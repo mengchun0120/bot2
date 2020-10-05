@@ -41,7 +41,8 @@ bool VertexArray::load(const float* vertices, unsigned int numVertices,
     m_stride = stride;
 
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-    glBufferData(GL_ARRAY_BUFFER, numVertices * vertexSize, vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, numVertices * vertexSize,
+                 vertices, GL_STATIC_DRAW);
 
     return true;
 }

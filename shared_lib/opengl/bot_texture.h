@@ -17,7 +17,8 @@ public:
         ~Parser()
         {}
 
-        Texture* create(const std::string& name, const rapidjson::Value& elem);
+        Texture* create(const std::string& name,
+                        const rapidjson::Value& elem);
 
     private:
         const std::string& m_textureDir;

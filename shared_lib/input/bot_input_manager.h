@@ -14,7 +14,8 @@ public:
 
     virtual ~InputManager();
 
-    void init(GLFWwindow* window, int eventQueueSize, float viewPortHeight);
+    void init(GLFWwindow* window, int eventQueueSize,
+              float viewPortHeight);
 
     void start();
 

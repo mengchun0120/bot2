@@ -7,8 +7,11 @@
 
 void showUsageAndExit()
 {
-    std::cerr << "Usage: bot [--mode normal|showmap] --log logFile --cfg configFile --app appFolder "
-              << "[--map mapFile] [--mapGenerator generatorName] [--robotCount robotCount] [-v verbosity(0~5)]" << std::endl;
+    std::cerr << "Usage: bot [--mode normal|showmap] --log logFile "
+              << "--cfg configFile --app appFolder "
+              << "[--map mapFile] [--mapGenerator generatorName] "
+              << "[--robotCount robotCount] [-v verbosity(0~5)]"
+              << std::endl;
     exit(1);
 }
 
@@ -99,7 +102,9 @@ int main(int argc, char* argv[])
             }
 
             int level = atoi(argv[i + 1]);
-            if (level < bot::Logger::LEVEL_DEBUG || level > bot::Logger::LEVEL_ERROR)
+            bool valid = level < bot::Logger::LEVEL_DEBUG ||
+                         level > bot::Logger::LEVEL_ERROR;
+            if (!valid)
             {
                 showUsageAndExit();
             }

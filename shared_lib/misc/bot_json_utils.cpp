@@ -30,7 +30,8 @@ bool readJson(rapidjson::Document& doc, const char* fileName)
     return true;
 }
 
-int validateJson(const rapidjson::Value& value, const char* name, JsonDataType type)
+int validateJson(const rapidjson::Value& value,
+                 const char* name, JsonDataType type)
 {
     typedef bool (rapidjson::Value::*ValidateFunc)() const;
 
@@ -306,7 +307,8 @@ bool parseJson(std::vector<std::string>& r, const rapidjson::Value& value,
     return true;
 }
 
-bool parseJson(std::vector<JsonParseParam>& params, const rapidjson::Value& value)
+bool parseJson(std::vector<JsonParseParam>& params,
+               const rapidjson::Value& value)
 {
     for (auto it = params.begin(); it != params.end(); ++it)
     {
@@ -369,7 +371,8 @@ bool parseJson(std::vector<JsonParseParam>& params, const rapidjson::Value& valu
             }
             case JSONTYPE_INT_ARRAY:
             {
-                std::vector<int>* r = reinterpret_cast<std::vector<int>*>(it->m_ptr);
+                std::vector<int>* r =
+                                reinterpret_cast<std::vector<int>*>(it->m_ptr);
 
                 if (!parseJson(*r, value, it->m_name))
                 {
@@ -392,7 +395,8 @@ bool parseJson(std::vector<JsonParseParam>& params, const rapidjson::Value& valu
             }
             case JSONTYPE_BOOL_ARRAY:
             {
-                std::vector<bool>* r = reinterpret_cast<std::vector<bool>*>(it->m_ptr);
+                std::vector<bool>* r =
+                            reinterpret_cast<std::vector<bool>*>(it->m_ptr);
 
                 if (!parseJson(*r, value, it->m_name))
                 {
@@ -416,7 +420,7 @@ bool parseJson(std::vector<JsonParseParam>& params, const rapidjson::Value& valu
             case JSONTYPE_STRING_ARRAY:
             {
                 std::vector<std::string>* r =
-                            reinterpret_cast<std::vector<std::string>*>(it->m_ptr);
+                        reinterpret_cast<std::vector<std::string>*>(it->m_ptr);
 
                 if (!parseJson(*r, value, it->m_name))
                 {

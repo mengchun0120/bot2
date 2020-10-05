@@ -13,7 +13,8 @@ Polygon::~Polygon()
 {
 }
 
-bool Polygon::init(const float *vertices, unsigned int numVertices, bool hasTexCoord)
+bool Polygon::init(const float *vertices, unsigned int numVertices,
+                   bool hasTexCoord)
 {
     unsigned int vertexSize = Constants::POSITION_SIZE;
     unsigned int stride = 0;

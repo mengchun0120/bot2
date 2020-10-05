@@ -7,7 +7,8 @@
 
 namespace bot {
 
-bool ButtonConfig::init(const std::string& configFile, const NamedMap<Texture>& textureLib,
+bool ButtonConfig::init(const std::string& configFile,
+                        const NamedMap<Texture>& textureLib,
                         const NamedMap<Color>& colorLib)
 {
     rapidjson::Document doc;
@@ -27,10 +28,26 @@ bool ButtonConfig::init(const std::string& configFile, const NamedMap<Texture>& 
     std::string textureName, normalColorName, hoverColorName, pressColorName;
 
     std::vector<JsonParseParam> params = {
-        {&textureName,     "texture",         JSONTYPE_STRING},
-        {&normalColorName, "normalTextColor", JSONTYPE_STRING},
-        {&hoverColorName,  "hoverTextColor",  JSONTYPE_STRING},
-        {&pressColorName,  "pressTextColor",   JSONTYPE_STRING}
+        {
+            &textureName,
+            "texture",
+            JSONTYPE_STRING
+        },
+        {
+            &normalColorName,
+            "normalTextColor",
+            JSONTYPE_STRING
+        },
+        {
+            &hoverColorName,
+            "hoverTextColor",
+            JSONTYPE_STRING
+        },
+        {
+            &pressColorName,
+            "pressTextColor",
+            JSONTYPE_STRING
+        }
     };
 
     if (!parseJson(params, val))

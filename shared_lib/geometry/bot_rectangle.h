@@ -17,7 +17,8 @@ public:
         ~Parser()
         {}
 
-        Rectangle* create(const std::string& name, const rapidjson::Value& elem);
+        Rectangle* create(const std::string& name,
+                          const rapidjson::Value& elem);
     };
 
     Rectangle();

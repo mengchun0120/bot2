@@ -77,7 +77,8 @@ void Logger::logTime()
     SYSTEMTIME t;
     GetLocalTime(&t);
     write("%04d-%02d-%02d %02d:%02d:%02d.%03d",
-          t.wYear, t.wMonth, t.wDay, t.wHour, t.wMinute, t.wSecond, t.wMilliseconds);
+          t.wYear, t.wMonth, t.wDay, t.wHour,
+          t.wMinute, t.wSecond, t.wMilliseconds);
 #elif __linux__
     struct timespec tp;
     if (clock_gettime(CLOCK_REALTIME, &tp) == -1)
@@ -93,8 +94,8 @@ void Logger::logTime()
 
     int ms = tp.tv_nsec / 1e6;
     write("%04d-%02d-%02d %02d:%02d:%02d.%03d",
-        (t.tm_year + 1900), t.tm_mon, t.tm_mday, t.tm_hour,
-        t.tm_min, t.tm_sec, ms);
+          (t.tm_year + 1900), t.tm_mon, t.tm_mday, t.tm_hour,
+          t.tm_min, t.tm_sec, ms);
 #endif
 }
 

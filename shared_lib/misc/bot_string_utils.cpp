@@ -55,7 +55,8 @@ void tokenize(std::vector<std::string>& tokens, const std::string& s,
             ++j;
         }
 
-        std::string token = std::move(s.substr(lastDelim + 1, j - lastDelim - 1));
+        std::string token = std::move(s.substr(lastDelim + 1,
+                                      j - lastDelim - 1));
         if (trimSpace) {
             token = std::move(trim(token));
         }

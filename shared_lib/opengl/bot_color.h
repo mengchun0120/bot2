@@ -17,7 +17,8 @@ public:
         ~Parser()
         {}
 
-        Color* create(const std::string& name, const rapidjson::Value& elem);
+        Color* create(const std::string& name,
+                      const rapidjson::Value& elem);
     };
 
     static bool validateElem(int elem)

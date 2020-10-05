@@ -16,8 +16,10 @@ public:
     ~Graphics()
     {}
 
-    bool init(const std::string& simpleVertexShaderFile, const std::string& simpleFragShaderFile,
-              const std::string& particleVertexShaderFile, const std::string& particleFragShaderFile,
+    bool init(const std::string& simpleVertexShaderFile,
+              const std::string& simpleFragShaderFile,
+              const std::string& particleVertexShaderFile,
+              const std::string& particleFragShaderFile,
               const std::string& fontFolder);
 
     SimpleShaderProgram& getSimpleShader()

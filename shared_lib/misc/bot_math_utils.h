@@ -28,14 +28,16 @@ inline bool between(const T& t, const T& a, const T& b)
 
 inline float safeDivide(float x, float y)
 {
-    return (y > Constants::FLOAT_ZERO || y < -Constants::FLOAT_ZERO) ? (x / y) : (x / Constants::FLOAT_ZERO);
+    return (y > Constants::FLOAT_ZERO || y < -Constants::FLOAT_ZERO) ?
+                                        (x / y) : (x / Constants::FLOAT_ZERO);
 }
 
 void fillColor(float* color, int r, int g, int b, int alpha);
 
 void rotate(float& x, float& y, float directionX, float directionY);
 
-void calculateDirection(float& directionX, float& directionY, float srcX, float srcY, float dstX, float dstY);
+void calculateDirection(float& directionX, float& directionY,
+                        float srcX, float srcY, float dstX, float dstY);
 
 float dist(float x1, float y1, float x2, float y2);
 

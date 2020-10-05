@@ -16,7 +16,8 @@ public:
 
     virtual void draw(Graphics& g, const float* pos, const float* direction,
                       const Color* fillColor, const Color* borderColor,
-                      const unsigned int textureId, const Color* texColor) const = 0;
+                      const unsigned int textureId,
+                      const Color* texColor) const = 0;
 
     const VertexArray& vertexArray() const
     {

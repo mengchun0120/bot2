@@ -11,7 +11,8 @@ void rotate(float& x, float& y, float directionX, float directionY)
     y = y1;
 }
 
-void calculateDirection(float& directionX, float& directionY, float srcX, float srcY, float dstX, float dstY)
+void calculateDirection(float& directionX, float& directionY,
+                        float srcX, float srcY, float dstX, float dstY)
 {
     float deltaX = dstX - srcX;
     float deltaY = dstY - srcY;

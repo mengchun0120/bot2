@@ -52,7 +52,8 @@ private:
         bot::Logger& logger = bot::Logger::g_logger; \
         if(level >= logger.minLevel()) { \
             logger.logTime(); \
-            logger.write(" %s:%d %s ", __FILE__, __LINE__, bot::Logger::levelString(level)); \
+            logger.write(" %s:%d %s ", __FILE__, __LINE__, \
+                         bot::Logger::levelString(level)); \
             logger.write(__VA_ARGS__); \
             logger.write("\n"); \
             logger.flush(); \

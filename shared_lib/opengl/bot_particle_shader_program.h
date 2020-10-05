@@ -14,7 +14,8 @@ public:
 
     virtual ~ParticleShaderProgram();
 
-    virtual bool init(const std::string& vertexShaderFile, const std::string& fragShaderFile);
+    virtual bool init(const std::string& vertexShaderFile,
+                      const std::string& fragShaderFile);
 
     void setViewportSize(const float* viewportSize)
     {

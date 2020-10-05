@@ -14,7 +14,8 @@ public:
 
     virtual ~SimpleShaderProgram();
 
-    virtual bool init(const std::string& vertexShaderFile, const std::string& fragShaderFile);
+    virtual bool init(const std::string& vertexShaderFile,
+                      const std::string& fragShaderFile);
 
     void setUseObjRef(bool enabled)
     {

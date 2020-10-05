@@ -18,8 +18,11 @@ public:
     ~MessageBoxConfig()
     {}
 
-    bool init(const std::string& configFile, float viewportWidth, float viewportHeight,
-              const NamedMap<Rectangle>& rectLib, const NamedMap<Color>& colorLib);
+    bool init(const std::string& configFile,
+              float viewportWidth,
+              float viewportHeight,
+              const NamedMap<Rectangle>& rectLib,
+              const NamedMap<Color>& colorLib);
 
     const Rectangle* getBoxRect() const
     {

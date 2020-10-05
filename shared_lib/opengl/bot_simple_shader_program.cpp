@@ -28,7 +28,8 @@ SimpleShaderProgram::~SimpleShaderProgram()
 {
 }
 
-bool SimpleShaderProgram::init(const std::string& vertexShaderFile, const std::string& fragShaderFile)
+bool SimpleShaderProgram::init(const std::string& vertexShaderFile,
+                               const std::string& fragShaderFile)
 {
     if (!ShaderProgram::init(vertexShaderFile, fragShaderFile))
     {
@@ -46,7 +47,8 @@ void SimpleShaderProgram::loadParam()
     m_useObjRefLocation = glGetUniformLocation(m_program, "useObjRef");
     m_objRefLocation = glGetUniformLocation(m_program, "objRef");
     m_viewportSizeLocation = glGetUniformLocation(m_program, "viewportSize");
-    m_viewportOriginLocation = glGetUniformLocation(m_program, "viewportOrigin");
+    m_viewportOriginLocation =
+                        glGetUniformLocation(m_program, "viewportOrigin");
     m_colorLocation = glGetUniformLocation(m_program, "color");
     m_useColorLocation = glGetUniformLocation(m_program, "useColor");
     m_texPosLocation = glGetAttribLocation(m_program, "texPos");
@@ -64,18 +66,22 @@ void SimpleShaderProgram::setTexture(unsigned int textureId)
     glBindTexture(GL_TEXTURE_2D, textureId);
 }
 
-void SimpleShaderProgram::setPosition(const VertexArray& vertexArray, bool hasTexCoord)
+void SimpleShaderProgram::setPosition(const VertexArray& vertexArray,
+                                      bool hasTexCoord)
 {
     glBindVertexArray(vertexArray.vao());
     glBindBuffer(GL_ARRAY_BUFFER, vertexArray.vbo());
 
-    glVertexAttribPointer(m_positionLocation, Constants::NUM_FLOATS_PER_POSITION,
-                          GL_FLOAT, GL_FALSE, vertexArray.stride(), (void *)0);
+    glVertexAttribPointer(m_positionLocation,
+                          Constants::NUM_FLOATS_PER_POSITION,
+                          GL_FLOAT, GL_FALSE,
+                          vertexArray.stride(), (void *)0);
     glEnableVertexAttribArray(m_positionLocation);
 
     if (hasTexCoord)
     {
-        glVertexAttribPointer(m_texPosLocation, Constants::NUM_FLOATS_PER_TEXCOORD,
+        glVertexAttribPointer(m_texPosLocation,
+                              Constants::NUM_FLOATS_PER_TEXCOORD,
                               GL_FLOAT, GL_FALSE, vertexArray.stride(),
                               (void *)(Constants::POSITION_SIZE));
         glEnableVertexAttribArray(m_texPosLocation);

@@ -116,7 +116,8 @@ bool NamedMap<T>::load(const char* fileName)
 
         if (!parseJson(name, elem, "name"))
         {
-            LOG_ERROR("Failed to find name in the %dth object of %s", i, fileName);
+            LOG_ERROR("Failed to find name in the %dth object of %s",
+                      i, fileName);
             return false;
         }
 

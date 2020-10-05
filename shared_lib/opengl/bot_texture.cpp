@@ -8,7 +8,8 @@
 
 namespace bot {
 
-Texture* Texture::Parser::create(const std::string& name, const rapidjson::Value& elem)
+Texture* Texture::Parser::create(const std::string& name,
+                                 const rapidjson::Value& elem)
 {
     Texture* texture = new Texture();
     if (!texture->init(m_textureDir, elem))

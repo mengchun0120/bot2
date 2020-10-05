@@ -31,8 +31,11 @@ public:
     ~MessageBox()
     {}
 
-    void init(const MessageBoxConfig* cfg, const ButtonConfig* buttonCfg, const TextSystem& textSys,
-              Option opt, const std::string& msg);
+    void init(const MessageBoxConfig* cfg,
+              const ButtonConfig* buttonCfg,
+              const TextSystem& textSys,
+              Option opt,
+              const std::string& msg);
 
     void setOKAction(const Button::ActionFunc& func);
 

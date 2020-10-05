@@ -111,7 +111,9 @@ bool App::initWindow()
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    m_window = glfwCreateWindow(m_config->getWidth(), m_config->getHeight(), m_config->getTitle().c_str(),
+    m_window = glfwCreateWindow(m_config->getWidth(),
+                                m_config->getHeight(),
+                                m_config->getTitle().c_str(),
                                 NULL, NULL);
     if (!m_window)
     {
@@ -154,8 +156,10 @@ bool App::initOpenGL()
     glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    bool ret = m_graphics.init(m_config->getSimpleVertexShaderFile(), m_config->getSimpleFragShaderFile(),
-                               m_config->getParticleVertexShaderFile(), m_config->getParticleFragShaderFile(),
+    bool ret = m_graphics.init(m_config->getSimpleVertexShaderFile(),
+                               m_config->getSimpleFragShaderFile(),
+                               m_config->getParticleVertexShaderFile(),
+                               m_config->getParticleFragShaderFile(),
                                m_config->getFontDir());
 
     if (!ret)
@@ -181,7 +185,8 @@ void App::updateViewport()
     m_viewportSize[0] = static_cast<float>(width);
     m_viewportSize[1] = static_cast<float>(height);
 
-    LOG_INFO("viewportWidth=%f viewportHeight=%f", m_viewportSize[0], m_viewportSize[1]);
+    LOG_INFO("viewportWidth=%f viewportHeight=%f",
+             m_viewportSize[0], m_viewportSize[1]);
 }
 
 bool App::initGame(Screen::Type startScreenType)
@@ -200,7 +205,8 @@ bool App::initGame(Screen::Type startScreenType)
         return false;
     }
 
-    m_screenMgr.init(m_config, &m_gameLib, &m_graphics, startScreenType, m_viewportSize[0], m_viewportSize[1]);
+    m_screenMgr.init(m_config, &m_gameLib, &m_graphics, startScreenType,
+                     m_viewportSize[0], m_viewportSize[1]);
 
     LOG_INFO("Done initializing game");
 
@@ -222,7 +228,8 @@ bool App::initGameLib()
 {
     LOG_INFO("Initializing game template libraries");
 
-    bool success = m_gameLib.load(m_viewportSize[0], m_viewportSize[1], *m_config);
+    bool success = m_gameLib.load(m_viewportSize[0], m_viewportSize[1],
+                                  *m_config);
 
     if (!success)
     {

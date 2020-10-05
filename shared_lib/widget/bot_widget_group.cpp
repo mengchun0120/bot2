@@ -69,8 +69,10 @@ int WidgetGroup::processMouseMoveEvent(const MouseMoveEvent& event)
 int WidgetGroup::processMouseButtonEvent(const MouseButtonEvent& event)
 {
     int idx = findWidget(event.m_x, event.m_y);
+    bool process = event.m_button == GLFW_MOUSE_BUTTON_LEFT &&
+                   event.m_action == GLFW_PRESS;
 
-    if (event.m_button == GLFW_MOUSE_BUTTON_LEFT && event.m_action == GLFW_PRESS)
+    if (process)
     {
         if (idx != m_focusWidgetIdx)
         {

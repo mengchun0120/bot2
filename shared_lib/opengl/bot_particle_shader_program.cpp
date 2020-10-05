@@ -25,7 +25,8 @@ ParticleShaderProgram::~ParticleShaderProgram()
 {
 }
 
-bool ParticleShaderProgram::init(const std::string& vertexShaderFile, const std::string& fragShaderFile)
+bool ParticleShaderProgram::init(const std::string& vertexShaderFile,
+                                 const std::string& fragShaderFile)
 {
     if (!ShaderProgram::init(vertexShaderFile, fragShaderFile))
     {
@@ -40,7 +41,8 @@ bool ParticleShaderProgram::init(const std::string& vertexShaderFile, const std:
 void ParticleShaderProgram::loadParam()
 {
     m_viewportSizeLocation = glGetUniformLocation(m_program, "viewportSize");
-    m_viewportOriginLocation = glGetUniformLocation(m_program, "viewportOrigin");
+    m_viewportOriginLocation =
+                            glGetUniformLocation(m_program, "viewportOrigin");
     m_refLocation = glGetUniformLocation(m_program, "ref");
     m_curTimeLocation = glGetUniformLocation(m_program, "curTime");
     m_accelerationLocation = glGetUniformLocation(m_program, "acceleration");
@@ -65,7 +67,8 @@ void ParticleShaderProgram::bindData(const VertexArray& va)
     glBindBuffer(GL_ARRAY_BUFFER, va.vbo());
 
     glVertexAttribPointer(m_directionLocation, Constants::NUM_FLOATS_DIRECTION,
-                          GL_FLOAT, GL_FALSE, va.stride(), reinterpret_cast<void*>(0));
+                          GL_FLOAT, GL_FALSE, va.stride(),
+                          reinterpret_cast<void*>(0));
     glEnableVertexAttribArray(m_directionLocation);
 }
 

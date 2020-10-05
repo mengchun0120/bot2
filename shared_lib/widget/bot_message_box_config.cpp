@@ -18,8 +18,11 @@ MessageBoxConfig::MessageBoxConfig()
 {
 }
 
-bool MessageBoxConfig::init(const std::string& configFile, float viewportWidth, float viewportHeight,
-                            const NamedMap<Rectangle>& rectLib, const NamedMap<Color>& colorLib)
+bool MessageBoxConfig::init(const std::string& configFile,
+                            float viewportWidth,
+                            float viewportHeight,
+                            const NamedMap<Rectangle>& rectLib,
+                            const NamedMap<Color>& colorLib)
 {
     rapidjson::Document doc;
 
@@ -35,18 +38,55 @@ bool MessageBoxConfig::init(const std::string& configFile, float viewportWidth, 
     }
 
     const rapidjson::Value& val = doc.GetObject();
-    std::string boxRectName, buttonRectName, boxFillColorName, boxBorderColorName, textColorName;
+    std::string boxRectName, buttonRectName;
+    std::string boxFillColorName, boxBorderColorName, textColorName;
     float buttonMarginY;
     std::vector<JsonParseParam> params = {
-        {&boxRectName,        "boxRect",        JSONTYPE_STRING},
-        {&buttonRectName,     "buttonRect",     JSONTYPE_STRING},
-        {&boxFillColorName,   "boxFillColor",   JSONTYPE_STRING},
-        {&boxBorderColorName, "boxBorderColor", JSONTYPE_STRING},
-        {&textColorName,      "textColor",      JSONTYPE_STRING},
-        {&m_buttonTexts,      "buttonTexts",    JSONTYPE_STRING_ARRAY},
-        {&m_buttonSpacing,    "buttonSpacing",  JSONTYPE_FLOAT},
-        {&m_msgMarginY,       "msgMarginY",     JSONTYPE_FLOAT},
-        {&buttonMarginY,      "buttonMarginY",  JSONTYPE_FLOAT}
+        {
+            &boxRectName,
+            "boxRect",
+            JSONTYPE_STRING
+        },
+        {
+            &buttonRectName,
+            "buttonRect",
+            JSONTYPE_STRING
+        },
+        {
+            &boxFillColorName,
+            "boxFillColor",
+            JSONTYPE_STRING
+        },
+        {
+            &boxBorderColorName,
+            "boxBorderColor",
+            JSONTYPE_STRING
+        },
+        {
+            &textColorName,
+            "textColor",
+            JSONTYPE_STRING
+        },
+        {
+            &m_buttonTexts,
+            "buttonTexts",
+            JSONTYPE_STRING_ARRAY
+        },
+        {
+            &m_buttonSpacing,
+            "buttonSpacing",
+            JSONTYPE_FLOAT
+        },
+        {
+            &m_msgMarginY,
+            "msgMarginY",
+            JSONTYPE_FLOAT
+        },
+        {
+            &buttonMarginY,
+            "buttonMarginY",
+            JSONTYPE_FLOAT
+        }
     };
 
     if (!parseJson(params, val))

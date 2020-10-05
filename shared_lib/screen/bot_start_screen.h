@@ -18,8 +18,9 @@ public:
 
     virtual ~StartScreen();
 
-    bool init(const GameLib* lib, float viewportWidth, float viewportHeight,
-                      ScreenManager* screenManager, Graphics* graphics);
+    bool init(const GameLib* lib, float viewportWidth,
+              float viewportHeight, ScreenManager* screenManager,
+              Graphics* graphics);
 
     virtual int update(float delta);
 

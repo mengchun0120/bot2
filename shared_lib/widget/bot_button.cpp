@@ -15,7 +15,8 @@ Button::Button()
     m_textPos[1] = 0.0f;
 }
 
-bool Button::init(const ButtonConfig* cfg, const Rectangle* rect, const std::string& text)
+bool Button::init(const ButtonConfig* cfg, const Rectangle* rect,
+                  const std::string& text)
 {
     Widget::init(rect);
     m_cfg = cfg;
@@ -70,8 +71,10 @@ void Button::present(Graphics& g)
         return;
     }
 
-    m_rect->draw(g, m_pos, nullptr, nullptr, nullptr, m_cfg->getTexture()->textureId(), nullptr);
-    g.getTextSystem().drawString(g.getSimpleShader(), m_text, TEXT_SIZE_BIG, m_textPos, m_textColor->getColor());
+    m_rect->draw(g, m_pos, nullptr, nullptr, nullptr,
+                 m_cfg->getTexture()->textureId(), nullptr);
+    g.getTextSystem().drawString(g.getSimpleShader(), m_text, TEXT_SIZE_BIG,
+                                 m_textPos, m_textColor->getColor());
 }
 
 } // end of namespace bot

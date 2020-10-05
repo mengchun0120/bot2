@@ -10,7 +10,8 @@
 namespace bot {
 
 struct JsonParseParam {
-    JsonParseParam(void* ptr, const char* name, JsonDataType type, bool required=true)
+    JsonParseParam(void* ptr, const char* name,
+                   JsonDataType type, bool required=true)
         : m_ptr(ptr)
         , m_name(name)
         , m_type(type)
@@ -25,7 +26,8 @@ struct JsonParseParam {
 
 bool readJson(rapidjson::Document& doc, const char* fileName);
 
-int validateJson(const rapidjson::Value& value, const char* name, JsonDataType type);
+int validateJson(const rapidjson::Value& value,
+                 const char* name, JsonDataType type);
 
 bool parseJson(int& r, const rapidjson::Value& value,
                const char* name, bool required=true);
@@ -57,10 +59,12 @@ bool parseJson(std::vector<bool>& r, const rapidjson::Value& value,
 bool parseJson(std::vector<std::string>& r, const rapidjson::Value& value,
                const char* name, bool required=true);
 
-bool parseJson(std::vector<JsonParseParam>& params, const rapidjson::Value& value);
+bool parseJson(std::vector<JsonParseParam>& params,
+               const rapidjson::Value& value);
 
 template <typename PARSER>
-bool parseJsonArray(const rapidjson::Value& value, PARSER& parser, const char* name)
+bool parseJsonArray(const rapidjson::Value& value,
+                    PARSER& parser, const char* name)
 {
     if (!value.HasMember(name))
     {

@@ -13,8 +13,11 @@ MessageBox::MessageBox()
     m_msgPos[1] = 0.0f;
 }
 
-void MessageBox::init(const MessageBoxConfig* cfg, const ButtonConfig* buttonCfg, const TextSystem& textSys,
-                      Option opt, const std::string& msg)
+void MessageBox::init(const MessageBoxConfig* cfg,
+                      const ButtonConfig* buttonCfg,
+                      const TextSystem& textSys,
+                      Option opt,
+                      const std::string& msg)
 {
     m_cfg = cfg;
 
@@ -30,7 +33,8 @@ void MessageBox::init(const MessageBoxConfig* cfg, const ButtonConfig* buttonCfg
     int buttonCount = opt == OPTION_OK ? 1 : 2;
     float buttonWidth = m_cfg->getButtonRect()->width();
     float spacing = m_cfg->getButtonSpacing();
-    float buttonX = boxX + (boxWidth - buttonCount * buttonWidth - (buttonCount - 1) * spacing) / 2.0f;
+    float buttonX = boxX + (boxWidth - buttonCount * buttonWidth -
+                    (buttonCount - 1) * spacing) / 2.0f;
     const std::vector<std::string>& texts = m_cfg->getButtonTexts();
 
     m_buttons.init(buttonCount);
@@ -57,7 +61,8 @@ void MessageBox::setCancelAction(const Button::ActionFunc& func)
         return;
     }
 
-    Button& cancelButton = static_cast<Button&>(m_buttons.getWidget(BUTTON_CANCEL));
+    Button& cancelButton =
+                    static_cast<Button&>(m_buttons.getWidget(BUTTON_CANCEL));
     cancelButton.setActionFunc(func);
 }
 
@@ -68,10 +73,12 @@ int MessageBox::processInput(const InputEvent& e)
 
 void MessageBox::show(Graphics& g)
 {
-    m_cfg->getBoxRect()->draw(g, m_cfg->getBoxPos(), nullptr, m_cfg->getBoxFillColor(),
-                              m_cfg->getBoxBorderColor(), 0, nullptr);
-    g.getTextSystem().drawString(g.getSimpleShader(), m_msg, TEXT_SIZE_BIG, m_msgPos,
-                                 m_cfg->getTextColor()->getColor());
+    m_cfg->getBoxRect()->draw(g, m_cfg->getBoxPos(), nullptr,
+                              m_cfg->getBoxFillColor(),
+                              m_cfg->getBoxBorderColor(),
+                              0, nullptr);
+    g.getTextSystem().drawString(g.getSimpleShader(), m_msg, TEXT_SIZE_BIG,
+                                 m_msgPos, m_cfg->getTextColor()->getColor());
     m_buttons.present(g);
 }
 

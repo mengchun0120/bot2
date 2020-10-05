@@ -2,21 +2,28 @@
 
 namespace bot {
 
-bool Graphics::init(const std::string& simpleVertexShaderFile, const std::string& simpleFragShaderFile,
-                    const std::string& particleVertexShaderFile, const std::string& particleFragShaderFile,
+bool Graphics::init(const std::string& simpleVertexShaderFile,
+                    const std::string& simpleFragShaderFile,
+                    const std::string& particleVertexShaderFile,
+                    const std::string& particleFragShaderFile,
                     const std::string& fontFolder)
 {
-    if (!m_simpleProgram.init(simpleVertexShaderFile, simpleFragShaderFile))
+    bool ret = m_simpleProgram.init(simpleVertexShaderFile,
+                                    simpleFragShaderFile);
+    if (!ret)
     {
         return false;
     }
 
-    if (!m_particleProgram.init(particleVertexShaderFile, particleFragShaderFile))
+    ret = m_particleProgram.init(particleVertexShaderFile,
+                                 particleFragShaderFile);
+    if (!ret)
     {
         return false;
     }
 
-    if (!m_textSys.init(fontFolder))
+    ret = m_textSys.init(fontFolder);
+    if (!ret)
     {
         return false;
     }
