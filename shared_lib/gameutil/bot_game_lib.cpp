@@ -166,17 +166,17 @@ bool GameLib::load(float viewportWidth, float viewportHeight,
     LOG_INFO("Done loading ai-robot template library from %s",
              cfg.getAIRobotTemplateLib().c_str());
 
-    ret = m_playerTemplate.init(cfg.getPlayerTemplateLib(),
+    ret = m_playerTemplate.init(cfg.getPlayerTemplate(),
                                 m_textureLib, m_rectLib,
                                 m_particleEffectTemplateLib, m_colorLib);
     if (!ret)
     {
         LOG_ERROR("Failed to read player template from %s",
-                  cfg.getPlayerTemplateLib().c_str())
+                  cfg.getPlayerTemplate().c_str())
         return false;
     }
     LOG_INFO("Done reading player template from %s",
-             cfg.getPlayerTemplateLib().c_str());
+             cfg.getPlayerTemplate().c_str());
 
     MapGenerator::Parser mapGeneratorParser(&m_playerTemplate,
                                             m_tileTemplateLib,

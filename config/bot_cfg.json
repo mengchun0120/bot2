@@ -27,7 +27,7 @@
     "moverTemplateLib": "mover_template_lib.json",
     "aiRobotTemplateLib": "ai_robot_template_lib.json",
     "progressRingLib": "progress_ring_lib.json",
-    "playerTemplateLib": "player_lib.json",
+    "playerTemplate": "player_template.json",
     "mapGeneratorLib": "map_generator_lib.json",
     "dashboardConfig": "dashboard_config.json",
     "buttonConfig": "button_config.json",

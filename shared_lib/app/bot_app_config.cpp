@@ -190,8 +190,8 @@ bool AppConfig::readConfig(const std::string& cfgFile)
             JSONTYPE_STRING
         },
         {
-            &m_playerTemplateLib,
-            "playerTemplateLib",
+            &m_playerTemplate,
+            "playerTemplate",
             JSONTYPE_STRING
         },
         {

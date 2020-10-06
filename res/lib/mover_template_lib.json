@@ -1,0 +1,14 @@
+[
+    {
+        "name": "red_base_mover",
+        "texture": "red_base_mover",
+        "rect": "square20",
+        "speed": 150.0
+    },
+    {
+        "name": "cyan_base_mover",
+        "texture": "cyan_base_mover",
+        "rect": "square20",
+        "speed": 100.0
+    }
+]

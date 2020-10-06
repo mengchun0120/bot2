@@ -1,0 +1,18 @@
+[
+    {
+        "name": "red_robot",
+        "coverBreath": 41.875,
+        "collideBreath": 21.21,
+        "base": "red_base",
+        "weapon": "red_base_gun",
+        "mover": "red_base_mover"
+    },
+    {
+        "name": "cyan_robot",
+        "coverBreath": 41.875,
+        "collideBreath": 21.21,
+        "base": "cyan_base",
+        "weapon": "cyan_base_gun",
+        "mover": "cyan_base_mover"
+    }
+]

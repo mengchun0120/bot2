@@ -1,0 +1,69 @@
+{
+    "base": {
+        "name": "player_base",
+        "type": "base",
+        "texture": "player_base",
+        "rect": "square60",
+        "hp": 50.0,
+        "hpPerLevel": 5.0,
+        "hpRestoreRate": 5.0,
+        "hpRestoreRatePerLevel": 1.0,
+        "armor": 100.0,
+        "armorPerLevel": 5.0,
+        "armorRepairRate": 5.0,
+        "armorRepairRatePerLevel": 1.0,
+        "power": 100.0,
+        "powerPerLevel": 5.0,
+        "powerRestoreRate": 20.0,
+        "powerRestoreRatePerLevel": 1.0,
+        "weaponPos": [31.875, 0.0],
+        "moverPos": [26.25, 0.0]
+    },
+    "weapon": {
+        "name": "player_base_gun",
+        "type": "weapon",
+        "texture": "player_base_gun",
+        "rect": "square20",
+        "fireDuration": 200.0,
+        "fireDurReductionPerLevel": 0.5,
+        "missiles": ["green_bullet"],
+        "firePoints": [
+            {
+                "firePos": [10.0, 0.0],
+                "fireDirection": [1.0, 0.0]
+            }
+        ]
+    },
+    "mover": {
+        "name": "player_base_mover",
+        "type": "mover",
+        "texture": "player_base_mover",
+        "rect": "square20",
+        "speed": 150.0,
+        "speedPerLevel": 2.0
+    },
+    "missile": {
+        "name": "blue_bullet",
+        "texture": "bullet",
+        "rect": "square18",
+        "color": "blue",
+        "coverBreath": 9.0,
+        "collideBreath": 6.4,
+        "speed": 100.0,
+        "damage": 20.0,
+        "damagePerLevel": 3.0,
+        "explosionBreath": 20.0,
+        "explosionEffect": "blue_explosion"
+    },
+    "gold": 0,
+    "experience": 0,
+    "hpLevel": 0,
+    "hpRestoreLevel": 0
+    "armorLevel": 0,
+    "armorRepairLevel": 0,
+    "powerLevel": 0,
+    "powerRestoreLevel": 0,
+    "weaponLevel": 0,
+    "missileLevel": 0,
+    "moverLevel": 0
+}

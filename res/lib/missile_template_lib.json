@@ -1,44 +1,26 @@
 [
-  {
-    "name": "blue_bullet",
-    "texture": "bullet",
-    "rect": "square18",
-    "color": "blue",
-    "coverBreathX": 9.0,
-    "coverBreathY": 9.0,
-    "collideBreathX": 6.4,
-    "collideBreathY": 6.4,
-    "speed": 100.0,
-    "explosionPower": 20,
-    "explosionBreath": 20.0,
-    "explosionEffect": "blue_explosion"
-  },
-  {
-    "name": "red_bullet",
-    "texture": "bullet",
-    "rect": "square18",
-    "color": "red",
-    "coverBreathX": 9.0,
-    "coverBreathY": 9.0,
-    "collideBreathX": 6.4,
-    "collideBreathY": 6.4,
-    "speed": 100.0,
-    "explosionPower": 20,
-    "explosionBreath": 20.0,
-    "explosionEffect": "red_explosion"
-  },
-  {
-    "name": "green_bullet",
-    "texture": "bullet",
-    "rect": "square18",
-    "color": "green",
-    "coverBreathX": 9.0,
-    "coverBreathY": 9.0,
-    "collideBreathX": 6.4,
-    "collideBreathY": 6.4,
-    "speed": 200.0,
-    "explosionPower": 40,
-    "explosionBreath": 20.0,
-    "explosionEffect": "green_explosion"
-  }
+    {
+        "name": "red_bullet",
+        "texture": "bullet",
+        "rect": "square18",
+        "color": "red",
+        "coverBreath": 9.0,
+        "collideBreath": 6.4,
+        "speed": 100.0,
+        "damage": 20.0,
+        "explosionBreath": 20.0,
+        "explosionEffect": "red_explosion"
+    },
+    {
+        "name": "green_bullet",
+        "texture": "bullet",
+        "rect": "square18",
+        "color": "green",
+        "coverBreath": 9.0,
+        "collideBreath": 6.4,
+        "speed": 200.0,
+        "damage": 40.0,
+        "explosionBreath": 20.0,
+        "explosionEffect": "green_explosion"
+    }
 ]

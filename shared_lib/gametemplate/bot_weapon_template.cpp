@@ -17,8 +17,16 @@ bool initFirePoints(std::vector<FirePoint>& firePoints,
     std::vector<float> firePos;
     std::vector<float> fireDirection;
     std::vector<JsonParseParam> params = {
-        {&firePos,       "firePos",       JSONTYPE_FLOAT_ARRAY},
-        {&fireDirection, "fireDirection", JSONTYPE_FLOAT_ARRAY}
+        {
+            &firePos,
+            "firePos",
+            JSONTYPE_FLOAT_ARRAY
+        },
+        {
+            &fireDirection,
+            "fireDirection",
+            JSONTYPE_FLOAT_ARRAY
+        }
     };
 
     auto parser = [&](FirePoint& p, const rapidjson::Value& e)->bool

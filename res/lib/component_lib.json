@@ -1,18 +1,5 @@
 [
     {
-        "name": "player_base",
-        "type": "base",
-        "texture": "player_base",
-        "rect": "square60",
-        "hp": 50.0,
-        "hpRestoreRate": 5.0,
-        "armor": 100.0,
-        "armorRepairRate": 5.0,
-        "power": 100.0,
-        "powerRestoreRate": 20.0,
-        "missileCapacity": 100
-    },
-    {
         "name": "player_base_gun",
         "type": "weapon",
         "texture": "player_base_gun",

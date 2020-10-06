@@ -1,0 +1,40 @@
+[
+    {
+        "name": "red_base",
+        "texture": "red_base",
+        "rect": "square60",
+        "hp": 50.0,
+        "hpPerLevel": 5.0,
+        "hpRestoreRate": 0.0,
+        "hpRestoreRatePerLevel": 0.0,
+        "armor": 100.0,
+        "armorPerLevel": 2.0,
+        "armorRepairRate": 0.0,
+        "armorRepairRatePerLevel": 0.0,
+        "power": 100.0,
+        "powerPerLevel": 5.0,
+        "powerRestoreRate": 20.0,
+        "powerRestoreRatePerLevel": 0.0,
+        "weaponPos": [31.875, 0.0],
+        "moverPos": [26.25, 0.0]
+    },
+    {
+        "name": "cyan_base",
+        "texture": "cyan_base",
+        "rect": "square60",
+        "hp": 100.0,
+        "hpPerLevel": 8.0,
+        "hpRestoreRate": 0.0,
+        "hpRestoreRatePerLevel": 0.0,
+        "armor": 200.0,
+        "armorPerLevel": 5.0,
+        "armorRepairRate": 0.0,
+        "armorRepairRatePerLevel": 0.0,
+        "power": 200.0,
+        "powerPerLevel": 10.0,
+        "powerRestoreRate": 20.0,
+        "powerRestoreRatePerLevel": 0.0,
+        "weaponPos": [31.875, 0.0],
+        "moverPos": [26.25, 0.0]
+    }
+]

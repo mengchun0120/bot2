@@ -168,9 +168,9 @@ public:
         return m_progressRingLib;
     }
 
-    const std::string& getPlayerTemplateLib() const
+    const std::string& getPlayerTemplate() const
     {
-        return m_playerTemplateLib;
+        return m_playerTemplate;
     }
 
     const std::string& getDashboardConfigFile() const
@@ -278,7 +278,7 @@ private:
     std::string m_moverTemplateLib;
     std::string m_aiRobotTemplateLib;
     std::string m_progressRingLib;
-    std::string m_playerTemplateLib;
+    std::string m_playerTemplate;
     std::string m_dashboardConfigFile;
     std::string m_buttonConfigFile;
     std::string m_startScreenConfigFile;
