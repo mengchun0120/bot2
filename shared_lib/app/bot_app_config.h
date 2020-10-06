@@ -193,6 +193,8 @@ public:
         return m_level;
     }
 
+    bool setLevel(int level);
+
     float getMapPoolFactor() const
     {
         return m_mapPoolFactor;
@@ -238,10 +240,7 @@ public:
         return m_maxRobotCount;
     }
 
-    void setMaxRobotCount(int count)
-    {
-        m_maxRobotCount = count;
-    }
+    bool setMaxRobotCount(int count);
 
 private:
     bool readConfig(const std::string& cfgFile);

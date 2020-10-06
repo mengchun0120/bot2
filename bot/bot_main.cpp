@@ -10,7 +10,8 @@ void showUsageAndExit()
     std::cerr << "Usage: bot [--mode normal|showmap] --log logFile "
               << "--cfg configFile --app appFolder "
               << "[--map mapFile] [--mapGenerator generatorName] "
-              << "[--robotCount robotCount] [-v verbosity(0~5)]"
+              << "[--robotCount robotCount] [--level level] "
+              << "[-v verbosity(0~5)]"
               << std::endl;
     exit(1);
 }
@@ -18,7 +19,7 @@ void showUsageAndExit()
 int main(int argc, char* argv[])
 {
     std::string mode, logFile, appDir, cfgFile, mapFile, mapGenerator;
-    int robotCount = 0;
+    int robotCount = 0, level = 0;
     bot::Logger::LogLevel verbosity = bot::Logger::DEFAULT_LOG_LEVEL;
 
     int i = 1;
@@ -82,6 +83,16 @@ int main(int argc, char* argv[])
             }
 
             mapGenerator = argv[i + 1];
+            i += 2;
+        }
+        else if(strcmp(argv[i], "--level") == 0)
+        {
+            if (i + 1 >= argc)
+            {
+                showUsageAndExit();
+            }
+
+            level = atoi(argv[i + 1]);
             i += 2;
         }
         else if(strcmp(argv[i], "--robotCount") == 0)
@@ -164,9 +175,20 @@ int main(int argc, char* argv[])
         cfg.setMapGenerator(mapGenerator);
     }
 
+    if (level > 0)
+    {
+        if (!cfg.setLevel(level))
+        {
+            exit(1);
+        }
+    }
+
     if (robotCount > 0)
     {
-        cfg.setMaxRobotCount(robotCount);
+        if (!cfg.setMaxRobotCount(robotCount))
+        {
+            exit(1);
+        }
     }
 
     bot::App app;

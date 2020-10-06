@@ -220,12 +220,6 @@ bool AppConfig::readConfig(const std::string& cfgFile)
             JSONTYPE_STRING
         },
         {
-            &m_level,
-            "level",
-            JSONTYPE_INT,
-            false
-        },
-        {
             &m_mapGeneratorLib,
             "mapGeneratorLib",
             JSONTYPE_STRING
@@ -305,6 +299,36 @@ void AppConfig::marshalConfig()
     m_mapFile                   = constructPath({ m_mapDir, m_mapFile });
     m_mapGeneratorLib           = constructPath({ m_libDir,
                                                   m_mapGeneratorLib });
+}
+
+bool AppConfig::setLevel(int level)
+{
+    if (level < 0)
+    {
+        LOG_ERROR("Invalid level %d", level);
+        return false;
+    }
+
+    m_level = level;
+
+    return false;
+}
+
+bool AppConfig::setMaxRobotCount(int count)
+{
+    const int MIN_ROBOT_COUNT = 1;
+    const int MAX_ROBOT_COUNT = 200;
+
+    if (count < MIN_ROBOT_COUNT || count > MAX_ROBOT_COUNT)
+    {
+        LOG_ERROR("Max robot count must be in the range [%d, %d]",
+                  MIN_ROBOT_COUNT, MAX_ROBOT_COUNT);
+        return false;
+    }
+
+    m_maxRobotCount = count;
+
+    return false;
 }
 
 } // end of namespace bot
