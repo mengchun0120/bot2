@@ -35,12 +35,14 @@ bool AIRobotTemplate::init(const NamedMap<BaseTemplate>& baseLib,
 {
     if (!RobotTemplate::init(baseLib, weaponLib, moverLib, elem))
     {
+        LOG_ERROR("Failed to initialize RobotTemplate");
         return false;
     }
 
     float goodieSpawnProb;
     if (!parseJson(goodieSpawnProb, elem, "goodieSpawnProb"))
     {
+        LOG_ERROR("Failed to parse goodieSpawnProb");
         return false;
     }
 

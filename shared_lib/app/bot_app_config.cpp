@@ -75,11 +75,6 @@ bool AppConfig::readConfig(const std::string& cfgFile)
             JSONTYPE_STRING
         },
         {
-            &m_saveDir,
-            "saveDir",
-            JSONTYPE_STRING
-        },
-        {
             &m_width,
             "width",
             JSONTYPE_INT
@@ -254,7 +249,6 @@ void AppConfig::marshalConfig()
     m_glslDir                   = constructPath({ m_resDir, m_glslDir });
     m_fontDir                   = constructPath({ m_resDir, m_fontDir });
     m_textureDir                = constructPath({ m_resDir, m_textureDir });
-    m_saveDir                   = constructPath({ m_appDir, m_saveDir });
     m_simpleVertexShaderFile    = constructPath({ m_glslDir,
                                                   m_simpleVertexShaderFile });
     m_simpleFragShaderFile      = constructPath({ m_glslDir,
@@ -286,8 +280,8 @@ void AppConfig::marshalConfig()
                                                   m_aiRobotTemplateLib });
     m_progressRingLib           = constructPath({ m_libDir,
                                                   m_progressRingLib });
-    m_playerTemplateLib         = constructPath({ m_libDir,
-                                                  m_playerTemplateLib });
+    m_playerTemplate            = constructPath({ m_libDir,
+                                                  m_playerTemplate });
     m_dashboardConfigFile       = constructPath({ m_libDir,
                                                   m_dashboardConfigFile });
     m_buttonConfigFile          = constructPath({ m_libDir,

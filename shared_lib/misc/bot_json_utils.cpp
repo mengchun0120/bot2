@@ -30,8 +30,8 @@ bool readJson(rapidjson::Document& doc, const char* fileName)
     return true;
 }
 
-int validateJson(const rapidjson::Value& value,
-                 const char* name, JsonDataType type)
+int validateJson(const rapidjson::Value& value, const char* name,
+                 JsonDataType type, bool required)
 {
     typedef bool (rapidjson::Value::*ValidateFunc)() const;
 
@@ -52,7 +52,11 @@ int validateJson(const rapidjson::Value& value,
 
     if (!value.HasMember(name))
     {
-        LOG_WARN("validateJson: name %s is missing", name);
+        if (required)
+        {
+            LOG_ERROR("validateJson: name %s is missing", name);
+        }
+
         return -2;
     }
 
@@ -95,7 +99,7 @@ int validateJson(const rapidjson::Value& value,
 bool parseJson(int& r, const rapidjson::Value& value,
                const char* name, bool required)
 {
-    int ret = validateJson(value, name, JSONTYPE_INT);
+    int ret = validateJson(value, name, JSONTYPE_INT, required);
     if (!required && ret == -2)
     {
         return true;
@@ -113,7 +117,7 @@ bool parseJson(int& r, const rapidjson::Value& value,
 bool parseJson(float& r, const rapidjson::Value& value,
                const char* name, bool required)
 {
-    int ret = validateJson(value, name, JSONTYPE_FLOAT);
+    int ret = validateJson(value, name, JSONTYPE_FLOAT, required);
     if (!required && ret == -2)
     {
         return true;
@@ -131,7 +135,7 @@ bool parseJson(float& r, const rapidjson::Value& value,
 bool parseJson(bool& r, const rapidjson::Value& value,
                const char* name, bool required)
 {
-    int ret = validateJson(value, name, JSONTYPE_BOOL);
+    int ret = validateJson(value, name, JSONTYPE_BOOL, required);
     if (!required && ret == -2)
     {
         return true;
@@ -149,7 +153,7 @@ bool parseJson(bool& r, const rapidjson::Value& value,
 bool parseJson(double& r, const rapidjson::Value& value,
                const char* name, bool required)
 {
-    int ret = validateJson(value, name, JSONTYPE_DOUBLE);
+    int ret = validateJson(value, name, JSONTYPE_DOUBLE, required);
     if (!required && ret == -2)
     {
         return true;
@@ -167,7 +171,7 @@ bool parseJson(double& r, const rapidjson::Value& value,
 bool parseJson(std::string& r, const rapidjson::Value& value,
                const char* name, bool required)
 {
-    int ret = validateJson(value, name, JSONTYPE_STRING);
+    int ret = validateJson(value, name, JSONTYPE_STRING, required);
     if (!required && ret == -2)
     {
         return true;
@@ -185,7 +189,7 @@ bool parseJson(std::string& r, const rapidjson::Value& value,
 bool parseJson(std::vector<int>& r, const rapidjson::Value& value,
                const char* name, bool required)
 {
-    int ret = validateJson(value, name, JSONTYPE_INT_ARRAY);
+    int ret = validateJson(value, name, JSONTYPE_INT_ARRAY, required);
     if (!required && ret == -2)
     {
         return true;
@@ -210,7 +214,7 @@ bool parseJson(std::vector<int>& r, const rapidjson::Value& value,
 bool parseJson(std::vector<float>& r, const rapidjson::Value& value,
                const char* name, bool required)
 {
-    int ret = validateJson(value, name, JSONTYPE_FLOAT_ARRAY);
+    int ret = validateJson(value, name, JSONTYPE_FLOAT_ARRAY, required);
     if (!required && ret == -2)
     {
         return true;
@@ -235,7 +239,7 @@ bool parseJson(std::vector<float>& r, const rapidjson::Value& value,
 bool parseJson(std::vector<double>& r, const rapidjson::Value& value,
                const char* name, bool required)
 {
-    int ret = validateJson(value, name, JSONTYPE_DOUBLE_ARRAY);
+    int ret = validateJson(value, name, JSONTYPE_DOUBLE_ARRAY, required);
     if (!required && ret == -2)
     {
         return true;
@@ -260,7 +264,7 @@ bool parseJson(std::vector<double>& r, const rapidjson::Value& value,
 bool parseJson(std::vector<bool>& r, const rapidjson::Value& value,
                const char* name, bool required)
 {
-    int ret = validateJson(value, name, JSONTYPE_BOOL_ARRAY);
+    int ret = validateJson(value, name, JSONTYPE_BOOL_ARRAY, required);
     if (!required && ret == -2)
     {
         return true;
@@ -285,7 +289,7 @@ bool parseJson(std::vector<bool>& r, const rapidjson::Value& value,
 bool parseJson(std::vector<std::string>& r, const rapidjson::Value& value,
                const char* name, bool required)
 {
-    int ret = validateJson(value, name, JSONTYPE_STRING_ARRAY);
+    int ret = validateJson(value, name, JSONTYPE_STRING_ARRAY, required);
     if (!required && ret == -2)
     {
         return true;
@@ -318,7 +322,7 @@ bool parseJson(std::vector<JsonParseParam>& params,
             {
                 int* r = reinterpret_cast<int*>(it->m_ptr);
 
-                if (!parseJson(*r, value, it->m_name))
+                if (!parseJson(*r, value, it->m_name, it->m_required))
                 {
                     return false;
                 }
@@ -329,7 +333,7 @@ bool parseJson(std::vector<JsonParseParam>& params,
             {
                 bool* r = reinterpret_cast<bool*>(it->m_ptr);
 
-                if (!parseJson(*r, value, it->m_name))
+                if (!parseJson(*r, value, it->m_name, it->m_required))
                 {
                     return false;
                 }
@@ -340,7 +344,7 @@ bool parseJson(std::vector<JsonParseParam>& params,
             {
                 float* r = reinterpret_cast<float*>(it->m_ptr);
 
-                if (!parseJson(*r, value, it->m_name))
+                if (!parseJson(*r, value, it->m_name, it->m_required))
                 {
                     return false;
                 }
@@ -351,7 +355,7 @@ bool parseJson(std::vector<JsonParseParam>& params,
             {
                 double* r = reinterpret_cast<double*>(it->m_ptr);
 
-                if (!parseJson(*r, value, it->m_name))
+                if (!parseJson(*r, value, it->m_name, it->m_required))
                 {
                     return false;
                 }
@@ -362,7 +366,7 @@ bool parseJson(std::vector<JsonParseParam>& params,
             {
                 std::string* r = reinterpret_cast<std::string*>(it->m_ptr);
 
-                if (!parseJson(*r, value, it->m_name))
+                if (!parseJson(*r, value, it->m_name, it->m_required))
                 {
                     return false;
                 }
@@ -374,7 +378,7 @@ bool parseJson(std::vector<JsonParseParam>& params,
                 std::vector<int>* r =
                                 reinterpret_cast<std::vector<int>*>(it->m_ptr);
 
-                if (!parseJson(*r, value, it->m_name))
+                if (!parseJson(*r, value, it->m_name, it->m_required))
                 {
                     return false;
                 }
@@ -386,7 +390,7 @@ bool parseJson(std::vector<JsonParseParam>& params,
                 std::vector<float>* r =
                             reinterpret_cast<std::vector<float>*>(it->m_ptr);
 
-                if (!parseJson(*r, value, it->m_name))
+                if (!parseJson(*r, value, it->m_name, it->m_required))
                 {
                     return false;
                 }
@@ -398,7 +402,7 @@ bool parseJson(std::vector<JsonParseParam>& params,
                 std::vector<bool>* r =
                             reinterpret_cast<std::vector<bool>*>(it->m_ptr);
 
-                if (!parseJson(*r, value, it->m_name))
+                if (!parseJson(*r, value, it->m_name, it->m_required))
                 {
                     return false;
                 }
@@ -410,7 +414,7 @@ bool parseJson(std::vector<JsonParseParam>& params,
                 std::vector<double>* r =
                              reinterpret_cast<std::vector<double>*>(it->m_ptr);
 
-                if (!parseJson(*r, value, it->m_name))
+                if (!parseJson(*r, value, it->m_name, it->m_required))
                 {
                     return false;
                 }
@@ -422,7 +426,7 @@ bool parseJson(std::vector<JsonParseParam>& params,
                 std::vector<std::string>* r =
                         reinterpret_cast<std::vector<std::string>*>(it->m_ptr);
 
-                if (!parseJson(*r, value, it->m_name))
+                if (!parseJson(*r, value, it->m_name, it->m_required))
                 {
                     return false;
                 }

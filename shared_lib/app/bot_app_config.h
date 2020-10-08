@@ -98,11 +98,6 @@ public:
         return m_mapDir;
     }
 
-    const std::string& getSaveDir() const
-    {
-        return m_saveDir;
-    }
-
     const std::string& getTextureLib() const
     {
         return m_textureLib;
@@ -255,7 +250,6 @@ private:
     std::string m_glslDir;
     std::string m_fontDir;
     std::string m_textureDir;
-    std::string m_saveDir;
     int m_width;
     int m_height;
     std::string m_title;

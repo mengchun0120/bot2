@@ -26,8 +26,8 @@ struct JsonParseParam {
 
 bool readJson(rapidjson::Document& doc, const char* fileName);
 
-int validateJson(const rapidjson::Value& value,
-                 const char* name, JsonDataType type);
+int validateJson(const rapidjson::Value& value, const char* name,
+                 JsonDataType type, bool required=true);
 
 bool parseJson(int& r, const rapidjson::Value& value,
                const char* name, bool required=true);

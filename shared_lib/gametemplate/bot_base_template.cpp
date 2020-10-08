@@ -41,6 +41,7 @@ bool BaseTemplate::init(const NamedMap<Texture>& textureLib,
 {
     if (!SingleUnitTemplate::init(textureLib, rectLib, elem))
     {
+        LOG_ERROR("Failed to initialize SingleUnitTemplate");
         return false;
     }
 
@@ -136,6 +137,7 @@ bool BaseTemplate::init(const NamedMap<Texture>& textureLib,
 
     if (!parseJson(params, elem))
     {
+        LOG_ERROR("parseJson failed");
         return false;
     }
 
@@ -165,6 +167,7 @@ bool BaseTemplate::init(const NamedMap<Texture>& textureLib,
                    setPowerRestoreRatePerLevel(powerRestoreRatePerLevel);
     if (!success)
     {
+        LOG_ERROR("Failed to initialize param");
         return false;
     }
 
@@ -243,7 +246,7 @@ bool BaseTemplate::setArmorPerLevel(float armorPerLevel)
     }
 
     m_armorPerLevel = armorPerLevel;
-    return false;
+    return true;
 }
 
 bool BaseTemplate::setArmorRepairRate(float rate)

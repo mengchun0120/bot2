@@ -335,7 +335,7 @@ bool PlayerTemplate::setExperience(float experience)
 
 bool PlayerTemplate::setHPLevel(int level)
 {
-    if (level < 1)
+    if (level < 0)
     {
         LOG_ERROR("Invalid hp-level %d", level);
         return false;
@@ -347,7 +347,7 @@ bool PlayerTemplate::setHPLevel(int level)
 
 bool PlayerTemplate::setHPRestoreLevel(int level)
 {
-    if (level < 1)
+    if (level < 0)
     {
         LOG_ERROR("Invalid hp-restore-level %d", level);
         return false;
@@ -359,7 +359,7 @@ bool PlayerTemplate::setHPRestoreLevel(int level)
 
 bool PlayerTemplate::setArmorLevel(int level)
 {
-    if (level < 1)
+    if (level < 0)
     {
         LOG_ERROR("Invalid armor-level %d", level);
         return false;
@@ -371,7 +371,7 @@ bool PlayerTemplate::setArmorLevel(int level)
 
 bool PlayerTemplate::setArmorRepairLevel(int level)
 {
-    if (level < 1)
+    if (level < 0)
     {
         LOG_ERROR("Invalid armor-repair-level %d", level);
         return false;
@@ -383,7 +383,7 @@ bool PlayerTemplate::setArmorRepairLevel(int level)
 
 bool PlayerTemplate::setPowerLevel(int level)
 {
-    if (level < 1)
+    if (level < 0)
     {
         LOG_ERROR("Invalid power-level %d", level);
         return false;
@@ -395,7 +395,7 @@ bool PlayerTemplate::setPowerLevel(int level)
 
 bool PlayerTemplate::setPowerRestoreLevel(int level)
 {
-    if (level < 1)
+    if (level < 0)
     {
         LOG_ERROR("Invalid power-restore-level %d", level);
         return false;
@@ -407,7 +407,7 @@ bool PlayerTemplate::setPowerRestoreLevel(int level)
 
 bool PlayerTemplate::setMissileLevel(int level)
 {
-    if (level < 1)
+    if (level < 0)
     {
         LOG_ERROR("Invalid missile-level %d", level);
         return false;
@@ -419,7 +419,7 @@ bool PlayerTemplate::setMissileLevel(int level)
 
 bool PlayerTemplate::setWeaponLevel(int level)
 {
-    if (level < 1)
+    if (level < 0)
     {
         LOG_ERROR("Invalid weapon-level %d", level);
         return false;
@@ -431,7 +431,7 @@ bool PlayerTemplate::setWeaponLevel(int level)
 
 bool PlayerTemplate::setMoverLevel(int level)
 {
-    if (level < 1)
+    if (level < 0)
     {
         LOG_ERROR("Invalid mover-level %d", level);
         return false;

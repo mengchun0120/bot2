@@ -16,8 +16,16 @@ bool GameObjectTemplate::init(const rapidjson::Value& elem)
     float coverBreath, collideBreath;
     std::vector<JsonParseParam> params =
     {
-        {&coverBreath,    "coverBreath",    JSONTYPE_FLOAT},
-        {&collideBreath,  "collideBreath",  JSONTYPE_FLOAT}
+        {
+            &coverBreath,
+            "coverBreath",
+            JSONTYPE_FLOAT
+        },
+        {
+            &collideBreath,
+            "collideBreath",
+            JSONTYPE_FLOAT
+        }
     };
 
     if (!parseJson(params, elem))
@@ -25,7 +33,8 @@ bool GameObjectTemplate::init(const rapidjson::Value& elem)
         return false;
     }
 
-    bool success = setCoverBreath(coverBreath) && setCollideBreath(collideBreath);
+    bool success = setCoverBreath(coverBreath) &&
+                   setCollideBreath(collideBreath);
     if (!success)
     {
         return false;

@@ -1,7 +1,6 @@
 {
     "base": {
         "name": "player_base",
-        "type": "base",
         "texture": "player_base",
         "rect": "square60",
         "hp": 50.0,
@@ -21,7 +20,6 @@
     },
     "weapon": {
         "name": "player_base_gun",
-        "type": "weapon",
         "texture": "player_base_gun",
         "rect": "square20",
         "fireDuration": 200.0,
@@ -36,7 +34,6 @@
     },
     "mover": {
         "name": "player_base_mover",
-        "type": "mover",
         "texture": "player_base_mover",
         "rect": "square20",
         "speed": 150.0,
@@ -58,7 +55,7 @@
     "gold": 0,
     "experience": 0,
     "hpLevel": 0,
-    "hpRestoreLevel": 0
+    "hpRestoreLevel": 0,
     "armorLevel": 0,
     "armorRepairLevel": 0,
     "powerLevel": 0,
