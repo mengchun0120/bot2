@@ -7,7 +7,7 @@
         "maxColCount": 40,
         "maxRobotCount": 40,
         "robots": [
-            "blue_robot",
+            "cyan_robot",
             "red_robot"
         ],
         "minIslandLenTiles": 2,
