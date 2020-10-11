@@ -16,7 +16,7 @@
         "powerRestoreRate": 20.0,
         "powerRestoreRatePerLevel": 0.0,
         "weaponPos": [31.875, 0.0],
-        "moverPos": [26.25, 0.0]
+        "moverPos": [-26.25, 0.0]
     },
     {
         "name": "cyan_base",
@@ -35,6 +35,6 @@
         "powerRestoreRate": 20.0,
         "powerRestoreRatePerLevel": 0.0,
         "weaponPos": [31.875, 0.0],
-        "moverPos": [26.25, 0.0]
+        "moverPos": [-26.25, 0.0]
     }
 ]

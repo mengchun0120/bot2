@@ -22,7 +22,7 @@ bool Tile::init(const TileTemplate* tileTemplate, int level, float x, float y)
         return false;
     }
 
-    if (level < 1)
+    if (level < 0)
     {
         LOG_ERROR("Invalid tile level %d", level);
         return false;

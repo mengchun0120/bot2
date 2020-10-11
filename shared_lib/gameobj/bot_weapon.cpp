@@ -10,7 +10,6 @@ namespace bot {
 
 Weapon::Weapon()
     : m_weaponTemplate(nullptr)
-    , m_missileTemplate(nullptr)
     , m_missileLevel(1)
     , m_firing(false)
     , m_normalFireDuration(0.0f)
@@ -25,7 +24,7 @@ bool Weapon::init(const WeaponTemplate* weaponTemplate, int weaponLevel,
                   int missileLevel, float weaponX, float weaponY,
                   float directionX, float directionY)
 {
-    if (!m_weaponTemplate)
+    if (!weaponTemplate)
     {
         LOG_ERROR("Weapon template is null");
         return false;
@@ -70,8 +69,8 @@ bool Weapon::update(GameScreen& screen, Robot& robot)
     }
 
     TimePoint now = Clock::now();
-
-    if (timeDistMs(now, m_lastFireTime) < m_fireDuration)
+    float dur = timeDistMs(m_lastFireTime, now);
+    if (dur < m_fireDuration)
     {
         return true;
     }
@@ -167,8 +166,8 @@ void Weapon::resetFireDuration()
 
 void Weapon::resetDamage()
 {
-    m_damage = m_missileTemplate->getDamage(m_missileLevel) *
-               m_damageMultiplier;
+    const MissileTemplate* t = m_weaponTemplate->getMissileTemplate();
+    m_damage = t->getDamage(m_missileLevel) * m_damageMultiplier;
 }
 
 bool Weapon::fireMissile(GameScreen& screen, Robot& robot)
@@ -179,7 +178,8 @@ bool Weapon::fireMissile(GameScreen& screen, Robot& robot)
     for(auto& fp: m_firePoints)
     {
         Missile* missile = gameObjMgr.createMissile(
-                                 m_missileTemplate, &robot, m_damage,
+                                 m_weaponTemplate->getMissileTemplate(),
+                                 &robot, m_damage,
                                  fp.m_firePos[0], fp.m_firePos[1],
                                  fp.m_fireDirection[0], fp.m_fireDirection[1]);
         if (!missile)

@@ -1,3 +1,4 @@
+#include "misc/bot_log.h"
 #include "opengl/bot_graphics.h"
 #include "gametemplate/bot_ai_robot_template.h"
 #include "gameobj/bot_ai_robot.h"

@@ -127,6 +127,13 @@ bool WeaponTemplate::init(const NamedMap<Texture>& textureLib,
         return false;
     }
 
+    bool ret = setFireDuration(fireDuration) &&
+               setFireDurReductionPerLevel(fireDurReductionPerLevel);
+    if (!ret)
+    {
+        return false;
+    }
+
     if (!missileName.empty())
     {
         m_missileTemplate = missileLib.search(missileName);
@@ -177,6 +184,13 @@ bool WeaponTemplate::init(const NamedMap<Texture>& textureLib,
         return false;
     }
 
+    bool ret = setFireDuration(fireDuration) &&
+               setFireDurReductionPerLevel(fireDurReductionPerLevel);
+    if (!ret)
+    {
+        return false;
+    }
+
     if (!initFirePoints(m_firePoints, elem))
     {
         LOG_ERROR("Failed to initialize fire-points");
@@ -185,6 +199,18 @@ bool WeaponTemplate::init(const NamedMap<Texture>& textureLib,
 
     setMissileTemplate(missileTemplate);
 
+    return true;
+}
+
+bool WeaponTemplate::setFireDuration(float duration)
+{
+    if (duration < 0.0f)
+    {
+        LOG_ERROR("Invalid duration %f", duration);
+        return false;
+    }
+
+    m_fireDuration = duration;
     return true;
 }
 
@@ -199,6 +225,18 @@ float WeaponTemplate::getFireDuration(int level) const
     }
 
     return duration;
+}
+
+bool WeaponTemplate::setFireDurReductionPerLevel(float reductionPerLevel)
+{
+    if (reductionPerLevel < 0.0f)
+    {
+        LOG_ERROR("Invalid fireDurReductionPerLevel %f", reductionPerLevel);
+        return false;
+    }
+
+    m_fireDurReductionPerLevel = reductionPerLevel;
+    return true;
 }
 
 bool WeaponTemplate::setNumFirePoints(int count)

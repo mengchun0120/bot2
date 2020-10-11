@@ -56,7 +56,6 @@ private:
 
 protected:
     const WeaponTemplate* m_weaponTemplate;
-    const MissileTemplate* m_missileTemplate;
     int m_missileLevel;
     bool m_firing;
     std::vector<FirePoint> m_firePoints;

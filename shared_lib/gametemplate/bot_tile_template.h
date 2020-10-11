@@ -39,7 +39,7 @@ public:
 
     float getHP(int level) const
     {
-        return m_hp + (level - 1) * m_hpPerLevel;
+        return m_hp + level * m_hpPerLevel;
     }
 
     bool setHP(float hp);

@@ -3,7 +3,7 @@
         "name": "red_base_gun",
         "texture": "red_base_gun",
         "rect": "square20",
-        "fireDuration": 400.0,
+        "fireDuration": 4000.0,
         "missile": "red_bullet",
         "firePoints": [
             {
@@ -16,7 +16,7 @@
         "name": "cyan_base_gun",
         "texture": "cyan_base_gun",
         "rect": "square20",
-        "fireDuration": 200.0,
+        "fireDuration": 2000.0,
         "missile": "blue_bullet",
         "firePoints": [
             {
