@@ -49,7 +49,7 @@ public:
         return m_direction[1];
     }
 
-    void setDirection(float directionX, float directionY);
+    virtual void setDirection(float directionX, float directionY);
 
     float getHP() const
     {

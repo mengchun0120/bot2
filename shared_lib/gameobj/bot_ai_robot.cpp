@@ -47,4 +47,28 @@ void AIRobot::update(float delta, GameScreen& screen)
     t->getAI()->apply(*this, delta, screen);
 }
 
+void AIRobot::setDirection(float directionX, float directionY)
+{
+    Robot::setDirection(directionX, directionY);
+    m_lastChangeDirectionTime = Clock::now();
+}
+
+bool AIRobot::setCurAction(Action action)
+{
+    if (!isValidAction(action))
+    {
+        return false;
+    }
+
+    if (m_curAction == action)
+    {
+        return true;
+    }
+
+    m_lastChangeActionTime = Clock::now();
+    m_curAction = action;
+
+    return true;
+}
+
 } // end of namespace bot

@@ -46,7 +46,7 @@
         "color": "blue",
         "coverBreath": 9.0,
         "collideBreath": 6.4,
-        "speed": 100.0,
+        "speed": 300.0,
         "damage": 20.0,
         "damagePerLevel": 3.0,
         "explosionBreath": 20.0,

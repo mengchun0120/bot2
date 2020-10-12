@@ -9,6 +9,11 @@ enum Action {
     ACTION_NONE
 };
 
+inline bool isValidAction(Action a)
+{
+    return a >= ACTION_CHASE && a <= ACTION_NONE;
+}
+
 } // end of namespace bot
 
 #endif

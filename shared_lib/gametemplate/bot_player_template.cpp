@@ -450,6 +450,7 @@ void PlayerTemplate::configCoverCollideBreath()
 
     const Rectangle* rect = m_baseTemplate->getRect();
     m_coverBreath = std::max(rect->width(), rect->height()) / 2.0f;
+    m_collideBreath = m_coverBreath * sqrt(2.0) / 2.0;
 
     if (m_weaponTemplate)
     {
@@ -474,8 +475,6 @@ void PlayerTemplate::configCoverCollideBreath()
             m_coverBreath = breath;
         }
     }
-
-    m_collideBreath = m_coverBreath * sqrt(2.0) / 2.0;
 }
 
 } // end of namespace bot

@@ -32,6 +32,8 @@ public:
 
     virtual void update(float delta, GameScreen& screen);
 
+    virtual void setDirection(float directionX, float directionY);
+
     float getGoodieSpawnProb() const
     {
         return getTemplate()->getGoodieSpawnProb();
@@ -52,10 +54,7 @@ public:
         return m_curAction;
     }
 
-    void setCurAction(Action action)
-    {
-        m_curAction = action;
-    }
+    bool setCurAction(Action action);
 
 protected:
     TimePoint m_lastChangeActionTime;

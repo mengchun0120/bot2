@@ -21,6 +21,7 @@ bool Button::init(const ButtonConfig* cfg, const Rectangle* rect,
     Widget::init(rect);
     m_cfg = cfg;
     m_text = text;
+    m_textColor = cfg->getNormalTextColor();
 
     return true;
 }
