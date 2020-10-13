@@ -24,7 +24,6 @@
         "rect": "square20",
         "fireDuration": 200.0,
         "fireDurReductionPerLevel": 0.5,
-        "missiles": ["green_bullet"],
         "firePoints": [
             {
                 "firePos": [10.0, 0.0],
@@ -40,10 +39,10 @@
         "speedPerLevel": 2.0
     },
     "missile": {
-        "name": "blue_bullet",
+        "name": "green_bullet",
         "texture": "bullet",
         "rect": "square18",
-        "color": "blue",
+        "color": "green",
         "coverBreath": 9.0,
         "collideBreath": 6.4,
         "speed": 300.0,

@@ -9,7 +9,7 @@
     "particleVertexShaderFile": "particle_vertex_shader.glsl",
     "particleFragShaderFile": "particle_frag_shader.glsl",
     "eventQueueSize": 20,
-    "timeDeltaHistoryLen": 5,
+    "timeDeltaHistoryLen": 10,
     "fontDir": "fonts",
     "textureDir": "texture",
     "libDir": "lib",
