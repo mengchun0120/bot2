@@ -21,6 +21,13 @@
         "alpha": 255
     },
     {
+        "name": "orange",
+        "red": 255,
+        "green": 165,
+        "blue": 0,
+        "alpha": 255
+    },
+    {
         "name": "yellow",
         "red": 255,
         "green": 255,
@@ -109,6 +116,27 @@
         "red": 105,
         "green": 105,
         "blue": 105,
+        "alpha": 255
+    },
+    {
+        "name": "safe_color",
+        "red": 0,
+        "green": 225,
+        "blue": 0,
+        "alpha": 255
+    },
+    {
+        "name": "danger_color",
+        "red": 255,
+        "green": 140,
+        "blue": 0,
+        "alpha": 255
+    },
+    {
+        "name": "critical_color",
+        "red": 225,
+        "green": 0,
+        "blue": 0,
         "alpha": 255
     }
 ]

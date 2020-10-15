@@ -9,7 +9,8 @@
 
 namespace bot {
 
-ProgressRing* ProgressRing::Parser::create(const std::string& name, const rapidjson::Value& elem)
+ProgressRing* ProgressRing::Parser::create(const std::string& name,
+                                           const rapidjson::Value& elem)
 {
     ProgressRing* ring = new ProgressRing();
     if (!ring->init(m_colorLib, elem))
@@ -21,23 +22,41 @@ ProgressRing* ProgressRing::Parser::create(const std::string& name, const rapidj
 }
 
 ProgressRing::ProgressRing()
-    : m_frontColor(nullptr)
-    , m_backColor(nullptr)
+    : m_backColor(nullptr)
     , m_maxIdx(0)
+    , m_numFrontColors(0)
 {
 }
 
-bool ProgressRing::init(const NamedMap<Color>& colorLib, const rapidjson::Value& elem)
+bool ProgressRing::init(const NamedMap<Color>& colorLib,
+                        const rapidjson::Value& elem)
 {
-    std::string backColorName, frontColorName;
+    std::string backColorName;
+    std::vector<std::string> frontColorNames;
     float radius;
     int numEdges;
 
     std::vector<JsonParseParam> params = {
-        {&backColorName,  "backColor",  JSONTYPE_STRING},
-        {&frontColorName, "frontColor", JSONTYPE_STRING},
-        {&radius,         "radius",     JSONTYPE_FLOAT},
-        {&numEdges,       "numEdges",   JSONTYPE_INT}
+        {
+            &backColorName,
+            "backColor",
+            JSONTYPE_STRING
+        },
+        {
+            &frontColorNames,
+            "frontColors",
+            JSONTYPE_STRING_ARRAY
+        },
+        {
+            &radius,
+            "radius",
+            JSONTYPE_FLOAT
+        },
+        {
+            &numEdges,
+            "numEdges",
+            JSONTYPE_INT
+        }
     };
 
     if (!parseJson(params, elem))
@@ -45,33 +64,40 @@ bool ProgressRing::init(const NamedMap<Color>& colorLib, const rapidjson::Value&
         return false;
     }
 
-    const Color* backColor = colorLib.search(backColorName);
-    if (!backColor)
+    m_backColor = colorLib.search(backColorName);
+    if (!m_backColor)
     {
         LOG_ERROR("Failed to find backColor %s", backColorName.c_str());
         return false;
     }
 
-    const Color* frontColor = colorLib.search(frontColorName);
-    if (!frontColor)
+    m_numFrontColors = static_cast<int>(frontColorNames.size());
+    m_frontColors.resize(m_numFrontColors);
+
+    for (int i = 0; i < m_numFrontColors; ++i)
     {
-        LOG_ERROR("Failed to find frontColor %s", frontColorName.c_str());
-        return false;
+        const Color* color = colorLib.search(frontColorNames[i]);
+        if (!color)
+        {
+            LOG_ERROR("Failed to find frontColor %s",
+                      frontColorNames[i].c_str());
+            return false;
+        }
+
+        m_frontColors[i] = color;
     }
 
-    if (!init(frontColor, backColor, radius, numEdges))
+    if (!initVertexArray(radius, numEdges))
     {
-        LOG_ERROR("Failed to initialize progress ring");
+        LOG_ERROR("Failed to initialize vertex array for progress ring");
         return false;
     }
 
     return true;
 }
 
-bool ProgressRing::init(const Color* frontColor, const Color* backColor, float radius, int numEdges)
+bool ProgressRing::initVertexArray(float radius, int numEdges)
 {
-    m_frontColor = frontColor;
-    m_backColor = backColor;
     m_maxIdx = numEdges - 1;
 
     int numFloatsPerTriangle = Constants::NUM_FLOATS_PER_POSITION * 3;
@@ -81,7 +107,7 @@ bool ProgressRing::init(const Color* frontColor, const Color* backColor, float r
     float theta = delta;
     float prevX = 0.0f, prevY = radius;
 
-    for (int i = 0, k = 0; i < numEdges; ++i, k += numFloatsPerTriangle, theta += delta)
+    for (int i = 0, k = 0; i < numEdges; ++i)
     {
         vertices[k] = 0.0f;
         vertices[k + 1] = 0.0f;
@@ -91,9 +117,13 @@ bool ProgressRing::init(const Color* frontColor, const Color* backColor, float r
         prevY = cos(theta) * radius;
         vertices[k + 4] = prevX;
         vertices[k + 5] = prevY;
+
+        k += numFloatsPerTriangle;
+        theta += delta;
     }
 
-    bool ret = m_vertices.load(vertices, numEdges * 3, Constants::POSITION_SIZE, 0);
+    bool ret = m_vertices.load(vertices, numEdges * 3,
+                               Constants::POSITION_SIZE, 0);
     delete[] vertices;
 
     return ret;
@@ -127,9 +157,28 @@ void ProgressRing::draw(Graphics& g, const float* pos, float percentage) const
 
     if (finishedVertices < static_cast<int>(m_vertices.numVertices()))
     {
-        program.setColor(m_frontColor->getColor());
-        glDrawArrays(GL_TRIANGLES, finishedVertices, m_vertices.numVertices() - finishedVertices);
+        const Color* frontColor = getFrontColor(percentage);
+        program.setColor(frontColor->getColor());
+        glDrawArrays(GL_TRIANGLES, finishedVertices,
+                     m_vertices.numVertices() - finishedVertices);
     }
 }
 
+const Color* ProgressRing::getFrontColor(float percentage) const
+{
+    int idx = static_cast<int>(floor(percentage * m_numFrontColors));
+
+    if (idx < 0)
+    {
+        idx = 0;
+    }
+    else if (idx >= m_numFrontColors)
+    {
+        idx = m_numFrontColors - 1;
+    }
+
+    return m_frontColors[idx];
+}
+
 } // end of namespace bot
+

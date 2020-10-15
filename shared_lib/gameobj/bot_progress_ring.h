@@ -1,6 +1,7 @@
 #ifndef INCLUDE_BOT_PROGRESS_RING
 #define INCLUDE_BOT_PROGRESS_RING
 
+#include <vector>
 #include <string>
 #include <rapidjson/document.h>
 #include "opengl/bot_vertex_array.h"
@@ -22,7 +23,8 @@ public:
         ~Parser()
         {}
 
-        ProgressRing* create(const std::string& name, const rapidjson::Value& elem);
+        ProgressRing* create(const std::string& name,
+                             const rapidjson::Value& elem);
 
     private:
         const NamedMap<Color>& m_colorLib;
@@ -35,15 +37,19 @@ public:
 
     bool init(const NamedMap<Color>& colorLib, const rapidjson::Value& elem);
 
-    bool init(const Color* frontColor, const Color* backColor, float radius, int numEdges);
-
     void draw(Graphics& g, const float* pos, float percentage) const;
 
 private:
-    const Color* m_frontColor;
+    bool initVertexArray(float radius, int numEdges);
+
+    const Color* getFrontColor(float percentage) const;
+
+private:
+    std::vector<const Color*> m_frontColors;
     const Color* m_backColor;
     VertexArray m_vertices;
     int m_maxIdx;
+    int m_numFrontColors;
 };
 
 } // end of namespace bot
