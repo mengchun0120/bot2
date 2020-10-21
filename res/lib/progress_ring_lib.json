@@ -7,16 +7,5 @@
         "backColor": "effect_ring_back_color",
         "radius": 21.2,
         "numEdges": 60
-    },
-    {
-        "name": "effect_progress_ring",
-        "frontColors": [
-            "safe_color",
-            "danger_color",
-            "critical_color"
-        ],
-        "backColor": "effect_ring_back_color",
-        "radius": 10.0,
-        "numEdges": 45
     }
 ]

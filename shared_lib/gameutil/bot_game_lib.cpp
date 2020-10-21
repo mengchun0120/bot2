@@ -115,7 +115,7 @@ bool GameLib::load(float viewportWidth, float viewportHeight,
     }
     LOG_INFO("Done loading ai library from %s", cfg.getAILib().c_str());
 
-    BaseTemplate::Parser baseParser(m_textureLib, m_rectLib);
+    BaseTemplate::Parser baseParser(m_textureLib, m_rectLib, m_colorLib);
     ret = m_baseTemplateLib.load(cfg.getBaseTemplateLib().c_str(), baseParser);
     if (!ret)
     {

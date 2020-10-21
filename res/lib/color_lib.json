@@ -138,5 +138,12 @@
         "green": 0,
         "blue": 0,
         "alpha": 255
+    },
+    {
+        "name": "hp_text_color",
+        "red": 0,
+        "green": 51,
+        "blue": 102,
+        "alpha": 255
     }
 ]

@@ -16,6 +16,7 @@ namespace bot {
 
 BaseTemplate* parseBaseTemplate(const NamedMap<Texture>& textureLib,
                                 const NamedMap<Rectangle>& rectLib,
+                                const NamedMap<Color>& colorLib,
                                 const rapidjson::Value& elem)
 {
     const char name[] = "base";
@@ -34,7 +35,7 @@ BaseTemplate* parseBaseTemplate(const NamedMap<Texture>& textureLib,
     }
 
     BaseTemplate* t = new BaseTemplate();
-    if (!t->init(textureLib, rectLib, obj))
+    if (!t->init(textureLib, rectLib, colorLib, obj))
     {
         delete t;
         return nullptr;
@@ -194,7 +195,7 @@ bool PlayerTemplate::init(const std::string& fileName,
 
     const rapidjson::Value& elem = doc.GetObject();
 
-    m_baseTemplate = parseBaseTemplate(textureLib, rectLib, elem);
+    m_baseTemplate = parseBaseTemplate(textureLib, rectLib, colorLib, elem);
     if (!m_baseTemplate)
     {
         return false;

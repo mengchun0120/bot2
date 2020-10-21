@@ -7,14 +7,18 @@
 
 namespace bot {
 
+class Color;
+
 class BaseTemplate: public SingleUnitTemplate {
 public:
     class Parser {
     public:
         Parser(const NamedMap<Texture>& textureLib,
-               const NamedMap<Rectangle>& rectLib)
+               const NamedMap<Rectangle>& rectLib,
+               const NamedMap<Color>& colorLib)
             : m_textureLib(textureLib)
             , m_rectLib(rectLib)
+            , m_colorLib(colorLib)
         {}
 
         ~Parser()
@@ -25,6 +29,7 @@ public:
     private:
         const NamedMap<Texture>& m_textureLib;
         const NamedMap<Rectangle>& m_rectLib;
+        const NamedMap<Color>& m_colorLib;
     };
 
 public:
@@ -35,6 +40,7 @@ public:
 
     bool init(const NamedMap<Texture>& textureLib,
               const NamedMap<Rectangle>& rectLib,
+              const NamedMap<Color>& colorLib,
               const rapidjson::Value& elem);
 
     float getHP(int level) const
@@ -123,6 +129,11 @@ public:
         m_moverPos[1] = y;
     }
 
+    const Color* getHPColor() const
+    {
+        return m_hpColor;
+    }
+
 protected:
     float m_hp;
     float m_hpPerLevel;
@@ -138,6 +149,7 @@ protected:
     float m_powerRestoreRatePerLevel;
     float m_weaponPos[Constants::NUM_FLOATS_PER_POSITION];
     float m_moverPos[Constants::NUM_FLOATS_PER_POSITION];
+    const Color* m_hpColor;
 };
 
 } // end of namespace bot

@@ -44,8 +44,14 @@ public:
         drawString(program, str.c_str(), size, pos, color);
     }
 
-    void getStringSize(float &width, float &height, TextSize sz,
-                       const std::string& str) const;
+    void getStringSize(float& width, float& height, TextSize sz,
+                       const char* str) const;
+
+    void getStringSize(float& width, float& height, TextSize sz,
+                       const std::string& str) const
+    {
+        getStringSize(width, height, sz, str.c_str());
+    }
 
 protected:
     std::unordered_map<int, Rectangle> m_rects[TEXT_SIZE_COUNT];

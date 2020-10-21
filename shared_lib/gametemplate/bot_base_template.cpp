@@ -11,7 +11,7 @@ BaseTemplate* BaseTemplate::Parser::create(std::string& name,
                                            const rapidjson::Value& elem)
 {
     BaseTemplate* t = new BaseTemplate();
-    if (!t->init(m_textureLib, m_rectLib, elem))
+    if (!t->init(m_textureLib, m_rectLib, m_colorLib, elem))
     {
         delete t;
         return nullptr;
@@ -33,10 +33,12 @@ BaseTemplate::BaseTemplate()
     , m_powerPerLevel(0.0f)
     , m_powerRestoreRate(0.0f)
     , m_powerRestoreRatePerLevel(0.0f)
+    , m_hpColor(nullptr)
 {}
 
 bool BaseTemplate::init(const NamedMap<Texture>& textureLib,
                         const NamedMap<Rectangle>& rectLib,
+                        const NamedMap<Color>& colorLib,
                         const rapidjson::Value& elem)
 {
     if (!SingleUnitTemplate::init(textureLib, rectLib, elem))
@@ -52,6 +54,7 @@ bool BaseTemplate::init(const NamedMap<Texture>& textureLib,
     float power = 0.0f, powerPerLevel = 0.0f;
     float powerRestoreRate = 0.0f, powerRestoreRatePerLevel = 0.0f;
     std::vector<float> weaponPos, moverPos;
+    std::string hpColorName;
     std::vector<JsonParseParam> params = {
         {
             &hp,
@@ -132,6 +135,11 @@ bool BaseTemplate::init(const NamedMap<Texture>& textureLib,
             &moverPos,
             "moverPos",
             JSONTYPE_FLOAT_ARRAY
+        },
+        {
+            &hpColorName,
+            "hpColor",
+            JSONTYPE_STRING
         }
     };
 
@@ -150,6 +158,13 @@ bool BaseTemplate::init(const NamedMap<Texture>& textureLib,
     if (moverPos.size() != Constants::NUM_FLOATS_PER_POSITION)
     {
         LOG_ERROR("Invalid mover position");
+        return false;
+    }
+
+    m_hpColor = colorLib.search(hpColorName);
+    if (!m_hpColor)
+    {
+        LOG_ERROR("Failed to find color %s", hpColorName.c_str());
         return false;
     }
 

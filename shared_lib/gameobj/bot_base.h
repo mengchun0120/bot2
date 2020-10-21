@@ -110,7 +110,8 @@ private:
 
 protected:
     const BaseTemplate* m_baseTemplate;
-    float m_hp, m_maxHP, m_hpRestoreRate, m_hpPercent;
+    float m_hp, m_maxHP, m_hpRestoreRate;
+    int m_hpPercent;
     float m_armor, m_maxArmor, m_armorRepairRate;
     float m_power, m_maxPower, m_powerRestoreRate;
     TimePoint m_lastUpdateTime;

@@ -1,7 +1,10 @@
 #include <cstdio>
+#include <cmath>
 #include "misc/bot_log.h"
 #include "misc/bot_math_utils.h"
 #include "opengl/bot_texture.h"
+#include "opengl/bot_color.h"
+#include "opengl/bot_graphics.h"
 #include "geometry/bot_rectangle.h"
 #include "gametemplate/bot_base_template.h"
 #include "gameobj/bot_base.h"
@@ -114,12 +117,26 @@ void Base::present(Graphics& g, const float* pos, const float* direction)
     m_baseTemplate->getRect()->draw(g, pos, direction, nullptr, nullptr,
                                     m_baseTemplate->getTexture()->textureId(),
                                     nullptr);
+
+    TextSystem& textSys = g.getTextSystem();
+    float w, h;
+    float p[Constants::NUM_FLOATS_PER_POSITION];
+
+    textSys.getStringSize(w, h, TEXT_SIZE_SMALL, m_hpPercentStr);
+    p[0] = pos[0] - w / 2.0f;
+    p[1] = pos[1] - h / 2.0f;
+
+    SimpleShaderProgram& shader = g.getSimpleShader();
+
+    shader.setUseDirection(false);
+    textSys.drawString(shader, m_hpPercentStr, TEXT_SIZE_SMALL,
+                       p, m_baseTemplate->getHPColor()->getColor());
 }
 
 void Base::setHP(float hp)
 {
     m_hp = clamp(hp, 0.0f, m_maxHP);
-    m_hpPercent = m_hp / m_maxHP * 100.0f;
+    m_hpPercent = static_cast<int>(ceil(m_hp / m_maxHP * 100.0f));
     resetHPPercentStr();
 }
 
@@ -157,8 +174,7 @@ void Base::setWeaponMoverPos(float x, float y,
 
 void Base::resetHPPercentStr()
 {
-    snprintf(m_hpPercentStr, sizeof(m_hpPercentStr), "%d%%",
-             static_cast<int>(m_hpPercent));
+    snprintf(m_hpPercentStr, sizeof(m_hpPercentStr), "%d%%", m_hpPercent);
 }
 
 } // end of namespace bot

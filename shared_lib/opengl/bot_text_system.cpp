@@ -37,16 +37,21 @@ bool loadTextSystemRectangles(std::unordered_map<int, Rectangle> *rects,
     {
         for (int ch = 0; ch < TextSystem::CHAR_COUNT; ++ch)
         {
-            int height = static_cast<int>(textures[ch].height() * SCALE_FACTOR[size]);
-            int width = static_cast<int>(textures[ch].width() * SCALE_FACTOR[size]);
+            int height = static_cast<int>(textures[ch].height() *
+                                          SCALE_FACTOR[size]);
+            int width = static_cast<int>(textures[ch].width() *
+                                         SCALE_FACTOR[size]);
 
             auto it = rects[size].find(width);
             if (it == rects[size].end())
             {
-                bool ret = rects[size][width].init(static_cast<float>(width), static_cast<float>(height), true);
+                bool ret = rects[size][width].init(
+                                            static_cast<float>(width),
+                                            static_cast<float>(height), true);
                 if(!ret)
                 {
-                    LOG_ERROR("Failed to create Rectangle for size=%d width=%d", size, width);
+                    LOG_ERROR("Failed to create Rectangle for size=%d width=%d",
+                              size, width);
                     return false;
                 }
 
@@ -87,7 +92,8 @@ bool TextSystem::init(const std::string& fontFolder)
 }
 
 void TextSystem::drawString(SimpleShaderProgram& program, const char* str,
-                            TextSize size, const float* pos, const float* color) const
+                            TextSize size, const float* pos,
+                            const float* color) const
 {
     if (str[0] == '\0')
     {
@@ -134,16 +140,26 @@ void TextSystem::drawString(SimpleShaderProgram& program, const char* str,
     }
 }
 
-void TextSystem::getStringSize(float& width, float& height, TextSize sz, const std::string& str) const
+void TextSystem::getStringSize(float& width, float& height, TextSize sz,
+                               const char* str) const
 {
-    const Rectangle& rect = getRect(sz, str[0]);
-    float w = rect.width();
-    int len = static_cast<int>(str.size());
-
-    height = rect.height();
-    for (int i = 1; i < len; ++i)
+    if (*str == '\0')
     {
-        const Rectangle& r = getRect(sz, str[i]);
+        width = 0.0f;
+        height = 0.0f;
+        return;
+    }
+
+    const char* p = str;
+
+    const Rectangle& rect = getRect(sz, *p);
+    height = rect.height();
+
+    float w = rect.width();
+
+    for (++p; *p != '\0'; ++p)
+    {
+        const Rectangle& r = getRect(sz, *p);
         w += r.width();
     }
 
@@ -151,3 +167,4 @@ void TextSystem::getStringSize(float& width, float& height, TextSize sz, const s
 }
 
 } // close of namespace bot
+

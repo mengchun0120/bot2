@@ -16,7 +16,8 @@
         "powerRestoreRate": 20.0,
         "powerRestoreRatePerLevel": 1.0,
         "weaponPos": [31.875, 0.0],
-        "moverPos": [-26.25, 0.0]
+        "moverPos": [-26.25, 0.0],
+        "hpColor": "hp_text_color"
     },
     "weapon": {
         "name": "player_base_gun",
