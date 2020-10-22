@@ -15,17 +15,7 @@ class ButtonConfig;
 struct InputEvent;
 
 class MessageBox {
-    enum ButtonIdx {
-        BUTTON_OK,
-        BUTTON_CANCEL
-    };
-
 public:
-    enum Option {
-        OPTION_OK,
-        OPTION_OK_CANCEL
-    };
-
     MessageBox();
 
     ~MessageBox()
@@ -34,12 +24,10 @@ public:
     void init(const MessageBoxConfig* cfg,
               const ButtonConfig* buttonCfg,
               const TextSystem& textSys,
-              Option opt,
-              const std::string& msg);
+              const std::string& msg,
+              const std::vector<std::string>& buttonTexts);
 
-    void setOKAction(const Button::ActionFunc& func);
-
-    void setCancelAction(const Button::ActionFunc& func);
+    void setAction(int buttonIdx, const Button::ActionFunc& func);
 
     void show(Graphics& g);
 

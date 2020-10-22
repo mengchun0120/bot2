@@ -23,7 +23,7 @@ GameScreen::GameScreen()
     , m_graphics(nullptr)
     , m_gameObjManager()
     , m_state(GAME_STATE_INIT)
-    , m_msgBoxVisible(false)
+    , m_visibleMsgBoxIdx(-1)
 {
 }
 
@@ -44,6 +44,9 @@ bool GameScreen::init(const AppConfig& cfg, const GameLib* lib,
     m_screenManager = screenManager;
     m_gameObjManager.init(&m_map, cfg, m_lib);
 
+    initMessageBoxes(lib->getMessageBoxConfig(), lib->getButtonConfig(),
+                     g->getTextSystem());
+
     if (!loadMap(cfg.getMapFile(), cfg))
     {
         LOG_ERROR("Failed to load map from %s", cfg.getMapFile().c_str());
@@ -61,6 +64,46 @@ bool GameScreen::init(const AppConfig& cfg, const GameLib* lib,
     m_state = GAME_STATE_RUNNING;
 
     return true;
+}
+
+void GameScreen::initMessageBoxes(const MessageBoxConfig& msgBoxCfg,
+                                  const ButtonConfig& buttonCfg,
+                                  const TextSystem& textSys)
+{
+    m_msgBoxes.resize(MSGBOX_COUNT);
+
+    Button::ActionFunc exitFunc = std::bind(GameScreen::exitGame, this);
+    Button::ActionFunc resumeFunc = std::bind(GameScreen::resumeGame, this);
+    Button::ActionFunc restartFunc = std::bind(GameScreen::restartGame, this);
+
+    MessageBox& escMsgBox = m_msgBoxes[MSGBOX_ESCAPE_GAME];
+    std::vector<std::string> buttons1 = {
+        "Exit", "Resume", "Restart"
+    };
+
+    escMsgBox.init(msgBoxCfg, buttonCfg, textSys,
+                   "Exit game?", buttons1);
+    escMsgBox.setAction(0, exitFunc);
+    escMsgBox.setAction(1, resumeFunc);
+    escMsgBox.setAction(2, restartFunc);
+
+    MessageBox& victoryMsgBox = m_msgBoxes[MSGBOX_VICTORY];
+
+    victoryMsgBox.init(msgBoxCfg, buttonCfg, textSys,
+                       "You are victorious", buttons1);
+    victoryMsgBox.setAction(0, exitFunc);
+    victoryMsgBox.setAction(1, resumeFunc);
+    victoryMsgBox.setAction(2, restartFunc);
+
+    MessageBox& defeatMsgBox = m_msgBoxes[MSGBOX_DEFEAT];
+    std::vector<std::string> buttons2 = {
+        "Exit", "Restart"
+    };
+
+    defeatMsgBox.init(msgBoxCfg, buttonCfg, textSys,
+                      "You are defeated", buttons2);
+    defeatMsgBox.setAction(0, exitFunc);
+    defeatMsgBox.setAction(1, restartFunc);
 }
 
 bool GameScreen::loadMap(const std::string& fileName, const AppConfig& cfg)

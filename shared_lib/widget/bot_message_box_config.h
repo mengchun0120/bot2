@@ -64,11 +64,6 @@ public:
         return m_boxTop;
     }
 
-    const std::vector<std::string>& getButtonTexts() const
-    {
-        return m_buttonTexts;
-    }
-
     float getButtonSpacing() const
     {
         return m_buttonSpacing;
@@ -92,7 +87,6 @@ private:
     const Color* m_textColor;
     float m_boxPos[Constants::NUM_FLOATS_PER_POSITION];
     float m_boxTop, m_boxLeft;
-    std::vector<std::string> m_buttonTexts;
     float m_buttonSpacing;
     float m_msgMarginY;
     float m_buttonY;

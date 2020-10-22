@@ -19,6 +19,12 @@ class AppConfig;
 class ScreenManager;
 
 class GameScreen: public Screen {
+    enum {
+        MSGBOX_ESCAPE_GAME,
+        MSGBOX_VICTORY,
+        MSGBOX_DEFEAT,
+        MSGBOX_COUNT
+    };
 public:
     GameScreen();
 
@@ -62,6 +68,9 @@ public:
     }
 
 private:
+    void initMessageBoxes(const MessageBoxConfig& msgBoxCfg,
+                          const ButtonConfig& buttonCfg);
+
     bool updateRobots(float delta);
 
     bool updateMissiles(float delta);
@@ -82,6 +91,12 @@ private:
 
     int switchToStart();
 
+    int exitGame();
+
+    int resumeGame();
+
+    int restartGame();
+
 private:
     const GameLib* m_lib;
     Graphics* m_graphics;
@@ -93,8 +108,8 @@ private:
     float m_viewportOrigin[Constants::NUM_FLOATS_PER_POSITION];
     float m_dashboardOrigin[Constants::NUM_FLOATS_PER_POSITION];
     Dashboard m_dashboard;
-    MessageBox m_msgBox;
-    bool m_msgBoxVisible;
+    std::vector<MessageBox> m_msgBox;
+    int m_visibleMsgBoxIdx;
 };
 
 } // end of namespace bot

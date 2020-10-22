@@ -16,8 +16,8 @@ MessageBox::MessageBox()
 void MessageBox::init(const MessageBoxConfig* cfg,
                       const ButtonConfig* buttonCfg,
                       const TextSystem& textSys,
-                      Option opt,
-                      const std::string& msg)
+                      const std::string& msg,
+                      const std::vector<std::sring>& buttonTexts)
 {
     m_cfg = cfg;
 
@@ -30,40 +30,27 @@ void MessageBox::init(const MessageBoxConfig* cfg,
     m_msgPos[0] = boxX + (boxWidth - textWidth) / 2.0f;
     m_msgPos[1] = m_cfg->getBoxTop() - m_cfg->getMsgMarginY() - textHeight;
 
-    int buttonCount = opt == OPTION_OK ? 1 : 2;
+    int buttonCount = static_cast<int>(buttonTexts.size());
     float buttonWidth = m_cfg->getButtonRect()->width();
     float spacing = m_cfg->getButtonSpacing();
     float buttonX = boxX + (boxWidth - buttonCount * buttonWidth -
                     (buttonCount - 1) * spacing) / 2.0f;
-    const std::vector<std::string>& texts = m_cfg->getButtonTexts();
 
     m_buttons.init(buttonCount);
     for (int i = 0; i < buttonCount; ++i)
     {
         Button* button = new Button();
-        button->init(buttonCfg, m_cfg->getButtonRect(), texts[i]);
+        button->init(buttonCfg, m_cfg->getButtonRect(), buttonTexts[i]);
         button->setPos(textSys, buttonX, m_cfg->getButtonY());
         m_buttons.setWidget(i, button);
         buttonX += buttonWidth + spacing;
     }
 }
 
-void MessageBox::setOKAction(const Button::ActionFunc& func)
+void MessageBox::setAction(int buttonIdx, const Button::ActionFunc& func)
 {
-    Button& okButton = static_cast<Button&>(m_buttons.getWidget(BUTTON_OK));
-    okButton.setActionFunc(func);
-}
-
-void MessageBox::setCancelAction(const Button::ActionFunc& func)
-{
-    if (m_buttons.getWidgetCount() < 1)
-    {
-        return;
-    }
-
-    Button& cancelButton =
-                    static_cast<Button&>(m_buttons.getWidget(BUTTON_CANCEL));
-    cancelButton.setActionFunc(func);
+    Button& button = static_cast<Button&>(m_buttons.getWidget(buttonIdx));
+    button.setActionFunc(func);
 }
 
 int MessageBox::processInput(const InputEvent& e)

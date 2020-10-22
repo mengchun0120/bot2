@@ -68,11 +68,6 @@ bool MessageBoxConfig::init(const std::string& configFile,
             JSONTYPE_STRING
         },
         {
-            &m_buttonTexts,
-            "buttonTexts",
-            JSONTYPE_STRING_ARRAY
-        },
-        {
             &m_buttonSpacing,
             "buttonSpacing",
             JSONTYPE_FLOAT
