@@ -31,7 +31,7 @@ bool loadTextSystemRectangles(std::unordered_map<int, Rectangle> *rects,
                               Rectangle *rectMap[][TextSystem::CHAR_COUNT],
                               const Texture* textures)
 {
-    const float SCALE_FACTOR[] = {1.0f, 0.75f, 0.5f};
+    const float SCALE_FACTOR[] = {1.0f, 0.75f, 0.5f, 0.36f};
 
     for(int size = TEXT_SIZE_BIG; size < TEXT_SIZE_COUNT; ++size)
     {

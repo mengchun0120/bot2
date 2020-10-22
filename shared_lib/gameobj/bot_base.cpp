@@ -122,14 +122,14 @@ void Base::present(Graphics& g, const float* pos, const float* direction)
     float w, h;
     float p[Constants::NUM_FLOATS_PER_POSITION];
 
-    textSys.getStringSize(w, h, TEXT_SIZE_SMALL, m_hpPercentStr);
+    textSys.getStringSize(w, h, TEXT_SIZE_TINY, m_hpPercentStr);
     p[0] = pos[0] - w / 2.0f;
     p[1] = pos[1] - h / 2.0f;
 
     SimpleShaderProgram& shader = g.getSimpleShader();
 
     shader.setUseDirection(false);
-    textSys.drawString(shader, m_hpPercentStr, TEXT_SIZE_SMALL,
+    textSys.drawString(shader, m_hpPercentStr, TEXT_SIZE_TINY,
                        p, m_baseTemplate->getHPColor()->getColor());
 }
 

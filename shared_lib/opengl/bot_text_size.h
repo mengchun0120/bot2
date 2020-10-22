@@ -7,6 +7,7 @@ enum TextSize {
     TEXT_SIZE_BIG = 0,
     TEXT_SIZE_MEDIUM,
     TEXT_SIZE_SMALL,
+    TEXT_SIZE_TINY,
     TEXT_SIZE_COUNT
 };
 
