@@ -1,4 +1,4 @@
-#include <GL/glew.h>
+#include "misc/bot_log.h"
 #include "misc/bot_json_utils.h"
 #include "geometry/bot_rectangle.h"
 
@@ -50,10 +50,22 @@ bool Rectangle::init(const rapidjson::Value& elem)
     return true;
 }
 
-bool Rectangle::init(float width0, float height0, bool hasTexCoord)
+bool Rectangle::init(float width, float height, bool hasTexCoord)
 {
-    float halfWidth = width0 / 2.0f;
-    float halfHeight = height0 / 2.0f;
+    if (width <= 0.0f)
+    {
+        LOG_ERROR("Width (%f) is invalid", width);
+        return false;
+    }
+
+    if (height <= 0.0f)
+    {
+        LOG_ERROR("Height (%f) is invalid", height);
+        reteurn false;
+    }
+
+    float halfWidth = width / 2.0f;
+    float halfHeight = height / 2.0f;
     const unsigned int NUM_VERTICES = 6;
 
     if(!hasTexCoord) {

@@ -2,13 +2,13 @@
 #define INCLUDE_BOT_WIDGET
 
 #include "misc/bot_constants.h"
+#include "geometry/bot_rectangle.h"
 
 namespace bot {
 
 struct KeyEvent;
 struct MouseMoveEvent;
 struct MouseButtonEvent;
-class Rectangle;
 class Graphics;
 
 class Widget {
@@ -18,21 +18,49 @@ public:
     virtual ~Widget()
     {}
 
-    void init(const Rectangle* rect);
+    bool init(float x, float y, float width, float height,
+              const Texture* texture, const Color* borderColor,
+              const Color* backColor);
 
-    virtual int processKeyEvent(const KeyEvent& event) = 0;
+    virtual int processKeyEvent(const KeyEvent& event)
+    {
+        return 0;
+    }
 
-    virtual int processMouseMoveEvent(const MouseMoveEvent& event) = 0;
+    virtual int processMouseMoveEvent(const MouseMoveEvent& event)
+    {
+        return 0;
+    }
 
-    virtual int processMouseButtonEvent(const MouseButtonEvent& event) = 0;
+    virtual int processMouseButtonEvent(const MouseButtonEvent& event)
+    {
+        return 0;
+    }
 
     virtual void setPos(float x, float y);
 
-    virtual void present(Graphics& g) = 0;
+    void setTexture(const Texture* texture)
+    {
+        m_texture = texture;
+    }
 
-    virtual void onLostFocus() = 0;
+    void setBorderColor(const Color* color)
+    {
+        m_borderColor = color;
+    }
 
-    virtual void onMouseOut() = 0;
+    void setBackColor(const Color* color)
+    {
+        m_backColor = color;
+    }
+
+    virtual void present(Graphics& g);
+
+    virtual void onLostFocus()
+    {}
+
+    virtual void onMouseOut()
+    {}
 
     bool isVisible() const
     {
@@ -48,7 +76,10 @@ public:
 
 protected:
     float m_pos[Constants::NUM_FLOATS_PER_POSITION];
-    const Rectangle* m_rect;
+    Rectangle m_rect;
+    const Texture* m_texture;
+    const Color* m_borderColor;
+    const Color* m_backColor;
     float m_left, m_right, m_top, m_bottom;
     bool m_visible;
 };

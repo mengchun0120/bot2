@@ -9,7 +9,6 @@ namespace bot {
 
 class Graphics;
 class TextSystem;
-class Rectangle;
 class MessageBoxConfig;
 class ButtonConfig;
 struct InputEvent;
@@ -24,10 +23,17 @@ public:
     void init(const MessageBoxConfig* cfg,
               const ButtonConfig* buttonCfg,
               const TextSystem& textSys,
-              const std::string& msg,
+              float x, float y,
+              float width, float height,
               const std::vector<std::string>& buttonTexts);
 
+    void setPos(float x, float y);
+
+    void setMsg(const std::string& msg);
+
     void setAction(int buttonIdx, const Button::ActionFunc& func);
+
+    void setButtonVisible(int buttonIdx, bool visible);
 
     void show(Graphics& g);
 
@@ -36,6 +42,7 @@ public:
 private:
     const MessageBoxConfig* m_cfg;
     std::string m_msg;
+    float m_boxPos[Constants::NUM_FLOATS_PER_POSITION];
     float m_msgPos[Constants::NUM_FLOATS_PER_POSITION];
     WidgetGroup m_buttons;
 };

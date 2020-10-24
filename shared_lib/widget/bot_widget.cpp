@@ -1,33 +1,63 @@
+#include "misc/bot_log.h"
 #include "geometry/bot_rectangle.h"
 #include "widget/bot_widget.h"
 
 namespace bot {
 
 Widget::Widget()
-    : m_rect(nullptr)
+    : m_texture(nullptr)
+    , m_borderColor(nullptr)
+    , m_backColor(nullptr)
+    , m_left(0.0f)
+    , m_right(0.0f)
+    , m_top(0.0f)
+    , m_bottom(0.0f)
     , m_visible(true)
 {
     m_pos[0] = 0.0f;
     m_pos[1] = 0.0f;
-    m_left = 0.0f;
-    m_right = 0.0f;
-    m_top = 0.0f;
-    m_bottom = 0.0f;
 }
 
-void Widget::init(const Rectangle* rect)
+bool Widget::init(float x, float y, float width, float height,
+                  const Texture* texture, const Color* borderColor,
+                  const Color* backColor)
 {
-    m_rect = rect;
+    if (!m_rect.init(width, height))
+    {
+        LOG_ERROR("Failed to initialize rect");
+        return false;
+    }
+
+    setPos(x, y);
+    setTexture(texture);
+    setBorderColor(borderColor);
+    setBackColor(backColor);
+
+    return true;
 }
 
 void Widget::setPos(float x, float y)
 {
-    m_pos[0] = x + m_rect->width() / 2.0f;
-    m_pos[1] = y - m_rect->height() / 2.0f;
+    m_pos[0] = x + m_rect.width() / 2.0f;
+    m_pos[1] = y + m_rect.height() / 2.0f;
     m_left = x;
-    m_right = x + m_rect->width();
-    m_top = y;
-    m_bottom = y - m_rect->height();
+    m_bottom = y;
+    m_right = x + m_rect.width();
+    m_top = y + m_rect.height();
+}
+
+void Widget::present(Graphics& g)
+{
+    if (m_texture)
+    {
+        m_rect.draw(g, m_pos, nullptr, nullptr, nullptr,
+                    m_texture->textureId(), nullptr);
+    }
+    else if (m_borderColor || m_backColor)
+    {
+        m_rect.draw(g, m_pos, nullptr, m_backColor, m_borderColor,
+                    0, nullptr);
+    }
 }
 
 bool Widget::containPos(float x, float y) const
@@ -40,3 +70,4 @@ bool Widget::containPos(float x, float y) const
 }
 
 } // end of namespace bot
+

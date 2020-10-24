@@ -27,7 +27,7 @@ public:
 
     bool init(const rapidjson::Value& elem);
 
-    bool init(float width0, float height0, bool hasTexCoord);
+    bool init(float width, float height, bool hasTexCoord);
 
     float width() const
     {

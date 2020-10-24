@@ -15,8 +15,9 @@ MessageBox::MessageBox()
 
 void MessageBox::init(const MessageBoxConfig* cfg,
                       const ButtonConfig* buttonCfg,
-                      const TextSystem& textSys,
-                      const std::string& msg,
+                      const TextSystem* textSys,
+                      float width, float height,
+                      float viewportWidth, float viewportHeight,
                       const std::vector<std::sring>& buttonTexts)
 {
     m_cfg = cfg;
