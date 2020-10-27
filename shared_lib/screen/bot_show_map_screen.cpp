@@ -1,23 +1,21 @@
 #include "misc/bot_log.h"
-#include "opengl/bot_graphics.h"
 #include "input/bot_input_event.h"
 #include "gameutil/bot_game_lib.h"
 #include "gameutil/bot_map_generator.h"
 #include "gameutil/bot_game_map_loader.h"
 #include "screen/bot_show_map_screen.h"
 #include "app/bot_app_config.h"
+#include "app/bot_app.h"
 
 namespace bot {
 
 ShowMapScreen::ShowMapScreen()
-    : m_lib(nullptr)
-    , m_graphics(nullptr)
 {
 }
 
-bool ShowMapScreen::init(const AppConfig& cfg, GameLib* lib, Graphics* g,
-                         float viewportWidth, float viewportHeight)
+bool ShowMapScreen::init()
 {
+    const AppConfig& cfg = AppConfig::getInstance();
     const std::string& generatorName = cfg.getMapGenerator();
     const std::string& mapFile = cfg.getMapFile();
 
@@ -41,14 +39,14 @@ bool ShowMapScreen::init(const AppConfig& cfg, GameLib* lib, Graphics* g,
         LOG_INFO("Done generating map %s", mapFile.c_str());
     }
 
-    m_lib = lib;
-    m_graphics = g;
-    m_viewportSize[0] = viewportWidth;
-    m_viewportSize[1] = viewportHeight;
-    m_gameObjManager.init(&m_map, cfg, m_lib);
+    m_gameObjManager.init(&m_map);
+
+    const App& app = App::getInstance();
 
     GameMapLoader mapLoader(m_gameObjManager, cfg.getMapPoolFactor());
-    if (!mapLoader.load(m_map, mapFile, 1, viewportWidth, viewportHeight))
+    bool success = mapLoader.load(m_map, mapFile, 1, app.getViewportWidth(),
+                                  app.getViewportHeight());
+    if (!success)
     {
         return false;
     }
@@ -65,13 +63,14 @@ int ShowMapScreen::update(float delta)
 
 void ShowMapScreen::present()
 {
-    SimpleShaderProgram& simpleShaderProgram = m_graphics->getSimpleShader();
+    SimpleShaderProgram& program = SimpleShaderProgram::getInstance();
+    const App& app = App::getInstance();
 
-    simpleShaderProgram.use();
-    simpleShaderProgram.setViewportSize(m_viewportSize);
-    simpleShaderProgram.setViewportOrigin(m_map.getViewportPos());
+    program.use();
+    program.setViewportSize(app.getViewportSize());
+    program.setViewportOrigin(m_map.getViewportPos());
 
-    m_map.present(*m_graphics);
+    m_map.present();
 }
 
 int ShowMapScreen::processInput(const InputEvent &e)

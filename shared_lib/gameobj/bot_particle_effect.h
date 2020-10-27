@@ -25,7 +25,7 @@ public:
         return static_cast<const ParticleEffectTemplate*>(m_template);
     }
 
-    virtual void present(Graphics& g);
+    virtual void present();
 
     virtual void update(float delta, GameScreen& screen);
 

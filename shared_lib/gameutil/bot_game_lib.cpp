@@ -5,6 +5,24 @@
 
 namespace bot {
 
+std::shared_ptr<GameLib> GameLib::k_gameLib;
+
+bool GameLib::initInstance(float viewportWidth, float viewportHeight,
+                           const AppConfig& cfg)
+{
+    GameLib* lib = new GameLib();
+
+    if (!lib->load(viewportWidth, viewportHeight, cfg))
+    {
+        delete lib;
+        return false;
+    }
+
+    k_gameLib.reset(lib);
+
+    return true;
+}
+
 bool GameLib::load(float viewportWidth, float viewportHeight,
                    const AppConfig& cfg)
 {
@@ -193,8 +211,7 @@ bool GameLib::load(float viewportWidth, float viewportHeight,
     LOG_INFO("Done loading map-generator lib from %s",
              cfg.getMapGeneratorLib().c_str());
 
-    ret = m_dashboardConfig.init(cfg.getDashboardConfigFile(), m_textureLib,
-                                 m_rectLib, m_colorLib);
+    ret = m_dashboardConfig.init(cfg.getDashboardConfigFile());
     if (!ret)
     {
         LOG_ERROR("Failed to load dashboard config from %s",

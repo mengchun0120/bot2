@@ -56,7 +56,7 @@ MapGenerator::MapGenerator()
 
 bool MapGenerator::init(const rapidjson::Value& json,
                         const PlayerTemplate* playerTemplate,
-                        const NamedMap<AIRobotTemplate>& aiRobotTemplateLib,
+                        const NamedMap<AIRobotTemplate>& robotTemplateLib,
                         const NamedMap<TileTemplate>& tileTemplateLib,
                         int maxRobotCount)
 {
@@ -111,10 +111,11 @@ bool MapGenerator::init(const rapidjson::Value& json,
     m_robotTemplates.resize(count);
     for (int i = 0; i < count; ++i)
     {
-        const AIRobotTemplate* t = aiRobotTemplateLib.search(m_robotNames[i]);
+        const AIRobotTemplate* t = robotTemplateLib.search(m_robotNames[i]);
         if (!t)
         {
-            LOG_ERROR("Failed to find robot template %s", m_robotNames[i].c_str());
+            LOG_ERROR("Failed to find robot template %s",
+                      m_robotNames[i].c_str());
             return false;
         }
         m_robotTemplates[i] = t;
@@ -129,7 +130,7 @@ bool MapGenerator::init(const rapidjson::Value& json,
     return true;
 }
 
-int MapGenerator::deployRobots(GeneratedMap& map)
+int MapGenerator::deployRobots(GeneratedMap& map) const
 {
     LOG_INFO("Deploying robots");
 
@@ -145,7 +146,8 @@ int MapGenerator::deployRobots(GeneratedMap& map)
 
     randomDirection(m_rand, playerDirectionX, playerDirectionY);
     map.setPlayer(m_playerTemplate, freeSlots[playerSlot].first,
-                  freeSlots[playerSlot].second, playerDirectionX, playerDirectionY);
+                  freeSlots[playerSlot].second, playerDirectionX,
+                  playerDirectionY);
 
     if (lastSlot != playerSlot)
     {
@@ -154,11 +156,11 @@ int MapGenerator::deployRobots(GeneratedMap& map)
     --freeSlotCount;
     --lastSlot;
 
-    int maxRobotCount = std::min(m_maxRobotCount, freeSlotCount);
+    int robotCount = std::min(m_maxRobotCount, freeSlotCount);
     int robotTypeCount = static_cast<int>(m_robotNames.size());
     float directionX, directionY;
 
-    for (int i = 0; i < maxRobotCount; ++i, --freeSlotCount, --lastSlot)
+    for (int i = 0; i < robotCount; ++i, --freeSlotCount, --lastSlot)
     {
         int robotSlot = m_rand.get(0, freeSlotCount);
         int robotIdx = m_rand.get(0, robotTypeCount);
@@ -177,7 +179,7 @@ int MapGenerator::deployRobots(GeneratedMap& map)
 
     LOG_INFO("Done deploying robots");
 
-    return 1;
+    return robotCount;
 }
 
 } // end of namespace bot

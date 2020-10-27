@@ -2,7 +2,6 @@
 #include "misc/bot_math_utils.h"
 #include "geometry/bot_rectangle.h"
 #include "opengl/bot_texture.h"
-#include "opengl/bot_graphics.h"
 #include "gametemplate/bot_tile_template.h"
 #include "gameobj/bot_game_object_flag.h"
 #include "gameobj/bot_tile.h"
@@ -35,11 +34,11 @@ bool Tile::init(const TileTemplate* tileTemplate, int level, float x, float y)
     return true;
 }
 
-void Tile::present(Graphics& g)
+void Tile::present()
 {
     const TileTemplate* t = static_cast<const TileTemplate*>(m_template);
 
-    t->getRect()->draw(g, m_pos, nullptr, nullptr, nullptr,
+    t->getRect()->draw(m_pos, nullptr, nullptr, nullptr,
                        t->getTexture()->textureId(), nullptr);
 }
 

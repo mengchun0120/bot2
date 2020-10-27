@@ -8,7 +8,6 @@
 
 namespace bot {
 
-class TextSystem;
 class ButtonConfig;
 class Color;
 
@@ -21,15 +20,17 @@ public:
     virtual ~Button()
     {}
 
-    bool init(const ButtonConfig* cfg, const Rectangle* rect,
-              const std::string& text);
+    bool init(const ButtonConfig* cfg, float x, float y,
+              float width, float height, const std::string& text);
+
+    void setText(const std::string& text);
 
     void setActionFunc(const ActionFunc& actionFunc)
     {
         m_actionFunc = actionFunc;
     }
 
-    virtual void setPos(const TextSystem& textSys, float x, float y);
+    virtual void setPos(float x, float y);
 
     virtual int processKeyEvent(const KeyEvent& event)
     {
@@ -45,7 +46,7 @@ public:
 
     virtual void onMouseOut();
 
-    virtual void present(Graphics& g);
+    virtual void present();
 
 protected:
     std::string m_text;

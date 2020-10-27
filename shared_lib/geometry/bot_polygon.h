@@ -14,7 +14,7 @@ public:
     bool init(const float *vertices, unsigned int numVertices,
               bool hasTexCoord);
 
-    virtual void draw(Graphics& g, const float* pos, const float* direction,
+    virtual void draw(const float* pos, const float* direction,
                       const Color* fillColor, const Color* borderColor,
                       const unsigned int textureId,
                       const Color* texColor) const;

@@ -28,7 +28,7 @@ public:
               int moverLevel, float x, float y,
               float directionX, float directionY);
 
-    virtual void present(Graphics& g);
+    virtual void present();
 
     void shiftPos(float deltaX, float deltaY);
 
@@ -96,6 +96,21 @@ public:
 
     void processCollisions(LinkedList<GameObjectItem>& collideObjs,
                            GameScreen& gameScreen);
+
+    const Base& getBase() const
+    {
+        return m_base;
+    }
+
+    const Weapon& getWeapon() const
+    {
+        return m_weapon;
+    }
+
+    const Mover& getMover() const
+    {
+        return m_mover;
+    }
 
 protected:
     Base m_base;

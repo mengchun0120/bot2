@@ -27,7 +27,8 @@ public:
             , m_maxRobotCount(maxRobotCount)
         {}
 
-        MapGenerator* create(const std::string& name, const rapidjson::Value& elem);
+        MapGenerator* create(const std::string& name,
+                             const rapidjson::Value& elem);
 
     private:
         const PlayerTemplate* m_playerTemplate;
@@ -43,19 +44,14 @@ public:
 
     virtual bool init(const rapidjson::Value& json,
                       const PlayerTemplate* playerTemplate,
-                      const NamedMap<AIRobotTemplate>& aiRobotTemplateLib,
+                      const NamedMap<AIRobotTemplate>& robotTemplateLib,
                       const NamedMap<TileTemplate>& tileTemplateLib,
                       int maxRobotCount);
 
-    virtual bool generate(const char* fileName) = 0;
-
-    void setMaxRobotCount(int count)
-    {
-        m_maxRobotCount = count;
-    }
+    virtual bool generate(const char* fileName) const = 0;
 
 protected:
-    virtual int deployRobots(GeneratedMap& map);
+    virtual int deployRobots(GeneratedMap& map) const;
 
 protected:
     int m_minRowCount, m_maxRowCount;

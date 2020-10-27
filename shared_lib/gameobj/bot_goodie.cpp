@@ -9,11 +9,11 @@ bool Goodie::init(const GoodieTemplate* t, float x, float y)
     return GameObject::init(t, x, y);
 }
 
-void Goodie::present(Graphics& g)
+void Goodie::present()
 {
     const GoodieTemplate* t = getTemplate();
 
-    t->getRect()->draw(g, m_pos, nullptr, nullptr, nullptr,
+    t->getRect()->draw(m_pos, nullptr, nullptr, nullptr,
                        t->getTexture()->textureId(), nullptr);
 }
 

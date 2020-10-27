@@ -1,19 +1,17 @@
 #include "misc/bot_log.h"
 #include "misc/bot_file_utils.h"
-#include "opengl/bot_graphics.h"
+#include "opengl/bot_simple_shader_program.h"
 #include "geometry/bot_rectangle.h"
 #include "gameutil/bot_game_lib.h"
 #include "widget/bot_button.h"
 #include "screen/bot_start_screen_config.h"
 #include "screen/bot_start_screen.h"
 #include "screen/bot_screen_manager.h"
+#include "app/bot_app.h"
 
 namespace bot {
 
 StartScreen::StartScreen()
-    : m_lib(nullptr)
-    , m_graphics(nullptr)
-    , m_screenManager(nullptr)
 {
 }
 
@@ -21,19 +19,18 @@ StartScreen::~StartScreen()
 {
 }
 
-bool StartScreen::init(const GameLib* lib, float viewportWidth,
-                       float viewportHeight, ScreenManager* screenManager,
-                       Graphics* graphics)
+bool StartScreen::init()
 {
-    m_lib = lib;
-    m_graphics = graphics;
-    m_screenManager = screenManager;
-    m_viewportSize[0] = viewportWidth;
-    m_viewportSize[1] = viewportHeight;
+    const App& app = App::getInstance();
+    float viewportWidth = app.getViewportWidth();
+    float viewportHeight = app.getViewportHeight();
+
     m_viewportOrigin[0] = viewportWidth / 2.0f;
     m_viewportOrigin[1] = viewportHeight / 2.0f;
 
-    const StartScreenConfig& cfg = m_lib->getStartScreenConfig();
+    const GameLib& lib = GameLib::getInstance();
+
+    const StartScreenConfig& cfg = lib.getStartScreenConfig();
     const Rectangle* rect = cfg.getButtonRect();
     float spacing = cfg.getButtonSpacing();
     const std::vector<std::string>& buttonTexts = cfg.getButtonTexts();
@@ -73,13 +70,14 @@ int StartScreen::update(float delta)
 
 void StartScreen::present()
 {
-    SimpleShaderProgram& program = m_graphics->getSimpleShader();
+    SimpleShaderProgram& program = SimpleShaderProgram::getInstance();
+    const App& app = App::getInstance();
 
     program.use();
-    program.setViewportSize(m_viewportSize);
+    program.setViewportSize(app.getViewportSize());
     program.setViewportOrigin(m_viewportOrigin);
 
-    m_buttons.present(*m_graphics);
+    m_buttons.present();
 }
 
 int StartScreen::processInput(const InputEvent& e)

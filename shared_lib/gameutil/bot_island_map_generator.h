@@ -16,18 +16,18 @@ public:
 
     virtual bool init(const rapidjson::Value& json,
                       const PlayerTemplate* playerTemplate,
-                      const NamedMap<AIRobotTemplate>& aiRobotTemplateLib,
+                      const NamedMap<AIRobotTemplate>& robotTemplateLib,
                       const NamedMap<TileTemplate>& tileTemplateLib,
                       int maxRobotCount);
 
-    virtual bool generate(const char* fileName);
+    virtual bool generate(const char* fileName) const;
 
 private:
-    void generateTiles(GeneratedMap& map);
+    void generateTiles(GeneratedMap& map) const;
 
     void generateIsland(GeneratedMap& map, const std::string* tileName,
                         const TileTemplate* t, int islandSlotX, int islandSlotY,
-                        int rows, int cols);
+                        int rows, int cols) const;
 
 private:
     // min and max length of islands in terms of tiles

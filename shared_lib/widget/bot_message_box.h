@@ -7,7 +7,6 @@
 
 namespace bot {
 
-class Graphics;
 class TextSystem;
 class MessageBoxConfig;
 class ButtonConfig;
@@ -35,7 +34,7 @@ public:
 
     void setButtonVisible(int buttonIdx, bool visible);
 
-    void show(Graphics& g);
+    void show();
 
     int processInput(const InputEvent& e);
 

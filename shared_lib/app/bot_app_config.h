@@ -2,26 +2,22 @@
 #define INCLUDE_BOT_APP_CONFIG
 
 #include <string>
+#include <memory>
 
 namespace bot {
 
 class AppConfig {
 public:
-    AppConfig()
-        : m_width(0)
-        , m_height(0)
-        , m_eventQueueSize(0)
-        , m_timeDeltaHistoryLen(0)
-        , m_level(0)
-        , m_mapPoolFactor(0.0f)
-        , m_missilePoolSize(0)
-        , m_maxRobotCount(0)
-    {}
+    static bool initInstance(const std::string& appDir,
+                             const std::string& cfgFile);
+
+    static AppConfig& getInstance()
+    {
+        return *k_appCfg;
+    }
 
     ~AppConfig()
     {}
-
-    bool load(const std::string& appDir, const std::string& cfgFile);
 
     const std::string& getResDir() const
     {
@@ -238,11 +234,25 @@ public:
     bool setMaxRobotCount(int count);
 
 private:
+    AppConfig()
+        : m_width(0)
+        , m_height(0)
+        , m_eventQueueSize(0)
+        , m_timeDeltaHistoryLen(0)
+        , m_level(0)
+        , m_mapPoolFactor(0.0f)
+        , m_missilePoolSize(0)
+        , m_maxRobotCount(0)
+    {}
+
+    bool load(const std::string& appDir, const std::string& cfgFile);
+
     bool readConfig(const std::string& cfgFile);
 
     void marshalConfig();
 
 private:
+    static std::shared_ptr<AppConfig> k_appCfg;
     std::string m_appDir;
     std::string m_resDir;
     std::string m_libDir;

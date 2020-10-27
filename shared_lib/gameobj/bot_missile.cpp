@@ -1,6 +1,5 @@
 #include "misc/bot_log.h"
 #include "opengl/bot_texture.h"
-#include "opengl/bot_graphics.h"
 #include "geometry/bot_rectangle.h"
 #include "gameutil/bot_collide.h"
 #include "gameobj/bot_robot.h"
@@ -45,10 +44,10 @@ bool Missile::init(const MissileTemplate* t, const Robot* shooter, float damage,
     return true;
 }
 
-void Missile::present(Graphics& g)
+void Missile::present()
 {
     const MissileTemplate* t = static_cast<const MissileTemplate*>(m_template);
-    t->getRect()->draw(g, m_pos, m_direction, nullptr, nullptr,
+    t->getRect()->draw(m_pos, m_direction, nullptr, nullptr,
                        t->getTexture()->textureId(), t->getColor());
 }
 
@@ -107,7 +106,8 @@ void Missile::explode(GameScreen& gameScreen)
     GameObjectManager& gameObjMgr = gameScreen.getGameObjManager();
 
     ParticleEffect* explosion = gameObjMgr.createParticleEffect(
-                                    t->getExplosionTemplate(), getPosX(), getPosY());
+                                                t->getExplosionTemplate(),
+                                                getPosX(), getPosY());
     if (!map.addObject(explosion))
     {
         gameObjMgr.sendToDeathQueue(explosion);
@@ -173,8 +173,10 @@ bool Missile::checkExplosion(GameObject* obj, float left, float bottom,
     }
 
     bool touch = checkRectOverlapp(left, bottom, right, top,
-                                   obj->getCollideLeft(), obj->getCollideBottom(),
-                                   obj->getCollideRight(), obj->getCollideTop());
+                                   obj->getCollideLeft(),
+                                   obj->getCollideBottom(),
+                                   obj->getCollideRight(),
+                                   obj->getCollideTop());
     if (!touch)
     {
         return true;

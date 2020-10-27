@@ -1,6 +1,7 @@
 #ifndef INCLUDE_BOT_SCREEN_MANAGER
 #define INCLUDE_BOT_SCREEN_MANAGER
 
+#include <memory>
 #include "misc/bot_constants.h"
 #include "screen/bot_screen.h"
 
@@ -8,19 +9,17 @@ namespace bot {
 
 class Screen;
 struct InputEvent;
-class GameLib;
-class Graphics;
-class AppConfig;
-class ScreenManager;
 
 class ScreenManager {
 public:
-    ScreenManager();
+    static bool initInstance(Screen::Type startScreenType);
+
+    ScreenManager& getInstance()
+    {
+        return *k_screenMgr;
+    }
 
     ~ScreenManager();
-
-    virtual bool init(const AppConfig* cfg, GameLib* lib, Graphics* g,
-                      Screen::Type startScreenType, float viewportWidth, float viewportHeight);
 
     int update(float delta);
 
@@ -31,10 +30,12 @@ public:
     bool switchScreen(Screen::Type type);
 
 private:
-    GameLib* m_lib;
-    const AppConfig* m_cfg;
-    Graphics* m_graphics;
-    float m_viewportSize[Constants::NUM_FLOATS_PER_POSITION];
+    ScreenManager();
+
+    bool init(Screen::Type startScreenType);
+
+private:
+    static std::shared_ptr<ScreenManager> k_screenMgr;
     Screen::Type m_curScreenType;
     Screen* m_prevScreen;
     Screen* m_curScreen;

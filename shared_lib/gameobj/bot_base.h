@@ -8,8 +8,7 @@
 namespace bot {
 
 class BaseTemplate;
-class Graphics;
-class GameScreen;
+class Robot;
 
 class Base {
     enum {
@@ -22,14 +21,14 @@ public:
     virtual ~Base()
     {}
 
-    bool init(const BaseTemplate* t, int hpLevel, int hpRestoreLevel,
+    bool init(const BaseTemplate* t, Robot* robot,
+              int hpLevel, int hpRestoreLevel,
               int armorLevel, int armorRepairLevel,
-              int powerLevel, int powerRestoreLevel,
-              float x, float y, float directionX, float directionY);
+              int powerLevel, int powerRestoreLevel);
 
-    void update(GameScreen& screen);
+    void update();
 
-    void present(Graphics& g, const float* pos, const float* direction);
+    void present();
 
     float getHP() const
     {
@@ -102,14 +101,14 @@ public:
 
     void shiftWeaponMoverPos(float deltaX, float deltaY);
 
-    void setWeaponMoverPos(float x, float y,
-                           float directionX, float directionY);
+    void resetWeaponMoverPos();
 
 private:
     void resetHPPercentStr();
 
 protected:
     const BaseTemplate* m_baseTemplate;
+    Robot* m_robot;
     float m_hp, m_maxHP, m_hpRestoreRate;
     int m_hpPercent;
     float m_armor, m_maxArmor, m_armorRepairRate;
@@ -118,6 +117,7 @@ protected:
     float m_weaponPos[Constants::NUM_FLOATS_PER_POSITION];
     float m_moverPos[Constants::NUM_FLOATS_PER_POSITION];
     char m_hpPercentStr[HP_PERCENT_STR_LEN];
+    float m_hpStrPos[Constants::NUM_FLOATS_PER_POSITION];
 };
 
 } // end of namespace bot

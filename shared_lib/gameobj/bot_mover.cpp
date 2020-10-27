@@ -1,14 +1,13 @@
 #include "misc/bot_log.h"
-#include "opengl/bot_graphics.h"
 #include "gametemplate/bot_mover_template.h"
 #include "gameobj/bot_robot.h"
-#include "gameobj/bot_mover.h"
 #include "screen/bot_game_screen.h"
 
 namespace bot {
 
 Mover::Mover()
     : m_moverTemplate(nullptr)
+    , m_robot(nullptr)
     , m_moving(false)
     , m_speed(0.0f)
     , m_normalSpeed(0.0f)
@@ -16,8 +15,21 @@ Mover::Mover()
 {
 }
 
-bool Mover::init(const MoverTemplate* moverTemplate, int moverLevel)
+bool Mover::init(const MoverTemplate* moverTemplate, Robot* robot,
+                 int moverLevel)
 {
+    if (!moverTemplate)
+    {
+        LOG_ERROR("moverTemplate is null");
+        return false;
+    }
+
+    if (!robot)
+    {
+        LOG_ERROR("robot is null");
+        return false;
+    }
+
     if (moverLevel < 0)
     {
         LOG_ERROR("Invalid mover-level %d", moverLevel);
@@ -25,6 +37,7 @@ bool Mover::init(const MoverTemplate* moverTemplate, int moverLevel)
     }
 
     m_moverTemplate = moverTemplate;
+    m_robot = robot;
     m_moving = false;
     m_normalSpeed = moverTemplate->getSpeed(moverLevel);
     m_speedMultiplier = 1.0f;
@@ -33,7 +46,7 @@ bool Mover::init(const MoverTemplate* moverTemplate, int moverLevel)
     return true;
 }
 
-bool Mover::update(GameScreen& screen, Robot& robot, float delta)
+bool Mover::update(GameScreen& screen, float delta)
 {
     if (!m_moving)
     {
@@ -46,7 +59,7 @@ bool Mover::update(GameScreen& screen, Robot& robot, float delta)
     LinkedList<GameObjectItem> collideObjs;
     GameMap& map = screen.getMap();
 
-    bool collide = map.checkCollision(newDelta, &collideObjs, &robot,
+    bool collide = map.checkCollision(newDelta, &collideObjs, m_robot,
                                       speedX, speedY, delta);
 
     if (!collideObjs.isEmpty())
@@ -55,16 +68,18 @@ bool Mover::update(GameScreen& screen, Robot& robot, float delta)
         map.freeGameObjList(collideObjs);
     }
 
-    robot.shiftPos(speedX * newDelta, speedY * newDelta);
+    m_robot->shiftPos(speedX * newDelta, speedY * newDelta);
     map.repositionObject(&robot);
 
     return collide;
 }
 
-void Mover::present(Graphics& g, const float* pos, const float* direction)
+void Mover::present()
 {
+    const Base& base = m_robot->getBase();
     m_moverTemplate->getRect()->draw(
-                                g, pos, direction, nullptr, nullptr,
+                                base.getMoverPos(), m_robot->getDirection(),
+                                nullptr, nullptr,
                                 m_moverTemplate->getTexture()->textureId(),
                                 nullptr);
 }

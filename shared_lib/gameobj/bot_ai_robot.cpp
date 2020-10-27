@@ -1,5 +1,4 @@
 #include "misc/bot_log.h"
-#include "opengl/bot_graphics.h"
 #include "gametemplate/bot_ai_robot_template.h"
 #include "gameobj/bot_ai_robot.h"
 #include "ai/bot_ai.h"
@@ -36,9 +35,9 @@ bool AIRobot::init(const AIRobotTemplate* t, Side side,
     return true;
 }
 
-void AIRobot::present(Graphics& g)
+void AIRobot::present()
 {
-    Robot::present(g);
+    Robot::present();
 }
 
 void AIRobot::update(float delta, GameScreen& screen)

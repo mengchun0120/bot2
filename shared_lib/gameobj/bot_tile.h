@@ -16,7 +16,7 @@ public:
 
     bool init(const TileTemplate* tileTemplate, int level, float x, float y);
 
-    virtual void present(Graphics& g);
+    virtual void present();
 
     virtual void update(float delta, GameScreen& screen);
 

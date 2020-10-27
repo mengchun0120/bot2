@@ -1,6 +1,5 @@
 #include "misc/bot_log.h"
 #include "misc/bot_file_utils.h"
-#include "geometry/bot_rectangle.h"
 #include "opengl/bot_simple_shader_program.h"
 #include "opengl/bot_text_system.h"
 
@@ -67,9 +66,25 @@ bool loadTextSystemRectangles(std::unordered_map<int, Rectangle> *rects,
     return true;
 }
 
+std::shared_ptr<TextSystem> TextSystem::k_textSys;
+
+bool TextSystem::initInstance(const std::string& fontFolder)
+{
+    TextSystem* textSys = new TextSystem();
+
+    if (textSys->init(fontFolder))
+    {
+        delete textSys;
+        return false;
+    }
+
+    k_textSys.reset(textSys);
+
+    return true;
+}
+
 TextSystem::TextSystem()
 {
-
 }
 
 TextSystem::~TextSystem()
@@ -91,14 +106,15 @@ bool TextSystem::init(const std::string& fontFolder)
     return true;
 }
 
-void TextSystem::drawString(SimpleShaderProgram& program, const char* str,
-                            TextSize size, const float* pos,
-                            const float* color) const
+void TextSystem::drawString(const char* str, TextSize size,
+                            const float* pos, const float* color) const
 {
     if (str[0] == '\0')
     {
         return;
     }
+
+    SimpleShaderProgram& program = SimpleShaderProgram::getInstance();
 
     program.setUseColor(false);
     program.setUseObjRef(true);

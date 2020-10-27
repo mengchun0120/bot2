@@ -23,7 +23,7 @@ public:
     bool init(const PlayerTemplate* playerTemplate, float x, float y,
               float directionX, float directionY);
 
-    virtual void present(Graphics& g);
+    virtual void present();
 
     virtual void update(float delta, GameScreen& screen);
 

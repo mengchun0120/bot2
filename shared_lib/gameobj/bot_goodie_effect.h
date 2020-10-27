@@ -6,8 +6,6 @@
 
 namespace bot {
 
-class Graphics;
-
 class GoodieEffect {
 public:
     GoodieEffect()
@@ -46,7 +44,7 @@ public:
 
     void start();
 
-    void draw(Graphics& g, const float* pos) const;
+    void draw(const float* pos) const;
 
     const TimePoint& getStartTime() const
     {

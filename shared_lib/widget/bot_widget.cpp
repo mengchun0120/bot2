@@ -13,6 +13,7 @@ Widget::Widget()
     , m_top(0.0f)
     , m_bottom(0.0f)
     , m_visible(true)
+    , m_acceptInput(false)
 {
     m_pos[0] = 0.0f;
     m_pos[1] = 0.0f;
@@ -20,7 +21,7 @@ Widget::Widget()
 
 bool Widget::init(float x, float y, float width, float height,
                   const Texture* texture, const Color* borderColor,
-                  const Color* backColor)
+                  const Color* backColor, bool acceptInput)
 {
     if (!m_rect.init(width, height))
     {
@@ -32,6 +33,7 @@ bool Widget::init(float x, float y, float width, float height,
     setTexture(texture);
     setBorderColor(borderColor);
     setBackColor(backColor);
+    m_acceptInput = acceptInput;
 
     return true;
 }
@@ -46,16 +48,16 @@ void Widget::setPos(float x, float y)
     m_top = y + m_rect.height();
 }
 
-void Widget::present(Graphics& g)
+void Widget::present()
 {
     if (m_texture)
     {
-        m_rect.draw(g, m_pos, nullptr, nullptr, nullptr,
+        m_rect.draw(m_pos, nullptr, nullptr, nullptr,
                     m_texture->textureId(), nullptr);
     }
     else if (m_borderColor || m_backColor)
     {
-        m_rect.draw(g, m_pos, nullptr, m_backColor, m_borderColor,
+        m_rect.draw(m_pos, nullptr, m_backColor, m_borderColor,
                     0, nullptr);
     }
 }

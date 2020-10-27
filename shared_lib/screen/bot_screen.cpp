@@ -5,8 +5,7 @@
 
 namespace bot {
 
-Screen* Screen::create(Type type, const AppConfig* cfg, GameLib* lib, Graphics* g,
-                       ScreenManager* screenMgr, float viewportWidth, float viewportHeight)
+Screen* Screen::create(Type type)
 {
     Screen* screen = nullptr;
     switch(type)
@@ -16,7 +15,7 @@ Screen* Screen::create(Type type, const AppConfig* cfg, GameLib* lib, Graphics* 
             LOG_INFO("Show start screen");
 
             StartScreen* startScreen = new StartScreen();
-            if (startScreen->init(lib, viewportWidth, viewportHeight, screenMgr, g))
+            if (startScreen->init())
             {
                 screen = startScreen;
             }
@@ -34,7 +33,7 @@ Screen* Screen::create(Type type, const AppConfig* cfg, GameLib* lib, Graphics* 
             LOG_INFO("Show game screen");
 
             GameScreen* gameScreen = new GameScreen();
-            if (gameScreen->init(*cfg, lib, g, screenMgr, viewportWidth, viewportHeight))
+            if (gameScreen->init())
             {
                 screen = gameScreen;
             }
@@ -52,7 +51,7 @@ Screen* Screen::create(Type type, const AppConfig* cfg, GameLib* lib, Graphics* 
             LOG_INFO("Show map screen");
 
             ShowMapScreen* showMapScreen = new ShowMapScreen();
-            if (showMapScreen->init(*cfg, lib, g, viewportWidth, viewportHeight))
+            if (showMapScreen->init())
             {
                 screen = showMapScreen;
             }

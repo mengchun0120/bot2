@@ -52,9 +52,9 @@ bool Player::init(const PlayerTemplate* playerTemplate, float x, float y,
     return true;
 }
 
-void Player::present(Graphics& g)
+void Player::present()
 {
-    Robot::present(g);
+    Robot::present();
 }
 
 void Player::update(float delta, GameScreen& screen)

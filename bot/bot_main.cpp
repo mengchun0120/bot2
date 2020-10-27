@@ -158,12 +158,13 @@ int main(int argc, char* argv[])
         exit(1);
     }
 
-    bot::AppConfig cfg;
-    if (!cfg.load(appDir, cfgFile))
+    if (!AppConfig::initInstance(appDir, cfgFile))
     {
-        LOG_ERROR("Failed to load config file from %s", cfgFile);
+        LOG_ERROR("Failed to load config file from %s", cfgFile.c_str());
         exit(1);
     }
+
+    AppConfig& cfg = AppConfig::getInstance();
 
     if (!mapFile.empty())
     {
@@ -191,11 +192,12 @@ int main(int argc, char* argv[])
         }
     }
 
-    bot::App app;
-    if (!app.init(&cfg, screen))
+    if (!App::initInstance(screen))
     {
         exit(1);
     }
+
+    App& app = App::getInstance();
 
     bool ret = app.run();
 

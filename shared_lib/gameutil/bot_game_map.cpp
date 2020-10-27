@@ -1,7 +1,6 @@
 #include <algorithm>
 #include "misc/bot_log.h"
 #include "misc/bot_math_utils.h"
-#include "gameobj/bot_game_object.h"
 #include "gameobj/bot_player.h"
 #include "gameobj/bot_missile.h"
 #include "gameutil/bot_collide.h"
@@ -52,7 +51,7 @@ void GameMap::initMap(int numRows, int numCols, int gameObjPoolSize,
     m_maxViewportY = m_mapHeight - m_viewportBreathY;
 }
 
-void GameMap::present(Graphics& g)
+void GameMap::present()
 {
     static const GameObjectType LAYER_ORDER[] = {
         GAME_OBJ_TYPE_TILE,
@@ -88,7 +87,7 @@ void GameMap::present(Graphics& g)
                         continue;
                     }
 
-                    obj->present(g);
+                    obj->present();
                     obj->setFlag(GAME_OBJ_FLAG_DRAWN);
                 }
             }

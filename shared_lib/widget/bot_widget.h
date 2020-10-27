@@ -9,7 +9,6 @@ namespace bot {
 struct KeyEvent;
 struct MouseMoveEvent;
 struct MouseButtonEvent;
-class Graphics;
 
 class Widget {
 public:
@@ -54,7 +53,7 @@ public:
         m_backColor = color;
     }
 
-    virtual void present(Graphics& g);
+    virtual void present();
 
     virtual void onLostFocus()
     {}
@@ -74,6 +73,16 @@ public:
 
     bool containPos(float x, float y) const;
 
+    bool isAcceptInput() const
+    {
+        return m_acceptInput;
+    }
+
+    void setAccetpInput(bool accept)
+    {
+        m_acceptInput = accept;
+    }
+
 protected:
     float m_pos[Constants::NUM_FLOATS_PER_POSITION];
     Rectangle m_rect;
@@ -82,6 +91,7 @@ protected:
     const Color* m_backColor;
     float m_left, m_right, m_top, m_bottom;
     bool m_visible;
+    bool m_acceptInput;
 };
 
 } // end of namespace bot

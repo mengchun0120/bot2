@@ -28,16 +28,16 @@ bool GoodieEffect::update(const TimePoint& now)
     return m_percent >= 1.0f;
 }
 
-void GoodieEffect::draw(Graphics& g, const float* pos) const
+void GoodieEffect::draw(const float* pos) const
 {
     if (m_template->getProgressRing())
     {
-        m_template->getProgressRing()->draw(g, pos, m_percent);
+        m_template->getProgressRing()->draw(pos, m_percent);
     }
 
     if (m_template->getEffectRect())
     {
-        m_template->getEffectRect()->draw(g, pos, nullptr, nullptr, nullptr,
+        m_template->getEffectRect()->draw(pos, nullptr, nullptr, nullptr,
                                           m_template->getTexture()->textureId(),
                                           nullptr);
     }

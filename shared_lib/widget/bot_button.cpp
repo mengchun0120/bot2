@@ -1,6 +1,6 @@
 #include "opengl/bot_opengl.h"
 #include "opengl/bot_color.h"
-#include "opengl/bot_graphics.h"
+#include "opengl/bot_text_system.h"
 #include "input/bot_input_event.h"
 #include "widget/bot_button_config.h"
 #include "widget/bot_button.h"
@@ -15,26 +15,43 @@ Button::Button()
     m_textPos[1] = 0.0f;
 }
 
-bool Button::init(const ButtonConfig* cfg, const Rectangle* rect,
-                  const std::string& text)
+bool Button::init(const ButtonConfig* cfg, float x, float y,
+                  float width, float height, const std::string& text)
 {
-    Widget::init(rect);
+    bool ret = Widget::init(x, y, width, height, cfg->getTexture(),
+                            nullptr, nullptr);
+    if (!ret)
+    {
+        return false;
+    }
+
     m_cfg = cfg;
-    m_text = text;
     m_textColor = cfg->getNormalTextColor();
+    setText(text);
 
     return true;
 }
 
-void Button::setPos(const TextSystem& textSys, float x, float y)
+void Button::setText(const std::string& text)
 {
+    m_text = text;
+
+    float w, h;
+    const TextSystem& textSys = TextSystem::getInstance();
+
+    textSys.getStringSize(w, h, TEXT_SIZE_BIG, m_text);
+    m_textPos[0] = m_pos[0] - w / 2.0f;
+    m_textPos[1] = m_pos[1] - h / 2.0f;
+}
+
+void Button::setPos(float x, float y)
+{
+    float oldX = m_pos[0], oldY = m_pos[1];
+
     Widget::setPos(x, y);
 
-    float textWidth, textHeight;
-    textSys.getStringSize(textWidth, textHeight, TEXT_SIZE_BIG, m_text);
-
-    m_textPos[0] = m_pos[0] - textWidth / 2.0f;
-    m_textPos[1] = m_pos[1] - textHeight / 2.0f;
+    m_textPos[0] += m_pos[0] - oldX;
+    m_textPos[1] += m_pos[1] - oldY;
 }
 
 int Button::processMouseMoveEvent(const MouseMoveEvent& event)
@@ -65,17 +82,21 @@ void Button::onMouseOut()
     m_textColor = m_cfg->getNormalTextColor();
 }
 
-void Button::present(Graphics& g)
+void Button::present()
 {
     if (!m_visible)
     {
         return;
     }
 
-    m_rect->draw(g, m_pos, nullptr, nullptr, nullptr,
+    m_rect->draw(m_pos, nullptr, nullptr, nullptr,
                  m_cfg->getTexture()->textureId(), nullptr);
-    g.getTextSystem().drawString(g.getSimpleShader(), m_text, TEXT_SIZE_BIG,
-                                 m_textPos, m_textColor->getColor());
+
+    const TextSystem& textSys = TextSystem::getInstance();
+
+    textSys.drawString(m_text, TEXT_SIZE_BIG,
+                       m_textPos, m_textColor->getColor());
 }
 
 } // end of namespace bot
+

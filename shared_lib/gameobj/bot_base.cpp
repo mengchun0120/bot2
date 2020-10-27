@@ -4,16 +4,18 @@
 #include "misc/bot_math_utils.h"
 #include "opengl/bot_texture.h"
 #include "opengl/bot_color.h"
-#include "opengl/bot_graphics.h"
+#include "opengl/bot_simple_shader_program.h"
+#include "opengl/bot_text_system.h"
 #include "geometry/bot_rectangle.h"
 #include "gametemplate/bot_base_template.h"
-#include "gameobj/bot_base.h"
+#include "gameobj/bot_robot.h"
 #include "screen/bot_game_screen.h"
 
 namespace bot {
 
 Base::Base()
     : m_baseTemplate(nullptr)
+    , m_robot(nullptr)
     , m_hp(0.0f)
     , m_maxHP(0.0f)
     , m_hpRestoreRate(0.0f)
@@ -27,14 +29,20 @@ Base::Base()
 {
 }
 
-bool Base::init(const BaseTemplate* t, int hpLevel, int hpRestoreLevel,
+bool Base::init(const BaseTemplate* t, Robot* robot,
+                int hpLevel, int hpRestoreLevel,
                 int armorLevel, int armorRepairLevel,
-                int powerLevel, int powerRestoreLevel,
-                float x, float y, float directionX, float directionY)
+                int powerLevel, int powerRestoreLevel)
 {
     if (!t)
     {
         LOG_ERROR("BaseTemplate is null");
+        return false;
+    }
+
+    if (!robot)
+    {
+        LOG_ERROR("robot is null");
         return false;
     }
 
@@ -75,6 +83,7 @@ bool Base::init(const BaseTemplate* t, int hpLevel, int hpRestoreLevel,
     }
 
     m_baseTemplate = t;
+    m_robot = robot;
 
     m_maxHP = t->getHP(hpLevel);
     setHP(m_maxHP);
@@ -88,14 +97,14 @@ bool Base::init(const BaseTemplate* t, int hpLevel, int hpRestoreLevel,
     m_power = m_maxPower;
     m_powerRestoreRate = t->getPowerRestoreRate(powerRestoreLevel);
 
-    setWeaponMoverPos(x, y, directionX, directionY);
+    resetWeaponMoverPos();
 
     m_lastUpdateTime = Clock::now();
 
     return true;
 }
 
-void Base::update(GameScreen& screen)
+void Base::update()
 {
     TimePoint now = Clock::now();
     float timeDist = timeDistS(m_lastUpdateTime, now);
@@ -112,25 +121,18 @@ void Base::update(GameScreen& screen)
     m_lastUpdateTime = now;
 }
 
-void Base::present(Graphics& g, const float* pos, const float* direction)
+void Base::present()
 {
-    m_baseTemplate->getRect()->draw(g, pos, direction, nullptr, nullptr,
+    m_baseTemplate->getRect()->draw(m_robot->getPos(), m_robot->getDirection(),
+                                    nullptr, nullptr,
                                     m_baseTemplate->getTexture()->textureId(),
                                     nullptr);
 
-    TextSystem& textSys = g.getTextSystem();
-    float w, h;
-    float p[Constants::NUM_FLOATS_PER_POSITION];
-
-    textSys.getStringSize(w, h, TEXT_SIZE_TINY, m_hpPercentStr);
-    p[0] = pos[0] - w / 2.0f;
-    p[1] = pos[1] - h / 2.0f;
-
-    SimpleShaderProgram& shader = g.getSimpleShader();
+    SimpleShaderProgram& shader = SimpleShaderProgram::getInstance();
 
     shader.setUseDirection(false);
-    textSys.drawString(shader, m_hpPercentStr, TEXT_SIZE_TINY,
-                       p, m_baseTemplate->getHPColor()->getColor());
+    textSys.drawString(m_hpPercentStr, TEXT_SIZE_TINY,
+                       m_hpStrPos, m_baseTemplate->getHPColor()->getColor());
 }
 
 void Base::setHP(float hp)
@@ -155,11 +157,15 @@ void Base::shiftWeaponMoverPos(float deltaX, float deltaY)
     m_moverPos[1] += deltaY;
 }
 
-void Base::setWeaponMoverPos(float x, float y,
-                             float directionX, float directionY)
+void Base::resetWeaponMoverPos()
 {
     float dx = m_baseTemplate->getWeaponPosX();
     float dy = m_baseTemplate->getWeaponPosY();
+
+    float x = m_robot->getPosX();
+    float y = m_robot->getPosY();
+    float directionX = m_robot->getDirectionX();
+    float directionY = m_robot->getDirectionY();
 
     rotate(dx, dy, directionX, directionY);
     m_weaponPos[0] = x + dx;
@@ -175,6 +181,13 @@ void Base::setWeaponMoverPos(float x, float y,
 void Base::resetHPPercentStr()
 {
     snprintf(m_hpPercentStr, sizeof(m_hpPercentStr), "%d%%", m_hpPercent);
+
+    TextSystem& textSys = TextSystem::getInstance();
+    float w, h;
+
+    textSys.getStringSize(w, h, TEXT_SIZE_TINY, m_hpPercentStr);
+    m_hpStrPos[0] = m_robot->getPosX() - w / 2.0f;
+    m_hpStrPos[1] = m_robot->getPosY() - h / 2.0f;
 }
 
 } // end of namespace bot

@@ -8,7 +8,6 @@
 namespace bot {
 
 struct InputEvent;
-class Graphics;
 
 class WidgetGroup {
 public:
@@ -42,7 +41,7 @@ public:
 
     int processInput(const InputEvent& event);
 
-    void present(Graphics& g);
+    void present();
 
 private:
     int processKeyEvent(const KeyEvent& event);

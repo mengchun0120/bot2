@@ -8,7 +8,6 @@
 namespace bot {
 
 class GameScreen;
-class Graphics;
 
 class GameObject: public DoubleLinkedItem {
 public:
@@ -24,9 +23,14 @@ public:
         return m_template->getType();
     }
 
-    virtual void present(Graphics& g) = 0;
+    virtual void present() = 0;
 
     virtual void update(float delta, GameScreen& screen) = 0;
+
+    const float* getPos() const
+    {
+        return m_pos;
+    }
 
     float getPosX() const
     {

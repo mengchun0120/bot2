@@ -14,7 +14,6 @@ namespace bot {
 class Player;
 class Robot;
 class Missile;
-class Graphics;
 
 class GameMap {
 public:
@@ -32,7 +31,7 @@ public:
 
     void clear();
 
-    void present(Graphics& g);
+    void present();
 
     int getNumRows() const
     {

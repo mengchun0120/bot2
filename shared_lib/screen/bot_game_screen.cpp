@@ -19,10 +19,7 @@ using namespace rapidjson;
 namespace bot {
 
 GameScreen::GameScreen()
-    : m_lib(nullptr)
-    , m_graphics(nullptr)
-    , m_gameObjManager()
-    , m_state(GAME_STATE_INIT)
+    : m_state(GAME_STATE_INIT)
     , m_visibleMsgBoxIdx(-1)
 {
 }
@@ -31,21 +28,19 @@ GameScreen::~GameScreen()
 {
 }
 
-bool GameScreen::init(const AppConfig& cfg, const GameLib* lib,
-                      Graphics* g, ScreenManager* screenManager,
-                      float viewportWidth, float viewportHeight)
+bool GameScreen::init()
 {
     LOG_INFO("Initializing GameScreen");
 
-    m_lib = lib;
-    m_graphics = g;
-    m_viewportSize[0] = viewportWidth;
-    m_viewportSize[1] = viewportHeight;
-    m_screenManager = screenManager;
-    m_gameObjManager.init(&m_map, cfg, m_lib);
+    const GameLib& lib = GameLib::getInstance();
+    const App& app = App::getInstance();
+    const AppConfig& cfg = AppConfig::getInstance();
+    float viewportWidth = app.getViewportWidth();
+    float viewportHeight = app.getViewportHeight();
 
-    initMessageBoxes(lib->getMessageBoxConfig(), lib->getButtonConfig(),
-                     g->getTextSystem());
+    m_gameObjManager.init(&m_map, cfg, &m_lib);
+
+    initMessageBoxes(lib.getMessageBoxConfig(), lib.getButtonConfig());
 
     if (!loadMap(cfg.getMapFile(), cfg))
     {
@@ -53,8 +48,7 @@ bool GameScreen::init(const AppConfig& cfg, const GameLib* lib,
         return false;
     }
 
-    m_dashboard.init(m_map.getPlayer(), &m_lib->getDashboardConfig(),
-                     m_viewportSize[1], m_graphics->getTextSystem());
+    m_dashboard.init(m_map.getPlayer(), &lib.getDashboardConfig());
 
     LOG_INFO("Done loading dashboard");
 
@@ -67,10 +61,9 @@ bool GameScreen::init(const AppConfig& cfg, const GameLib* lib,
 }
 
 void GameScreen::initMessageBoxes(const MessageBoxConfig& msgBoxCfg,
-                                  const ButtonConfig& buttonCfg,
-                                  const TextSystem& textSys)
+                                  const ButtonConfig& buttonCfg)
 {
-    m_msgBoxes.resize(MSGBOX_COUNT);
+/*    m_msgBoxes.resize(MSGBOX_COUNT);
 
     Button::ActionFunc exitFunc = std::bind(GameScreen::exitGame, this);
     Button::ActionFunc resumeFunc = std::bind(GameScreen::resumeGame, this);
@@ -104,15 +97,20 @@ void GameScreen::initMessageBoxes(const MessageBoxConfig& msgBoxCfg,
                       "You are defeated", buttons2);
     defeatMsgBox.setAction(0, exitFunc);
     defeatMsgBox.setAction(1, restartFunc);
+*/
 }
 
-bool GameScreen::loadMap(const std::string& fileName, const AppConfig& cfg)
+bool GameScreen::loadMap(const std::string& fileName)
 {
     LOG_INFO("Loading map from %s", fileName.c_str());
 
+    const App& app = App::getInstance();
+    const AppConfig& cfg = AppConfig::getInstance();
+
     GameMapLoader mapLoader(m_gameObjManager, cfg.getMapPoolFactor());
     bool success = mapLoader.load(m_map, fileName, cfg.getLevel(),
-                                  m_viewportSize[0], m_viewportSize[1]);
+                                  app.getViewportWidth(),
+                                  app.getViewportHeight());
     if (!success)
     {
         return false;
@@ -154,10 +152,11 @@ int GameScreen::update(float delta)
 
         m_state = GAME_STATE_END;
         m_map.setPlayer(nullptr);
-        m_msgBoxVisible = true;
+/*        m_msgBoxVisible = true;
         m_msgBox.init(&m_lib->getMessageBoxConfig(), &m_lib->getButtonConfig(),
                       m_graphics->getTextSystem(), MessageBox::OPTION_OK, msg);
         m_msgBox.setOKAction(std::bind(&GameScreen::switchToStart, this));
+*/
     }
 
     clearDeadObjects();
@@ -167,10 +166,11 @@ int GameScreen::update(float delta)
 
 void GameScreen::present()
 {
-    SimpleShaderProgram& simpleShaderProgram = m_graphics->getSimpleShader();
+    SimpleShaderProgram& simpleShader = SimpleShaderProgram::getInstance();
+    const App& app = App::getInstance();
 
-    simpleShaderProgram.use();
-    simpleShaderProgram.setViewportSize(m_viewportSize);
+    simpleShader.use();
+    simpleShader.setViewportSize(app.getViewportSize());
     simpleShaderProgram.setViewportOrigin(m_map.getViewportPos());
 
     static const GameObjectType LAYER_ORDER[] = {
@@ -208,14 +208,14 @@ void GameScreen::present()
                         continue;
                     }
 
-                    obj->present(*m_graphics);
+                    obj->present();
                     obj->setFlag(GAME_OBJ_FLAG_DRAWN);
                 }
             }
         }
     }
 
-    m_map.present(*m_graphics);
+    m_map.present();
     presentEffects();
     presentOverlay();
 }
@@ -306,10 +306,11 @@ void GameScreen::updateEffects(float delta)
 
 void GameScreen::presentEffects()
 {
-    ParticleShaderProgram& program = m_graphics->getParticleShader();
+    ParticleShaderProgram& program = ParticleShaderProgram::getInstance();
+    const App& app = App::getInstance();
 
     program.use();
-    program.setViewportSize(m_viewportSize);
+    program.setViewportSize(app.getViewportSize());
     program.setViewportOrigin(m_map.getViewportPos());
 
     ParticleEffect* effect = m_gameObjManager.getFirstParticleEffect();
@@ -317,24 +318,25 @@ void GameScreen::presentEffects()
     for (; effect; effect = next)
     {
         next = static_cast<ParticleEffect*>(effect->getNext());
-        effect->present(*m_graphics);
+        effect->present();
     }
 }
 
 void GameScreen::presentOverlay()
 {
-    SimpleShaderProgram& program = m_graphics->getSimpleShader();
+    SimpleShaderProgram& program = SimpleShaderProgram::getInstance();
+    const App& app = App::getInstance();
 
     program.use();
-    program.setViewportSize(m_viewportSize);
+    program.setViewportSize(app.getViewportSize());
     program.setViewportOrigin(m_dashboardOrigin);
 
-    m_dashboard.draw(*m_graphics);
-
+    m_dashboard.draw();
+/*
     if (m_msgBoxVisible)
     {
         m_msgBox.show(*m_graphics);
-    }
+    }*/
 }
 
 int GameScreen::handleMouseMove(const MouseMoveEvent& e)

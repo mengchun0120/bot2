@@ -4,7 +4,7 @@
 #include "misc/bot_json_utils.h"
 #include "structure/bot_named_map.h"
 #include "opengl/bot_color.h"
-#include "opengl/bot_graphics.h"
+#include "opengl/bot_simple_shader_program.h"
 #include "gameobj/bot_progress_ring.h"
 
 namespace bot {
@@ -129,9 +129,9 @@ bool ProgressRing::initVertexArray(float radius, int numEdges)
     return ret;
 }
 
-void ProgressRing::draw(Graphics& g, const float* pos, float percentage) const
+void ProgressRing::draw(const float* pos, float percentage) const
 {
-    SimpleShaderProgram& program = g.getSimpleShader();
+    SimpleShaderProgram& program = SimpleShaderProgram::getInstance();
 
     program.setUseObjRef(true);
     program.setObjRef(pos);

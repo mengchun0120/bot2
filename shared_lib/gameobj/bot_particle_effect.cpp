@@ -1,6 +1,6 @@
 #include "opengl/bot_color.h"
 #include "opengl/bot_texture.h"
-#include "opengl/bot_graphics.h"
+#include "opengl/bot_particle_shader_program.h"
 #include "gameobj/bot_particle_effect.h"
 #include "screen/bot_game_screen.h"
 
@@ -24,20 +24,20 @@ bool ParticleEffect::init(const ParticleEffectTemplate* t, float x, float y)
     return true;
 }
 
-void ParticleEffect::present(Graphics& g)
+void ParticleEffect::present()
 {
-    ParticleShaderProgram& particleProgram = g.getParticleShader();
+    ParticleShaderProgram& program = ParticleShaderProgram::getInstance;
     const ParticleEffectTemplate* t = getTemplate();
 
-    particleProgram.setRef(m_pos);
-    particleProgram.setAcceleration(t->getAcceleration());
-    particleProgram.setInitSpeed(t->getInitSpeed());
-    particleProgram.setColor(t->getColor()->getColor());
-    particleProgram.setParticleSize(t->getParticleSize());
-    particleProgram.setCurTime(m_duration);
-    particleProgram.setUseTex(true);
-    particleProgram.setTexture(t->getTexture()->textureId());
-    particleProgram.bindData(t->getVertexArray());
+    program.setRef(m_pos);
+    program.setAcceleration(t->getAcceleration());
+    program.setInitSpeed(t->getInitSpeed());
+    program.setColor(t->getColor()->getColor());
+    program.setParticleSize(t->getParticleSize());
+    program.setCurTime(m_duration);
+    program.setUseTex(true);
+    program.setTexture(t->getTexture()->textureId());
+    program.bindData(t->getVertexArray());
 
     glDrawArrays(GL_POINTS, 0, t->getNumParticles());
 }

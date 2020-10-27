@@ -37,7 +37,7 @@ public:
 
     bool init(const NamedMap<Color>& colorLib, const rapidjson::Value& elem);
 
-    void draw(Graphics& g, const float* pos, float percentage) const;
+    void draw(const float* pos, float percentage) const;
 
 private:
     bool initVertexArray(float radius, int numEdges);

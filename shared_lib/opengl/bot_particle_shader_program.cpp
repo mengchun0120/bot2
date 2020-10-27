@@ -5,6 +5,24 @@
 
 namespace bot {
 
+std::shared_ptr<ParticleShaderProgram> ParticleShaderProgram::k_program;
+
+bool ParticleShaderProgram::initInstance(const std::string& vertexShaderFile,
+                                         const std::string& fragShaderFile)
+{
+    ParticleShaderProgram* program = new ParticleShaderProgram();
+
+    if (!program->init(vertexShaderFile, fragShaderFile))
+    {
+        delete program;
+        return false;
+    }
+
+    k_program.reset(program);
+
+    return true;
+}
+
 ParticleShaderProgram::ParticleShaderProgram()
     : m_viewportSizeLocation(-1)
     , m_viewportOriginLocation(-1)

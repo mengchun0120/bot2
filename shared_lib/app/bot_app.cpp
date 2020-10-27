@@ -5,9 +5,25 @@
 
 namespace bot {
 
+std::shared_ptr<App> App::k_app;
+
+bool App::initInstance(Screen::Type startScreenType)
+{
+    App* app = new App();
+
+    if (!app->init(startScreenType))
+    {
+        delete app;
+        return false;
+    }
+
+    k_app.reset(app);
+
+    return true;
+}
+
 App::App()
     : m_window(nullptr)
-    , m_config(nullptr)
 {
     m_viewportSize[0] = 0.0f;
     m_viewportSize[1] = 0.0f;
@@ -21,10 +37,8 @@ App::~App()
     }
 }
 
-bool App::init(const AppConfig* cfg, Screen::Type startScreenType)
+bool App::init(Screen::Type startScreenType)
 {
-    m_config = cfg;
-
     if (!initWindow())
     {
         LOG_ERROR("Failed to initialize window");
@@ -156,15 +170,28 @@ bool App::initOpenGL()
     glEnable(GL_VERTEX_PROGRAM_POINT_SIZE);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    bool ret = m_graphics.init(m_config->getSimpleVertexShaderFile(),
-                               m_config->getSimpleFragShaderFile(),
-                               m_config->getParticleVertexShaderFile(),
-                               m_config->getParticleFragShaderFile(),
-                               m_config->getFontDir());
-
-    if (!ret)
+    bool success = SimpleShaderProgram::initInstance(
+                                m_config->getSimpleVertexShaderFile(),
+                                m_config->getSimpleFragShaderFile());
+    if (!success)
     {
-        LOG_ERROR("Failed to initialize graphics");
+        LOG_ERROR("Failed to initialize simple-shader");
+        return false;
+    }
+
+    success = ParticleShaderProgram::initInstance(
+                               m_config->getParticleVertexShaderFile(),
+                               m_config->getParticleFragShaderFile());
+    if (!success)
+    {
+        LOG_ERROR("Failed to initialie particle-shader");
+        return false;
+    }
+
+    success = TextSystem::initInstance(m_config->getFontDir());
+    if (!success)
+    {
+        LOG_ERROR("Failed to initialize text-system");
         return false;
     }
 
@@ -226,17 +253,18 @@ bool App::initTimeDeltaSmoother()
 
 bool App::initGameLib()
 {
-    LOG_INFO("Initializing game template libraries");
+    LOG_INFO("Initializing game-lib");
 
-    bool success = m_gameLib.load(m_viewportSize[0], m_viewportSize[1],
-                                  *m_config);
+    bool success = GameLib::initInstance(m_viewportSize[0], m_viewportSize[1],
+                                         *m_config);
 
     if (!success)
     {
+        LOG_ERROR("Failed to initialize game-lib");
         return false;
     }
 
-    LOG_INFO("Done initializing game template libraries");
+    LOG_INFO("Done initializing game-lib");
 
     return true;
 }

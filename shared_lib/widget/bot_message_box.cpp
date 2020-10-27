@@ -59,15 +59,18 @@ int MessageBox::processInput(const InputEvent& e)
     return m_buttons.processInput(e);
 }
 
-void MessageBox::show(Graphics& g)
+void MessageBox::show()
 {
-    m_cfg->getBoxRect()->draw(g, m_cfg->getBoxPos(), nullptr,
+    m_cfg->getBoxRect()->draw(m_cfg->getBoxPos(), nullptr,
                               m_cfg->getBoxFillColor(),
                               m_cfg->getBoxBorderColor(),
                               0, nullptr);
-    g.getTextSystem().drawString(g.getSimpleShader(), m_msg, TEXT_SIZE_BIG,
-                                 m_msgPos, m_cfg->getTextColor()->getColor());
-    m_buttons.present(g);
+
+    const TextSystem& textSys = TextSystem::getInstance();
+
+    textSys.drawString(m_msg, TEXT_SIZE_BIG, m_msgPos,
+                       m_cfg->getTextColor()->getColor());
+    m_buttons.present();
 }
 
 } // end of namespace bot

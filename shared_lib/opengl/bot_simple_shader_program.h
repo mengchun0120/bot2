@@ -1,6 +1,7 @@
 #ifndef INCLUDE_BOT_SIMPLE_SHADER_PROGRAM
 #define INCLUDE_BOT_SIMPLE_SHADER_PROGRAM
 
+#include <memory>
 #include "opengl/bot_opengl.h"
 #include "opengl/bot_shader_program.h"
 
@@ -10,12 +11,15 @@ class VertexArray;
 
 class SimpleShaderProgram: public ShaderProgram {
 public:
-    SimpleShaderProgram();
+    static bool initInstance(const std::string& vertexShaderFile,
+                             const std::string& fragShaderFile);
+
+    SimpleShaderProgram& getInstance()
+    {
+        return *k_program;
+    }
 
     virtual ~SimpleShaderProgram();
-
-    virtual bool init(const std::string& vertexShaderFile,
-                      const std::string& fragShaderFile);
 
     void setUseObjRef(bool enabled)
     {
@@ -71,9 +75,16 @@ public:
         glUniform4fv(m_texColorLocation, 1, color);
     }
 
-protected:
+private:
+    SimpleShaderProgram();
+
+    virtual bool init(const std::string& vertexShaderFile,
+                      const std::string& fragShaderFile);
+
     void loadParam();
 
+private:
+    static std::shared_ptr<SimpleShaderProgram> k_program;
     int m_positionLocation;
     int m_useObjRefLocation;
     int m_objRefLocation;

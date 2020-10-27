@@ -28,11 +28,11 @@ int WidgetGroup::processInput(const InputEvent& event)
     return 0;
 }
 
-void WidgetGroup::present(Graphics& g)
+void WidgetGroup::present()
 {
     for (auto& widget : m_widgets)
     {
-        widget->present(g);
+        widget->present();
     }
 }
 

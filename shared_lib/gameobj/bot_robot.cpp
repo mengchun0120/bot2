@@ -22,7 +22,7 @@ bool Robot::init(const RobotTemplate* t, Side side,
                  int hpLevel, int hpRestoreLevel,
                  int armorLevel, int armorRepairLevel,
                  int powerLevel, int powerRestoreLevel,
-                  int weaponLevel, int missileLevel,
+                 int weaponLevel, int missileLevel,
                  int moverLevel, float x, float y,
                  float directionX, float directionY)
 {
@@ -32,23 +32,24 @@ bool Robot::init(const RobotTemplate* t, Side side,
         return false;
     }
 
-    ret = m_base.init(t->getBaseTemplate(), hpLevel, hpRestoreLevel, armorLevel,
-                      armorRepairLevel, powerLevel, powerRestoreLevel, x, y,
-                      directionX, directionY);
+    m_direction[0] = directionX;
+    m_direction[1] = directionY;
+
+    ret = m_base.init(t->getBaseTemplate(), this, hpLevel, hpRestoreLevel,
+                      armorLevel, armorRepairLevel, powerLevel,
+                      powerRestoreLevel);
     if (!ret)
     {
         return false;
     }
 
-    ret = m_weapon.init(t->getWeaponTemplate(), weaponLevel, missileLevel,
-                        m_base.getWeaponPosX(), m_base.getWeaponPosY(),
-                        directionX, directionY);
+    ret = m_weapon.init(t->getWeaponTemplate(), this, weaponLevel, missileLevel);
     if (!ret)
     {
         return false;
     }
 
-    ret = m_mover.init(t->getMoverTemplate(), moverLevel);
+    ret = m_mover.init(t->getMoverTemplate(), this, moverLevel);
     if (!ret)
     {
         return false;
@@ -62,16 +63,14 @@ bool Robot::init(const RobotTemplate* t, Side side,
 
     m_side = side;
 
-    setDirection(directionX, directionY);
-
     return true;
 }
 
-void Robot::present(Graphics& g)
+void Robot::present()
 {
-    m_weapon.present(g, m_base.getWeaponPos(), m_direction);
-    m_base.present(g, m_pos, m_direction);
-    m_mover.present(g, m_base.getMoverPos(), m_direction);
+    m_weapon.present();
+    m_base.present();
+    m_mover.present();
 }
 
 void Robot::shiftPos(float deltaX, float deltaY)
@@ -91,9 +90,8 @@ void Robot::setDirection(float directionX, float directionY)
 {
     m_direction[0] = directionX;
     m_direction[1] = directionY;
-    m_base.setWeaponMoverPos(m_pos[0], m_pos[1], directionX, directionY);
-    m_weapon.setFirePoints(m_base.getWeaponPosX(), m_base.getWeaponPosY(),
-                           directionX, directionY);
+    m_base.resetWeaponMoverPos();
+    m_weapon.resetFirePoints();
 }
 
 bool Robot::addHP(float delta)
@@ -160,12 +158,12 @@ void Robot::processCollisions(LinkedList<GameObjectItem>& collideObjs,
 
 bool Robot::updateMover(float delta, GameScreen& gameScreen)
 {
-    return m_mover.update(gameScreen, *this, delta);
+    return m_mover.update(gameScreen, delta);
 }
 
 bool Robot::updateWeapon(GameScreen& gameScreen)
 {
-    return m_weapon.update(gameScreen, *this);
+    return m_weapon.update(gameScreen);
 }
 
 } // end of namespace bot

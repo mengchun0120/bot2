@@ -4,28 +4,45 @@
 #include <string>
 #include <memory>
 #include "input/bot_input_manager.h"
-#include "opengl/bot_graphics.h"
 #include "gameutil/bot_time_delta_smoother.h"
-#include "gameutil/bot_game_lib.h"
-#include "screen/bot_screen_manager.h"
 
 struct GLFWwindow;
 
 namespace bot {
 
-class AppConfig;
-
 class App {
 public:
-    App();
+    static bool initInstance(Screen::Type startScreenType);
+
+    static App& getInstance()
+    {
+        return *k_app;
+    }
 
     virtual ~App();
 
-    bool init(const AppConfig* cfg, Screen::Type startScreenType);
+    bool init(Screen::Type startScreenType);
 
     bool run();
 
-protected:
+    float getViewportWidth() const
+    {
+        return m_viewportSize[0];
+    }
+
+    float getViewportHeight() const
+    {
+        return m_viewportSize[1];
+    }
+
+    const float* getViewportSize() const
+    {
+        return m_viewportSize;
+    }
+
+private:
+    App();
+
     bool initWindow();
 
     bool initInputManager();
@@ -40,16 +57,13 @@ protected:
 
     bool initGameLib();
 
-protected:
+private:
+    static std::shared_ptr<App> k_app;
     GLFWwindow* m_window;
-    const AppConfig* m_config;
     float m_viewportSize[Constants::NUM_FLOATS_PER_POSITION];
     InputManager m_inputMgr;
-    Graphics m_graphics;
     TimeDeltaSmoother m_timeDeltaSmoother;
-    GameLib m_gameLib;
     InputProcessor m_inputProcessor;
-    ScreenManager m_screenMgr;
 };
 
 } // end of namespace bot

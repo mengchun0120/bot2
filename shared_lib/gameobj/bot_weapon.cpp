@@ -1,6 +1,5 @@
 #include "misc/bot_log.h"
 #include "misc/bot_math_utils.h"
-#include "opengl/bot_graphics.h"
 #include "gametemplate/bot_weapon_template.h"
 #include "gametemplate/bot_missile_template.h"
 #include "gameobj/bot_robot.h"
@@ -10,6 +9,7 @@ namespace bot {
 
 Weapon::Weapon()
     : m_weaponTemplate(nullptr)
+    , m_robot(nullptr)
     , m_missileLevel(1)
     , m_firing(false)
     , m_normalFireDuration(0.0f)
@@ -20,13 +20,18 @@ Weapon::Weapon()
 {
 }
 
-bool Weapon::init(const WeaponTemplate* weaponTemplate, int weaponLevel,
-                  int missileLevel, float weaponX, float weaponY,
-                  float directionX, float directionY)
+bool Weapon::init(const WeaponTemplate* weaponTemplate, Robot* robot,
+                  int weaponLevel, int missileLevel)
 {
     if (!weaponTemplate)
     {
         LOG_ERROR("Weapon template is null");
+        return false;
+    }
+
+    if (!robot)
+    {
+        LOG_ERROR("robot is null");
         return false;
     }
 
@@ -43,6 +48,7 @@ bool Weapon::init(const WeaponTemplate* weaponTemplate, int weaponLevel,
     }
 
     m_weaponTemplate = weaponTemplate;
+    m_robot = robot;
     m_missileLevel = missileLevel;
 
     m_firing = false;
@@ -54,14 +60,14 @@ bool Weapon::init(const WeaponTemplate* weaponTemplate, int weaponLevel,
     resetDamage();
 
     m_firePoints.resize(m_weaponTemplate->numFirePoints());
-    setFirePoints(weaponX, weaponY, directionX, directionY);
+    resetFirePoints();
 
     m_lastFireTime = Clock::now();
 
     return true;
 }
 
-bool Weapon::update(GameScreen& screen, Robot& robot)
+bool Weapon::update(GameScreen& screen)
 {
     if (!m_firing)
     {
@@ -75,7 +81,7 @@ bool Weapon::update(GameScreen& screen, Robot& robot)
         return true;
     }
 
-    if (!fireMissile(screen, robot))
+    if (!fireMissile(screen))
     {
         return false;
     }
@@ -85,10 +91,12 @@ bool Weapon::update(GameScreen& screen, Robot& robot)
     return true;
 }
 
-void Weapon::present(Graphics& g, const float* pos, const float* direction)
+void Weapon::present()
 {
+    const Base& base = m_robot->getBase();
     m_weaponTemplate->getRect()->draw(
-                                g, pos, direction, nullptr, nullptr,
+                                base.getWeaponPos(), m_robot->getDirection(),
+                                nullptr, nullptr,
                                 m_weaponTemplate->getTexture()->textureId(),
                                 nullptr);
 }
@@ -102,10 +110,14 @@ void Weapon::shiftFirePoints(float deltaX, float deltaY)
     }
 }
 
-void Weapon::setFirePoints(float weaponX, float weaponY,
-                           float directionX, float directionY)
+void Weapon::resetFirePoints()
 {
     int count = static_cast<int>(m_firePoints.size());
+    const Base& base = m_robot->getBase();
+    float weaponX = base.getWeaponPosX();
+    float weaponY = base.getWeaponPosY();
+    float directionX = m_robot->getDirectionX();
+    float directionY = m_robot->getDirectionY();
 
     for (int i = 0; i < count; ++i)
     {
@@ -170,7 +182,7 @@ void Weapon::resetDamage()
     m_damage = t->getDamage(m_missileLevel) * m_damageMultiplier;
 }
 
-bool Weapon::fireMissile(GameScreen& screen, Robot& robot)
+bool Weapon::fireMissile(GameScreen& screen)
 {
     GameObjectManager& gameObjMgr = screen.getGameObjManager();
     GameMap& map = screen.getMap();
@@ -179,7 +191,7 @@ bool Weapon::fireMissile(GameScreen& screen, Robot& robot)
     {
         Missile* missile = gameObjMgr.createMissile(
                                  m_weaponTemplate->getMissileTemplate(),
-                                 &robot, m_damage,
+                                 m_robot, m_damage,
                                  fp.m_firePos[0], fp.m_firePos[1],
                                  fp.m_fireDirection[0], fp.m_fireDirection[1]);
         if (!missile)

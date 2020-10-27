@@ -10,7 +10,6 @@ namespace bot {
 class WeaponTemplate;
 class MissileTemplate;
 class GameScreen;
-class Graphics;
 class Robot;
 
 class Weapon {
@@ -20,13 +19,12 @@ public:
     virtual ~Weapon()
     {}
 
-    bool init(const WeaponTemplate* weaponTemplate, int weaponLevel,
-              int missileLevel, float weaponX, float weaponY,
-              float directionX, float directionY);
+    bool init(const WeaponTemplate* weaponTemplate, Robot* robot,
+              int weaponLevel, int missileLevel);
 
-    bool update(GameScreen& screen, Robot& robot);
+    bool update(GameScreen& screen);
 
-    void present(Graphics& g, const float* pos, const float* direction);
+    void present();
 
     bool isFiring() const
     {
@@ -40,8 +38,7 @@ public:
 
     void shiftFirePoints(float deltaX, float deltaY);
 
-    void setFirePoints(float weaponX, float weaponY,
-                       float directionX, float directionY);
+    void resetFirePoints();
 
     bool setFireDurationMultiplier(float multiplier);
 
@@ -52,10 +49,11 @@ private:
 
     void resetDamage();
 
-    bool fireMissile(GameScreen& screen, Robot& robot);
+    bool fireMissile(GameScreen& screen);
 
 protected:
     const WeaponTemplate* m_weaponTemplate;
+    Robot* m_robot;
     int m_missileLevel;
     bool m_firing;
     std::vector<FirePoint> m_firePoints;

@@ -5,6 +5,24 @@
 
 namespace bot {
 
+std::shared_ptr<AppConfig> AppConfig::k_appCfg;
+
+bool AppConfig::initInstance(const std::string& appDir,
+                             const std::string& cfgFile)
+{
+    AppConfig* cfg = new AppConfig();
+
+    if (!cfg->load(appDir, cfgFile))
+    {
+        delete cfg;
+        return false;
+    }
+
+    k_appCfg.reset(cfg);
+
+    return true;
+}
+
 bool AppConfig::load(const std::string& appDir, const std::string& cfgFile)
 {
     m_appDir = appDir;

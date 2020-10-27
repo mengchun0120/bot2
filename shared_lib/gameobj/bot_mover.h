@@ -6,7 +6,6 @@ namespace bot {
 class MoverTemplate;
 class GameScreen;
 class Robot;
-class Graphics;
 
 class Mover {
 public:
@@ -15,11 +14,12 @@ public:
     virtual ~Mover()
     {}
 
-    bool init(const MoverTemplate* moverTemplate, int moverLevel);
+    bool init(const MoverTemplate* moverTemplate, Robot* robot,
+              int moverLevel);
 
-    bool update(GameScreen& screen, Robot& robot, float delta);
+    bool update(GameScreen& screen, float delta);
 
-    void present(Graphics& g, const float* pos, const float* direction);
+    void present();
 
     bool isMoving() const
     {
@@ -46,6 +46,7 @@ private:
 
 protected:
     const MoverTemplate* m_moverTemplate;
+    Robot* m_robot;
     bool m_moving;
     float m_speed;
     float m_normalSpeed;

@@ -4,11 +4,25 @@
 
 namespace bot {
 
+std::shared_ptr<ScreenManager> ScreenManager::k_screenMgr;
+
+bool ScreenManager::initInstance(Screen::Type startScreenType)
+{
+    ScreenManager* mgr = new ScreenManager();
+
+    if (!mgr->init(startScreenType))
+    {
+        delete mgr;
+        return false;
+    }
+
+    k_screenMgr.reset(mgr);
+
+    return true;
+}
+
 ScreenManager::ScreenManager()
-    : m_lib(nullptr)
-    , m_cfg(nullptr)
-    , m_graphics(nullptr)
-    , m_curScreenType(Screen::SCREEN_NONE)
+    : m_curScreenType(Screen::SCREEN_NONE)
     , m_prevScreen(nullptr)
     , m_curScreen(nullptr)
 {
@@ -28,16 +42,9 @@ ScreenManager::~ScreenManager()
     }
 }
 
-bool ScreenManager::init(const AppConfig* cfg, GameLib* lib, Graphics* g,
-                         Screen::Type startScreenType, float viewportWidth, float viewportHeight)
+bool ScreenManager::init(Screen::Type startScreenType)
 {
-    m_lib = lib;
-    m_cfg = cfg;
-    m_graphics = g;
-    m_viewportSize[0] = viewportWidth;
-    m_viewportSize[1] = viewportHeight;
-
-    Screen* screen = Screen::create(startScreenType, cfg, lib, g, this, viewportWidth, viewportHeight);
+    Screen* screen = Screen::create(startScreenType);
     if (!screen)
     {
         LOG_ERROR("Failed to create start screen");
@@ -81,14 +88,15 @@ int ScreenManager::processInput(const InputEvent& e)
 
 bool ScreenManager::switchScreen(Screen::Type type)
 {
-    LOG_INFO("Switching screen from %d to %d", static_cast<int>(m_curScreenType), static_cast<int>(type));
+    LOG_INFO("Switching screen from %d to %d",
+             static_cast<int>(m_curScreenType), static_cast<int>(type));
 
     if (m_curScreenType == type)
     {
         return true;
     }
 
-    Screen* screen = Screen::create(type, m_cfg, m_lib, m_graphics, this, m_viewportSize[0], m_viewportSize[1]);
+    Screen* screen = Screen::create(type);
     if (!screen)
     {
         LOG_ERROR("Failed to swtich screen");

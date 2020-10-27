@@ -6,6 +6,24 @@
 
 namespace bot {
 
+std::shared_ptr<SimpleShaderProgram> SimpleShaderProgram::k_program;
+
+bool SimpleShaderProgram::init(const std::string& vertexShaderFile,
+                               const std::string& fragShaderFile)
+{
+    SimpleShaderProgram* program = new SimpleShaderProgram();
+
+    if (!program->init(vertexShaderFile, fragShaderFile))
+    {
+        delete program;
+        return false;
+    }
+
+    k_program.reset(program);
+
+    return true;
+}
+
 SimpleShaderProgram::SimpleShaderProgram()
     : ShaderProgram()
     , m_positionLocation(-1)

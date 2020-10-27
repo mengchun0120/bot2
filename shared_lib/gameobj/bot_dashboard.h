@@ -9,7 +9,6 @@ namespace bot {
 
 class Player;
 class DashboardConfig;
-class Graphics;
 class TextSystem;
 
 class Dashboard {
@@ -23,24 +22,17 @@ public:
     ~Dashboard()
     {}
 
-    void init(const Player* player, const DashboardConfig* cfg,
-              float viewportHeight, const TextSystem& textSys);
+    void init(const Player* player, const DashboardConfig* cfg);
 
-    void draw(Graphics& g);
+    void draw();
 
 private:
-    void initEffectPos(float screenHeight);
-
-    void initHeader(const TextSystem& textSys, float screenHeight);
+    void initEffectPos();
 
 private:
     const Player* m_player;
     const DashboardConfig* m_cfg;
     std::vector<Point> m_effectPositions;
-    float m_hpIconPos[Constants::NUM_FLOATS_PER_POSITION];
-    float m_hpTextPos[Constants::NUM_FLOATS_PER_POSITION];
-    float m_goldIconPos[Constants::NUM_FLOATS_PER_POSITION];
-    float m_goldTextPos[Constants::NUM_FLOATS_PER_POSITION];
 };
 
 } // end of namespace bot

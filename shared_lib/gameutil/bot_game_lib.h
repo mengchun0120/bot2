@@ -1,6 +1,7 @@
 #ifndef INCLUDE_BOT_GAME_LIB
 #define INCLUDE_BOT_GAME_LIB
 
+#include <memory>
 #include "structure/bot_named_map.h"
 #include "opengl/bot_texture.h"
 #include "opengl/bot_color.h"
@@ -29,13 +30,16 @@ class AppConfig;
 
 class GameLib {
 public:
-    GameLib()
-    {}
+    static bool initInstance(float viewportWidth, float viewportHeight,
+                             const AppConfig& cfg);
+
+    static const GameLib& getInstance()
+    {
+        return *k_gameLib;
+    }
 
     ~GameLib()
     {}
-
-    bool load(float viewportWidth, float viewportHeight, const AppConfig& cfg);
 
     const Texture* getTexture(const std::string& name) const
     {
@@ -127,12 +131,19 @@ public:
         return m_startScreenConfig;
     }
 
-    MapGenerator* getMapGenerator(const std::string& name)
+    const MapGenerator* getMapGenerator(const std::string& name) const
     {
         return m_mapGeneratorLib.search(name);
     }
 
 private:
+    GameLib()
+    {}
+
+    bool load(float viewportWidth, float viewportHeight, const AppConfig& cfg);
+
+private:
+    static std::shared_ptr<GameLib> k_gameLib;
     NamedMap<Texture> m_textureLib;
     NamedMap<Rectangle> m_rectLib;
     NamedMap<Color> m_colorLib;

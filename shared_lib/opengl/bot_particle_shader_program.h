@@ -1,6 +1,7 @@
 #ifndef INCLUDE_BOT_PARTICLE_SHADER_PROGRAM
 #define INCLUDE_BOT_PARTICLE_SHADER_PROGRAM
 
+#include <memory>
 #include "opengl/bot_opengl.h"
 #include "opengl/bot_shader_program.h"
 
@@ -10,12 +11,15 @@ class VertexArray;
 
 class ParticleShaderProgram : public ShaderProgram {
 public:
-    ParticleShaderProgram();
+    static bool initInstance(const std::string& vertexShaderFile,
+                             const std::string& fragShaderFile);
+
+    static ParticleShaderProgram& getInstance()
+    {
+        return *k_program;
+    }
 
     virtual ~ParticleShaderProgram();
-
-    virtual bool init(const std::string& vertexShaderFile,
-                      const std::string& fragShaderFile);
 
     void setViewportSize(const float* viewportSize)
     {
@@ -66,9 +70,16 @@ public:
 
     void bindData(const VertexArray& va);
 
-protected:
+private:
+    ParticleShaderProgram();
+
+    virtual bool init(const std::string& vertexShaderFile,
+                      const std::string& fragShaderFile);
+
     void loadParam();
 
+private:
+    static std::shared_ptr<ParticleShaderProgram> k_program;
     int m_viewportSizeLocation;
     int m_viewportOriginLocation;
     int m_refLocation;

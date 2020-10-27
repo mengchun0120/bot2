@@ -3,10 +3,6 @@
 
 namespace bot {
 
-class AppConfig;
-class GameLib;
-class Graphics;
-class ScreenManager;
 struct InputEvent;
 
 class Screen {
@@ -18,8 +14,7 @@ public:
         SCREEN_NONE
     };
 
-    static Screen* create(Type type, const AppConfig* cfg, GameLib* lib, Graphics* g,
-                          ScreenManager* screenMgr, float viewportWidth, float viewportHeight);
+    static Screen* create(Type type);
 
     Screen()
     {}
