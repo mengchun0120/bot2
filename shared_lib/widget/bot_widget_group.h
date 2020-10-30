@@ -43,6 +43,8 @@ public:
 
     void present();
 
+    void shiftPos(float dx, float dy);
+
 private:
     int processKeyEvent(const KeyEvent& event);
 

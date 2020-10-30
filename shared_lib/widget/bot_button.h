@@ -8,7 +8,6 @@
 
 namespace bot {
 
-class ButtonConfig;
 class Color;
 
 class Button : public Widget {
@@ -20,8 +19,8 @@ public:
     virtual ~Button()
     {}
 
-    bool init(const ButtonConfig* cfg, float x, float y,
-              float width, float height, const std::string& text);
+    bool init(float x, float y, float width, float height,
+              const std::string& text);
 
     void setText(const std::string& text);
 
@@ -31,6 +30,8 @@ public:
     }
 
     virtual void setPos(float x, float y);
+
+    virtual void shiftPos(float dx, float dy);
 
     virtual int processKeyEvent(const KeyEvent& event)
     {
@@ -50,7 +51,6 @@ public:
 
 protected:
     std::string m_text;
-    const ButtonConfig* m_cfg;
     float m_textPos[Constants::NUM_FLOATS_PER_POSITION];
     const Color* m_textColor;
     ActionFunc m_actionFunc;

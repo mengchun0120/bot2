@@ -2,8 +2,8 @@
 #include "opengl/bot_color.h"
 #include "opengl/bot_text_system.h"
 #include "input/bot_input_event.h"
-#include "widget/bot_button_config.h"
 #include "widget/bot_button.h"
+#include "widget/bot_game_lib.h"
 
 namespace bot {
 
@@ -15,18 +15,19 @@ Button::Button()
     m_textPos[1] = 0.0f;
 }
 
-bool Button::init(const ButtonConfig* cfg, float x, float y,
-                  float width, float height, const std::string& text)
+bool Button::init(float x, float y, float width, float height,
+                  const std::string& text)
 {
-    bool ret = Widget::init(x, y, width, height, cfg->getTexture(),
+    const ButtonConfig& cfg = GameLib::getInstance().getButtonConfig();
+
+    bool ret = Widget::init(x, y, width, height, cfg.getTexture(),
                             nullptr, nullptr);
     if (!ret)
     {
         return false;
     }
 
-    m_cfg = cfg;
-    m_textColor = cfg->getNormalTextColor();
+    m_textColor = cfg.getNormalTextColor();
     setText(text);
 
     return true;
@@ -54,19 +55,40 @@ void Button::setPos(float x, float y)
     m_textPos[1] += m_pos[1] - oldY;
 }
 
+void shiftPos(float dx, float dy)
+{
+    Widget::shiftPos(dx, dy);
+    m_textPos[0] += dx;
+    m_textPos[1] += dy;
+}
+
 int Button::processMouseMoveEvent(const MouseMoveEvent& event)
 {
-    m_textColor = m_cfg->getHoverTextColor();
+    if (!m_acceptInput)
+    {
+        return 0;
+    }
+
+    const ButtonConfig& cfg = GameLib::getInstance().getButtonConfig();
+
+    m_textColor = cfg.getHoverTextColor();
+
     return 0;
 }
 
 int Button::processMouseButtonEvent(const MouseButtonEvent& event)
 {
+    if (!m_acceptInput)
+    {
+        return 0;
+    }
+
     if (event.m_button == GLFW_MOUSE_BUTTON_LEFT)
     {
         if (event.m_action == GLFW_PRESS)
         {
-            m_textColor = m_cfg->getPressTextColor();
+            const ButtonConfig& cfg = GameLib::getInstance().getButtonConfig();
+            m_textColor = cfg.getPressTextColor();
         }
         else if (event.m_action == GLFW_RELEASE && m_actionFunc)
         {
@@ -89,11 +111,9 @@ void Button::present()
         return;
     }
 
-    m_rect->draw(m_pos, nullptr, nullptr, nullptr,
-                 m_cfg->getTexture()->textureId(), nullptr);
-
     const TextSystem& textSys = TextSystem::getInstance();
 
+    Widget::present();
     textSys.drawString(m_text, TEXT_SIZE_BIG,
                        m_textPos, m_textColor->getColor());
 }

@@ -38,6 +38,8 @@ public:
 
     virtual void setPos(float x, float y);
 
+    virtual void shiftPos(float dx, float dy);
+
     void setTexture(const Texture* texture)
     {
         m_texture = texture;
@@ -61,7 +63,7 @@ public:
     virtual void onMouseOut()
     {}
 
-    bool isVisible() const
+    bool visible() const
     {
         return m_visible;
     }
@@ -73,7 +75,7 @@ public:
 
     bool containPos(float x, float y) const;
 
-    bool isAcceptInput() const
+    bool acceptInput() const
     {
         return m_acceptInput;
     }
@@ -81,6 +83,26 @@ public:
     void setAccetpInput(bool accept)
     {
         m_acceptInput = accept;
+    }
+
+    float getLeft() const
+    {
+        return m_left;
+    }
+
+    float getBottom() const
+    {
+        return m_bottom;
+    }
+
+    float getRight() const
+    {
+        return m_right;
+    }
+
+    float getTop() const
+    {
+        return m_top;
     }
 
 protected:

@@ -48,6 +48,16 @@ void Widget::setPos(float x, float y)
     m_top = y + m_rect.height();
 }
 
+void Widget::shiftPos(float dx, float dy)
+{
+    m_pos[0] += dx;
+    m_pos[1] += dy;
+    m_left += dx;
+    m_bottom += dy;
+    m_right += dx;
+    m_top += dy;
+}
+
 void Widget::present()
 {
     if (m_texture)

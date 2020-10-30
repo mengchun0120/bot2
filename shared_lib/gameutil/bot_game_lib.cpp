@@ -232,8 +232,7 @@ bool GameLib::load(float viewportWidth, float viewportHeight,
     LOG_INFO("Done reading button config from %s",
              cfg.getButtonConfigFile().c_str());
 
-    ret = m_messageBoxConfig.init(cfg.getMessageBoxConfigFile(), viewportWidth,
-                                  viewportHeight, m_rectLib, m_colorLib);
+    ret = m_messageBoxConfig.init(cfg.getMessageBoxConfigFile(), m_colorLib);
     if (!ret)
     {
         LOG_ERROR("Failed to load message-box config from %s",

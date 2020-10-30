@@ -36,6 +36,14 @@ void WidgetGroup::present()
     }
 }
 
+void WidgetGroup::shiftPos(float dx, float dy)
+{
+    for (auto& widget : m_widgets)
+    {
+        widget->shiftPos(dx, dy);
+    }
+}
+
 int WidgetGroup::processKeyEvent(const KeyEvent& event)
 {
     if (m_focusWidgetIdx == -1)
@@ -99,7 +107,10 @@ int WidgetGroup::findWidget(float x, float y)
 
     for (i = 0; i < count; ++i)
     {
-        if (m_widgets[i]->containPos(x, y))
+        bool found = m_widgets[i]->visible() &&
+                     m_widgets[i]->acceptInput() &&
+                     m_widgets[i]->containPos(x, y);
+        if (found)
         {
             return i;
         }

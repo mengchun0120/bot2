@@ -8,7 +8,6 @@
 namespace bot {
 
 template <typename T> class NamedMap;
-class Rectangle;
 class Color;
 
 class MessageBoxConfig {
@@ -19,20 +18,7 @@ public:
     {}
 
     bool init(const std::string& configFile,
-              float viewportWidth,
-              float viewportHeight,
-              const NamedMap<Rectangle>& rectLib,
               const NamedMap<Color>& colorLib);
-
-    const Rectangle* getBoxRect() const
-    {
-        return m_boxRect;
-    }
-
-    const Rectangle* getButtonRect() const
-    {
-        return m_buttonRect;
-    }
 
     const Color* getBoxFillColor() const
     {
@@ -49,47 +35,10 @@ public:
         return m_textColor;
     }
 
-    const float* getBoxPos() const
-    {
-        return m_boxPos;
-    }
-
-    float getBoxLeft() const
-    {
-        return m_boxLeft;
-    }
-
-    float getBoxTop() const
-    {
-        return m_boxTop;
-    }
-
-    float getButtonSpacing() const
-    {
-        return m_buttonSpacing;
-    }
-
-    float getMsgMarginY() const
-    {
-        return m_msgMarginY;
-    }
-
-    float getButtonY() const
-    {
-        return m_buttonY;
-    }
-
 private:
-    const Rectangle* m_boxRect;
-    const Rectangle* m_buttonRect;
     const Color* m_boxFillColor;
     const Color* m_boxBorderColor;
     const Color* m_textColor;
-    float m_boxPos[Constants::NUM_FLOATS_PER_POSITION];
-    float m_boxTop, m_boxLeft;
-    float m_buttonSpacing;
-    float m_msgMarginY;
-    float m_buttonY;
 };
 
 } // end of namespace bot

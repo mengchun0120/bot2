@@ -1,76 +1,137 @@
 #include "input/bot_input_event.h"
 #include "opengl/bot_color.h"
-#include "opengl/bot_graphics.h"
-#include "widget/bot_message_box_config.h"
+#include "widget/bot_button.h"
+#include "widget/bot_label.h"
 #include "widget/bot_message_box.h"
+#include "gameutil/bot_game_lib.h"
 
 namespace bot {
 
-MessageBox::MessageBox()
-    : m_cfg(nullptr)
-{
-    m_msgPos[0] = 0.0f;
-    m_msgPos[1] = 0.0f;
-}
-
-void MessageBox::init(const MessageBoxConfig* cfg,
-                      const ButtonConfig* buttonCfg,
-                      const TextSystem* textSys,
-                      float width, float height,
-                      float viewportWidth, float viewportHeight,
+bool MessageBox::init(float x, float y, float width, float height,
+                      float msgWidth, float msgHeight,
+                      float buttonWidth, float buttonHeight,
+                      float buttonSpacing, float buttonMsgSpacing,
                       const std::vector<std::sring>& buttonTexts)
 {
-    m_cfg = cfg;
-
-    float boxWidth = m_cfg->getBoxRect()->width();
-    float boxX = m_cfg->getBoxLeft();
-    float textWidth, textHeight;
-
-    m_msg = msg;
-    textSys.getStringSize(textWidth, textHeight, TEXT_SIZE_BIG, m_msg);
-    m_msgPos[0] = boxX + (boxWidth - textWidth) / 2.0f;
-    m_msgPos[1] = m_cfg->getBoxTop() - m_cfg->getMsgMarginY() - textHeight;
-
+    const MessageBoxConfig& cfg = GameLib::getInstance().getMessageBoxConfig();
     int buttonCount = static_cast<int>(buttonTexts.size());
-    float buttonWidth = m_cfg->getButtonRect()->width();
-    float spacing = m_cfg->getButtonSpacing();
-    float buttonX = boxX + (boxWidth - buttonCount * buttonWidth -
-                    (buttonCount - 1) * spacing) / 2.0f;
+    float msgX, msgY;
+    float buttonX, buttonY;
 
-    m_buttons.init(buttonCount);
+    m_marginY = (height - msgHeight - buttonHeight -  buttonMsgSpacing) / 2.0f;
+    msgX = x + (width - msgWidth) / 2.0f;
+    msgY = y + m_marginY + buttonHeight + buttonMsgSpacing;
+    buttonX = x + (width - buttonCount * buttonWidth -
+              (buttonCount - 1) * buttonSpacing) / 2.0f;
+    buttonY = y + m_marginY;
+
+    WidgetGroup::init(buttonCount + 2);
+
+    bool ret =
+        initBack(cfg, x, y, width, height) &&
+        initMsg(cfg, x, y, msgWidth, msgHeight) &&
+        initButtons(cfg, x, y, buttonWidth, buttonHeight, buttonSpacing,
+                    buttonTexts);
+
+    if (!ret)
+    {
+        LOG_ERROR("Failed to initialize message box");
+        return false;
+    }
+
+    return true;
+}
+
+bool MessageBox::initBack(const MessageBoxConfig& cfg, float x, float y,
+                          float width, float height)
+{
+    Widget* back = new Widget();
+
+    bool ret = back->init(x, y, width, height, nullptr, cfg.getBoxFillColor(),
+                          cfg.getBoxBorderColor());
+    if (!ret)
+    {
+        LOG_ERROR("Failed to initialize background");
+        return false;
+    }
+
+    back->setAcceptInput(false);
+
+    setWidget(BACK_IDX, back);
+
+    return true;
+}
+
+bool MessageBox::initMsg(const MessageBoxConfig& cfg, float x, float y,
+                         float msgWidth, float msgHeight)
+{
+    Label* label = new Label();
+
+    ret = label->init(x, y, msgWidth, msgHeight, "", cfg.getTextColor(),
+                      nullptr, nullptr, ALIGN_HMIDDLE, ALIGN_VMIDDLE,
+                      TEXT_SIZE_BIG);
+    if (!ret)
+    {
+        LOG_ERROR("Failed to initialize label");
+        return false;
+    }
+
+    label->setAcceptInput(false);
+
+    setWidget(MSG_IDX, label);
+
+    return true;
+}
+
+bool MessageBox::initButtons(float x, float y, float buttonWidth,
+                             float buttonHeight, float buttonSpacing,
+                             const std::vector<std::string>& buttonTexts)
+{
+    float dx = buttonWidth + buttonSpacing;
+
     for (int i = 0; i < buttonCount; ++i)
     {
         Button* button = new Button();
-        button->init(buttonCfg, m_cfg->getButtonRect(), buttonTexts[i]);
-        button->setPos(textSys, buttonX, m_cfg->getButtonY());
-        m_buttons.setWidget(i, button);
-        buttonX += buttonWidth + spacing;
+
+        ret = button->init(x, y, buttonWidth, buttonHeight,
+                           buttonTexts[i]);
+        if (!ret)
+        {
+            LOG_ERROR("Failed to initialize button %d", i);
+            return false;
+        }
+
+        setWidget(BUTTON_START_IDX + i, button);
+
+        x += dx;
     }
+
+    return true;
 }
 
-void MessageBox::setAction(int buttonIdx, const Button::ActionFunc& func)
+void MessageBox::setPos(float x, float y)
 {
-    Button& button = static_cast<Button&>(m_buttons.getWidget(buttonIdx));
+    const Widget& back = getWidget(BACK_IDX);
+    float dx = x - back.getLeft();
+    float dy = y - back.getBottom();
+    shiftPos(dx, dy);
+}
+
+void MessageBox::setMsg(const std::string& msg)
+{
+    Label& label = static_cast<Label&>(getWidget(MSG_IDX));
+    label.setText(msg);
+}
+
+void MessageBox::setAction(int idx, const Button::ActionFunc& func)
+{
+    Button& button = static_cast<Button&>(getWidget(BUTTON_START_IDX + idx));
     button.setActionFunc(func);
 }
 
-int MessageBox::processInput(const InputEvent& e)
+void MessageBox::setButtonVisible(int idx, bool visible)
 {
-    return m_buttons.processInput(e);
-}
 
-void MessageBox::show()
-{
-    m_cfg->getBoxRect()->draw(m_cfg->getBoxPos(), nullptr,
-                              m_cfg->getBoxFillColor(),
-                              m_cfg->getBoxBorderColor(),
-                              0, nullptr);
-
-    const TextSystem& textSys = TextSystem::getInstance();
-
-    textSys.drawString(m_msg, TEXT_SIZE_BIG, m_msgPos,
-                       m_cfg->getTextColor()->getColor());
-    m_buttons.present();
 }
 
 } // end of namespace bot
