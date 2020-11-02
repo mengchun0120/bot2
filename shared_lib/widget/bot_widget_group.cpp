@@ -5,6 +5,19 @@
 
 namespace bot {
 
+bool WidgetGroup::init(int widgetCount)
+{
+    if (widgetCount <= 0)
+    {
+        LOG_ERROR("Invalid widgetCount %d", widgetCount);
+        return false;
+    }
+
+    m_widgets.resize(widgetCount);
+
+    return true;
+}
+
 int WidgetGroup::processInput(const InputEvent& event)
 {
     switch (event.m_type)

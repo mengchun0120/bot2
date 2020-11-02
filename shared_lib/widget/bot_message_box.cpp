@@ -13,19 +13,27 @@ bool MessageBox::init(float x, float y, float width, float height,
                       float buttonSpacing, float buttonMsgSpacing,
                       const std::vector<std::sring>& buttonTexts)
 {
-    const MessageBoxConfig& cfg = GameLib::getInstance().getMessageBoxConfig();
     int buttonCount = static_cast<int>(buttonTexts.size());
-    float msgX, msgY;
-    float buttonX, buttonY;
 
-    m_marginY = (height - msgHeight - buttonHeight -  buttonMsgSpacing) / 2.0f;
+    if (!WidgetGroup::init(buttonCount + 2))
+    {
+        return false;
+    }
+
+    float marginY = (height - msgHeight - buttonHeight -
+                     buttonMsgSpacing) / 2.0f;
+
+    m_buttonSpacing = buttonSpacing;
+    m_buttonY = y + marginY;
+
+    float msgX, msgY;
+    float buttonX;
+    const MessageBoxConfig& cfg = GameLib::getInstance().getMessageBoxConfig();
+
     msgX = x + (width - msgWidth) / 2.0f;
-    msgY = y + m_marginY + buttonHeight + buttonMsgSpacing;
+    msgY = m_buttonY + buttonHeight + buttonMsgSpacing;
     buttonX = x + (width - buttonCount * buttonWidth -
               (buttonCount - 1) * buttonSpacing) / 2.0f;
-    buttonY = y + m_marginY;
-
-    WidgetGroup::init(buttonCount + 2);
 
     bool ret =
         initBack(cfg, x, y, width, height) &&
@@ -117,21 +125,84 @@ void MessageBox::setPos(float x, float y)
     shiftPos(dx, dy);
 }
 
+Button* MessageBox::getButton(int idx)
+{
+    if (idx < 0 || idx >= getWidgetCount() - BUTTON_START_IDX)
+    {
+        return nullptr;
+    }
+
+    return static_cast<Button*>(&m_widgets[BUTTON_START_IDX + idx]);
+}
+
 void MessageBox::setMsg(const std::string& msg)
 {
-    Label& label = static_cast<Label&>(getWidget(MSG_IDX));
-    label.setText(msg);
+    Label* label = static_cast<Label*>(m_widgets[MSG_IDX]);
+    label->setText(msg);
 }
 
-void MessageBox::setAction(int idx, const Button::ActionFunc& func)
+bool MessageBox::setAction(int idx, const Button::ActionFunc& func)
 {
-    Button& button = static_cast<Button&>(getWidget(BUTTON_START_IDX + idx));
-    button.setActionFunc(func);
+    Button* button = getButton(idx);
+    if (!button)
+    {
+        LOG_ERROR("Invalid button idx %d", idx);
+        return false;
+    }
+
+    button->setActionFunc(func);
+    return true;
 }
 
-void MessageBox::setButtonVisible(int idx, bool visible)
+bool MessageBox::setButtonVisible(int idx, bool visible)
 {
+    Button* button = getButton(idx);
+    if (!button)
+    {
+        LOG_ERROR("Invalid button idx %d", idx);
+        return false;
+    }
 
+    if (button->visible() == visible)
+    {
+        return true;
+    }
+
+    button->setVisible(visible);
+
+    float totalWidth = 0.0f;
+    int visibleCount = 0;
+    int widgetCount = getWidgetCount();
+
+    for (int i = BUTTON_START_IDX; i < widgetCount; ++i)
+    {
+        Button& btn = static_cast<Button&>(m_widgets[i]);
+        if (btn.visible())
+        {
+            totalWidth += btn.getWidth();
+            ++visibleCount;
+        }
+    }
+
+    if (visibleCount == 0)
+    {
+        return true;
+    }
+
+    const Widget& back = m_widgets[BACK_IDX];
+    float x = back.getLeft() + (back.getWidth() - totalWidth) / 2.0f;
+
+    for (int = BUTTON_START_IDX; i < widgetCount; ++i)
+    {
+        Button& btn = static_cast<Button&>(m_widgets[i]);
+        if (btn.visible())
+        {
+            btn.setPos(x, m_buttonY);
+            x += btn.getWidth() + m_buttonSpacing;
+        }
+    }
+
+    return true;
 }
 
 } // end of namespace bot

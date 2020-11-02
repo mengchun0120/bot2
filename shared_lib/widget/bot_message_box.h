@@ -33,9 +33,9 @@ public:
 
     void setMsg(const std::string& msg);
 
-    void setAction(int idx, const Button::ActionFunc& func);
+    bool setAction(int idx, const Button::ActionFunc& func);
 
-    void setButtonVisible(int idx, bool visible);
+    bool setButtonVisible(int idx, bool visible);
 
 private:
     bool initBack(const MessageBoxConfig& cfg, float x, float y,
@@ -48,8 +48,11 @@ private:
                      float buttonHeight, float buttonSpacing,
                      const std::vector<std::string>& buttonTexts);
 
+    Button* getButton(int idx);
+
 private:
-    float m_marginY;
+    float m_buttonY;
+    float m_buttonSpacing;
 };
 
 } // end of namespace bot

@@ -19,22 +19,16 @@ public:
     virtual ~WidgetGroup()
     {}
 
-    void init(int widgetCount)
-    {
-        m_widgets.resize(widgetCount);
-    }
+    bool init(int widgetCount);
 
     int getWidgetCount() const
     {
         return static_cast<int>(m_widgets.size());
     }
 
-    Widget& getWidget(int idx)
-    {
-        return *m_widgets[idx];
-    }
+    Widget* getWidget(int idx);
 
-    void setWidget(int idx, Widget* widget)
+    bool setWidget(int idx, Widget* widget)
     {
         m_widgets[idx].reset(widget);
     }

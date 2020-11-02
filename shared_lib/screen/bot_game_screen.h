@@ -97,8 +97,7 @@ private:
     float m_viewportOrigin[Constants::NUM_FLOATS_PER_POSITION];
     float m_dashboardOrigin[Constants::NUM_FLOATS_PER_POSITION];
     Dashboard m_dashboard;
-    /*std::vector<MessageBox> m_msgBox;
-    int m_visibleMsgBoxIdx;*/
+    MessageBox m_msgBox;
 };
 
 } // end of namespace bot

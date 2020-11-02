@@ -85,6 +85,16 @@ public:
         m_acceptInput = accept;
     }
 
+    float getWidth() const
+    {
+        return m_rect.width();
+    }
+
+    float getHeight() const
+    {
+        return m_rect.height();
+    }
+
     float getLeft() const
     {
         return m_left;

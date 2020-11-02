@@ -3,8 +3,6 @@
 #include "misc/bot_file_utils.h"
 #include "misc/bot_math_utils.h"
 #include "input/bot_input_event.h"
-#include "opengl/bot_graphics.h"
-#include "gameobj/bot_game_object_type.h"
 #include "gameobj/bot_tile.h"
 #include "gameobj/bot_missile.h"
 #include "gameobj/bot_player.h"
