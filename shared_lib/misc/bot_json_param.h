@@ -1,20 +1,24 @@
-#ifndef INCLUDE_BOT_JSON_PARSE_PARAM
-#define INCLUDE_BOT_JSON_PARSE_PARAM
+#ifndef INCLUDE_BOT_JSON_PARAM
+#define INCLUDE_BOT_JSON_PARAM
 
 #include <string>
 #include <rapidjson/document.h>
-#include <misc/bot_param_validator.h>
+#include <misc/bot_log.h>
 
 namespace bot {
 
-class JsonParseParam {
+class JsonParam {
 public:
-    JsonParseParam(const std::string& name, bool required=true)
+    JsonParam(const std::string& name, bool required=true)
+        : m_name(name)
+        , m_required(required)
+    {}
+
+    JsonParam(const char* name, bool required=true)
         : m_name(name)
     {}
 
-    JsonParseParam(const char* name, bool required=true)
-        : m_name(name)
+    virtual ~JsonParam()
     {}
 
     const std::string& getName() const
@@ -29,18 +33,56 @@ protected:
     std::string m_name;
 };
 
-template <typename T>
-class TypedJsonParseParam: public JsonParseParam {
+template <typename T, typename PARSER, typename VALIDATOR>
+class TypedJsonParam: public JsonParam {
 public:
-    typedef bool (Parser*)(T& t, const rapidjson::Value& elem,
-                           const std::string& name);
+    TypededJsonParam(T& t, const std::string& name, PARSER parser,
+                     VALIDATOR* validator, bool required=true)
+        : JsonParam(name, required)
+        , m_var(t)
+        , m_parser(parser)
+        , m_validator(validator)
+    {}
 
-    TypededJsonParseParam(T& t, const std::string& name, Parser parser);
+    virtual ~TypedJsonParam()
+    {}
+
+    T& var()
+    {
+        return m_var;
+    }
+
+    virtual bool parse(const rapidjson::Value& elem) = 0;
 
 protected:
     T& m_var;
-    Parser m_parser;
+    PARSER m_parser;
+    VALIDATOR* m_validator;
 };
+
+template <typename T, typename PARSER, typename VALIDATOR>
+bool TypedJsonParam<T,PARSER,VALIDATOR>::parse(const rapidjson::Value& elem)
+{
+    if (!m_required)
+    {
+        return true;
+    }
+
+    if (!elem.HasMember(m_name.c_str()))
+    {
+        LOG_ERROR("%s doesn't exist", m_name.c_str());
+        return false;
+    }
+
+    if (!m_parser.parse(m_var, m_name.c_str(), elem))
+    {
+        return false;
+    }
+
+    if (
+}
+
+
 
 } // end of namespace bot
 
