@@ -1,9 +1,8 @@
 #ifndef INCLUDE_BOT_JSON_PARAM
 #define INCLUDE_BOT_JSON_PARAM
 
-#include <string>
-#include <rapidjson/document.h>
-#include <misc/bot_log.h>
+#include <memory>
+#include "misc/bot_json_parser.h"
 
 namespace bot {
 
@@ -33,14 +32,24 @@ protected:
     std::string m_name;
 };
 
-template <typename T, typename PARSER, typename VALIDATOR>
+typedef std::shared_ptr<JsonParam> JsonParamPtr;
+
+template <typename T, typename VALIDATOR>
 class TypedJsonParam: public JsonParam {
 public:
-    TypededJsonParam(T& t, const std::string& name, PARSER parser,
-                     VALIDATOR* validator, bool required=true)
+    TypededJsonParam(T& t, const std::string& name,
+                     std::shared_ptr<VALIDATOR> validator=nullptr,
+                     bool required=true)
         : JsonParam(name, required)
         , m_var(t)
-        , m_parser(parser)
+        , m_validator(validator)
+    {}
+
+    TypededJsonParam(T& t, const char* name,
+                     std::shared_ptr<VALIDATOR> validator=nullptr,
+                     bool required=true)
+        : JsonParam(name, required)
+        , m_var(t)
         , m_validator(validator)
     {}
 
@@ -56,33 +65,46 @@ public:
 
 protected:
     T& m_var;
-    PARSER m_parser;
-    VALIDATOR* m_validator;
+    shared_ptr<VALIDATOR> m_validator;
 };
 
-template <typename T, typename PARSER, typename VALIDATOR>
-bool TypedJsonParam<T,PARSER,VALIDATOR>::parse(const rapidjson::Value& elem)
+template <typename T, typename VALIDATOR>
+bool TypedJsonParam<T,VALIDATOR>::parse(const rapidjson::Value& elem)
 {
-    if (!m_required)
-    {
-        return true;
-    }
-
-    if (!elem.HasMember(m_name.c_str()))
-    {
-        LOG_ERROR("%s doesn't exist", m_name.c_str());
-        return false;
-    }
-
-    if (!m_parser.parse(m_var, m_name.c_str(), elem))
+    if (!JsonParser::parse(m_var, elem, m_name.c_str(), m_required))
     {
         return false;
     }
 
-    if (
+    if (m_validator && m_validator->validate(m_var))
+    {
+        return false;
+    }
+
+    return false;
 }
 
+template <typename T, typename VALIDATOR>
+JsonParamPtr getJsonParam(T& t, const std::string& name,
+                          VALIDATOR* validator=nullptr,
+                          bool required=true)
+{
+    TypedJsonParam<T,VALIDATOR>* param =
+                 new TypedJsonParam<T,VALIDATOR>(t, name, validator, required);
 
+    return JsonParamPtr(param);
+}
+
+template <typename T, typename VALIDATOR>
+JsonParamPtr getJsonParam(T& t, const char* name,
+                          VALIDATOR* validator=nullptr,
+                          bool required=true)
+{
+    TypedJsonParam<T,VALIDATOR>* param =
+                 new TypedJsonParam<T,VALIDATOR>(t, name, validator, required);
+
+    return JsonParamPtr(param);
+}
 
 } // end of namespace bot
 

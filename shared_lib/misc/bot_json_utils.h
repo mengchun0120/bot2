@@ -29,36 +29,6 @@ bool readJson(rapidjson::Document& doc, const char* fileName);
 int validateJson(const rapidjson::Value& value, const char* name,
                  JsonDataType type, bool required=true);
 
-bool parseJson(int& r, const rapidjson::Value& value,
-               const char* name, bool required=true);
-
-bool parseJson(float& r, const rapidjson::Value& value,
-               const char* name, bool required=true);
-
-bool parseJson(bool& r, const rapidjson::Value& value,
-               const char* name, bool required=true);
-
-bool parseJson(double& r, const rapidjson::Value& value,
-               const char* name, bool required=true);
-
-bool parseJson(std::string& r, const rapidjson::Value& value,
-               const char* name, bool required=true);
-
-bool parseJson(std::vector<int>& r, const rapidjson::Value& value,
-               const char* name, bool required=true);
-
-bool parseJson(std::vector<float>& r, const rapidjson::Value& value,
-               const char* name, bool required=true);
-
-bool parseJson(std::vector<double>& r, const rapidjson::Value& value,
-               const char* name, bool required=true);
-
-bool parseJson(std::vector<bool>& r, const rapidjson::Value& value,
-               const char* name, bool required=true);
-
-bool parseJson(std::vector<std::string>& r, const rapidjson::Value& value,
-               const char* name, bool required=true);
-
 bool parseJson(std::vector<JsonParseParam>& params,
                const rapidjson::Value& value);
 
