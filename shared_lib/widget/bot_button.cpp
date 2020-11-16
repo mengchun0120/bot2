@@ -15,12 +15,12 @@ Button::Button()
 }
 
 bool Button::init(float x, float y, float width, float height,
-                  const std::string& text)
+                  const std::string& text, bool acceptInput)
 {
     const ButtonConfig& cfg = GameLib::getInstance().getButtonConfig();
 
     bool ret = Widget::init(x, y, width, height, cfg.getTexture(),
-                            nullptr, nullptr);
+                            nullptr, nullptr, acceptInput);
     if (!ret)
     {
         return false;

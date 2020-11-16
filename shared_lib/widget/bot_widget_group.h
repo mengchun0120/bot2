@@ -36,7 +36,7 @@ public:
 
     void shiftPos(float dx, float dy);
 
-private:
+protected:
     int processKeyEvent(const KeyEvent& event);
 
     int processMouseMoveEvent(const MouseMoveEvent& event);
@@ -45,7 +45,7 @@ private:
 
     int findWidget(float x, float y);
 
-private:
+protected:
     std::vector<std::shared_ptr<Widget>> m_widgets;
     int m_hoverWidgetIdx;
     int m_focusWidgetIdx;

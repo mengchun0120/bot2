@@ -204,74 +204,11 @@ Validator ge(const T& t, const T& lower)
     return v;
 }
 
-Validator operator&&(const Validator& a, const Validator& b)
-{
-    Validator v;
+Validator operator&&(const Validator& a, const Validator& b);
 
-    v.setVerifyFunc(
-        [&]()->bool
-        {
-            return a.verify() && b.verify();
-        }
-    );
+Validator operator||(const Validator& a, const Validator& b);
 
-    v.setRuleFunc(
-        [&](const std::string& name)->std::string
-        {
-            std::ostringstream oss;
-            oss << "(" << a.getRule(name) << " && " << b.getRule(name) << ")";
-            return oss.str();
-        }
-    );
-
-    return v;
-}
-
-Validator operator||(const Validator& a, const Validator& b)
-{
-    Validator v;
-
-    v.setVerifyFunc(
-        [&]()->bool
-        {
-            return a.verify() || b.verify();
-        }
-    );
-
-    v.setRuleFunc(
-        [&](const std::string& name)->std::string
-        {
-            std::ostringstream oss;
-            oss << "(" << a.getRule(name) << " || " << b.getRule(name) << ")";
-            return oss.str();
-        }
-    );
-
-    return v;
-}
-
-Validator operator!(const Validator& a)
-{
-    Validator v;
-
-    v.setVerifyFunc(
-        [&]()->bool
-        {
-            return !a.verify();
-        }
-    );
-
-    v.setRuleFunc(
-        [&](const std::string& name)->std::string
-        {
-            std::ostringstream oss;
-            oss << "!" << a.getRule(name);
-            return oss.str();
-        }
-    );
-
-    return v;
-}
+Validator operator!(const Validator& a);
 
 } // end of namespace bot
 

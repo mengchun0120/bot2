@@ -28,14 +28,14 @@ bool StartScreen::init()
     m_viewportOrigin[0] = viewportWidth / 2.0f;
     m_viewportOrigin[1] = viewportHeight / 2.0f;
 
-    const GameLib& lib = GameLib::getInstance();
+/*    const GameLib& lib = GameLib::getInstance();
 
     const StartScreenConfig& cfg = lib.getStartScreenConfig();
     const Rectangle* rect = cfg.getButtonRect();
     float spacing = cfg.getButtonSpacing();
     const std::vector<std::string>& buttonTexts = cfg.getButtonTexts();
 
-/*    int n = static_cast<int>(buttonTexts.size());
+    int n = static_cast<int>(buttonTexts.size());
     float x = (viewportWidth - rect->width()) / 2.0f;
     float y = (viewportHeight + n * rect->height() + (n - 1) * spacing) / 2.0f;
     float deltaY = rect->height() + spacing;
@@ -57,8 +57,8 @@ bool StartScreen::init()
         }
         button->setPos(x, y);
         button->setActionFunc(funcs[i]);
-        m_buttons.setWidget(i, button);*/
-    }
+        m_buttons.setWidget(i, button);
+    }*/
 
     return true;
 }

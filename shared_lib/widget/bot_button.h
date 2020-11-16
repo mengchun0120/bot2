@@ -20,7 +20,7 @@ public:
     {}
 
     bool init(float x, float y, float width, float height,
-              const std::string& text);
+              const std::string& text, bool acceptInput=true);
 
     void setText(const std::string& text);
 

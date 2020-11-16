@@ -1,5 +1,6 @@
 #include "misc/bot_log.h"
 #include "geometry/bot_rectangle.h"
+#include "opengl/bot_texture.h"
 #include "widget/bot_widget.h"
 
 namespace bot {
@@ -23,7 +24,7 @@ bool Widget::init(float x, float y, float width, float height,
                   const Texture* texture, const Color* borderColor,
                   const Color* backColor, bool acceptInput)
 {
-    if (!m_rect.init(width, height))
+    if (!m_rect.init(width, height, true))
     {
         LOG_ERROR("Failed to initialize rect");
         return false;

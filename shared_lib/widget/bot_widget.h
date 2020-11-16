@@ -20,7 +20,7 @@ public:
 
     bool init(float x, float y, float width, float height,
               const Texture* texture, const Color* borderColor,
-              const Color* backColor);
+              const Color* backColor, bool acceptInput);
 
     virtual int processKeyEvent(const KeyEvent& event)
     {
@@ -81,7 +81,7 @@ public:
         return m_acceptInput;
     }
 
-    void setAccetpInput(bool accept)
+    void setAcceptInput(bool accept)
     {
         m_acceptInput = accept;
     }

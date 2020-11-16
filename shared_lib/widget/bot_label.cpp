@@ -16,9 +16,11 @@ Label::Label()
 bool Label::init(float x, float y, float width, float height,
                  const std::string& text, const Color* textColor,
                  const Color* backColor, const Color* borderColor,
-                 Align hAlign, Align vAlign, TextSize sz)
+                 Align hAlign, Align vAlign, TextSize sz, bool acceptInput)
 {
-    if (!Widget::init(x, y, width, height, nullptr, backColor, borderColor))
+    bool ret = Widget::init(x, y, width, height, nullptr, backColor,
+                            borderColor, acceptInput);
+    if (!ret)
     {
         return false;
     }
@@ -40,6 +42,8 @@ bool Label::init(float x, float y, float width, float height,
     m_hAlign = hAlign;
     m_vAlign = vAlign;
     setText(text);
+
+    return true;
 }
 
 void Label::setText(const std::string& text)
@@ -68,7 +72,7 @@ void Label::present()
     if (!m_text.empty())
     {
         const TextSystem& textSys = TextSystem::getInstance();
-        textSys.drawString(m_textPos, m_text, m_size, m_textColor->getColor());
+        textSys.drawString(m_text, m_size, m_textPos, m_textColor->getColor());
     }
 }
 

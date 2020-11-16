@@ -20,6 +20,6 @@ set_property(TARGET bot_shared_lib PROPERTY CXX_STANDARD 11)
 
 add_executable(bot ${BOT_SOURCES})
 set_property(TARGET bot PROPERTY CXX_STANDARD 11)
-target_link_libraries(bot bot_shared_lib GL GLEW glfw3 dl m Xrandr
+target_link_libraries(bot bot_shared_lib GL GLEW glfw dl m Xrandr
                       Xi X11 Xxf86vm Xinerama Xcursor pthread)
 
