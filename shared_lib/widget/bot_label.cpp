@@ -1,5 +1,6 @@
 #include "misc/bot_log.h"
 #include "opengl/bot_text_system.h"
+#include "opengl/bot_color.h"
 #include "widget/bot_label.h"
 
 namespace bot {
@@ -67,7 +68,7 @@ void Label::present()
     if (!m_text.empty())
     {
         const TextSystem& textSys = TextSystem::getInstance();
-        textSys.drawString(m_textPos, m_text, m_size, m_textColor);
+        textSys.drawString(m_textPos, m_text, m_size, m_textColor->getColor());
     }
 }
 
@@ -81,7 +82,7 @@ void Label::resetTextPos()
     float textWidth, textHeight;
     const TextSystem& textSys = TextSystem::getInstance();
 
-    textSys.getStringSize(textWidth, textHeight, m_text, m_size);
+    textSys.getStringSize(textWidth, textHeight, m_size, m_text);
 
     switch(m_hAlign)
     {
@@ -100,6 +101,8 @@ void Label::resetTextPos()
             m_textPos[0] = m_pos[0] - textWidth / 2.0f;
             break;
         }
+        default:
+            LOG_ERROR("Wrong value for hAlign");
     }
 
     switch(m_vAlign)
@@ -119,6 +122,8 @@ void Label::resetTextPos()
             m_textPos[1] = m_pos[1] - textHeight / 2.0f;
             break;
         }
+        default:
+            LOG_ERROR("Wrong value for vAlign");
     }
 }
 

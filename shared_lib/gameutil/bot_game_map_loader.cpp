@@ -113,7 +113,7 @@ bool GameMapLoader::loadTiles(GameMap& map, int level,
 {
     std::string name;
     float x, y;
-    std::vector<JsonParam> params = {
+    std::vector<JsonParamPtr> params = {
         jsonParam(name, "name"),
         jsonParam(x, "x"),
         jsonParam(y, "y")
@@ -224,7 +224,7 @@ bool GameMapLoader::loadPlayer(GameMap& map, const rapidjson::Value& mapJson)
     float x, y, directionX, directionY;
     std::vector<JsonParamPtr> params = {
         jsonParam(x, "x"),
-        jsonparam(y, "y"),
+        jsonParam(y, "y"),
         jsonParam(directionX, "directionX"),
         jsonParam(directionY, "directionY")
     };

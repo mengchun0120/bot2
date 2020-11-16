@@ -1,5 +1,6 @@
 #include "misc/bot_log.h"
 #include "input/bot_input_event.h"
+#include "opengl/bot_simple_shader_program.h"
 #include "gameutil/bot_game_lib.h"
 #include "gameutil/bot_map_generator.h"
 #include "gameutil/bot_game_map_loader.h"
@@ -18,12 +19,13 @@ bool ShowMapScreen::init()
     const AppConfig& cfg = AppConfig::getInstance();
     const std::string& generatorName = cfg.getMapGenerator();
     const std::string& mapFile = cfg.getMapFile();
+    GameLib& lib = GameLib::getInstance();
 
     if (!generatorName.empty())
     {
         LOG_INFO("Generating map %s", mapFile.c_str());
 
-        MapGenerator* generator = lib->getMapGenerator(generatorName);
+        MapGenerator* generator = lib.getMapGenerator(generatorName);
         if (!generator)
         {
             LOG_ERROR("Failed to find map generator %s", generatorName.c_str());

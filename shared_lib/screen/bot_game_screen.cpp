@@ -3,6 +3,8 @@
 #include "misc/bot_file_utils.h"
 #include "misc/bot_math_utils.h"
 #include "input/bot_input_event.h"
+#include "opengl/bot_simple_shader_program.h"
+#include "opengl/bot_particle_shader_program.h"
 #include "gameobj/bot_tile.h"
 #include "gameobj/bot_missile.h"
 #include "gameobj/bot_player.h"
@@ -11,6 +13,7 @@
 #include "screen/bot_game_screen.h"
 #include "screen/bot_screen_manager.h"
 #include "app/bot_app_config.h"
+#include "app/bot_app.h"
 
 using namespace rapidjson;
 
@@ -18,7 +21,6 @@ namespace bot {
 
 GameScreen::GameScreen()
     : m_state(GAME_STATE_INIT)
-    , m_visibleMsgBoxIdx(-1)
 {
 }
 
@@ -36,11 +38,11 @@ bool GameScreen::init()
     float viewportWidth = app.getViewportWidth();
     float viewportHeight = app.getViewportHeight();
 
-    m_gameObjManager.init(&m_map, cfg, &m_lib);
+    m_gameObjManager.init(&m_map);
 
     initMessageBoxes(lib.getMessageBoxConfig(), lib.getButtonConfig());
 
-    if (!loadMap(cfg.getMapFile(), cfg))
+    if (!loadMap(cfg.getMapFile()))
     {
         LOG_ERROR("Failed to load map from %s", cfg.getMapFile().c_str());
         return false;
@@ -169,7 +171,7 @@ void GameScreen::present()
 
     simpleShader.use();
     simpleShader.setViewportSize(app.getViewportSize());
-    simpleShaderProgram.setViewportOrigin(m_map.getViewportPos());
+    simpleShader.setViewportOrigin(m_map.getViewportPos());
 
     static const GameObjectType LAYER_ORDER[] = {
         GAME_OBJ_TYPE_TILE,
@@ -220,11 +222,6 @@ void GameScreen::present()
 
 int GameScreen::processInput(const InputEvent& e)
 {
-    if (m_msgBoxVisible)
-    {
-        return m_msgBox.processInput(e);
-    }
-
     switch (e.m_type)
     {
         case InputEvent::ET_MOUSE_MOVE:
@@ -406,7 +403,8 @@ void GameScreen::clearDeadObjects()
 
 int GameScreen::switchToStart()
 {
-    m_screenManager->switchScreen(Screen::SCREEN_START);
+    ScreenManager& screenMgr = ScreenManager::getInstance();
+    screenMgr.switchScreen(Screen::SCREEN_START);
     return 1;
 }
 

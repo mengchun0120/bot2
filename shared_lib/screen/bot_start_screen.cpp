@@ -35,7 +35,7 @@ bool StartScreen::init()
     float spacing = cfg.getButtonSpacing();
     const std::vector<std::string>& buttonTexts = cfg.getButtonTexts();
 
-    int n = static_cast<int>(buttonTexts.size());
+/*    int n = static_cast<int>(buttonTexts.size());
     float x = (viewportWidth - rect->width()) / 2.0f;
     float y = (viewportHeight + n * rect->height() + (n - 1) * spacing) / 2.0f;
     float deltaY = rect->height() + spacing;
@@ -50,14 +50,14 @@ bool StartScreen::init()
     m_buttons.init(n);
     for (int i = 0; i < n; ++i, y -= deltaY) {
         Button* button = new Button();
-        if (!button->init(&m_lib->getButtonConfig(), rect, buttonTexts[i]))
+        if (!button->init(&lib.getButtonConfig(), rect, buttonTexts[i]))
         {
             LOG_ERROR("Failed to initialize start game button");
             return false;
         }
-        button->setPos(m_graphics->getTextSystem(), x, y);
+        button->setPos(x, y);
         button->setActionFunc(funcs[i]);
-        m_buttons.setWidget(i, button);
+        m_buttons.setWidget(i, button);*/
     }
 
     return true;
@@ -87,7 +87,8 @@ int StartScreen::processInput(const InputEvent& e)
 
 int StartScreen::startGame()
 {
-    m_screenManager->switchScreen(Screen::SCREEN_GAME);
+    ScreenManager& screenMgr = ScreenManager::getInstance();
+    screenMgr.switchScreen(Screen::SCREEN_GAME);
     return 1;
 }
 

@@ -22,13 +22,13 @@ GameObjectManager::~GameObjectManager()
     delete m_player;
 }
 
-void GameObjectManager::init(GameMap* map, const AppConfig& cfg,
-                             const GameLib* lib)
+void GameObjectManager::init(GameMap* map)
 {
+    const AppConfig& cfg = AppConfig::getInstance();
     m_map = map;
-    m_lib = lib;
+    m_lib = &(GameLib::getInstance());
     m_missilePool.init(cfg.getMissilePoolSize());
-    m_goodieGenerator.init(lib->getGoodieTemplateLib());
+    m_goodieGenerator.init(m_lib->getGoodieTemplateLib());
 }
 
 Tile* GameObjectManager::createTile(const std::string& tileName, int level,

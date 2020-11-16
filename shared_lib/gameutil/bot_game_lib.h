@@ -30,7 +30,7 @@ class GameLib {
 public:
     static bool initInstance();
 
-    static const GameLib& getInstance()
+    static GameLib& getInstance()
     {
         return *k_gameLib;
     }
@@ -128,7 +128,7 @@ public:
         return m_startScreenConfig;
     }
 
-    const MapGenerator* getMapGenerator(const std::string& name) const
+    MapGenerator* getMapGenerator(const std::string& name)
     {
         return m_mapGeneratorLib.search(name);
     }

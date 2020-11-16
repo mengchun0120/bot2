@@ -27,8 +27,7 @@ public:
 
     ~GameObjectManager();
 
-    void init(GameMap* map, const AppConfig& cfg,
-              const GameLib* lib);
+    void init(GameMap* map);
 
     Tile* createTile(const std::string& tileName, int level,
                      float x, float y);

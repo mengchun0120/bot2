@@ -8,8 +8,7 @@
 namespace bot {
 
 Button::Button()
-    : m_cfg(nullptr)
-    , m_textColor(nullptr)
+    : m_textColor(nullptr)
 {
     m_textPos[0] = 0.0f;
     m_textPos[1] = 0.0f;
@@ -55,7 +54,7 @@ void Button::setPos(float x, float y)
     m_textPos[1] += m_pos[1] - oldY;
 }
 
-void shiftPos(float dx, float dy)
+void Button::shiftPos(float dx, float dy)
 {
     Widget::shiftPos(dx, dy);
     m_textPos[0] += dx;
@@ -101,7 +100,8 @@ int Button::processMouseButtonEvent(const MouseButtonEvent& event)
 
 void Button::onMouseOut()
 {
-    m_textColor = m_cfg->getNormalTextColor();
+    const ButtonConfig& cfg = GameLib::getInstance().getButtonConfig();
+    m_textColor = cfg.getNormalTextColor();
 }
 
 void Button::present()
