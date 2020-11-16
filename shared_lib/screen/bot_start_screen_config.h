@@ -19,7 +19,8 @@ public:
     ~StartScreenConfig()
     {}
 
-    bool init(const std::string& configFile, const NamedMap<Rectangle>& rectLib);
+    bool init(const std::string& configFile,
+              const NamedMap<Rectangle>& rectLib);
 
     float getButtonSpacing() const
     {

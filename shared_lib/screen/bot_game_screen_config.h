@@ -14,52 +14,52 @@ public:
 
     bool load(const std::string& fileName);
 
-    float getMsgBoxWidth() const
+    float getWidth() const
     {
-        return m_msgBoxWidth;
+        return m_width;
     }
 
-    float getMsgBoxHeight() const
+    float getHeight() const
     {
-        return m_msgBoxHeight;
+        return m_height;
     }
 
-    float getMsgBoxTextWidth() const
+    float getTextWidth() const
     {
-        return m_msgBoxTextWidth;
+        return m_textWidth;
     }
 
-    float getMsgBoxTextHeight() const
+    float getTextHeight() const
     {
-        return m_msgBoxTextHeight;
+        return m_textHeight;
     }
 
-    float getMsgBoxButtonWidth() const
+    float getButtonWidth() const
     {
-        return m_msgBoxButtonWidth;
+        return m_buttonWidth;
     }
 
-    float getMsgBoxButtonHeight() const
+    float getButtonHeight() const
     {
-        return m_msgBoxButtonHeight;
+        return m_buttonHeight;
     }
 
-    float getMsgBoxButtonSpacing() const
+    float getButtonSpacing() const
     {
-        return m_msgBoxButtonSpacing;
+        return m_buttonSpacing;
     }
 
-    float getMsgBoxMsgButtonSpacing() const
+    float getTextButtonSpacing() const
     {
-        return m_msgBoxMsgButtonSpacing;
+        return m_textButtonSpacing;
     }
 
 private:
-    float m_msgBoxWidth, m_msgBoxHeight;
-    float m_msgBoxTextWidth, m_msgBoxTextHeight;
-    float m_msgBoxButtonWidth, m_msgBoxButtonHeight;
-    float m_msgBoxButtonSpacing;
-    float m_msgBoxMsgButtonSpacing;
+    float m_width, m_height;
+    float m_textWidth, m_textHeight;
+    float m_buttonWidth, m_buttonHeight;
+    float m_buttonSpacing;
+    float m_textButtonSpacing;
 };
 
 } // end of namespace bot

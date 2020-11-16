@@ -1,4 +1,5 @@
 #include "misc/bot_log.h"
+#include "opengl/bot_texture.h"
 #include "gametemplate/bot_mover_template.h"
 #include "gameobj/bot_robot.h"
 #include "screen/bot_game_screen.h"
@@ -53,8 +54,8 @@ bool Mover::update(GameScreen& screen, float delta)
         return false;
     }
 
-    float speedX = m_speed * robot.getDirectionX();
-    float speedY = m_speed * robot.getDirectionY();
+    float speedX = m_speed * m_robot->getDirectionX();
+    float speedY = m_speed * m_robot->getDirectionY();
     float newDelta;
     LinkedList<GameObjectItem> collideObjs;
     GameMap& map = screen.getMap();
@@ -64,12 +65,12 @@ bool Mover::update(GameScreen& screen, float delta)
 
     if (!collideObjs.isEmpty())
     {
-        robot.processCollisions(collideObjs, screen);
+        m_robot->processCollisions(collideObjs, screen);
         map.freeGameObjList(collideObjs);
     }
 
     m_robot->shiftPos(speedX * newDelta, speedY * newDelta);
-    map.repositionObject(&robot);
+    map.repositionObject(m_robot);
 
     return collide;
 }

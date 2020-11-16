@@ -1,5 +1,10 @@
 #include "misc/bot_log.h"
 #include "opengl/bot_opengl.h"
+#include "opengl/bot_simple_shader_program.h"
+#include "opengl/bot_particle_shader_program.h"
+#include "opengl/bot_text_system.h"
+#include "gameutil/bot_game_lib.h"
+#include "screen/bot_screen_manager.h"
 #include "app/bot_app_config.h"
 #include "app/bot_app.h"
 
@@ -70,8 +75,9 @@ bool App::run()
 {
     float delta;
     int ret;
+    ScreenManager& screenMgr = ScreenManager::getInstance();
     InputProcessor processor = std::bind(&ScreenManager::processInput,
-                                         &m_screenMgr,
+                                         &screenMgr,
                                          std::placeholders::_1);
 
     m_timeDeltaSmoother.start();
@@ -87,7 +93,7 @@ bool App::run()
         }
 
         delta = m_timeDeltaSmoother.getTimeDelta();
-        ret = m_screenMgr.update(delta);
+        ret = screenMgr.update(delta);
         if (ret == 2)
         {
             // the app should exit
@@ -99,7 +105,7 @@ bool App::run()
             m_inputMgr.clear();
         }
 
-        m_screenMgr.present();
+        screenMgr.present();
 
         glfwSwapBuffers(m_window);
         glfwPollEvents();
@@ -125,9 +131,11 @@ bool App::initWindow()
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    m_window = glfwCreateWindow(m_config->getWidth(),
-                                m_config->getHeight(),
-                                m_config->getTitle().c_str(),
+    const AppConfig& cfg = AppConfig::getInstance();
+
+    m_window = glfwCreateWindow(cfg.getWidth(),
+                                cfg.getHeight(),
+                                cfg.getTitle().c_str(),
                                 NULL, NULL);
     if (!m_window)
     {
@@ -153,7 +161,9 @@ bool App::initWindow()
 
 bool App::initInputManager()
 {
-    m_inputMgr.init(m_window, m_config->getEventQueueSize(), m_viewportSize[1]);
+    const AppConfig& cfg = AppConfig::getInstance();
+
+    m_inputMgr.init(m_window, cfg.getEventQueueSize(), m_viewportSize[1]);
 
     LOG_INFO("Done initializing input manager");
 
@@ -164,6 +174,8 @@ bool App::initOpenGL()
 {
     LOG_INFO("Initializing OpenGL");
 
+    const AppConfig& cfg = AppConfig::getInstance();
+
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
     glEnable(GL_BLEND);
@@ -171,8 +183,8 @@ bool App::initOpenGL()
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     bool success = SimpleShaderProgram::initInstance(
-                                m_config->getSimpleVertexShaderFile(),
-                                m_config->getSimpleFragShaderFile());
+                                cfg.getSimpleVertexShaderFile(),
+                                cfg.getSimpleFragShaderFile());
     if (!success)
     {
         LOG_ERROR("Failed to initialize simple-shader");
@@ -180,15 +192,15 @@ bool App::initOpenGL()
     }
 
     success = ParticleShaderProgram::initInstance(
-                               m_config->getParticleVertexShaderFile(),
-                               m_config->getParticleFragShaderFile());
+                               cfg.getParticleVertexShaderFile(),
+                               cfg.getParticleFragShaderFile());
     if (!success)
     {
         LOG_ERROR("Failed to initialie particle-shader");
         return false;
     }
 
-    success = TextSystem::initInstance(m_config->getFontDir());
+    success = TextSystem::initInstance(cfg.getFontDir());
     if (!success)
     {
         LOG_ERROR("Failed to initialize text-system");
@@ -232,8 +244,7 @@ bool App::initGame(Screen::Type startScreenType)
         return false;
     }
 
-    m_screenMgr.init(m_config, &m_gameLib, &m_graphics, startScreenType,
-                     m_viewportSize[0], m_viewportSize[1]);
+    ScreenManager::initInstance(startScreenType);
 
     LOG_INFO("Done initializing game");
 
@@ -244,7 +255,9 @@ bool App::initTimeDeltaSmoother()
 {
     LOG_INFO("Initializing time-delta smoother");
 
-    m_timeDeltaSmoother.init(m_config->getTimeDeltaHistoryLen());
+    const AppConfig& cfg = AppConfig::getInstance();
+
+    m_timeDeltaSmoother.init(cfg.getTimeDeltaHistoryLen());
 
     LOG_INFO("Done initializing time-delta smoother");
 
@@ -255,8 +268,7 @@ bool App::initGameLib()
 {
     LOG_INFO("Initializing game-lib");
 
-    bool success = GameLib::initInstance(m_viewportSize[0], m_viewportSize[1],
-                                         *m_config);
+    bool success = GameLib::initInstance();
 
     if (!success)
     {

@@ -55,92 +55,22 @@ bool BaseTemplate::init(const NamedMap<Texture>& textureLib,
     float powerRestoreRate = 0.0f, powerRestoreRatePerLevel = 0.0f;
     std::vector<float> weaponPos, moverPos;
     std::string hpColorName;
-    std::vector<JsonParseParam> params = {
-        {
-            &hp,
-            "hp",
-            JSONTYPE_FLOAT
-        },
-        {
-            &hpPerLevel,
-            "hpPerLevel",
-            JSONTYPE_FLOAT,
-            false},
-        {
-            &hpRestoreRate,
-            "hpRestoreRate",
-            JSONTYPE_FLOAT,
-            false
-        },
-        {
-            &hpRestoreRatePerLevel,
-            "hpRestoreRatePerLevel",
-            JSONTYPE_FLOAT,
-            false
-        },
-        {
-            &armor,
-            "armor",
-            JSONTYPE_FLOAT,
-            false
-        },
-        {
-            &armorPerLevel,
-            "armorPerLevel",
-            JSONTYPE_FLOAT,
-            false
-        },
-        {
-            &armorRepairRate,
-            "armorRepairRate",
-            JSONTYPE_FLOAT,
-            false
-        },
-        {
-            &armorRepairRatePerLevel,
-            "armorRepairRatePerLevel",
-            JSONTYPE_FLOAT,
-            false
-        },
-        {
-            &power,
-            "power",
-            JSONTYPE_FLOAT,
-            false
-        },
-        {
-            &powerPerLevel,
-            "powerPerLevel",
-            JSONTYPE_FLOAT,
-            false
-        },
-        {
-            &powerRestoreRate,
-            "powerRestoreRate",
-            JSONTYPE_FLOAT,
-            false
-        },
-        {
-            &powerRestoreRatePerLevel,
-            "powerRestoreRatePerLevel",
-            JSONTYPE_FLOAT,
-            false
-        },
-        {
-            &weaponPos,
-            "weaponPos",
-            JSONTYPE_FLOAT_ARRAY
-        },
-        {
-            &moverPos,
-            "moverPos",
-            JSONTYPE_FLOAT_ARRAY
-        },
-        {
-            &hpColorName,
-            "hpColor",
-            JSONTYPE_STRING
-        }
+    std::vector<JsonParamPtr> params = {
+        jsonParam(hp, "hp"),
+        jsonParam(hpPerLevel, "hpPerLevel", false),
+        jsonParam(hpRestoreRate, "hpRestoreRate", false),
+        jsonParam(hpRestoreRatePerLevel, "hpRestoreRatePerLevel", false),
+        jsonParam(armor, "armor", false),
+        jsonParam(armorPerLevel, "armorPerLevel", false),
+        jsonParam(armorRepairRate,  "armorRepairRate", false),
+        jsonParam(armorRepairRatePerLevel,  "armorRepairRatePerLevel", false),
+        jsonParam(power, "power", false),
+        jsonParam(powerPerLevel, "powerPerLevel", false),
+        jsonParam(powerRestoreRate, "powerRestoreRate", false),
+        jsonParam(powerRestoreRatePerLevel, "powerRestoreRatePerLevel", false),
+        jsonParam(weaponPos, "weaponPos"),
+        jsonParam(moverPos, "moverPos"),
+        jsonParam(hpColorName, "hpColor")
     };
 
     if (!parseJson(params, elem))

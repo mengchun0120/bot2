@@ -27,27 +27,11 @@ bool ButtonConfig::init(const std::string& configFile,
     const rapidjson::Value& val = doc.GetObject();
     std::string textureName, normalColorName, hoverColorName, pressColorName;
 
-    std::vector<JsonParseParam> params = {
-        {
-            &textureName,
-            "texture",
-            JSONTYPE_STRING
-        },
-        {
-            &normalColorName,
-            "normalTextColor",
-            JSONTYPE_STRING
-        },
-        {
-            &hoverColorName,
-            "hoverTextColor",
-            JSONTYPE_STRING
-        },
-        {
-            &pressColorName,
-            "pressTextColor",
-            JSONTYPE_STRING
-        }
+    std::vector<JsonParamPtr> params = {
+        jsonParam(textureName, "texture"),
+        jsonParam(normalColorName, "normalTextColor"),
+        jsonParam(hoverColorName, "hoverTextColor"),
+        jsonParam(pressColorName, "pressTextColor")
     };
 
     if (!parseJson(params, val))

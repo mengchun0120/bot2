@@ -129,6 +129,7 @@ void Base::present()
                                     nullptr);
 
     SimpleShaderProgram& shader = SimpleShaderProgram::getInstance();
+    const TextSystem& textSys = TextSystem::getInstance();
 
     shader.setUseDirection(false);
     textSys.drawString(m_hpPercentStr, TEXT_SIZE_TINY,
@@ -182,7 +183,7 @@ void Base::resetHPPercentStr()
 {
     snprintf(m_hpPercentStr, sizeof(m_hpPercentStr), "%d%%", m_hpPercent);
 
-    TextSystem& textSys = TextSystem::getInstance();
+    const TextSystem& textSys = TextSystem::getInstance();
     float w, h;
 
     textSys.getStringSize(w, h, TEXT_SIZE_TINY, m_hpPercentStr);

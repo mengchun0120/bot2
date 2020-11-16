@@ -48,10 +48,10 @@ public:
                       const NamedMap<TileTemplate>& tileTemplateLib,
                       int maxRobotCount);
 
-    virtual bool generate(const char* fileName) const = 0;
+    virtual bool generate(const char* fileName) = 0;
 
 protected:
-    virtual int deployRobots(GeneratedMap& map) const;
+    virtual int deployRobots(GeneratedMap& map);
 
 protected:
     int m_minRowCount, m_maxRowCount;

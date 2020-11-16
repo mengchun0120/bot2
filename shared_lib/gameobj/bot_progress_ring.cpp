@@ -36,27 +36,11 @@ bool ProgressRing::init(const NamedMap<Color>& colorLib,
     float radius;
     int numEdges;
 
-    std::vector<JsonParseParam> params = {
-        {
-            &backColorName,
-            "backColor",
-            JSONTYPE_STRING
-        },
-        {
-            &frontColorNames,
-            "frontColors",
-            JSONTYPE_STRING_ARRAY
-        },
-        {
-            &radius,
-            "radius",
-            JSONTYPE_FLOAT
-        },
-        {
-            &numEdges,
-            "numEdges",
-            JSONTYPE_INT
-        }
+    std::vector<JsonParamPtr> params = {
+        jsonParam(backColorName, "backColor"),
+        jsonParam(frontColorNames, "frontColors"),
+        jsonParam(radius, "radius", gt(radius, 0.0f)),
+        jsonParam(numEdges, "numEdges", gt(numEdges, 3))
     };
 
     if (!parseJson(params, elem))

@@ -30,10 +30,10 @@ Rectangle::~Rectangle()
 
 bool Rectangle::init(const rapidjson::Value& elem)
 {
-    std::vector<JsonParseParam> params =
+    std::vector<JsonParamPtr> params =
     {
-        {&m_width,  "width",  JSONTYPE_FLOAT},
-        {&m_height, "height", JSONTYPE_FLOAT}
+        jsonParam(m_width, "width"),
+        jsonParam(m_height, "height")
     };
 
     if (!parseJson(params, elem))
@@ -61,7 +61,7 @@ bool Rectangle::init(float width, float height, bool hasTexCoord)
     if (height <= 0.0f)
     {
         LOG_ERROR("Height (%f) is invalid", height);
-        reteurn false;
+        return false;
     }
 
     float halfWidth = width / 2.0f;
@@ -97,8 +97,8 @@ bool Rectangle::init(float width, float height, bool hasTexCoord)
         }
     }
 
-    m_width = width0;
-    m_height = height0;
+    m_width = width;
+    m_height = height;
 
     return true;
 }

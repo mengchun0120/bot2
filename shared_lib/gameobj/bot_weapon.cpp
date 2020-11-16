@@ -1,5 +1,6 @@
 #include "misc/bot_log.h"
 #include "misc/bot_math_utils.h"
+#include "opengl/bot_texture.h"
 #include "gametemplate/bot_weapon_template.h"
 #include "gametemplate/bot_missile_template.h"
 #include "gameobj/bot_robot.h"

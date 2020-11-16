@@ -7,12 +7,11 @@ namespace bot {
 
 std::shared_ptr<GameLib> GameLib::k_gameLib;
 
-bool GameLib::initInstance(float viewportWidth, float viewportHeight,
-                           const AppConfig& cfg)
+bool GameLib::initInstance()
 {
     GameLib* lib = new GameLib();
 
-    if (!lib->load(viewportWidth, viewportHeight, cfg))
+    if (!lib->load())
     {
         delete lib;
         return false;
@@ -23,9 +22,10 @@ bool GameLib::initInstance(float viewportWidth, float viewportHeight,
     return true;
 }
 
-bool GameLib::load(float viewportWidth, float viewportHeight,
-                   const AppConfig& cfg)
+bool GameLib::load()
 {
+    const AppConfig& cfg = AppConfig::getInstance();
+
     Texture::Parser textureParser(cfg.getTextureDir());
     bool ret = m_textureLib.load(cfg.getTextureLib().c_str(), textureParser);
     if (!ret)

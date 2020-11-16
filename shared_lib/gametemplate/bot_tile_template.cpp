@@ -43,23 +43,11 @@ bool TileTemplate::init(const NamedMap<Texture>& textureLib,
 
     float hp, hpPerLevel;
     bool indestructable = false;
-    std::vector<JsonParseParam> params =
+    std::vector<JsonParamPtr> params =
     {
-        {
-            &hp,
-            "hp",
-            JSONTYPE_FLOAT
-        },
-        {
-            &hpPerLevel,
-            "hpPerLevel",
-            JSONTYPE_FLOAT
-        },
-        {
-            &indestructable,
-            "indestructable",
-            JSONTYPE_BOOL
-        }
+        jsonParam(hp, "hp"),
+        jsonParam(hpPerLevel, "hpPerLevel"),
+        jsonParam(indestructable, "indestructable"),
     };
 
     if (!parseJson(params, elem))

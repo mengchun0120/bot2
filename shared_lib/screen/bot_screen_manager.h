@@ -14,7 +14,7 @@ class ScreenManager {
 public:
     static bool initInstance(Screen::Type startScreenType);
 
-    ScreenManager& getInstance()
+    static ScreenManager& getInstance()
     {
         return *k_screenMgr;
     }

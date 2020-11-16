@@ -26,12 +26,9 @@
 
 namespace bot {
 
-class AppConfig;
-
 class GameLib {
 public:
-    static bool initInstance(float viewportWidth, float viewportHeight,
-                             const AppConfig& cfg);
+    static bool initInstance();
 
     static const GameLib& getInstance()
     {
@@ -140,7 +137,7 @@ private:
     GameLib()
     {}
 
-    bool load(float viewportWidth, float viewportHeight, const AppConfig& cfg);
+    bool load();
 
 private:
     static std::shared_ptr<GameLib> k_gameLib;

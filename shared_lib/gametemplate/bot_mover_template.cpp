@@ -36,17 +36,9 @@ bool MoverTemplate::init(const NamedMap<Texture>& textureLib,
     }
 
     float speed, speedPerLevel;
-    std::vector<JsonParseParam> params = {
-        {
-            &speed,
-            "speed",
-            JSONTYPE_FLOAT},
-        {
-            &speedPerLevel,
-            "speedPerLevel",
-            JSONTYPE_FLOAT,
-            false
-        }
+    std::vector<JsonParamPtr> params = {
+        jsonParam(speed, "speed"),
+        jsonParam(speedPerLevel, "speedPerLevel", false)
     };
 
     if (!parseJson(params, elem))

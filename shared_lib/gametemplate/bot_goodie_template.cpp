@@ -43,7 +43,8 @@ GoodieType parseGoodieType(const std::string& typeName)
     return GOODIE_UNKNOWN;
 }
 
-GoodieTemplate* GoodieTemplate::Parser::create(const std::string& name, const rapidjson::Value& elem)
+GoodieTemplate* GoodieTemplate::Parser::create(const std::string& name,
+                                               const rapidjson::Value& elem)
 {
     GoodieTemplate* t = new GoodieTemplate();
     if (!t->init(name, m_rectLib, m_textureLib, m_colorLib, m_ringLib, elem))
@@ -67,37 +68,14 @@ bool GoodieTemplate::init(const std::string& name,
     }
 
     std::string textureName, rectName, effectRectName, ringName;
-    std::vector<JsonParseParam> params =
+    std::vector<JsonParamPtr> params =
     {
-        {
-            &textureName,
-            "texture",
-            JSONTYPE_STRING},
-        {
-            &rectName,
-            "rect",
-            JSONTYPE_STRING
-        },
-        {
-            &effectRectName,
-            "effectRect",
-            JSONTYPE_STRING
-        },
-        {
-            &ringName,
-            "progressRing",
-            JSONTYPE_STRING
-        },
-        {
-            &m_duration,
-            "duration",
-            JSONTYPE_FLOAT
-        },
-        {
-            &m_weight,
-            "weight",
-            JSONTYPE_FLOAT
-        }
+        jsonParam(textureName, "texture"),
+        jsonParam(rectName, "rect"),
+        jsonParam(effectRectName, "effectRect"),
+        jsonParam(ringName, "progressRing"),
+        jsonParam(m_duration, "duration", gt(m_duration, 0.0f)),
+        jsonParam(m_weight, "weight", gt(m_weight, 0.0f))
     };
 
     if (!parseJson(params, elem))

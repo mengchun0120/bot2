@@ -8,8 +8,8 @@ namespace bot {
 
 std::shared_ptr<SimpleShaderProgram> SimpleShaderProgram::k_program;
 
-bool SimpleShaderProgram::init(const std::string& vertexShaderFile,
-                               const std::string& fragShaderFile)
+bool SimpleShaderProgram::initInstance(const std::string& vertexShaderFile,
+                                       const std::string& fragShaderFile)
 {
     SimpleShaderProgram* program = new SimpleShaderProgram();
 

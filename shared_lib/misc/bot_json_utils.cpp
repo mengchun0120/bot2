@@ -30,6 +30,23 @@ bool readJson(rapidjson::Document& doc, const char* fileName)
     return true;
 }
 
+bool parseJson(std::vector<JsonParamPtr>& params,
+               const rapidjson::Value& elem)
+{
+    for (auto it = params.begin(); it != params.end(); ++it)
+    {
+        JsonParamPtr& p = *it;
+        if (!p->parse(elem))
+        {
+            LOG_ERROR("Failed to parse %s", p->getName().c_str());
+            return false;
+        }
+    }
+
+    return true;
+}
+
+/*
 int validateJson(const rapidjson::Value& value, const char* name,
                  JsonDataType type, bool required)
 {
@@ -443,5 +460,5 @@ bool parseJson(std::vector<JsonParseParam>& params,
 
     return true;
 }
-
+*/
 } // end of namespace bot

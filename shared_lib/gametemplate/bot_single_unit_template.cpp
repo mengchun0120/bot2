@@ -12,17 +12,9 @@ bool SingleUnitTemplate::init(const NamedMap<Texture>& textureLib,
                               const rapidjson::Value& elem)
 {
     std::string textureName, rectName;
-    std::vector<JsonParseParam> params = {
-        {
-            &textureName,
-            "texture",
-            JSONTYPE_STRING
-        },
-        {
-            &rectName,
-            "rect",
-            JSONTYPE_STRING
-        }
+    std::vector<JsonParamPtr> params = {
+        jsonParam(textureName, "texture"),
+        jsonParam(rectName, "rect")
     };
 
     if (!parseJson(params, elem))

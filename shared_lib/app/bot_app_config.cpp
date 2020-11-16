@@ -55,198 +55,46 @@ bool AppConfig::readConfig(const std::string& cfgFile)
 
     rapidjson::Value cfg = doc.GetObject();
 
-    std::vector<JsonParseParam> params =
+    std::vector<JsonParamPtr> params =
     {
-        {
-            &m_resDir,
-            "resDir",
-            JSONTYPE_STRING
-        },
-        {
-            &m_textureDir,
-            "textureDir",
-            JSONTYPE_STRING
-        },
-        {
-            &m_libDir,
-            "libDir",
-            JSONTYPE_STRING
-        },
-        {
-            &m_textureLib,
-            "textureLib",
-            JSONTYPE_STRING
-        },
-        {
-            &m_mapDir,
-            "mapDir",
-            JSONTYPE_STRING
-        },
-        {
-            &m_glslDir,
-            "glslDir",
-            JSONTYPE_STRING
-        },
-        {
-            &m_fontDir,
-            "fontDir",
-            JSONTYPE_STRING
-        },
-        {
-            &m_width,
-            "width",
-            JSONTYPE_INT
-        },
-        {
-            &m_height,
-            "height",
-            JSONTYPE_INT
-        },
-        {
-            &m_title,
-            "title",
-            JSONTYPE_STRING
-        },
-        {
-            &m_simpleVertexShaderFile,
-            "simpleVertexShaderFile",
-            JSONTYPE_STRING
-        },
-        {
-            &m_simpleFragShaderFile,
-            "simpleFragShaderFile",
-            JSONTYPE_STRING
-        },
-        {
-            &m_particleVertexShaderFile,
-            "particleVertexShaderFile",
-            JSONTYPE_STRING
-        },
-        {
-            &m_particleFragShaderFile,
-            "particleFragShaderFile",
-            JSONTYPE_STRING
-        },
-        {
-            &m_eventQueueSize,
-            "eventQueueSize",
-            JSONTYPE_INT
-        },
-        {
-            &m_timeDeltaHistoryLen,
-            "timeDeltaHistoryLen",
-            JSONTYPE_INT
-        },
-        {
-            &m_textureLib,
-            "textureLib",
-            JSONTYPE_STRING
-        },
-        {
-            &m_colorLib,
-            "colorLib",
-            JSONTYPE_STRING
-        },
-        {
-            &m_rectLib,
-            "rectLib",
-            JSONTYPE_STRING
-        },
-        {
-            &m_tileTemplateLib,
-            "tileTemplateLib",
-            JSONTYPE_STRING
-        },
-        {
-            &m_missileTemplateLib,
-            "missileTemplateLib",
-            JSONTYPE_STRING
-        },
-        {
-            &m_goodieTemplateLib,
-            "goodieTemplateLib",
-            JSONTYPE_STRING
-        },
-        {
-            &m_particleEffectTemplateLib,
-            "particleEffectTemplateLib",
-            JSONTYPE_STRING
-        },
-        {
-            &m_aiLib,
-            "aiLib",
-            JSONTYPE_STRING
-        },
-        {
-            &m_baseTemplateLib,
-            "baseTemplateLib",
-            JSONTYPE_STRING
-        },
-        {
-            &m_weaponTemplateLib,
-            "weaponTemplateLib",
-            JSONTYPE_STRING
-        },
-        {
-            &m_moverTemplateLib,
-            "moverTemplateLib",
-            JSONTYPE_STRING
-        },
-        {
-            &m_aiRobotTemplateLib,
-            "aiRobotTemplateLib",
-            JSONTYPE_STRING
-        },
-        {
-            &m_progressRingLib,
-            "progressRingLib",
-            JSONTYPE_STRING
-        },
-        {
-            &m_playerTemplate,
-            "playerTemplate",
-            JSONTYPE_STRING
-        },
-        {
-            &m_dashboardConfigFile,
-            "dashboardConfig",
-            JSONTYPE_STRING
-        },
-        {
-            &m_buttonConfigFile,
-            "buttonConfig",
-            JSONTYPE_STRING
-        },
-        {
-            &m_startScreenConfigFile,
-            "startScreenConfig",
-            JSONTYPE_STRING
-        },
-        {
-            &m_messageBoxConfigFile,
-            "messageBoxConfig",
-            JSONTYPE_STRING
-        },
-        {
-            &m_mapFile,
-            "mapFile",
-            JSONTYPE_STRING
-        },
-        {
-            &m_mapGeneratorLib,
-            "mapGeneratorLib",
-            JSONTYPE_STRING
-        },
-        {
-            &m_mapPoolFactor,
-            "mapPoolFactor",
-            JSONTYPE_FLOAT
-        },
-        {
-            &m_missilePoolSize,
-            "missilePoolSize",
-            JSONTYPE_INT
-        }
+        jsonParam(m_resDir, "resDir"),
+        jsonParam(m_textureDir, "textureDir"),
+        jsonParam(m_libDir, "libDir"),
+        jsonParam(m_textureLib, "textureLib"),
+        jsonParam(m_mapDir, "mapDir"),
+        jsonParam(m_glslDir, "glslDir"),
+        jsonParam(m_fontDir, "fontDir"),
+        jsonParam(m_width, "width"),
+        jsonParam(m_height, "height"),
+        jsonParam(m_title, "title"),
+        jsonParam(m_simpleVertexShaderFile, "simpleVertexShaderFile"),
+        jsonParam(m_simpleFragShaderFile, "simpleFragShaderFile"),
+        jsonParam(m_particleVertexShaderFile, "particleVertexShaderFile"),
+        jsonParam(m_particleFragShaderFile, "particleFragShaderFile"),
+        jsonParam(m_eventQueueSize, "eventQueueSize"),
+        jsonParam(m_timeDeltaHistoryLen, "timeDeltaHistoryLen"),
+        jsonParam(m_textureLib, "textureLib"),
+        jsonParam(m_colorLib, "colorLib"),
+        jsonParam(m_rectLib, "rectLib"),
+        jsonParam(m_tileTemplateLib, "tileTemplateLib"),
+        jsonParam(m_missileTemplateLib, "missileTemplateLib"),
+        jsonParam(m_goodieTemplateLib, "goodieTemplateLib"),
+        jsonParam(m_particleEffectTemplateLib, "particleEffectTemplateLib"),
+        jsonParam(m_aiLib, "aiLib"),
+        jsonParam(m_baseTemplateLib, "baseTemplateLib"),
+        jsonParam(m_weaponTemplateLib, "weaponTemplateLib"),
+        jsonParam(m_moverTemplateLib, "moverTemplateLib"),
+        jsonParam(m_aiRobotTemplateLib, "aiRobotTemplateLib"),
+        jsonParam(m_progressRingLib, "progressRingLib"),
+        jsonParam(m_playerTemplate, "playerTemplate"),
+        jsonParam(m_dashboardConfigFile, "dashboardConfig"),
+        jsonParam(m_buttonConfigFile, "buttonConfig"),
+        jsonParam(m_startScreenConfigFile, "startScreenConfig"),
+        jsonParam(m_messageBoxConfigFile, "messageBoxConfig"),
+        jsonParam(m_mapFile, "mapFile"),
+        jsonParam(m_mapGeneratorLib, "mapGeneratorLib"),
+        jsonParam(m_mapPoolFactor, "mapPoolFactor"),
+        jsonParam(m_missilePoolSize, "missilePoolSize")
     };
 
     if (!parseJson(params, cfg))

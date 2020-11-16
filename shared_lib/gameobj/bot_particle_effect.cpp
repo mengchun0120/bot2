@@ -26,7 +26,7 @@ bool ParticleEffect::init(const ParticleEffectTemplate* t, float x, float y)
 
 void ParticleEffect::present()
 {
-    ParticleShaderProgram& program = ParticleShaderProgram::getInstance;
+    ParticleShaderProgram& program = ParticleShaderProgram::getInstance();
     const ParticleEffectTemplate* t = getTemplate();
 
     program.setRef(m_pos);

@@ -226,62 +226,18 @@ bool PlayerTemplate::init(const std::string& fileName,
     int armorLevel, armorRepairLevel;
     int powerLevel, powerRestoreLevel;
     int missileLevel, weaponLevel, moverLevel;
-    std::vector<JsonParseParam> params = {
-        {
-            &gold,
-            "gold",
-            JSONTYPE_INT
-        },
-        {
-            &experience,
-            "experience",
-            JSONTYPE_INT
-        },
-        {
-            &hpLevel,
-            "hpLevel",
-            JSONTYPE_INT
-        },
-        {
-            &hpRestoreLevel,
-            "hpRestoreLevel",
-            JSONTYPE_INT
-        },
-        {
-            &armorLevel,
-            "armorLevel",
-            JSONTYPE_INT
-        },
-        {
-            &armorRepairLevel,
-            "armorRepairLevel",
-            JSONTYPE_INT
-        },
-        {
-            &powerLevel,
-            "powerLevel",
-            JSONTYPE_INT
-        },
-        {
-            &powerRestoreLevel,
-            "powerRestoreLevel",
-            JSONTYPE_INT
-        },
-        {
-            &missileLevel,
-            "missileLevel",
-            JSONTYPE_INT
-        },
-        {
-            &weaponLevel,
-            "weaponLevel",
-            JSONTYPE_INT
-        },
-        {
-            &moverLevel,
-            "moverLevel",
-            JSONTYPE_INT
-        }
+    std::vector<JsonParamPtr> params = {
+        jsonParam(gold, "gold"),
+        jsonParam(experience, "experience"),
+        jsonParam(hpLevel, "hpLevel"),
+        jsonParam(hpRestoreLevel, "hpRestoreLevel"),
+        jsonParam(armorLevel, "armorLevel"),
+        jsonParam(armorRepairLevel, "armorRepairLevel"),
+        jsonParam(powerLevel, "powerLevel"),
+        jsonParam(powerRestoreLevel, "powerRestoreLevel"),
+        jsonParam(missileLevel, "missileLevel"),
+        jsonParam(weaponLevel, "weaponLevel"),
+        jsonParam(moverLevel, "moverLevel")
     };
 
     if (!parseJson(params, elem))

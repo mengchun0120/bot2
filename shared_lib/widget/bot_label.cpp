@@ -1,4 +1,5 @@
 #include "misc/bot_log.h"
+#include "opengl/bot_text_system.h"
 #include "widget/bot_label.h"
 
 namespace bot {

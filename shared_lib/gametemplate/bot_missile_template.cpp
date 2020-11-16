@@ -55,39 +55,14 @@ bool MissileTemplate::init(
 
     float speed, damage, damagePerLevel = 0.0f, explosionBreath;
     std::string colorName, explosionEffectName;
-    std::vector<JsonParseParam> params =
+    std::vector<JsonParamPtr> params =
     {
-        {
-            &speed,
-            "speed",
-            JSONTYPE_FLOAT
-        },
-        {
-            &damage,
-            "damage",
-            JSONTYPE_FLOAT
-        },
-        {
-            &damagePerLevel,
-            "damagePerLevel",
-            JSONTYPE_FLOAT,
-            false
-        },
-        {
-            &explosionBreath,
-            "explosionBreath",
-            JSONTYPE_FLOAT
-        },
-        {
-            &colorName,
-            "color",
-            JSONTYPE_STRING
-        },
-        {
-            &explosionEffectName,
-            "explosionEffect",
-            JSONTYPE_STRING
-        }
+        jsonParam(speed, "speed"),
+        jsonParam(damage, "damage"),
+        jsonParam(damagePerLevel, "damagePerLevel", false),
+        jsonParam(explosionBreath, "explosionBreath"),
+        jsonParam(colorName, "color"),
+        jsonParam(explosionEffectName, "explosionEffect")
     };
 
     if (!parseJson(params, elem))

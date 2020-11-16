@@ -42,43 +42,15 @@ bool ParticleEffectTemplate::init(const NamedMap<Texture>& textureLib,
 
     std::vector<float> data;
     std::string textureName, colorName;
-    std::vector<JsonParseParam> params =
+    std::vector<JsonParamPtr> params =
     {
-        {
-            &m_acceleration,
-            "acceleration",
-            JSONTYPE_FLOAT
-        },
-        {
-            &m_initSpeed,
-            "initSpeed",
-            JSONTYPE_FLOAT
-        },
-        {
-            &m_duration,
-            "duration",
-            JSONTYPE_FLOAT
-        },
-        {
-            &m_particleSize,
-            "particleSize",
-            JSONTYPE_FLOAT
-        },
-        {
-            &textureName,
-            "texture",
-            JSONTYPE_STRING
-        },
-        {
-            &colorName,
-            "color",
-            JSONTYPE_STRING
-        },
-        {
-            &data,
-            "particles",
-            JSONTYPE_FLOAT_ARRAY
-        }
+        jsonParam(m_acceleration, "acceleration", gt(m_acceleration, 0.0f)),
+        jsonParam(m_initSpeed, "initSpeed", gt(m_initSpeed, 0.0f)),
+        jsonParam(m_duration, "duration", gt(m_duration, 0.0f)),
+        jsonParam(m_particleSize, "particleSize", gt(m_particleSize, 0.0f)),
+        jsonParam(textureName, "texture"),
+        jsonParam(colorName, "color"),
+        jsonParam(data, "particles")
     };
 
     if (!parseJson(params, elem))

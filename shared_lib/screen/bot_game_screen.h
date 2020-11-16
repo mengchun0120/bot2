@@ -13,6 +13,7 @@ namespace bot {
 struct MouseMoveEvent;
 struct MouseButtonEvent;
 struct KeyEvent;
+class ButtonConfig;
 
 class GameScreen: public Screen {
     enum {
@@ -94,6 +95,7 @@ private:
 private:
     GameMap m_map;
     GameState m_state;
+    GameObjectManager m_gameObjManager;
     float m_viewportOrigin[Constants::NUM_FLOATS_PER_POSITION];
     float m_dashboardOrigin[Constants::NUM_FLOATS_PER_POSITION];
     Dashboard m_dashboard;

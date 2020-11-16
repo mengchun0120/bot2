@@ -25,13 +25,18 @@ public:
 
     virtual ~TextSystem();
 
+    const Rectangle& getRect(TextSize sz, char ch) const
+    {
+        return *(m_rectMap[sz][static_cast<int>(ch) - MIN_CHAR]);
+    }
+
     void drawString(const char* str, TextSize size,
                     const float* pos, const float* color) const;
 
     void drawString(const std::string& str, TextSize size,
                     const float* pos, const float* color) const
     {
-        drawString(program, str.c_str(), size, pos, color);
+        drawString(str.c_str(), size, pos, color);
     }
 
     void getStringSize(float& width, float& height, TextSize sz,

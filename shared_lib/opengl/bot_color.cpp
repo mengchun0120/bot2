@@ -56,28 +56,12 @@ Color::Color()
 bool Color::init(const rapidjson::Value& elem)
 {
     int red = 0, green = 0, blue = 0, alpha = 0;
-    std::vector<JsonParseParam> params =
+    std::vector<JsonParamPtr> params =
     {
-        {
-            &red,
-            "red",
-            JSONTYPE_INT
-        },
-        {
-            &green,
-            "green",
-            JSONTYPE_INT
-        },
-        {
-            &blue,
-            "blue",
-            JSONTYPE_INT
-        },
-        {
-            &alpha,
-            "alpha",
-            JSONTYPE_INT
-        }
+        jsonParam(red, "red"),
+        jsonParam(green, "green"),
+        jsonParam(blue, "blue"),
+        jsonParam(alpha, "alpha")
     };
 
     if (!parseJson(params, elem))

@@ -9,6 +9,7 @@ namespace bot {
 struct KeyEvent;
 struct MouseMoveEvent;
 struct MouseButtonEvent;
+class Texture;
 
 class Widget {
 public:

@@ -33,22 +33,10 @@ bool MessageBoxConfig::init(const std::string& configFile,
 
     const rapidjson::Value& val = doc.GetObject();
     std::string boxFillColorName, boxBorderColorName, textColorName;
-    std::vector<JsonParseParam> params = {
-        {
-            &boxFillColorName,
-            "boxFillColor",
-            JSONTYPE_STRING
-        },
-        {
-            &boxBorderColorName,
-            "boxBorderColor",
-            JSONTYPE_STRING
-        },
-        {
-            &textColorName,
-            "textColor",
-            JSONTYPE_STRING
-        }
+    std::vector<JsonParamPtr> params = {
+        jsonParam(boxFillColorName, "boxFillColor"),
+        jsonParam(boxBorderColorName, "boxBorderColor"),
+        jsonParam(textColorName, "textColor")
     };
 
     if (!parseJson(params, val))

@@ -27,22 +27,10 @@ bool RobotTemplate::init(const NamedMap<BaseTemplate>& baseLib,
     }
 
     std::string baseName, weaponName, moverName;
-    std::vector<JsonParseParam> params = {
-        {
-            &baseName,
-            "base",
-            JSONTYPE_STRING
-        },
-        {
-            &weaponName,
-            "weapon",
-            JSONTYPE_STRING
-        },
-        {
-            &moverName,
-            "mover",
-            JSONTYPE_STRING
-        }
+    std::vector<JsonParamPtr> params = {
+        jsonParam(baseName, "base"),
+        jsonParam(weaponName, "weapon"),
+        jsonParam(moverName, "mover"),
     };
 
     if (!parseJson(params, elem))

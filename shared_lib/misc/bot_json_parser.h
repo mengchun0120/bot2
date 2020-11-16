@@ -2,6 +2,7 @@
 #define INCLUDE_BOT_JSON_PARSER
 
 #include <string>
+#include <vector>
 #include <rapidjson/document.h>
 
 namespace bot {

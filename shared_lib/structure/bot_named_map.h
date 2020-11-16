@@ -114,7 +114,7 @@ bool NamedMap<T>::load(const char* fileName)
         const rapidjson::Value& elem = arr[i];
         std::string name;
 
-        if (!parseJson(name, elem, "name"))
+        if (!JsonParser::parse(name, elem, "name"))
         {
             LOG_ERROR("Failed to find name in the %dth object of %s",
                       i, fileName);
@@ -163,7 +163,7 @@ bool NamedMap<T>::load(const char* fileName, P& parser)
         const rapidjson::Value& elem = arr[i];
         std::string name;
 
-        if (!parseJson(name, elem, "name"))
+        if (!JsonParser::parse(name, elem, "name"))
         {
             LOG_ERROR("Failed to find name in the %dth object of %s",
                       i, fileName);

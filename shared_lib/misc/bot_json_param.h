@@ -2,6 +2,8 @@
 #define INCLUDE_BOT_JSON_PARAM
 
 #include <memory>
+#include "misc/bot_log.h"
+#include "misc/bot_validator.h"
 #include "misc/bot_json_parser.h"
 
 namespace bot {
@@ -13,8 +15,23 @@ public:
         , m_required(required)
     {}
 
+    JsonParam(const std::string& name, const Validator& validator,
+              bool required=true)
+        : m_name(name)
+        , m_required(required)
+        , m_validator(validator)
+    {}
+
     JsonParam(const char* name, bool required=true)
         : m_name(name)
+        , m_required(required)
+    {}
+
+    JsonParam(const char* name, const Validator& validator,
+              bool required=true)
+        : m_name(name)
+        , m_required(required)
+        , m_validator(validator)
     {}
 
     virtual ~JsonParam()
@@ -28,81 +45,96 @@ public:
     virtual bool parse(const rapidjson::Value& elem) = 0;
 
 protected:
-    bool m_required;
     std::string m_name;
+    bool m_required;
+    Validator m_validator;
 };
 
 typedef std::shared_ptr<JsonParam> JsonParamPtr;
 
-template <typename T, typename VALIDATOR>
+template <typename T>
 class TypedJsonParam: public JsonParam {
 public:
-    TypededJsonParam(T& t, const std::string& name,
-                     std::shared_ptr<VALIDATOR> validator=nullptr,
-                     bool required=true)
+    TypedJsonParam(T& var, const std::string& name, bool required=true)
         : JsonParam(name, required)
-        , m_var(t)
-        , m_validator(validator)
+        , m_var(var)
     {}
 
-    TypededJsonParam(T& t, const char* name,
-                     std::shared_ptr<VALIDATOR> validator=nullptr,
-                     bool required=true)
+    TypedJsonParam(T& var, const std::string& name, const Validator& validator,
+                   bool required=true)
+        : JsonParam(name, validator, required)
+        , m_var(var)
+    {}
+
+    TypedJsonParam(T& var, const char* name, bool required=true)
         : JsonParam(name, required)
-        , m_var(t)
-        , m_validator(validator)
+        , m_var(var)
+    {}
+
+    TypedJsonParam(T& var, const char* name, const Validator& validator,
+                   bool required=true)
+        : JsonParam(name, validator, required)
+        , m_var(var)
     {}
 
     virtual ~TypedJsonParam()
     {}
 
-    T& var()
-    {
-        return m_var;
-    }
-
-    virtual bool parse(const rapidjson::Value& elem) = 0;
+    virtual bool parse(const rapidjson::Value& elem);
 
 protected:
     T& m_var;
-    shared_ptr<VALIDATOR> m_validator;
 };
 
-template <typename T, typename VALIDATOR>
-bool TypedJsonParam<T,VALIDATOR>::parse(const rapidjson::Value& elem)
+template <typename T>
+bool TypedJsonParam<T>::parse(const rapidjson::Value& elem)
 {
     if (!JsonParser::parse(m_var, elem, m_name.c_str(), m_required))
     {
         return false;
     }
 
-    if (m_validator && m_validator->validate(m_var))
+    if (!m_validator.verify())
     {
+        std::string rule = m_validator.getRule(m_name);
+        LOG_ERROR("Validation rule failed: %s", rule.c_str());
         return false;
     }
 
-    return false;
+    return true;
 }
 
-template <typename T, typename VALIDATOR>
-JsonParamPtr getJsonParam(T& t, const std::string& name,
-                          VALIDATOR* validator=nullptr,
-                          bool required=true)
+template <typename T>
+JsonParamPtr jsonParam(T& var, const std::string& name, bool required=true)
 {
-    TypedJsonParam<T,VALIDATOR>* param =
-                 new TypedJsonParam<T,VALIDATOR>(t, name, validator, required);
+    TypedJsonParam<T>* param = new TypedJsonParam<T>(var, name, required);
 
     return JsonParamPtr(param);
 }
 
-template <typename T, typename VALIDATOR>
-JsonParamPtr getJsonParam(T& t, const char* name,
-                          VALIDATOR* validator=nullptr,
-                          bool required=true)
+template <typename T>
+JsonParamPtr jsonParam(T& var, const std::string& name,
+                       const Validator& validator, bool required=true)
 {
-    TypedJsonParam<T,VALIDATOR>* param =
-                 new TypedJsonParam<T,VALIDATOR>(t, name, validator, required);
+    TypedJsonParam<T>* param = new TypedJsonParam<T>(var, name, validator,
+                                                    required);
+    return JsonParamPtr(param);
+}
 
+template <typename T>
+JsonParamPtr jsonParam(T& var, const char* name, bool required=true)
+{
+    TypedJsonParam<T>* param = new TypedJsonParam<T>(var, name, required);
+
+    return JsonParamPtr(param);
+}
+
+template <typename T>
+JsonParamPtr jsonParam(T& var, const char* name,
+                       const Validator& validator, bool required=true)
+{
+    TypedJsonParam<T>* param = new TypedJsonParam<T>(var, name, validator,
+                                                    required);
     return JsonParamPtr(param);
 }
 

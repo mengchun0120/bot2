@@ -79,13 +79,25 @@ bool GameMapLoader::initMap(GameMap& map, const rapidjson::Value& mapJson,
 {
     int numRows, numCols;
 
-    if (!parseJson(numRows, mapJson, "numRows"))
+    if (!JsonParser::parse(numRows, mapJson, "numRows"))
     {
         return false;
     }
 
-    if (!parseJson(numCols, mapJson, "numCols"))
+    if (!JsonParser::parse(numCols, mapJson, "numCols"))
     {
+        return false;
+    }
+
+    if (numRows <= 0)
+    {
+        LOG_ERROR("Invalid numRows %d", numRows);
+        return false;
+    }
+
+    if (numCols <= 0)
+    {
+        LOG_ERROR("Invalid numCols %d", numCols);
         return false;
     }
 
@@ -101,22 +113,10 @@ bool GameMapLoader::loadTiles(GameMap& map, int level,
 {
     std::string name;
     float x, y;
-    std::vector<JsonParseParam> params = {
-        {
-            &name,
-            "name",
-            JSONTYPE_STRING
-        },
-        {
-            &x,
-            "x",
-            JSONTYPE_FLOAT
-        },
-        {
-            &y,
-            "y",
-            JSONTYPE_FLOAT
-        }
+    std::vector<JsonParam> params = {
+        jsonParam(name, "name"),
+        jsonParam(x, "x"),
+        jsonParam(y, "y")
     };
 
     auto parser = [&](const rapidjson::Value& item)->bool
@@ -156,32 +156,12 @@ bool GameMapLoader::loadRobots(GameMap& map, const rapidjson::Value& mapJson,
 {
     std::string name;
     float x, y, directionX, directionY;
-    std::vector<JsonParseParam> params = {
-        {
-            &name,
-            "name",
-            JSONTYPE_STRING
-        },
-        {
-            &x,
-            "x",
-            JSONTYPE_FLOAT
-        },
-        {
-            &y,
-            "y",
-            JSONTYPE_FLOAT
-        },
-        {
-            &directionX,
-            "directionX",
-            JSONTYPE_FLOAT
-        },
-        {
-            &directionY,
-            "directionY",
-            JSONTYPE_FLOAT
-        }
+    std::vector<JsonParamPtr> params = {
+        jsonParam(name, "name"),
+        jsonParam(x, "x"),
+        jsonParam(y, "y"),
+        jsonParam(directionX, "directionX"),
+        jsonParam(directionY, "directionY"),
     };
 
     auto parser = [&](const rapidjson::Value& item)->bool
@@ -242,27 +222,11 @@ bool GameMapLoader::loadPlayer(GameMap& map, const rapidjson::Value& mapJson)
     }
 
     float x, y, directionX, directionY;
-    std::vector<JsonParseParam> params = {
-        {
-            &x,
-            "x",
-            JSONTYPE_FLOAT
-        },
-        {
-            &y,
-            "y",
-            JSONTYPE_FLOAT
-        },
-        {
-            &directionX,
-            "directionX",
-            JSONTYPE_FLOAT
-        },
-        {
-            &directionY,
-            "directionY",
-            JSONTYPE_FLOAT
-        }
+    std::vector<JsonParamPtr> params = {
+        jsonParam(x, "x"),
+        jsonparam(y, "y"),
+        jsonParam(directionX, "directionX"),
+        jsonParam(directionY, "directionY")
     };
 
     if (!parseJson(params, playerJson))

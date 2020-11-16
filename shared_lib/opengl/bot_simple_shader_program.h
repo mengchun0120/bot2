@@ -14,7 +14,7 @@ public:
     static bool initInstance(const std::string& vertexShaderFile,
                              const std::string& fragShaderFile);
 
-    SimpleShaderProgram& getInstance()
+    static SimpleShaderProgram& getInstance()
     {
         return *k_program;
     }

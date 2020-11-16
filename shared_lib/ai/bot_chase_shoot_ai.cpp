@@ -25,33 +25,18 @@ ChaseShootAI::ChaseShootAI()
 
 bool ChaseShootAI::init(const rapidjson::Value& elem)
 {
-    std::vector<JsonParseParam> params =
+    std::vector<JsonParamPtr> params =
     {
-        {
-            &m_chaseDurationMs,
-            "chaseDuration",
-            JSONTYPE_FLOAT
-        },
-        {
-            &m_directionChangeIntervalMs,
-            "directionChangeInterval",
-            JSONTYPE_FLOAT
-        },
-        {
-            &m_shootDurationMs,
-            "shootDuration",
-            JSONTYPE_FLOAT
-        },
-        {
-            &m_chaseProb,
-            "chaseProb",
-            JSONTYPE_FLOAT
-        },
-        {
-            &m_stopChaseDist,
-            "stopChaseDist",
-            JSONTYPE_FLOAT
-        }
+        jsonParam(m_chaseDurationMs, "chaseDuration",
+                  gt(m_chaseDurationMs, 0.0f)),
+        jsonParam(m_directionChangeIntervalMs, "directionChangeInterval",
+                  gt(m_directionChangeIntervalMs, 0.0f)),
+        jsonParam(m_shootDurationMs, "shootDuration",
+                  gt(m_shootDurationMs, 0.0f)),
+        jsonParam(m_chaseProb, "chaseProb",
+                  ge(m_chaseProb, 0.0f) && le(m_chaseProb, 1.0f)),
+        jsonParam(m_stopChaseDist, "stopChaseDist",
+                  gt(m_stopChaseDist, 0.0f))
     };
 
     if (!parseJson(params, elem))

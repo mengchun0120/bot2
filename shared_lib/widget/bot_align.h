@@ -5,7 +5,7 @@ namespace bot {
 
 enum Align {
     ALIGN_HLEFT,
-    ALIGN_HMIDDILE,
+    ALIGN_HMIDDLE,
     ALIGN_HRIGHT,
     ALIGN_VTOP,
     ALIGN_VMIDDLE,

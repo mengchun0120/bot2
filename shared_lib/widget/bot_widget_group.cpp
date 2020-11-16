@@ -49,6 +49,19 @@ void WidgetGroup::present()
     }
 }
 
+bool WidgetGroup::setWidget(unsigned int idx, Widget* widget)
+{
+    if (idx >= m_widgets.size())
+    {
+        LOG_ERROR("Index for widget-group is out-of-bound: %d", idx);
+        return false;
+    }
+
+    m_widgets[idx].reset(widget);
+
+    return true;
+}
+
 void WidgetGroup::shiftPos(float dx, float dy)
 {
     for (auto& widget : m_widgets)

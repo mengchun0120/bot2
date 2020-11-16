@@ -3,7 +3,7 @@
 #include "opengl/bot_text_system.h"
 #include "input/bot_input_event.h"
 #include "widget/bot_button.h"
-#include "widget/bot_game_lib.h"
+#include "gameutil/bot_game_lib.h"
 
 namespace bot {
 

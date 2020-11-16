@@ -16,17 +16,9 @@ bool initFirePoints(std::vector<FirePoint>& firePoints,
 {
     std::vector<float> firePos;
     std::vector<float> fireDirection;
-    std::vector<JsonParseParam> params = {
-        {
-            &firePos,
-            "firePos",
-            JSONTYPE_FLOAT_ARRAY
-        },
-        {
-            &fireDirection,
-            "fireDirection",
-            JSONTYPE_FLOAT_ARRAY
-        }
+    std::vector<JsonParamPtr> params = {
+        jsonParam(firePos, "firePos"),
+        jsonParam(fireDirection, "fireDirection")
     };
 
     auto parser = [&](FirePoint& p, const rapidjson::Value& e)->bool
@@ -102,24 +94,10 @@ bool WeaponTemplate::init(const NamedMap<Texture>& textureLib,
 
     float fireDuration, fireDurReductionPerLevel = 0.0f;
     std::string missileName;
-    std::vector<JsonParseParam> params = {
-        {
-            &fireDuration,
-            "fireDuration",
-            JSONTYPE_FLOAT
-        },
-        {
-            &fireDurReductionPerLevel,
-            "fireDurReductionPerLevel",
-            JSONTYPE_FLOAT,
-            false
-        },
-        {
-            &missileName,
-            "missile",
-            JSONTYPE_STRING,
-            false
-        }
+    std::vector<JsonParamPtr> params = {
+        jsonParam(fireDuration, "fireDuration"),
+        jsonParam(fireDurReductionPerLevel, "fireDurReductionPerLevel", false),
+        jsonParam(missileName, "missile", false)
     };
 
     if (!parseJson(params, elem))
@@ -165,18 +143,9 @@ bool WeaponTemplate::init(const NamedMap<Texture>& textureLib,
     }
 
     float fireDuration, fireDurReductionPerLevel = 0.0f;
-    std::vector<JsonParseParam> params = {
-        {
-            &fireDuration,
-            "fireDuration",
-            JSONTYPE_FLOAT
-        },
-        {
-            &fireDurReductionPerLevel,
-            "fireDurReductionPerLevel",
-            JSONTYPE_FLOAT,
-            false
-        }
+    std::vector<JsonParamPtr> params = {
+        jsonParam(fireDuration, "fireDuration"),
+        jsonParam(fireDurReductionPerLevel, "fireDurReductionPerLevel", false)
     };
 
     if (!parseJson(params, elem))

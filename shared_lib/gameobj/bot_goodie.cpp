@@ -1,5 +1,5 @@
-#include "opengl/bot_graphics.h"
 #include "opengl/bot_texture.h"
+#include "geometry/bot_rectangle.h"
 #include "gameobj/bot_goodie.h"
 
 namespace bot {

@@ -31,32 +31,16 @@ bool IslandMapGenerator::init(const rapidjson::Value& json,
         return false;
     }
 
-    std::vector<JsonParseParam> params = {
-        {
-            &m_minIslandLenTiles,
-            "minIslandLenTiles",
-            JSONTYPE_INT
-        },
-        {
-            &m_maxIslandLenTiles,
-            "maxIslandLenTiles",
-            JSONTYPE_INT
-        },
-        {
-            &m_minIslandDistSlots,
-            "minIslandDistSlots",
-            JSONTYPE_INT
-        },
-        {
-            &m_maxIslandDistSlots,
-            "maxIslandDistSlots",
-            JSONTYPE_INT
-        },
-        {
-            &m_islandTiles,
-            "islandTiles",
-            JSONTYPE_STRING_ARRAY
-        },
+    std::vector<JsonParamPtr> params = {
+        jsonParam(m_minIslandLenTiles, "minIslandLenTiles",
+                 gt(m_minIslandLenTiles, 0)),
+        jsonParam(m_maxIslandLenTiles, "maxIslandLenTiles",
+                  gt(m_maxIslandLenTiles, 0)),
+        jsonParam(m_minIslandDistSlots, "minIslandDistSlots",
+                  gt(m_minIslandDistSlots, 0)),
+        jsonParam(m_maxIslandDistSlots, "maxIslandDistSlots",
+                  gt(m_maxIslandDistSlots, 0)),
+        jsonParam(m_islandTiles, "islandTiles")
     };
 
     if (!parseJson(params, json))
@@ -94,7 +78,7 @@ bool IslandMapGenerator::init(const rapidjson::Value& json,
     return true;
 }
 
-bool IslandMapGenerator::generate(const char* fileName) const
+bool IslandMapGenerator::generate(const char* fileName)
 {
     int rowCount = m_rand.get(m_minRowCount, m_maxRowCount + 1);
     int colCount = m_rand.get(m_minColCount, m_maxColCount + 1);
@@ -119,7 +103,7 @@ bool IslandMapGenerator::generate(const char* fileName) const
     return true;
 }
 
-void IslandMapGenerator::generateTiles(GeneratedMap& map) const
+void IslandMapGenerator::generateTiles(GeneratedMap& map)
 {
     LOG_INFO("Generating tiles");
 
@@ -213,7 +197,7 @@ void IslandMapGenerator::generateTiles(GeneratedMap& map) const
 void IslandMapGenerator::generateIsland(
                             GeneratedMap& map, const std::string* tileName,
                             const TileTemplate* t, int islandSlotX,
-                            int islandSlotY, int rows, int cols) const
+                            int islandSlotY, int rows, int cols)
 {
     float tileHeight = t->getCoverBreath() * 2.0f;
     float tileWidth = t->getCoverBreath() * 2.0f;

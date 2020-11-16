@@ -6,7 +6,8 @@
 
 namespace bot {
 
-bool StartScreenConfig::init(const std::string& configFile, const NamedMap<Rectangle>& rectLib)
+bool StartScreenConfig::init(const std::string& configFile,
+                             const NamedMap<Rectangle>& rectLib)
 {
     rapidjson::Document doc;
 
@@ -23,15 +24,16 @@ bool StartScreenConfig::init(const std::string& configFile, const NamedMap<Recta
 
     const rapidjson::Value& jsonCfg = doc.GetObject();
     std::string buttonRectName;
-    std::vector<JsonParseParam> params = {
-        {&m_buttonSpacing,  "buttonSpacing", JSONTYPE_FLOAT},
-        {&buttonRectName,   "buttonRect",    JSONTYPE_STRING},
-        {&m_buttonTexts,    "buttonTexts",   JSONTYPE_STRING_ARRAY}
+    std::vector<JsonParamPtr> params = {
+        jsonParam(m_buttonSpacing, "buttonSpacing", gt(m_buttonSpacing, 0.0f)),
+        jsonParam(buttonRectName, "buttonRect"),
+        jsonParam(m_buttonTexts, "buttonTexts")
     };
 
     if (!parseJson(params, jsonCfg))
     {
-        LOG_ERROR("Failed to parse start screen config from %s", configFile.c_str());
+        LOG_ERROR("Failed to parse start screen config from %s",
+                  configFile.c_str());
         return false;
     }
 

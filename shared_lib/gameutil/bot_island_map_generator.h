@@ -20,14 +20,14 @@ public:
                       const NamedMap<TileTemplate>& tileTemplateLib,
                       int maxRobotCount);
 
-    virtual bool generate(const char* fileName) const;
+    virtual bool generate(const char* fileName);
 
 private:
-    void generateTiles(GeneratedMap& map) const;
+    void generateTiles(GeneratedMap& map);
 
     void generateIsland(GeneratedMap& map, const std::string* tileName,
                         const TileTemplate* t, int islandSlotX, int islandSlotY,
-                        int rows, int cols) const;
+                        int rows, int cols);
 
 private:
     // min and max length of islands in terms of tiles

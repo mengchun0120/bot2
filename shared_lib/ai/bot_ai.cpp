@@ -1,5 +1,5 @@
 #include "misc/bot_log.h"
-#include "misc/bot_json_utils.h"
+#include "misc/bot_json_parser.h"
 #include "bot_chase_shoot_ai.h"
 
 namespace bot {
@@ -7,7 +7,7 @@ namespace bot {
 AI* AI::Parser::create(const std::string& name, const rapidjson::Value& elem)
 {
     std::string algorithm;
-    if (!parseJson(algorithm, elem, "algorithm"))
+    if (!JsonParser::parse(algorithm, elem, "algorithm"))
     {
         return nullptr;
     }

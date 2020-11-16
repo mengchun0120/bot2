@@ -40,7 +40,7 @@ bool AIRobotTemplate::init(const NamedMap<BaseTemplate>& baseLib,
     }
 
     float goodieSpawnProb;
-    if (!parseJson(goodieSpawnProb, elem, "goodieSpawnProb"))
+    if (!JsonParser::parse(goodieSpawnProb, elem, "goodieSpawnProb"))
     {
         LOG_ERROR("Failed to parse goodieSpawnProb");
         return false;
@@ -52,7 +52,7 @@ bool AIRobotTemplate::init(const NamedMap<BaseTemplate>& baseLib,
     }
 
     std::string aiName;
-    if (!parseJson(aiName, elem, "ai"))
+    if (!JsonParser::parse(aiName, elem, "ai"))
     {
         return false;
     }

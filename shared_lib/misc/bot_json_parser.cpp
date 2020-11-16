@@ -31,7 +31,7 @@ bool JsonParser::parse(bool& r, const rapidjson::Value& elem,
     return true;
 }
 
-bool JsonParser::parse(int& r, const rapidjson::Value& value,
+bool JsonParser::parse(int& r, const rapidjson::Value& elem,
                        const char* name, bool required)
 {
     if (!elem.HasMember(name))
@@ -59,7 +59,7 @@ bool JsonParser::parse(int& r, const rapidjson::Value& value,
     return true;
 }
 
-bool JsonParser::parse(float& r, const rapidjson::Value& value,
+bool JsonParser::parse(float& r, const rapidjson::Value& elem,
                        const char* name, bool required)
 {
     if (!elem.HasMember(name))
@@ -87,7 +87,7 @@ bool JsonParser::parse(float& r, const rapidjson::Value& value,
     return true;
 }
 
-bool JsonParser::parse(double& r, const rapidjson::Value& value,
+bool JsonParser::parse(double& r, const rapidjson::Value& elem,
                        const char* name, bool required)
 {
     if (!elem.HasMember(name))
@@ -115,7 +115,7 @@ bool JsonParser::parse(double& r, const rapidjson::Value& value,
     return true;
 }
 
-bool JsonParser::parse(std::string& r, const rapidjson::Value& value,
+bool JsonParser::parse(std::string& r, const rapidjson::Value& elem,
                        const char* name, bool required)
 {
     if (!elem.HasMember(name))
@@ -143,7 +143,7 @@ bool JsonParser::parse(std::string& r, const rapidjson::Value& value,
     return true;
 }
 
-bool JsonParser::parse(std::vector<int>& r, const rapidjson::Value& value,
+bool JsonParser::parse(std::vector<int>& r, const rapidjson::Value& elem,
                        const char* name, bool required)
 {
     if (!elem.HasMember(name))
@@ -166,7 +166,7 @@ bool JsonParser::parse(std::vector<int>& r, const rapidjson::Value& value,
         return false;
     }
 
-    int sz = v.GetCapacity();
+    int sz = v.Capacity();
     if (sz == 0)
     {
         return true;
@@ -186,7 +186,7 @@ bool JsonParser::parse(std::vector<int>& r, const rapidjson::Value& value,
     return true;
 }
 
-bool JsonParser::parse(std::vector<float>& r, const rapidjson::Value& value,
+bool JsonParser::parse(std::vector<float>& r, const rapidjson::Value& elem,
                        const char* name, bool required)
 {
     if (!elem.HasMember(name))
@@ -209,7 +209,7 @@ bool JsonParser::parse(std::vector<float>& r, const rapidjson::Value& value,
         return false;
     }
 
-    int sz = v.GetCapacity();
+    int sz = v.Capacity();
     if (sz == 0)
     {
         return true;
@@ -229,7 +229,7 @@ bool JsonParser::parse(std::vector<float>& r, const rapidjson::Value& value,
     return true;
 }
 
-bool JsonParser::parse(std::vector<double>& r, const rapidjson::Value& value,
+bool JsonParser::parse(std::vector<double>& r, const rapidjson::Value& elem,
                        const char* name, bool required)
 {
     if (!elem.HasMember(name))
@@ -252,7 +252,7 @@ bool JsonParser::parse(std::vector<double>& r, const rapidjson::Value& value,
         return false;
     }
 
-    int sz = v.GetCapacity();
+    int sz = v.Capacity();
     if (sz == 0)
     {
         return true;
@@ -272,7 +272,7 @@ bool JsonParser::parse(std::vector<double>& r, const rapidjson::Value& value,
     return true;
 }
 
-bool JsonParser::parse(std::vector<bool>& r, const rapidjson::Value& value,
+bool JsonParser::parse(std::vector<bool>& r, const rapidjson::Value& elem,
                        const char* name, bool required)
 {
     if (!elem.HasMember(name))
@@ -295,7 +295,7 @@ bool JsonParser::parse(std::vector<bool>& r, const rapidjson::Value& value,
         return false;
     }
 
-    int sz = v.GetCapacity();
+    int sz = v.Capacity();
     if (sz == 0)
     {
         return true;
@@ -316,7 +316,7 @@ bool JsonParser::parse(std::vector<bool>& r, const rapidjson::Value& value,
 }
 
 bool JsonParser::parse(std::vector<std::string>& r,
-                       const rapidjson::Value& value,
+                       const rapidjson::Value& elem,
                        const char* name, bool required)
 {
     if (!elem.HasMember(name))
@@ -339,7 +339,7 @@ bool JsonParser::parse(std::vector<std::string>& r,
         return false;
     }
 
-    int sz = v.GetCapacity();
+    int sz = v.Capacity();
     if (sz == 0)
     {
         return true;

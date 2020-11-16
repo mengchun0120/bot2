@@ -3,8 +3,10 @@
 
 #include <string>
 #include <memory>
+#include "misc/bot_constants.h"
 #include "input/bot_input_manager.h"
 #include "gameutil/bot_time_delta_smoother.h"
+#include "screen/bot_screen.h"
 
 struct GLFWwindow;
 

@@ -62,37 +62,13 @@ bool MapGenerator::init(const rapidjson::Value& json,
 {
     m_playerTemplate = playerTemplate;
 
-    std::vector<JsonParseParam> params = {
-        {
-            &m_minRowCount,
-            "minRowCount",
-            JSONTYPE_INT
-        },
-        {
-            &m_maxRowCount,
-            "maxRowCount",
-            JSONTYPE_INT
-        },
-        {
-            &m_minColCount,
-            "minColCount",
-            JSONTYPE_INT
-        },
-        {
-            &m_maxColCount,
-            "maxColCount",
-            JSONTYPE_INT
-        },
-        {
-            &m_maxRobotCount,
-            "maxRobotCount",
-            JSONTYPE_INT
-        },
-        {
-            &m_robotNames,
-            "robots",
-            JSONTYPE_STRING_ARRAY
-        },
+    std::vector<JsonParamPtr> params = {
+        jsonParam(m_minRowCount, "minRowCount", gt(m_minRowCount, 0)),
+        jsonParam(m_maxRowCount, "maxRowCount", gt(m_maxRowCount, 0)),
+        jsonParam(m_minColCount, "minColCount", gt(m_minColCount, 0)),
+        jsonParam(m_maxColCount, "maxColCount", gt(m_maxColCount, 0)),
+        jsonParam(m_maxRobotCount, "maxRobotCount", gt(m_maxRobotCount, 0)),
+        jsonParam(m_robotNames, "robots")
     };
 
     if (!parseJson(params, json))
@@ -130,7 +106,7 @@ bool MapGenerator::init(const rapidjson::Value& json,
     return true;
 }
 
-int MapGenerator::deployRobots(GeneratedMap& map) const
+int MapGenerator::deployRobots(GeneratedMap& map)
 {
     LOG_INFO("Deploying robots");
 

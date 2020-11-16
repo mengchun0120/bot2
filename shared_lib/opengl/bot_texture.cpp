@@ -3,7 +3,7 @@
 #include "stb_image.h"
 #include "misc/bot_log.h"
 #include "misc/bot_file_utils.h"
-#include "misc/bot_json_utils.h"
+#include "misc/bot_json_parser.h"
 #include "opengl/bot_texture.h"
 
 namespace bot {
@@ -40,7 +40,7 @@ Texture::~Texture()
 bool Texture::init(const std::string& textureDir, const rapidjson::Value& elem)
 {
     std::string fileName;
-    if (!parseJson(fileName, elem, "file"))
+    if (!JsonParser::parse(fileName, elem, "file"))
     {
         LOG_ERROR("failed to parse file");
         return false;

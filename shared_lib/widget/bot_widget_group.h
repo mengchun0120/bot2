@@ -28,10 +28,7 @@ public:
 
     Widget* getWidget(int idx);
 
-    bool setWidget(int idx, Widget* widget)
-    {
-        m_widgets[idx].reset(widget);
-    }
+    bool setWidget(unsigned int idx, Widget* widget);
 
     int processInput(const InputEvent& event);
 

@@ -3,6 +3,7 @@
 
 #include "misc/bot_constants.h"
 #include "widget/bot_widget_group.h"
+#include "widget/bot_button.h"
 
 namespace bot {
 

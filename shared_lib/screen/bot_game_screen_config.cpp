@@ -5,14 +5,14 @@
 namespace bot {
 
 GameScreenConfig::GameScreenConfig()
-    : m_msgBoxWidth(0.0f)
-    , m_msgBoxHeight(0.0f)
-    , m_msgBoxTextWidth(0.0f)
-    , m_msgBoxTextHeight(0.0f)
-    , m_msgBoxButtonWidth(0.0f)
-    , m_msgBoxButtonHeight(0.0f)
-    , m_msgBoxButtonSpacing(0.0f)
-    , m_msgBoxMsgButtonSpacing(0.0f)
+    : m_width(0.0f)
+    , m_height(0.0f)
+    , m_textWidth(0.0f)
+    , m_textHeight(0.0f)
+    , m_buttonWidth(0.0f)
+    , m_buttonHeight(0.0f)
+    , m_buttonSpacing(0.0f)
+    , m_textButtonSpacing(0.0f)
 {
 }
 
@@ -32,47 +32,16 @@ bool GameScreenConfig::load(const std::string& fileName)
     }
 
     const rapidjson::Value& val = doc.GetObject();
-    std::vector<JsonParseParam> params = {
-        {
-            &m_msgBoxWidth,
-            "msgBoxWidth",
-            JSONTYPE_FLOAT
-        },
-        {
-            &m_msgBoxHeight,
-            "msgBoxHeight",
-            JSONTYPE_FLOAT
-        },
-        {
-            &m_msgBoxTextWidth,
-            "msgBoxTextWidth",
-            JSONTYPE_FLOAT
-        },
-        {
-            &m_msgBoxTextHeight,
-            "msgBoxTextHeight",
-            JSONTYPE_FLOAT
-        },
-        {
-            &m_msgBoxButtonWidth,
-            "msgBoxButtonWidth",
-            JSONTYPE_FLOAT
-        },
-        {
-            &m_msgBoxButtonHeight,
-            "msgBoxButtonHeight",
-            JSONTYPE_FLOAT
-        },
-        {
-            &m_msgBoxButtonSpacing,
-            "msgBoxButtonSpacing",
-            JSONTYPE_FLOAT
-        },
-        {
-            &m_msgBoxMsgButtonSpacing,
-            "msgBoxMsgButtonSpacing",
-            JSONTYPE_FLOAT
-        }
+    std::vector<JsonParamPtr> params = {
+        jsonParam(m_width, "width", gt(m_width, 0.0f)),
+        jsonParam(m_height, "height", gt(m_height, 0.0f)),
+        jsonParam(m_textWidth, "textWidth", gt(m_textWidth, 0.0f)),
+        jsonParam(m_textHeight, "textHeight", gt(m_textHeight, 0.0f)),
+        jsonParam(m_buttonWidth, "buttonWidth", gt(m_buttonWidth, 0.0f)),
+        jsonParam(m_buttonHeight, "buttonHeight", gt(m_buttonHeight, 0.0f)),
+        jsonParam(m_buttonSpacing, "buttonSpacing", gt(m_buttonSpacing, 0.0f)),
+        jsonParam(m_textButtonSpacing, "textButtonSpacing",
+                  gt(m_textButtonSpacing, 0.0f))
     };
 
     if (!parseJson(params, val))
@@ -80,17 +49,7 @@ bool GameScreenConfig::load(const std::string& fileName)
         return false;
     }
 
-    if (m_msgBoxWidth <= 0.0f)
-    {
-        LOG_ERROR("Invalid msgBoxWidth %f", m_msgBoxWidth);
-        return false;
-    }
-
-    if (m_msgBoxHeight <= 0.0f)
-    {
-        LOG_ERROR("Invalid msgBoxHeight %f", m_msgBoxHeight);
-        return false;
-    }
+    return true;
 }
 
 } // end of namespace bot
