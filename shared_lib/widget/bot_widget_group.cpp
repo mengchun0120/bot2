@@ -129,7 +129,7 @@ int WidgetGroup::processMouseButtonEvent(const MouseButtonEvent& event)
 
 int WidgetGroup::findWidget(float x, float y)
 {
-    int i, count = static_cast<int>(m_widgets.size());
+    int i, count = getWidgetCount();
 
     for (i = 0; i < count; ++i)
     {

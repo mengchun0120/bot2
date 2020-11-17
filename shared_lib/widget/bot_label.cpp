@@ -18,8 +18,8 @@ bool Label::init(float x, float y, float width, float height,
                  const Color* backColor, const Color* borderColor,
                  Align hAlign, Align vAlign, TextSize sz, bool acceptInput)
 {
-    bool ret = Widget::init(x, y, width, height, nullptr, backColor,
-                            borderColor, acceptInput);
+    bool ret = Widget::init(x, y, width, height, nullptr, borderColor,
+                            backColor, acceptInput);
     if (!ret)
     {
         return false;
