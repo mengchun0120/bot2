@@ -10,14 +10,13 @@ std::shared_ptr<GameLib> GameLib::k_gameLib;
 bool GameLib::initInstance()
 {
     GameLib* lib = new GameLib();
+    k_gameLib.reset(lib);
 
     if (!lib->load())
     {
-        delete lib;
+        k_gameLib.reset();
         return false;
     }
-
-    k_gameLib.reset(lib);
 
     return true;
 }

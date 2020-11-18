@@ -11,14 +11,13 @@ bool ParticleShaderProgram::initInstance(const std::string& vertexShaderFile,
                                          const std::string& fragShaderFile)
 {
     ParticleShaderProgram* program = new ParticleShaderProgram();
+    k_program.reset(program);
 
     if (!program->init(vertexShaderFile, fragShaderFile))
     {
-        delete program;
+        k_program.reset();
         return false;
     }
-
-    k_program.reset(program);
 
     return true;
 }

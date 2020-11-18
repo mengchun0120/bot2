@@ -15,14 +15,13 @@ std::shared_ptr<App> App::k_app;
 bool App::initInstance(Screen::Type startScreenType)
 {
     App* app = new App();
+    k_app.reset(app);
 
     if (!app->init(startScreenType))
     {
-        delete app;
+        k_app.reset();
         return false;
     }
-
-    k_app.reset(app);
 
     return true;
 }

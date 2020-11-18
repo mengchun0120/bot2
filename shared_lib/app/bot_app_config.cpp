@@ -11,14 +11,13 @@ bool AppConfig::initInstance(const std::string& appDir,
                              const std::string& cfgFile)
 {
     AppConfig* cfg = new AppConfig();
+    k_appCfg.reset(cfg);
 
     if (!cfg->load(appDir, cfgFile))
     {
-        delete cfg;
+        k_appCfg.reset();
         return false;
     }
-
-    k_appCfg.reset(cfg);
 
     return true;
 }

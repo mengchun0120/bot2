@@ -71,14 +71,13 @@ std::shared_ptr<TextSystem> TextSystem::k_textSys;
 bool TextSystem::initInstance(const std::string& fontFolder)
 {
     TextSystem* textSys = new TextSystem();
+    k_textSys.reset(textSys);
 
-    if (textSys->init(fontFolder))
+    if (!textSys->init(fontFolder))
     {
-        delete textSys;
+        k_textSys.reset();
         return false;
     }
-
-    k_textSys.reset(textSys);
 
     return true;
 }

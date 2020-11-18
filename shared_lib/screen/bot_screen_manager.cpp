@@ -9,14 +9,13 @@ std::shared_ptr<ScreenManager> ScreenManager::k_screenMgr;
 bool ScreenManager::initInstance(Screen::Type startScreenType)
 {
     ScreenManager* mgr = new ScreenManager();
+    k_screenMgr.reset(mgr);
 
     if (!mgr->init(startScreenType))
     {
-        delete mgr;
+        k_screenMgr.reset();
         return false;
     }
-
-    k_screenMgr.reset(mgr);
 
     return true;
 }

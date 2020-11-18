@@ -74,7 +74,7 @@ bool GoodieTemplate::init(const std::string& name,
         jsonParam(rectName, "rect"),
         jsonParam(effectRectName, "effectRect"),
         jsonParam(ringName, "progressRing"),
-        jsonParam(m_duration, "duration", gt(m_duration, 0.0f)),
+        jsonParam(m_duration, "duration"),
         jsonParam(m_weight, "weight", gt(m_weight, 0.0f))
     };
 
@@ -113,6 +113,11 @@ bool GoodieTemplate::init(const std::string& name,
     {
         LOG_ERROR("Invalid goodie type: %s", name.c_str());
         return false;
+    }
+
+    if (!isInstantaneousGoodie(m_goodieType) && m_duration <= 0.0f)
+    {
+        LOG_ERROR("Invalid duration %f for goodie %s", m_duration, name);
     }
 
     m_ring = nullptr;
