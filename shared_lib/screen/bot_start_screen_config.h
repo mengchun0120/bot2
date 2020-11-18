@@ -6,30 +6,30 @@
 
 namespace bot {
 
-template <typename T> class NamedMap;
-class Rectangle;
-
 class StartScreenConfig {
 public:
     StartScreenConfig()
         : m_buttonSpacing(0.0f)
-        , m_rect(nullptr)
     {}
 
     ~StartScreenConfig()
     {}
 
-    bool init(const std::string& configFile,
-              const NamedMap<Rectangle>& rectLib);
+    bool init(const std::string& configFile);
 
     float getButtonSpacing() const
     {
         return m_buttonSpacing;
     }
 
-    const Rectangle* getButtonRect() const
+    float getButtonWidth() const
     {
-        return m_rect;
+        return m_buttonWidth;
+    }
+
+    float getButtonHeight() const
+    {
+        return m_buttonHeight;
     }
 
     const std::vector<std::string>& getButtonTexts() const
@@ -39,7 +39,8 @@ public:
 
 private:
     float m_buttonSpacing;
-    const Rectangle* m_rect;
+    float m_buttonWidth;
+    float m_buttonHeight;
     std::vector<std::string> m_buttonTexts;
 };
 

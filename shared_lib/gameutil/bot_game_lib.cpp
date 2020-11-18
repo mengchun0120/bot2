@@ -241,7 +241,7 @@ bool GameLib::load()
     LOG_INFO("Done loading message-box config from %s",
              cfg.getMessageBoxConfigFile().c_str());
 
-    ret = m_startScreenConfig.init(cfg.getStartScreenConfigFile(), m_rectLib);
+    ret = m_startScreenConfig.init(cfg.getStartScreenConfigFile());
     if (!ret)
     {
         LOG_ERROR("Failed to load start-screen config from %s",

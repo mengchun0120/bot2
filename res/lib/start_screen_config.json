@@ -1,6 +1,7 @@
 {
     "buttonSpacing": 20.0,
-    "buttonRect": "button",
+    "buttonWidth": 320.0,
+    "buttonHeight": 60.0,
     "buttonTexts": [
         "Start Game",
         "Load Game",
