@@ -89,6 +89,7 @@ bool AppConfig::readConfig(const std::string& cfgFile)
         jsonParam(m_dashboardConfigFile, "dashboardConfig"),
         jsonParam(m_buttonConfigFile, "buttonConfig"),
         jsonParam(m_startScreenConfigFile, "startScreenConfig"),
+        jsonParam(m_gameScreenConfigFile, "gameScreenConfig"),
         jsonParam(m_messageBoxConfigFile, "messageBoxConfig"),
         jsonParam(m_mapFile, "mapFile"),
         jsonParam(m_mapGeneratorLib, "mapGeneratorLib"),
@@ -153,6 +154,8 @@ void AppConfig::marshalConfig()
                                                   m_buttonConfigFile });
     m_startScreenConfigFile     = constructPath({ m_libDir,
                                                   m_startScreenConfigFile });
+    m_gameScreenConfigFile      = constructPath({ m_libDir,
+                                                  m_gameScreenConfigFile });
     m_messageBoxConfigFile      = constructPath({ m_libDir,
                                                   m_messageBoxConfigFile });
     m_mapFile                   = constructPath({ m_mapDir, m_mapFile });

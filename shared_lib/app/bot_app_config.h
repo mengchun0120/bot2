@@ -206,6 +206,11 @@ public:
         return m_startScreenConfigFile;
     }
 
+    const std::string& getGameScreenConfigFile() const
+    {
+        return m_gameScreenConfigFile;
+    }
+
     const std::string& getMessageBoxConfigFile() const
     {
         return m_messageBoxConfigFile;
@@ -286,6 +291,7 @@ private:
     std::string m_dashboardConfigFile;
     std::string m_buttonConfigFile;
     std::string m_startScreenConfigFile;
+    std::string m_gameScreenConfigFile;
     std::string m_messageBoxConfigFile;
     std::string m_mapFile;
     int m_level;

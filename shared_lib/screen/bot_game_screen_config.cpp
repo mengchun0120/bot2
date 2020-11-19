@@ -41,7 +41,8 @@ bool GameScreenConfig::load(const std::string& fileName)
         jsonParam(m_buttonHeight, "buttonHeight", gt(m_buttonHeight, 0.0f)),
         jsonParam(m_buttonSpacing, "buttonSpacing", gt(m_buttonSpacing, 0.0f)),
         jsonParam(m_textButtonSpacing, "textButtonSpacing",
-                  gt(m_textButtonSpacing, 0.0f))
+                  gt(m_textButtonSpacing, 0.0f)),
+        jsonParam(m_buttonTexts, "buttonTexts")
     };
 
     if (!parseJson(params, val))

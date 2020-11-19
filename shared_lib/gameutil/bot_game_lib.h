@@ -23,6 +23,7 @@
 #include "widget/bot_button_config.h"
 #include "widget/bot_message_box_config.h"
 #include "screen/bot_start_screen_config.h"
+#include "screen/bot_game_screen_config.h"
 
 namespace bot {
 
@@ -126,6 +127,11 @@ public:
     const StartScreenConfig& getStartScreenConfig() const
     {
         return m_startScreenConfig;
+    }
+
+    const GameScreenConfig& getGameScreenConfig() const
+    {
+        return m_gameScreenConfig;
     }
 
     MapGenerator* getMapGenerator(const std::string& name)

@@ -17,11 +17,11 @@ class ButtonConfig;
 
 class GameScreen: public Screen {
     enum {
-        MSGBOX_ESCAPE_GAME,
-        MSGBOX_VICTORY,
-        MSGBOX_DEFEAT,
-        MSGBOX_COUNT
+        BUTTON_EXIT,
+        BUTTON_RESUME,
+        BUTTON_RESTART
     };
+
 public:
     GameScreen();
 
@@ -63,8 +63,7 @@ public:
     }
 
 private:
-    void initMessageBoxes(const MessageBoxConfig& msgBoxCfg,
-                          const ButtonConfig& buttonCfg);
+    bool initMessageBox();
 
     bool updateRobots(float delta);
 
@@ -86,11 +85,11 @@ private:
 
     int switchToStart();
 
-    int exitGame();
+    int exit();
 
-    int resumeGame();
+    int resume();
 
-    int restartGame();
+    int restart();
 
 private:
     GameMap m_map;

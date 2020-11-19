@@ -19,6 +19,9 @@ class MessageBox: public WidgetGroup {
 
 public:
     MessageBox()
+        : m_buttonY(0.0f),
+        , m_buttonSpacing(0.0f)
+        , m_visible(false)
     {}
 
     ~MessageBox()

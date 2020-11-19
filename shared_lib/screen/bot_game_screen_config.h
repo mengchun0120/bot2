@@ -2,6 +2,7 @@
 #define INCLUDE_BOT_GAME_SCREEN_CONFIG
 
 #include <string>
+#include <vector>
 
 namespace bot {
 
@@ -54,12 +55,18 @@ public:
         return m_textButtonSpacing;
     }
 
+    const std::vector<std::string>& getButtonTexts() const
+    {
+        return m_buttonTexts;
+    }
+
 private:
     float m_width, m_height;
     float m_textWidth, m_textHeight;
     float m_buttonWidth, m_buttonHeight;
     float m_buttonSpacing;
     float m_textButtonSpacing;
+    std::vector<std::string> m_buttonTexts;
 };
 
 } // end of namespace bot

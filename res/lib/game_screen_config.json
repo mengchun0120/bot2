@@ -1,0 +1,11 @@
+{
+    "width": 450.0,
+    "height": 250.0,
+    "textWidth": 400.0,
+    "textHeight": 30.0,
+    "buttonWidth": 120.0,
+    "buttonHeight": 30.0,
+    "buttonSpacing": 20.0,
+    "textButtonSpacing": 50.0,
+    "buttonTexts": ["Exit", "Resume", "Restart"]
+}

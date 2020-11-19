@@ -11,6 +11,7 @@
 #include "gameutil/bot_game_map_loader.h"
 #include "gameutil/bot_game_lib.h"
 #include "screen/bot_game_screen.h"
+#include "screen/bot_game_screen_config.h"
 #include "screen/bot_screen_manager.h"
 #include "app/bot_app_config.h"
 #include "app/bot_app.h"
@@ -40,7 +41,10 @@ bool GameScreen::init()
 
     m_gameObjManager.init(&m_map);
 
-    initMessageBoxes(lib.getMessageBoxConfig(), lib.getButtonConfig());
+    if (!initMessageBox())
+    {
+        return false;
+    }
 
     if (!loadMap(cfg.getMapFile()))
     {
@@ -60,44 +64,30 @@ bool GameScreen::init()
     return true;
 }
 
-void GameScreen::initMessageBoxes(const MessageBoxConfig& msgBoxCfg,
-                                  const ButtonConfig& buttonCfg)
+bool GameScreen::initMessageBox()
 {
-/*    m_msgBoxes.resize(MSGBOX_COUNT);
+    const GameScreenConfig& cfg = GameLib::getInstance().getGameScreenConfig();
+    const App& app = App::getInstance();
+    float x = (app.getViewportWidth() - cfg.getWidth()) / 2.0f;
+    float y = (app.getViewportHeight() - cfg.getHeight()) / 2.0f;
 
-    Button::ActionFunc exitFunc = std::bind(GameScreen::exitGame, this);
-    Button::ActionFunc resumeFunc = std::bind(GameScreen::resumeGame, this);
-    Button::ActionFunc restartFunc = std::bind(GameScreen::restartGame, this);
+    bool ret = m_msgBox.init(x, y, cfg.getWidth(), cfg.getHeight(),
+                             cfg.getTextWidth(), cfg.getTextHeight(),
+                             cfg.getButtonWidth(), cfg.getButtonHeight(),
+                             cfg.getButtonSpacing(), cfg.getTextButtonSpacing(),
+                             cfg.getButtonTexts());
 
-    MessageBox& escMsgBox = m_msgBoxes[MSGBOX_ESCAPE_GAME];
-    std::vector<std::string> buttons1 = {
-        "Exit", "Resume", "Restart"
-    };
+    if (!ret)
+    {
+        LOG_ERROR("Failed to initialize message-box");
+        return false;
+    }
 
-    escMsgBox.init(msgBoxCfg, buttonCfg, textSys,
-                   "Exit game?", buttons1);
-    escMsgBox.setAction(0, exitFunc);
-    escMsgBox.setAction(1, resumeFunc);
-    escMsgBox.setAction(2, restartFunc);
+    m_msgBox.setAction(BUTTON_EXIT, std::bind(GameScreen::exit, this));
+    m_msgBox.setAction(BUTTON_RESUME, std::bind(GameScreen::resume, this));
+    m_msgBox.setAction(BUTTON_RESTART, std::bind(GameScreen::restart, this));
 
-    MessageBox& victoryMsgBox = m_msgBoxes[MSGBOX_VICTORY];
-
-    victoryMsgBox.init(msgBoxCfg, buttonCfg, textSys,
-                       "You are victorious", buttons1);
-    victoryMsgBox.setAction(0, exitFunc);
-    victoryMsgBox.setAction(1, resumeFunc);
-    victoryMsgBox.setAction(2, restartFunc);
-
-    MessageBox& defeatMsgBox = m_msgBoxes[MSGBOX_DEFEAT];
-    std::vector<std::string> buttons2 = {
-        "Exit", "Restart"
-    };
-
-    defeatMsgBox.init(msgBoxCfg, buttonCfg, textSys,
-                      "You are defeated", buttons2);
-    defeatMsgBox.setAction(0, exitFunc);
-    defeatMsgBox.setAction(1, restartFunc);
-*/
+    m_msgBox.setVisible(false);
 }
 
 bool GameScreen::loadMap(const std::string& fileName)
@@ -327,11 +317,7 @@ void GameScreen::presentOverlay()
     program.setViewportOrigin(m_dashboardOrigin);
 
     m_dashboard.draw();
-/*
-    if (m_msgBoxVisible)
-    {
-        m_msgBox.show(*m_graphics);
-    }*/
+    m_msgBox.present();
 }
 
 int GameScreen::handleMouseMove(const MouseMoveEvent& e)

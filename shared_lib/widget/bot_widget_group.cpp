@@ -43,6 +43,11 @@ int WidgetGroup::processInput(const InputEvent& event)
 
 void WidgetGroup::present()
 {
+    if (!visible)
+    {
+        return;
+    }
+
     for (auto& widget : m_widgets)
     {
         widget->present();
