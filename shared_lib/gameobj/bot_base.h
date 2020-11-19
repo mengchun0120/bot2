@@ -106,6 +106,8 @@ public:
 private:
     void resetHPPercentStr();
 
+    void resetHPStrPos();
+
 protected:
     const BaseTemplate* m_baseTemplate;
     Robot* m_robot;

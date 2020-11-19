@@ -10,6 +10,8 @@ class StartScreenConfig {
 public:
     StartScreenConfig()
         : m_buttonSpacing(0.0f)
+        , m_buttonWidth(0.0f)
+        , m_buttonHeight(0.0f)
     {}
 
     ~StartScreenConfig()

@@ -141,6 +141,7 @@ void Base::setHP(float hp)
     m_hp = clamp(hp, 0.0f, m_maxHP);
     m_hpPercent = static_cast<int>(ceil(m_hp / m_maxHP * 100.0f));
     resetHPPercentStr();
+    resetHPStrPos();
 }
 
 void Base::refillHP()
@@ -148,6 +149,7 @@ void Base::refillHP()
     m_hp = m_maxHP;
     m_hpPercent = 100.0f;
     resetHPPercentStr();
+    resetHPStrPos();
 }
 
 void Base::shiftWeaponMoverPos(float deltaX, float deltaY)
@@ -156,6 +158,7 @@ void Base::shiftWeaponMoverPos(float deltaX, float deltaY)
     m_weaponPos[1] += deltaY;
     m_moverPos[0] += deltaX;
     m_moverPos[1] += deltaY;
+    resetHPStrPos();
 }
 
 void Base::resetWeaponMoverPos()
@@ -182,7 +185,10 @@ void Base::resetWeaponMoverPos()
 void Base::resetHPPercentStr()
 {
     snprintf(m_hpPercentStr, sizeof(m_hpPercentStr), "%d%%", m_hpPercent);
+}
 
+void Base::resetHPStrPos()
+{
     const TextSystem& textSys = TextSystem::getInstance();
     float w, h;
 
