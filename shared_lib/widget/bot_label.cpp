@@ -18,6 +18,12 @@ bool Label::init(float x, float y, float width, float height,
                  const Color* backColor, const Color* borderColor,
                  Align hAlign, Align vAlign, TextSize sz, bool acceptInput)
 {
+    if (!isValidTextSize(sz))
+    {
+        LOG_ERROR("Invalid text-size %d", static_cast<int>(sz));
+        return false;
+    }
+
     bool ret = Widget::init(x, y, width, height, nullptr, borderColor,
                             backColor, acceptInput);
     if (!ret)

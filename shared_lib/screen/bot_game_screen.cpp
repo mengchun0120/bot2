@@ -83,11 +83,13 @@ bool GameScreen::initMessageBox()
         return false;
     }
 
-    m_msgBox.setAction(BUTTON_EXIT, std::bind(GameScreen::exit, this));
-    m_msgBox.setAction(BUTTON_RESUME, std::bind(GameScreen::resume, this));
-    m_msgBox.setAction(BUTTON_RESTART, std::bind(GameScreen::restart, this));
+    m_msgBox.setAction(BUTTON_EXIT, std::bind(&GameScreen::exit, this));
+    m_msgBox.setAction(BUTTON_RESUME, std::bind(&GameScreen::resume, this));
+    m_msgBox.setAction(BUTTON_RESTART, std::bind(&GameScreen::restart, this));
 
     m_msgBox.setVisible(false);
+
+    return true;
 }
 
 bool GameScreen::loadMap(const std::string& fileName)
@@ -132,21 +134,19 @@ int GameScreen::update(float delta)
     updateRobots(delta);
     updateEffects(delta);
 
-    bool end = player->testFlag(GAME_OBJ_FLAG_DEAD) ||
-               m_gameObjManager.getAIRobotCount() <= 0;
-
-    if (end)
+    if (player->testFlag(GAME_OBJ_FLAG_DEAD))
     {
-        std::string msg = player->testFlag(GAME_OBJ_FLAG_DEAD) ?
-                                        "Game Over" : "You are victorious";
-
-        m_state = GAME_STATE_END;
-        m_map.setPlayer(nullptr);
-/*        m_msgBoxVisible = true;
-        m_msgBox.init(&m_lib->getMessageBoxConfig(), &m_lib->getButtonConfig(),
-                      m_graphics->getTextSystem(), MessageBox::OPTION_OK, msg);
-        m_msgBox.setOKAction(std::bind(&GameScreen::switchToStart, this));
-*/
+        m_state = GAME_STATE_PAUSED;
+        m_msgBox.setMsg("Game Over");
+        m_msgBox.setButtonVisible(BUTTON_RESUME, false);
+        m_msgBox.setVisible(true);
+    }
+    else if (m_gameObjManager.getAIRobotCount() <= 0)
+    {
+        m_state = GAME_STATE_PAUSED;
+        m_msgBox.setMsg("You are victorious");
+        m_msgBox.setButtonVisible(BUTTON_RESUME, true);
+        m_msgBox.setVisible(true);
     }
 
     clearDeadObjects();
@@ -212,6 +212,11 @@ void GameScreen::present()
 
 int GameScreen::processInput(const InputEvent& e)
 {
+    if (m_msgBox.isVisible())
+    {
+        return m_msgBox.processInput(e);
+    }
+
     switch (e.m_type)
     {
         case InputEvent::ET_MOUSE_MOVE:
@@ -363,8 +368,6 @@ int GameScreen::handleKey(const KeyEvent& e)
 
     switch (e.m_key)
     {
-        /*case GLFW_KEY_F:
-            return handleFireKey(e.m_action);*/
         case GLFW_KEY_W:
             player->setMovingEnabled(true);
             break;
@@ -392,6 +395,23 @@ int GameScreen::switchToStart()
     ScreenManager& screenMgr = ScreenManager::getInstance();
     screenMgr.switchScreen(Screen::SCREEN_START);
     return 1;
+}
+
+int GameScreen::exit()
+{
+    return switchToStart();
+}
+
+int GameScreen::resume()
+{
+    m_msgBox.setVisible(false);
+    m_state = GAME_STATE_RUNNING;
+    return 1;
+}
+
+int GameScreen::restart()
+{
+    return switchToStart();
 }
 
 } // end of namespace bot

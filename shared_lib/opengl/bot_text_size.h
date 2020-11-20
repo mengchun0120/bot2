@@ -11,6 +11,11 @@ enum TextSize {
     TEXT_SIZE_COUNT
 };
 
+inline bool isValidTextSize(TextSize sz)
+{
+    return sz >= TEXT_SIZE_BIG && sz < TEXT_SIZE_COUNT;
+}
+
 } // end of namespace bot
 
 #endif

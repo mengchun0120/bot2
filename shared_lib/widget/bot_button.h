@@ -4,6 +4,7 @@
 #include <functional>
 #include <string>
 #include "misc/bot_constants.h"
+#include "opengl/bot_text_size.h"
 #include "widget/bot_widget.h"
 
 namespace bot {
@@ -20,7 +21,8 @@ public:
     {}
 
     bool init(float x, float y, float width, float height,
-              const std::string& text, bool acceptInput=true);
+              const std::string& text, TextSize textSize=TEXT_SIZE_MEDIUM,
+              bool acceptInput=true);
 
     void setText(const std::string& text);
 
@@ -53,6 +55,7 @@ protected:
     std::string m_text;
     float m_textPos[Constants::NUM_FLOATS_PER_POSITION];
     const Color* m_textColor;
+    TextSize m_textSize;
     ActionFunc m_actionFunc;
 };
 

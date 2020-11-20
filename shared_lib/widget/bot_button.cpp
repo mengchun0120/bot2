@@ -9,14 +9,24 @@ namespace bot {
 
 Button::Button()
     : m_textColor(nullptr)
+    , m_textSize(TEXT_SIZE_MEDIUM)
 {
     m_textPos[0] = 0.0f;
     m_textPos[1] = 0.0f;
 }
 
 bool Button::init(float x, float y, float width, float height,
-                  const std::string& text, bool acceptInput)
+                  const std::string& text, TextSize textSize,
+                  bool acceptInput)
 {
+    if (!isValidTextSize(textSize))
+    {
+        LOG_ERROR("Invalid text-size %d", static_cast<int>(textSize));
+        return false;
+    }
+
+    m_textSize = textSize;
+
     const ButtonConfig& cfg = GameLib::getInstance().getButtonConfig();
 
     bool ret = Widget::init(x, y, width, height, cfg.getTexture(),
@@ -39,7 +49,7 @@ void Button::setText(const std::string& text)
     float w, h;
     const TextSystem& textSys = TextSystem::getInstance();
 
-    textSys.getStringSize(w, h, TEXT_SIZE_BIG, m_text);
+    textSys.getStringSize(w, h, m_textSize, m_text);
     m_textPos[0] = m_pos[0] - w / 2.0f;
     m_textPos[1] = m_pos[1] - h / 2.0f;
 }
@@ -114,7 +124,7 @@ void Button::present()
     const TextSystem& textSys = TextSystem::getInstance();
 
     Widget::present();
-    textSys.drawString(m_text, TEXT_SIZE_BIG,
+    textSys.drawString(m_text, m_textSize,
                        m_textPos, m_textColor->getColor());
 }
 

@@ -166,6 +166,7 @@ private:
     ButtonConfig m_buttonConfig;
     MessageBoxConfig m_messageBoxConfig;
     StartScreenConfig m_startScreenConfig;
+    GameScreenConfig m_gameScreenConfig;
 };
 
 } // end of namespace bot

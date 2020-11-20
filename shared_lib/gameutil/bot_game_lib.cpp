@@ -251,7 +251,7 @@ bool GameLib::load()
     LOG_INFO("Done loading start-screen config from %s",
              cfg.getStartScreenConfigFile().c_str());
 
-    ret = m_gameScreenConfig.init(cfg.getGameScreenConfigFile());
+    ret = m_gameScreenConfig.load(cfg.getGameScreenConfigFile());
     if (!ret)
     {
         LOG_ERROR("Failed to load game-screen config from %s",

@@ -38,8 +38,8 @@ bool MessageBox::init(float x, float y, float width, float height,
     bool ret =
         initBack(cfg, x, y, width, height) &&
         initMsg(cfg, msgX, msgY, msgWidth, msgHeight) &&
-        initButtons(buttonX, y, buttonWidth, buttonHeight, buttonSpacing,
-                    buttonTexts);
+        initButtons(buttonX, m_buttonY, buttonWidth, buttonHeight,
+                    buttonSpacing, buttonTexts);
 
     if (!ret)
     {
@@ -55,8 +55,8 @@ bool MessageBox::initBack(const MessageBoxConfig& cfg, float x, float y,
 {
     Widget* back = new Widget();
 
-    bool ret = back->init(x, y, width, height, nullptr, cfg.getBoxFillColor(),
-                          cfg.getBoxBorderColor(), false);
+    bool ret = back->init(x, y, width, height, nullptr, cfg.getBoxBorderColor(),
+                          cfg.getBoxFillColor(), false);
     if (!ret)
     {
         LOG_ERROR("Failed to initialize background");
@@ -77,7 +77,7 @@ bool MessageBox::initMsg(const MessageBoxConfig& cfg, float x, float y,
 
     bool ret = label->init(x, y, msgWidth, msgHeight, "", cfg.getTextColor(),
                       nullptr, nullptr, ALIGN_HMIDDLE, ALIGN_VMIDDLE,
-                      TEXT_SIZE_BIG);
+                      TEXT_SIZE_SMALL);
     if (!ret)
     {
         LOG_ERROR("Failed to initialize label");
@@ -103,7 +103,7 @@ bool MessageBox::initButtons(float x, float y, float buttonWidth,
         Button* button = new Button();
 
         bool ret = button->init(x, y, buttonWidth, buttonHeight,
-                           buttonTexts[i]);
+                           buttonTexts[i], TEXT_SIZE_SMALL);
         if (!ret)
         {
             LOG_ERROR("Failed to initialize button %d", i);

@@ -43,7 +43,7 @@ int WidgetGroup::processInput(const InputEvent& event)
 
 void WidgetGroup::present()
 {
-    if (!visible)
+    if (!m_visible)
     {
         return;
     }
@@ -52,6 +52,17 @@ void WidgetGroup::present()
     {
         widget->present();
     }
+}
+
+Widget* WidgetGroup::getWidget(unsigned int idx)
+{
+    if (idx > m_widgets.size())
+    {
+        LOG_ERROR("Index for widget-group is out-of-bound: %d", idx);
+        return nullptr;
+    }
+
+    return m_widgets[idx].get();
 }
 
 bool WidgetGroup::setWidget(unsigned int idx, Widget* widget)

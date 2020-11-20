@@ -1,14 +1,5 @@
 {
-    "boxRect": "message_box_rect",
-    "buttonRect": "message_box_button_rect",
     "boxFillColor": "lightgray",
     "boxBorderColor": "dimgray",
-    "textColor": "blue",
-    "buttonTexts": [
-        "OK",
-        "Cancel"
-    ],
-    "buttonSpacing": 20.0,
-    "msgMarginY": 40.0,
-    "buttonMarginY": 130.0
+    "textColor": "blue"
 }

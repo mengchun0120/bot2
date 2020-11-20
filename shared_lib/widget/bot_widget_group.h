@@ -27,7 +27,7 @@ public:
         return static_cast<int>(m_widgets.size());
     }
 
-    Widget* getWidget(int idx);
+    Widget* getWidget(unsigned int idx);
 
     bool setWidget(unsigned int idx, Widget* widget);
 

@@ -20,7 +20,8 @@ public:
     bool init(float x, float y, float width, float height,
               const std::string& text, const Color* textColor,
               const Color* backColor, const Color* borderColor,
-              Align hAlign, Align vAlign, TextSize sz, bool acceptInput=false);
+              Align hAlign, Align vAlign, TextSize sz=TEXT_SIZE_MEDIUM,
+              bool acceptInput=false);
 
     const std::string& getText() const
     {

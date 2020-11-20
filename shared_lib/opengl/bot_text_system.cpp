@@ -108,6 +108,12 @@ bool TextSystem::init(const std::string& fontFolder)
 void TextSystem::drawString(const char* str, TextSize size,
                             const float* pos, const float* color) const
 {
+    if (!isValidTextSize(size))
+    {
+        LOG_ERROR("Invalid text-size %d", static_cast<int>(size));
+        return;
+    }
+
     if (str[0] == '\0')
     {
         return;
