@@ -115,7 +115,10 @@ bool GameScreen::loadMap(const std::string& fileName)
 
 int GameScreen::update(float delta)
 {
-    if (m_state != GAME_STATE_RUNNING)
+    bool process = !m_msgBox.isVisible() &&
+                   (m_state == GAME_STATE_RUNNING ||
+                    m_state == GAME_STATE_POST_WIN);
+    if (!process)
     {
         return 0;
     }
@@ -136,17 +139,20 @@ int GameScreen::update(float delta)
 
     if (player->testFlag(GAME_OBJ_FLAG_DEAD))
     {
-        m_state = GAME_STATE_PAUSED;
+        m_state = GAME_STATE_END;
         m_msgBox.setMsg("Game Over");
         m_msgBox.setButtonVisible(BUTTON_RESUME, false);
         m_msgBox.setVisible(true);
     }
-    else if (m_gameObjManager.getAIRobotCount() <= 0)
+    else if (m_state == GAME_STATE_RUNNING)
     {
-        m_state = GAME_STATE_PAUSED;
-        m_msgBox.setMsg("You are victorious");
-        m_msgBox.setButtonVisible(BUTTON_RESUME, true);
-        m_msgBox.setVisible(true);
+        if (m_gameObjManager.getAIRobotCount() <= 0)
+        {
+            m_state = GAME_STATE_POST_WIN;
+            m_msgBox.setMsg("You are victorious");
+            m_msgBox.setButtonVisible(BUTTON_RESUME, true);
+            m_msgBox.setVisible(true);
+        }
     }
 
     clearDeadObjects();
@@ -374,6 +380,18 @@ int GameScreen::handleKey(const KeyEvent& e)
         case GLFW_KEY_S:
             player->setMovingEnabled(false);
             break;
+        case GLFW_KEY_ESCAPE:
+            {
+                bool process = m_state == GAME_STATE_RUNNING ||
+                               m_state == GAME_STATE_POST_WIN;
+                if (process)
+                {
+                    m_msgBox.setMsg("What's next?");
+                    m_msgBox.setButtonVisible(BUTTON_RESUME, true);
+                    m_msgBox.setVisible(true);
+                }
+            }
+            break;
     }
 
     return 0;
@@ -405,7 +423,6 @@ int GameScreen::exit()
 int GameScreen::resume()
 {
     m_msgBox.setVisible(false);
-    m_state = GAME_STATE_RUNNING;
     return 1;
 }
 
