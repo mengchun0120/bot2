@@ -85,7 +85,6 @@ bool GameScreen::initMessageBox()
 
     m_msgBox.setAction(BUTTON_EXIT, std::bind(&GameScreen::exit, this));
     m_msgBox.setAction(BUTTON_RESUME, std::bind(&GameScreen::resume, this));
-    m_msgBox.setAction(BUTTON_RESTART, std::bind(&GameScreen::restart, this));
 
     m_msgBox.setVisible(false);
 
@@ -424,11 +423,6 @@ int GameScreen::resume()
 {
     m_msgBox.setVisible(false);
     return 1;
-}
-
-int GameScreen::restart()
-{
-    return switchToStart();
 }
 
 } // end of namespace bot

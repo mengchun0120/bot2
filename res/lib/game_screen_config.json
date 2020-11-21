@@ -7,5 +7,5 @@
     "buttonHeight": 30.0,
     "buttonSpacing": 10.0,
     "textButtonSpacing": 20.0,
-    "buttonTexts": ["Exit", "Resume", "Restart"]
+    "buttonTexts": ["Exit", "Resume"]
 }

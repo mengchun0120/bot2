@@ -18,8 +18,7 @@ class ButtonConfig;
 class GameScreen: public Screen {
     enum {
         BUTTON_EXIT,
-        BUTTON_RESUME,
-        BUTTON_RESTART
+        BUTTON_RESUME
     };
 
 public:
@@ -88,8 +87,6 @@ private:
     int exit();
 
     int resume();
-
-    int restart();
 
 private:
     GameMap m_map;
