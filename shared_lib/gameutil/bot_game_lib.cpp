@@ -261,6 +261,16 @@ bool GameLib::load()
     LOG_INFO("Done loading game-screen config from %s",
              cfg.getGameScreenConfigFile().c_str());
 
+    ret = m_gameConfig.load(cfg.getGameConfigFile());
+    if (!ret)
+    {
+        LOG_ERROR("Failed to load game-config from %s",
+                  cfg.getGameConfigFile().c_str());
+        return false;
+    }
+    LOG_INFO("Done loading game-config from %s",
+             cfg.getGameConfigFile().c_str());
+
     return true;
 }
 

@@ -4,6 +4,7 @@
 #include "misc/bot_constants.h"
 #include "misc/bot_math_utils.h"
 #include "misc/bot_time_utils.h"
+#include "opengl/bot_color.h"
 
 namespace bot {
 
@@ -103,6 +104,11 @@ public:
 
     void resetWeaponMoverPos();
 
+    void setMask(const Color& mask)
+    {
+        m_mask = mask;
+    }
+
 private:
     void resetHPPercentStr();
 
@@ -120,6 +126,7 @@ protected:
     float m_moverPos[Constants::NUM_FLOATS_PER_POSITION];
     char m_hpPercentStr[HP_PERCENT_STR_LEN];
     float m_hpStrPos[Constants::NUM_FLOATS_PER_POSITION];
+    Color m_mask;
 };
 
 } // end of namespace bot

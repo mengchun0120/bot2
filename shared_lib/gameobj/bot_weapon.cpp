@@ -19,6 +19,7 @@ Weapon::Weapon()
     , m_damage(0.0f)
     , m_damageMultiplier(1.0f)
 {
+    m_mask.init(255, 255, 255, 255);
 }
 
 bool Weapon::init(const WeaponTemplate* weaponTemplate, Robot* robot,
@@ -99,7 +100,7 @@ void Weapon::present()
                                 base.getWeaponPos(), m_robot->getDirection(),
                                 nullptr, nullptr,
                                 m_weaponTemplate->getTexture()->textureId(),
-                                nullptr);
+                                m_mask.getColor());
 }
 
 void Weapon::shiftFirePoints(float deltaX, float deltaY)

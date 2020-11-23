@@ -1,6 +1,8 @@
 #ifndef INCLUDE_BOT_MOVER
 #define INCLUDE_BOT_MOVER
 
+#include "opengl/bot_color.h"
+
 namespace bot {
 
 class MoverTemplate;
@@ -38,6 +40,11 @@ public:
 
     bool setSpeedMultiplier(float multiplier);
 
+    void setMask(const Color& mask)
+    {
+        m_mask = mask;
+    }
+
 private:
     void resetSpeed()
     {
@@ -51,6 +58,7 @@ protected:
     float m_speed;
     float m_normalSpeed;
     float m_speedMultiplier;
+    Color m_mask;
 };
 
 } // end of namespace bot

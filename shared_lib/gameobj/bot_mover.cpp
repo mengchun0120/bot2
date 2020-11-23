@@ -14,6 +14,7 @@ Mover::Mover()
     , m_normalSpeed(0.0f)
     , m_speedMultiplier(1.0f)
 {
+    m_mask.init(255, 255, 255, 255);
 }
 
 bool Mover::init(const MoverTemplate* moverTemplate, Robot* robot,
@@ -82,7 +83,7 @@ void Mover::present()
                                 base.getMoverPos(), m_robot->getDirection(),
                                 nullptr, nullptr,
                                 m_moverTemplate->getTexture()->textureId(),
-                                nullptr);
+                                m_mask.getColor());
 }
 
 bool Mover::setSpeedMultiplier(float multiplier)

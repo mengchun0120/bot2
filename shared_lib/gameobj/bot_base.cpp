@@ -3,7 +3,6 @@
 #include "misc/bot_log.h"
 #include "misc/bot_math_utils.h"
 #include "opengl/bot_texture.h"
-#include "opengl/bot_color.h"
 #include "opengl/bot_simple_shader_program.h"
 #include "opengl/bot_text_system.h"
 #include "geometry/bot_rectangle.h"
@@ -27,6 +26,7 @@ Base::Base()
     , m_maxPower(0.0f)
     , m_powerRestoreRate(0.0f)
 {
+    m_mask.init(255, 255, 255, 255);
 }
 
 bool Base::init(const BaseTemplate* t, Robot* robot,
@@ -126,14 +126,17 @@ void Base::present()
     m_baseTemplate->getRect()->draw(m_robot->getPos(), m_robot->getDirection(),
                                     nullptr, nullptr,
                                     m_baseTemplate->getTexture()->textureId(),
-                                    nullptr);
+                                    m_mask.getColor());
 
     SimpleShaderProgram& shader = SimpleShaderProgram::getInstance();
     const TextSystem& textSys = TextSystem::getInstance();
 
+    Color textColor(*(m_baseTemplate->getHPColor()));
+    textColor *= m_mask;
+
     shader.setUseDirection(false);
     textSys.drawString(m_hpPercentStr, TEXT_SIZE_TINY,
-                       m_hpStrPos, m_baseTemplate->getHPColor()->getColor());
+                       m_hpStrPos, textColor.getColor());
 }
 
 void Base::setHP(float hp)

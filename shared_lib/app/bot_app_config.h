@@ -216,6 +216,11 @@ public:
         return m_messageBoxConfigFile;
     }
 
+    const std::string& getGameConfigFile() const
+    {
+        return m_gameConfigFile;
+    }
+
     const std::string& getMapGeneratorLib() const
     {
         return m_mapGeneratorLib;
@@ -293,6 +298,7 @@ private:
     std::string m_startScreenConfigFile;
     std::string m_gameScreenConfigFile;
     std::string m_messageBoxConfigFile;
+    std::string m_gameConfigFile;
     std::string m_mapFile;
     int m_level;
     std::string m_mapGeneratorLib;

@@ -18,6 +18,7 @@
 #include "gametemplate/bot_mover_template.h"
 #include "gametemplate/bot_player_template.h"
 #include "gameutil/bot_map_generator.h"
+#include "gameutil/bot_game_config.h"
 #include "gameobj/bot_progress_ring.h"
 #include "gameobj/bot_dashboard_config.h"
 #include "widget/bot_button_config.h"
@@ -134,6 +135,11 @@ public:
         return m_gameScreenConfig;
     }
 
+    const GameConfig& getGameConfig() const
+    {
+        return m_gameConfig;
+    }
+
     MapGenerator* getMapGenerator(const std::string& name)
     {
         return m_mapGeneratorLib.search(name);
@@ -167,6 +173,7 @@ private:
     MessageBoxConfig m_messageBoxConfig;
     StartScreenConfig m_startScreenConfig;
     GameScreenConfig m_gameScreenConfig;
+    GameConfig m_gameConfig;
 };
 
 } // end of namespace bot

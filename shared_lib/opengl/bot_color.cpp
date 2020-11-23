@@ -53,6 +53,11 @@ Color::Color()
     m_color[3] = 0.0f;
 }
 
+Color::Color(const Color& other)
+{
+    *this = other;
+}
+
 bool Color::init(const rapidjson::Value& elem)
 {
     int red = 0, green = 0, blue = 0, alpha = 0;
@@ -91,6 +96,24 @@ bool Color::init(int red, int green, int blue, int alpha)
     m_color[3] = alpha / 255.0f;
 
     return true;
+}
+
+Color& Color::operator=(const Color& other)
+{
+    for (int i = 0; i < Constants::NUM_FLOATS_COLOR; ++i)
+    {
+        m_color[i] = other.m_color[i];
+    }
+
+    return *this;
+}
+
+Color& Color::operator*=(const Color& other)
+{
+    for (int i = 0; i < Constants::NUM_FLOATS_COLOR; ++i)
+    {
+        m_color[i] *= other.m_color[i];
+    }
 }
 
 bool Color::setRed(int red)

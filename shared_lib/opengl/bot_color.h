@@ -37,12 +37,18 @@ public:
 
     Color();
 
+    Color(const Color& other);
+
     ~Color()
     {}
 
     bool init(const rapidjson::Value& elem);
 
     bool init(int red, int green, int blue, int alpha);
+
+    Color& operator=(const Color& other);
+
+    Color& operator*=(const Color& other);
 
     const float *getColor() const
     {

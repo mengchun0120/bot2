@@ -118,6 +118,8 @@ protected:
     Mover m_mover;
     float m_direction[Constants::NUM_FLOATS_PER_POSITION];
     Side m_side;
+    Color m_mask;
+    Clock::TimePoint m_deathTime;
 };
 
 } // end of namespace bot

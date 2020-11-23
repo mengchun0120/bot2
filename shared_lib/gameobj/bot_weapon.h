@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "misc/bot_time_utils.h"
+#include "opengl/bot_color.h"
 #include "gameobj/bot_fire_point.h"
 
 namespace bot {
@@ -44,6 +45,11 @@ public:
 
     bool setDamageMultiplier(float multiplier);
 
+    void setMask(const Color& mask)
+    {
+        m_mask = mask;
+    }
+
 private:
     void resetFireDuration();
 
@@ -63,6 +69,7 @@ protected:
     float m_fireDurationMultiplier;
     float m_damage;
     float m_damageMultiplier;
+    Color m_mask;
 };
 
 } // end of namespace bot
