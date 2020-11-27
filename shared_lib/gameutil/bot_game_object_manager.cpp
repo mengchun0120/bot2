@@ -185,6 +185,13 @@ Goodie* GameObjectManager::createGoodie(float prob, float x, float y)
     return goodie;
 }
 
+bool GameObjectManager::isPlayerAlive() const
+{
+    const int DEAD_FLAG = GAME_OBJ_FLAG_DISSOLVE |
+                          GAME_OBJ_FLAG_DEAD;
+    return m_player && !m_player->testFlag(DEAD_FLAG);
+}
+
 void GameObjectManager::sendToDissolveQueue(GameObject* obj)
 {
     switch (obj->getType())
@@ -202,7 +209,6 @@ void GameObjectManager::sendToDissolveQueue(GameObject* obj)
             if (robot->getSide() == SIDE_AI)
             {
                 m_activeRobots.unlink(robot);
-                onRobotDeath(static_cast<AIRobot*>(robot));
                 m_dissolveObjects.add(obj);
                 --m_aiRobotCount;
             }
@@ -210,7 +216,7 @@ void GameObjectManager::sendToDissolveQueue(GameObject* obj)
         }
         default:
         {
-            LOG_ERROR("Invalid object type %d for dissolve-queue:"
+            LOG_ERROR("Invalid object type %d for dissolve-queue:",
                       static_cast<int>(obj->getType()));
         }
     }
@@ -232,7 +238,7 @@ void GameObjectManager::sendToDeathQueue(GameObject* obj)
         case GAME_OBJ_TYPE_ROBOT:
         {
             Robot* robot = static_cast<Robot*>(obj);
-            if (robot->testFlag(GAME_OBJ_FLAG_DISSOLVE)
+            if (robot->testFlag(GAME_OBJ_FLAG_DISSOLVE))
             {
                 m_dissolveObjects.unlink(robot);
                 m_deadObjects.add(robot);

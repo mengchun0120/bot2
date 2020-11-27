@@ -45,6 +45,16 @@ public:
         return m_activeTiles.getFirst();
     }
 
+    GameObject* getFirstDissolveObject()
+    {
+        return m_dissolveObjects.getFirst();
+    }
+
+    const GameObject* getFirstDissolveObject() const
+    {
+        return m_dissolveObjects.getFirst();
+    }
+
     AIRobot* createRobot(const std::string& robotName, Side side,
                          int hpLevel, int hpRestoreLevel,
                          int armorLevel, int armorRepairLevel,
@@ -121,6 +131,8 @@ public:
     {
         return m_player;
     }
+
+    bool isPlayerAlive() const;
 
     void sendToDissolveQueue(GameObject* obj);
 

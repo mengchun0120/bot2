@@ -126,7 +126,7 @@ void Base::present()
     m_baseTemplate->getRect()->draw(m_robot->getPos(), m_robot->getDirection(),
                                     nullptr, nullptr,
                                     m_baseTemplate->getTexture()->textureId(),
-                                    m_mask.getColor());
+                                    &m_mask);
 
     SimpleShaderProgram& shader = SimpleShaderProgram::getInstance();
     const TextSystem& textSys = TextSystem::getInstance();

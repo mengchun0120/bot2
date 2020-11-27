@@ -1,6 +1,7 @@
 #ifndef INCLUDE_BOT_ROBOT
 #define INCLUDE_BOT_ROBOT
 
+#include "misc/bot_time_utils.h"
 #include "gameobj/bot_game_object.h"
 #include "gameobj/bot_side.h"
 #include "gameobj/bot_base.h"
@@ -121,7 +122,7 @@ protected:
     float m_direction[Constants::NUM_FLOATS_PER_POSITION];
     Side m_side;
     Color m_mask;
-    Clock::TimePoint m_deathTime;
+    TimePoint m_deathTime;
 };
 
 } // end of namespace bot

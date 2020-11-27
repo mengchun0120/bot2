@@ -274,4 +274,10 @@ void Player::resetGoldStr()
     snprintf(m_goldStr, sizeof(m_goldStr), "%d", m_gold);
 }
 
+void Player::onDeath(GameScreen& screen)
+{
+    setFlag(GAME_OBJ_FLAG_DISSOLVE);
+    m_deathTime = Clock::now();
+}
+
 } // end of namespace bot

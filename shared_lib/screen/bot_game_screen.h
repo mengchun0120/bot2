@@ -70,6 +70,8 @@ private:
 
     void updateEffects(float delta);
 
+    void updateDissolveObjects(float delta);
+
     void presentEffects();
 
     void presentOverlay();

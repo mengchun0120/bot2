@@ -1,5 +1,6 @@
 #include "misc/bot_log.h"
 #include "gametemplate/bot_ai_robot_template.h"
+#include "gameobj/bot_game_object_flag.h"
 #include "gameobj/bot_ai_robot.h"
 #include "ai/bot_ai.h"
 #include "screen/bot_game_screen.h"
@@ -44,9 +45,13 @@ void AIRobot::update(float delta, GameScreen& screen)
 {
     if (!testFlag(GAME_OBJ_FLAG_DISSOLVE))
     {
-        const AIRobotTemplate* t =
+        const GameObjectManager& gameObjMgr = screen.getGameObjManager();
+        if (gameObjMgr.isPlayerAlive())
+        {
+            const AIRobotTemplate* t =
                         static_cast<const AIRobotTemplate*>(m_template);
-        t->getAI()->apply(*this, delta, screen);
+            t->getAI()->apply(*this, delta, screen);
+        }
     }
     else
     {

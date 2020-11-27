@@ -3,7 +3,7 @@
 #include "structure/bot_linked_list.h"
 #include "gameutil/bot_game_object_item.h"
 #include "gameutil/bot_collide.h"
-#include "gameutil/bot_game_config.h"
+#include "gameutil/bot_game_lib.h"
 #include "gameobj/bot_missile.h"
 #include "gameobj/bot_goodie.h"
 #include "gameobj/bot_robot.h"
@@ -171,8 +171,8 @@ bool Robot::updateWeapon(GameScreen& gameScreen)
 
 bool Robot::updateMask()
 {
-    const GameConfig& cfg = GameConfig::getInstance();
-    float alpha = 1.0f - elapsedTimeMs(m_deathTime) / cfg.getDissovleTimeMS();
+    const GameConfig& cfg = GameLib::getInstance().getGameConfig();
+    float alpha = 1.0f - elapsedTimeMs(m_deathTime) / cfg.getDissolveTimeMS();
     bool maskVisible = alpha > 0.0f;
 
     if (maskVisible)

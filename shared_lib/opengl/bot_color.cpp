@@ -114,6 +114,8 @@ Color& Color::operator*=(const Color& other)
     {
         m_color[i] *= other.m_color[i];
     }
+
+    return *this;
 }
 
 bool Color::setRed(int red)

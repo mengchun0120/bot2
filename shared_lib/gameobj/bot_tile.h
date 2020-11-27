@@ -41,7 +41,7 @@ protected:
     float m_hp;
     float m_maxHP;
     Color m_mask;
-    Clock::TimePoint m_deathTime;
+    TimePoint m_deathTime;
 };
 
 } // end of namespace bot

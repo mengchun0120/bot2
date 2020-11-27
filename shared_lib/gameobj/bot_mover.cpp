@@ -83,7 +83,7 @@ void Mover::present()
                                 base.getMoverPos(), m_robot->getDirection(),
                                 nullptr, nullptr,
                                 m_moverTemplate->getTexture()->textureId(),
-                                m_mask.getColor());
+                                &m_mask);
 }
 
 bool Mover::setSpeedMultiplier(float multiplier)

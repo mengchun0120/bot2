@@ -174,7 +174,6 @@ protected:
     int m_coverStartCol, m_coverEndCol;
     int m_flags;
     float m_pos[Constants::NUM_FLOATS_PER_POSITION];
-    Clock::TimePoint m_deathTime;
 };
 
 } // end of namespace bot

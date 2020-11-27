@@ -13,7 +13,7 @@ enum GameObjectFlag {
     GAME_OBJ_FLAG_INVISIBLE         = 0x00000040,
     GAME_OBJ_FLAG_PASSTHROUGH       = 0x00000080,
     GAME_OBJ_FLAG_EXPLODE_CHECKED   = 0x00000100,
-    GAME_OBJ_FLAG_DISSOVLE          = 0x00000200
+    GAME_OBJ_FLAG_DISSOLVE          = 0x00000200
 };
 
 } // end of namespace bot

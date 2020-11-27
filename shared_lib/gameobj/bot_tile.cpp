@@ -3,6 +3,7 @@
 #include "geometry/bot_rectangle.h"
 #include "opengl/bot_texture.h"
 #include "gametemplate/bot_tile_template.h"
+#include "gameutil/bot_game_lib.h"
 #include "gameobj/bot_game_object_flag.h"
 #include "gameobj/bot_tile.h"
 #include "screen/bot_game_screen.h"
@@ -41,7 +42,7 @@ void Tile::present()
     const TileTemplate* t = static_cast<const TileTemplate*>(m_template);
 
     t->getRect()->draw(m_pos, nullptr, nullptr, nullptr,
-                       t->getTexture()->textureId(), m_mask.getColor());
+                       t->getTexture()->textureId(), &m_mask);
 }
 
 void Tile::update(float delta, GameScreen& screen)
@@ -51,7 +52,7 @@ void Tile::update(float delta, GameScreen& screen)
         return;
     }
 
-    const GameConfig& cfg = GameConfig::getInstance();
+    const GameConfig& cfg = GameLib::getInstance().getGameConfig();
     float alpha = 1.0f - elapsedTimeMs(m_deathTime) / cfg.getDissolveTimeMS();
 
     if (alpha > 0.0f)

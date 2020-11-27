@@ -135,6 +135,7 @@ int GameScreen::update(float delta)
     updateMissiles(delta);
     updateRobots(delta);
     updateEffects(delta);
+    updateDissolveObjects(delta);
 
     if (player->testFlag(GAME_OBJ_FLAG_DEAD))
     {
@@ -143,9 +144,12 @@ int GameScreen::update(float delta)
         m_msgBox.setButtonVisible(BUTTON_RESUME, false);
         m_msgBox.setVisible(true);
     }
-    else if (m_state == GAME_STATE_RUNNING)
+    else
     {
-        if (m_gameObjManager.getAIRobotCount() <= 0)
+        bool showVictory = !player->testFlag(GAME_OBJ_FLAG_DISSOLVE) &&
+                           m_state == GAME_STATE_RUNNING &&
+                           m_gameObjManager.getAIRobotCount() <= 0;
+        if (showVictory)
         {
             m_state = GAME_STATE_POST_WIN;
             m_msgBox.setMsg("You are victorious");
@@ -222,6 +226,13 @@ int GameScreen::processInput(const InputEvent& e)
         return m_msgBox.processInput(e);
     }
 
+    const int DONT_PROCESS_FLAG = GAME_OBJ_FLAG_DEAD | GAME_OBJ_FLAG_DISSOLVE;
+    Player* player = m_map.getPlayer();
+
+    if (!player || player->testFlag(DONT_PROCESS_FLAG)) {
+        return 0;
+    }
+
     switch (e.m_type)
     {
         case InputEvent::ET_MOUSE_MOVE:
@@ -238,7 +249,9 @@ int GameScreen::processInput(const InputEvent& e)
 
 bool GameScreen::updateRobots(float delta)
 {
-    const int DONT_UPDATE_FLAG = GAME_OBJ_FLAG_UPDATED | GAME_OBJ_FLAG_DEAD;
+    const int DONT_UPDATE_FLAG = GAME_OBJ_FLAG_UPDATED |
+                                 GAME_OBJ_FLAG_DEAD |
+                                 GAME_OBJ_FLAG_DISSOLVE;
     int startRow, endRow, startCol, endCol;
 
     m_map.getViewportRegion(startRow, endRow, startCol, endCol);
@@ -296,6 +309,18 @@ void GameScreen::updateEffects(float delta)
     {
         next = static_cast<ParticleEffect*>(effect->getNext());
         effect->update(delta, *this);
+    }
+}
+
+void GameScreen::updateDissolveObjects(float delta)
+{
+    GameObject* next = nullptr;
+    GameObject* obj = m_gameObjManager.getFirstDissolveObject();
+
+    for(; obj; obj = next)
+    {
+        next = static_cast<GameObject*>(obj->getNext());
+        obj->update(delta, *this);
     }
 }
 
@@ -367,29 +392,29 @@ int GameScreen::handleMouseButton(const MouseButtonEvent& e)
 int GameScreen::handleKey(const KeyEvent& e)
 {
     Player* player = m_map.getPlayer();
-    if (!player || player->testFlag(GAME_OBJ_FLAG_DEAD)) {
-        return 0;
-    }
-
     switch (e.m_key)
     {
         case GLFW_KEY_W:
+        {
             player->setMovingEnabled(true);
             break;
+        }
         case GLFW_KEY_S:
+        {
             player->setMovingEnabled(false);
             break;
+        }
         case GLFW_KEY_ESCAPE:
+        {
+            bool process = m_state == GAME_STATE_RUNNING ||
+                           m_state == GAME_STATE_POST_WIN;
+            if (process)
             {
-                bool process = m_state == GAME_STATE_RUNNING ||
-                               m_state == GAME_STATE_POST_WIN;
-                if (process)
-                {
-                    m_msgBox.setMsg("What's next?");
-                    m_msgBox.setButtonVisible(BUTTON_RESUME, true);
-                    m_msgBox.setVisible(true);
-                }
+                m_msgBox.setMsg("What's next?");
+                m_msgBox.setButtonVisible(BUTTON_RESUME, true);
+                m_msgBox.setVisible(true);
             }
+        }
             break;
     }
 

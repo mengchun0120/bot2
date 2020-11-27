@@ -435,7 +435,9 @@ bool GameMap::checkCollideNonPassthrough(float& newDelta, const Robot* robot,
                                          float speedX, float speedY,
                                          float delta)
 {
-    const int DONT_CHECK_FLAG = GAME_OBJ_FLAG_CHECKED | GAME_OBJ_FLAG_DEAD;
+    const int DONT_CHECK_FLAG = GAME_OBJ_FLAG_CHECKED |
+                                GAME_OBJ_FLAG_DEAD |
+                                GAME_OBJ_FLAG_DISSOLVE;
     int startRow, endRow, startCol, endCol;
     bool collide = false;
 
@@ -556,7 +558,9 @@ ReturnCode GameMap::checkCollision(const Missile* missile)
         return RET_CODE_OUT_OF_SIGHT;
     }
 
-    const int DONT_CHECK_FLAG = GAME_OBJ_FLAG_CHECKED | GAME_OBJ_FLAG_DEAD;
+    const int DONT_CHECK_FLAG = GAME_OBJ_FLAG_CHECKED |
+                                GAME_OBJ_FLAG_DEAD |
+                                GAME_OBJ_FLAG_DISSOLVE;
     int startRow, endRow, startCol, endCol;
     float left = missile->getCollideLeft();
     float bottom = missile->getCollideBottom();

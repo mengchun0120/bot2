@@ -8,7 +8,7 @@ namespace bot {
 class GameConfig {
 public:
     GameConfig()
-        : m_dissolveTimeMsg(0.0f)
+        : m_dissolveTimeMS(0.0f)
     {}
 
     bool load(const std::string& fileName);

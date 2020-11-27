@@ -156,7 +156,7 @@ void AppConfig::marshalConfig()
     m_startScreenConfigFile     = constructPath({ m_libDir,
                                                   m_startScreenConfigFile });
     m_gameScreenConfigFile      = constructPath({ m_libDir,
-                                                  im_gameScreenConfigFile });
+                                                  m_gameScreenConfigFile });
     m_messageBoxConfigFile      = constructPath({ m_libDir,
                                                   m_messageBoxConfigFile });
     m_gameConfigFile            = constructPath({ m_libDir, m_gameConfigFile });

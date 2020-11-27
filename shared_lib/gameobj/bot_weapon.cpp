@@ -100,7 +100,7 @@ void Weapon::present()
                                 base.getWeaponPos(), m_robot->getDirection(),
                                 nullptr, nullptr,
                                 m_weaponTemplate->getTexture()->textureId(),
-                                m_mask.getColor());
+                                &m_mask);
 }
 
 void Weapon::shiftFirePoints(float deltaX, float deltaY)
