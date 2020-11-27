@@ -59,15 +59,25 @@ void Player::present()
 
 void Player::update(float delta, GameScreen& screen)
 {
-    updateEffects();
-    updateMover(delta, screen);
-
-    if (testFlag(GAME_OBJ_FLAG_DEAD))
+    if (!testFlag(GAME_OBJ_FLAG_DISSOLVE))
     {
-        return;
-    }
+        updateEffects();
+        updateMover(delta, screen);
 
-    updateWeapon(screen);
+        if (testFlag(GAME_OBJ_FLAG_DEAD))
+        {
+            return;
+        }
+
+        updateWeapon(screen);
+    }
+    else
+    {
+        if (!updateMask())
+        {
+            setFlag(GAME_OBJ_FLAG_DEAD);
+        }
+    }
 }
 
 void Player::initEffects()

@@ -1,6 +1,8 @@
 #ifndef INCLUDE_BOT_TILE
 #define INCLUDE_BOT_TILE
 
+#include "misc/bot_time_utils.h"
+#include "opengl/bot_color.h"
 #include "gameobj/bot_game_object.h"
 
 namespace bot {
@@ -33,9 +35,13 @@ public:
         m_pos[1] = y;
     }
 
+    virtual void onDeath(GameScreen& screen);
+
 protected:
     float m_hp;
     float m_maxHP;
+    Color m_mask;
+    Clock::TimePoint m_deathTime;
 };
 
 } // end of namespace bot

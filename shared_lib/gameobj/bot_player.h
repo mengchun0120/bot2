@@ -44,6 +44,8 @@ public:
         return m_goldStr;
     }
 
+    void onDeath(GameScreen& screen);
+
 private:
     void initEffects();
 

@@ -142,7 +142,7 @@ void Missile::explode(GameScreen& gameScreen)
 
                 if (!checkExplosion(obj, left, bottom, right, top))
                 {
-                    gameObjMgr.sendToDeathQueue(obj);
+                    obj->onDeath(gameScreen);
                 }
 
                 obj->setFlag(GAME_OBJ_FLAG_EXPLODE_CHECKED);
@@ -160,6 +160,7 @@ bool Missile::checkExplosion(GameObject* obj, float left, float bottom,
 {
     static const int UNAFFECTED_FLAGS = GAME_OBJ_FLAG_EXPLODE_CHECKED |
                                         GAME_OBJ_FLAG_INDESTRUCTABLE |
+                                        GAME_OBJ_FLAG_DISSOLVE |
                                         GAME_OBJ_FLAG_DEAD;
 
     bool dontCheck = obj == static_cast<GameObject*>(this) ||

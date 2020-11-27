@@ -42,8 +42,20 @@ void AIRobot::present()
 
 void AIRobot::update(float delta, GameScreen& screen)
 {
-    const AIRobotTemplate* t = static_cast<const AIRobotTemplate*>(m_template);
-    t->getAI()->apply(*this, delta, screen);
+    if (!testFlag(GAME_OBJ_FLAG_DISSOLVE))
+    {
+        const AIRobotTemplate* t =
+                        static_cast<const AIRobotTemplate*>(m_template);
+        t->getAI()->apply(*this, delta, screen);
+    }
+    else
+    {
+        if (!updateMask())
+        {
+            GameObjectManager& gameObjMgr = screen.getGameObjManager();
+            gameObjMgr.sendToDeathQueue(this);
+        }
+    }
 }
 
 void AIRobot::setDirection(float directionX, float directionY)
@@ -68,6 +80,22 @@ bool AIRobot::setCurAction(Action action)
     m_curAction = action;
 
     return true;
+}
+
+void AIRobot::onDeath(GameScreen& screen)
+{
+    GameObjectManager& gameObjMgr = screen.getGameObjManager();
+    GameMap& map = screen.getMap();
+
+    Goodie* goodie = gameObjMgr.createGoodie(getGoodieSpawnProb(),
+                                             getPosX(), getPosY());
+    if (goodie)
+    {
+        map.addObject(goodie);
+    }
+
+    gameObjMgr.sendToDissolveQueue(this);
+    m_deathTime = Clock::now();
 }
 
 } // end of namespace bot

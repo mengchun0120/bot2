@@ -122,19 +122,20 @@ public:
         return m_player;
     }
 
+    void sendToDissolveQueue(GameObject* obj);
+
     void sendToDeathQueue(GameObject* obj);
 
     void clearDeadObjects();
 
     void clearActiveObjects();
 
+    void clearDissolveObjects();
+
     int getAIRobotCount() const
     {
         return m_aiRobotCount;
     }
-
-private:
-    void onRobotDeath(AIRobot* robot);
 
 protected:
     GameMap* m_map;
@@ -147,6 +148,7 @@ protected:
     DoubleLinkedList<Missile> m_activeMissiles;
     DoubleLinkedList<ParticleEffect> m_activeParticleEffect;
     DoubleLinkedList<Goodie> m_activeGoodies;
+    DoubleLinkedList<GameObject> m_dissolveObjects;
     DoubleLinkedList<GameObject> m_deadObjects;
     Player* m_player;
     int m_aiRobotCount;

@@ -56,6 +56,8 @@ public:
 
     bool setCurAction(Action action);
 
+    virtual void onDeath(GameScreen& screen);
+
 protected:
     TimePoint m_lastChangeActionTime;
     TimePoint m_lastChangeDirectionTime;

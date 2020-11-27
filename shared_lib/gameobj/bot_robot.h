@@ -112,6 +112,8 @@ public:
         return m_mover;
     }
 
+    bool updateMask();
+
 protected:
     Base m_base;
     Weapon m_weapon;

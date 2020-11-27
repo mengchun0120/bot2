@@ -165,12 +165,16 @@ public:
         return m_flags;
     }
 
+    virtual void onDeath(GameScreen& screen)
+    {}
+
 protected:
     const GameObjectTemplate* m_template;
     int m_coverStartRow, m_coverEndRow;
     int m_coverStartCol, m_coverEndCol;
     int m_flags;
     float m_pos[Constants::NUM_FLOATS_PER_POSITION];
+    Clock::TimePoint m_deathTime;
 };
 
 } // end of namespace bot

@@ -18,6 +18,7 @@ GameObjectManager::GameObjectManager()
 GameObjectManager::~GameObjectManager()
 {
     clearActiveObjects();
+    clearDissolveObjects();
     clearDeadObjects();
     delete m_player;
 }
@@ -184,9 +185,41 @@ Goodie* GameObjectManager::createGoodie(float prob, float x, float y)
     return goodie;
 }
 
+void GameObjectManager::sendToDissolveQueue(GameObject* obj)
+{
+    switch (obj->getType())
+    {
+        case GAME_OBJ_TYPE_TILE:
+        {
+            Tile* tile = static_cast<Tile*>(obj);
+            m_activeTiles.unlink(tile);
+            m_dissolveObjects.add(obj);
+            break;
+        }
+        case GAME_OBJ_TYPE_ROBOT:
+        {
+            Robot* robot = static_cast<Robot*>(obj);
+            if (robot->getSide() == SIDE_AI)
+            {
+                m_activeRobots.unlink(robot);
+                onRobotDeath(static_cast<AIRobot*>(robot));
+                m_dissolveObjects.add(obj);
+                --m_aiRobotCount;
+            }
+            break;
+        }
+        default:
+        {
+            LOG_ERROR("Invalid object type %d for dissolve-queue:"
+                      static_cast<int>(obj->getType()));
+        }
+    }
+
+    obj->setFlag(GAME_OBJ_FLAG_DISSOLVE);
+}
+
 void GameObjectManager::sendToDeathQueue(GameObject* obj)
 {
-    obj->setFlag(GAME_OBJ_FLAG_DEAD);
     switch (obj->getType())
     {
         case GAME_OBJ_TYPE_TILE:
@@ -199,11 +232,14 @@ void GameObjectManager::sendToDeathQueue(GameObject* obj)
         case GAME_OBJ_TYPE_ROBOT:
         {
             Robot* robot = static_cast<Robot*>(obj);
-            if (robot->getSide() == SIDE_AI) {
-                m_activeRobots.unlink(robot);
-                onRobotDeath(static_cast<AIRobot*>(robot));
-                m_deadObjects.add(obj);
-                --m_aiRobotCount;
+            if (robot->testFlag(GAME_OBJ_FLAG_DISSOLVE)
+            {
+                m_dissolveObjects.unlink(robot);
+                m_deadObjects.add(robot);
+            }
+            else
+            {
+                LOG_ERROR("Trying to send non-dissolving robot to death-queue");
             }
             break;
         }
@@ -236,9 +272,10 @@ void GameObjectManager::sendToDeathQueue(GameObject* obj)
         {
             LOG_ERROR("Invalid game obj type %d",
                       static_cast<int>(obj->getType()));
-            return;
         }
     }
+
+    obj->setFlag(GAME_OBJ_FLAG_DEAD);
 }
 
 void GameObjectManager::clearDeadObjects()
@@ -283,14 +320,10 @@ void GameObjectManager::clearActiveObjects()
     m_activeParticleEffect.clear(particleEffectDeallocator);
 }
 
-void GameObjectManager::onRobotDeath(AIRobot* robot)
+void GameObjectManager::clearDissolveObjects()
 {
-    Goodie* goodie = createGoodie(robot->getGoodieSpawnProb(),
-                                  robot->getPosX(), robot->getPosY());
-    if (goodie)
-    {
-        m_map->addObject(goodie);
-    }
+    m_dissolveObjects.clear();
 }
 
 } // end of namespace bot
+
