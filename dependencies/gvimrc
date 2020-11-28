@@ -1,0 +1,14 @@
+set expandtab
+set tabstop=4
+set shiftwidth=4
+set listchars=tab:>-,trail:~,extends:>,precedes:<
+set list
+set number
+set smartindent
+colo torte
+syntax on
+set nobackup
+set noswapfile
+set noundofile
+set guifont=Lucida_Console:h8:cANSI:qDRAFT
+set colorcolumn=81

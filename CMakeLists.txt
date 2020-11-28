@@ -20,6 +20,11 @@ set_property(TARGET bot_shared_lib PROPERTY CXX_STANDARD 11)
 
 add_executable(bot ${BOT_SOURCES})
 set_property(TARGET bot PROPERTY CXX_STANDARD 11)
-target_link_libraries(bot bot_shared_lib GL GLEW glfw dl m Xrandr
-                      Xi X11 Xxf86vm Xinerama Xcursor pthread)
+
+if(LINUX)
+    target_link_libraries(bot bot_shared_lib GL GLEW glfw dl m Xrandr
+                          Xi X11 Xxf86vm Xinerama Xcursor pthread)
+elseif(MINGW)
+    target_link_libraries(bot bot_shared_lib opengl32 glfw3 glew32)
+endif()
 

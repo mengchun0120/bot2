@@ -4,7 +4,7 @@ sudo apt-get install libglu1-mesa-dev freeglut3-dev mesa-common-dev
 
 ## Installation Guide for MinGW
 1. _Install MinGW and build tools_
-   
+
    Suppose MinGW is installed to directory C:/MinGW
    Install cmake and ninja 
 
@@ -33,7 +33,10 @@ sudo apt-get install libglu1-mesa-dev freeglut3-dev mesa-common-dev
       ```
    Copy glfw-3.2.1/src/libglfw3.a to C:/MinGW/lib manually.
    Copy glfw-3.2.1/include/GLFW to C:/MinGW/include manually.
-   
-4. _Install gvim for windows_
 
-   Copy dependencies/gvimrc to the installation directory of gvim
+4. _Remaining steps_
+
+   Copy dependencies/gvimrc to the installation directory of gvim.
+   Copy ```dependencies/stb_image.h``` to C:/MinGW/include.
+   Unzip dependencies/rapidjson.zip and copy rapidjson to C:/MinGW/include.
+
