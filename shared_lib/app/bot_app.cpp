@@ -110,6 +110,8 @@ bool App::run()
         glfwPollEvents();
     }
 
+    LOG_INFO("Exiting App::run");
+
     return true;
 }
 

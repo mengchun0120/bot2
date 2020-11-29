@@ -210,7 +210,6 @@ void GameObjectManager::sendToDissolveQueue(GameObject* obj)
             {
                 m_activeRobots.unlink(robot);
                 m_dissolveObjects.add(obj);
-                --m_aiRobotCount;
             }
             break;
         }
@@ -231,8 +230,15 @@ void GameObjectManager::sendToDeathQueue(GameObject* obj)
         case GAME_OBJ_TYPE_TILE:
         {
             Tile* tile = static_cast<Tile*>(obj);
-            m_activeTiles.unlink(tile);
-            m_deadObjects.add(obj);
+            if (tile->testFlag(GAME_OBJ_FLAG_DISSOLVE))
+            {
+                m_dissolveObjects.unlink(tile);
+                m_deadObjects.add(obj);
+            }
+            else
+            {
+                LOG_ERROR("Trying to send non-dissolving tile to death-queue");
+            }
             break;
         }
         case GAME_OBJ_TYPE_ROBOT:
@@ -242,6 +248,7 @@ void GameObjectManager::sendToDeathQueue(GameObject* obj)
             {
                 m_dissolveObjects.unlink(robot);
                 m_deadObjects.add(robot);
+                --m_aiRobotCount;
             }
             else
             {
