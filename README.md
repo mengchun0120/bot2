@@ -18,7 +18,8 @@ sudo apt-get install libglu1-mesa-dev freeglut3-dev mesa-common-dev
       $cmake -G Ninja .
       $ninja
       ```
-   Copy glew-2.1.0/build/cmake/lib/libglew32.a to C:/MinGW/lib manually.
+   Go to directory lib, and copy libglew32.a & libglew32.dll.a to C:/MinGW/lib.
+   Go to directory bin, and copy glew32.dll to C:/MinGW/bin.
    Copy glew-2.1.0/include/GL to C:/MinGW/include manually.
 
 3. _Install glfw_
@@ -31,8 +32,8 @@ sudo apt-get install libglu1-mesa-dev freeglut3-dev mesa-common-dev
       $cmake -G Ninja .
       $ninja
       ```
-   Copy glfw-3.2.1/src/libglfw3.a to C:/MinGW/lib manually.
-   Copy glfw-3.2.1/include/GLFW to C:/MinGW/include manually.
+   Copy src/libglfw3.a to C:/MinGW/lib.
+   Copy glfw-3.2.1/include/GLFW to C:/MinGW/include.
 
 4. _Remaining steps_
 
