@@ -6,8 +6,8 @@
         "color": "red",
         "coverBreath": 9.0,
         "collideBreath": 6.4,
-        "speed": 100.0,
-        "damage": 20.0,
+        "speed": 80.0,
+        "damage": 4.0,
         "damagePerLevel": 2.0,
         "explosionBreath": 20.0,
         "explosionEffect": "red_explosion"
@@ -19,8 +19,8 @@
         "color": "blue",
         "coverBreath": 9.0,
         "collideBreath": 6.4,
-        "speed": 200.0,
-        "damage": 40.0,
+        "speed": 80.0,
+        "damage": 6.0,
         "damagePerLevel": 5.0,
         "explosionBreath": 20.0,
         "explosionEffect": "blue_explosion"
