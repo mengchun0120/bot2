@@ -85,7 +85,7 @@ public:
                           int startCol, int endCol,
                           GameObjectFlag flag);
 
-    void setPlayer(Player* player);
+    bool setPlayer(Player* player);
 
     Player* getPlayer()
     {
@@ -151,6 +151,11 @@ public:
         return y + m_viewportWorldY;
     }
 
+    int getAIRobotCount() const
+    {
+        return m_aiRobotCount;
+    }
+
 public:
     static const float GRID_BREATH;
 
@@ -183,6 +188,7 @@ protected:
     float m_maxViewportX, m_maxViewportY;
     float m_viewportWorldX, m_viewportWorldY;
     float m_viewportPos[Constants::NUM_FLOATS_PER_POSITION];
+    int m_aiRobotCount;
 };
 
 } // end of namespace bot

@@ -144,13 +144,7 @@ public:
 
     void clearDissolveObjects();
 
-    int getAIRobotCount() const
-    {
-        return m_aiRobotCount;
-    }
-
 protected:
-    GameMap* m_map;
     const GameLib* m_lib;
     GoodieGenerator m_goodieGenerator;
     ObjectPool<Missile> m_missilePool;
@@ -163,7 +157,6 @@ protected:
     DoubleLinkedList<GameObject> m_dissolveObjects;
     DoubleLinkedList<GameObject> m_deadObjects;
     Player* m_player;
-    int m_aiRobotCount;
 };
 
 } // end of namespace bot

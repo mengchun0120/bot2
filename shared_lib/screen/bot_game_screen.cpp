@@ -137,6 +137,8 @@ int GameScreen::update(float delta)
     updateEffects(delta);
     updateDissolveObjects(delta);
 
+    clearDeadObjects();
+
     if (player->testFlag(GAME_OBJ_FLAG_DEAD))
     {
         m_state = GAME_STATE_END;
@@ -148,7 +150,7 @@ int GameScreen::update(float delta)
     {
         bool showVictory = !player->testFlag(GAME_OBJ_FLAG_DISSOLVE) &&
                            m_state == GAME_STATE_RUNNING &&
-                           m_gameObjManager.getAIRobotCount() <= 0;
+                           m_map.getAIRobotCount() <= 0;
         if (showVictory)
         {
             m_state = GAME_STATE_POST_WIN;
@@ -157,8 +159,6 @@ int GameScreen::update(float delta)
             m_msgBox.setVisible(true);
         }
     }
-
-    clearDeadObjects();
 
     return 0;
 }

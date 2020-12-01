@@ -146,7 +146,15 @@ bool GameMapLoader::addTile(GameMap& map, const std::string& name, int level,
         return false;
     }
 
-    map.addObject(tile);
+    if (!map.addObject(tile))
+    {
+        LOG_ERROR("Failed to add tile to map: name=%s x=%f y=%f",
+                  name.c_str(), x, y);
+
+        m_gameObjManager.sendToDeathQueue(tile);
+
+        return false;
+    }
 
     return true;
 }
@@ -201,7 +209,15 @@ bool GameMapLoader::addRobot(GameMap& map, const std::string& name,
         return false;
     }
 
-    map.addObject(robot);
+    if (!map.addObject(robot))
+    {
+        LOG_ERROR("Failed to add robot to map: name=%s x=%f y=%f",
+                  name.c_str(), x, y);
+
+        m_gameObjManager.sendToDeathQueue(robot);
+
+        return false;
+    }
 
     return true;
 }
@@ -237,7 +253,17 @@ bool GameMapLoader::loadPlayer(GameMap& map, const rapidjson::Value& mapJson)
 
     Player* player = m_gameObjManager.createPlayer(x, y,
                                                    directionX, directionY);
-    map.setPlayer(player);
+    if (!player)
+    {
+        LOG_ERROR("Failed to create player");
+        return false;
+    }
+
+    if (!map.setPlayer(player))
+    {
+        LOG_ERROR("Failed to add player to map");
+        return false;
+    }
 
     return true;
 }

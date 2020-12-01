@@ -18,13 +18,12 @@ Screen* Screen::create(Type type)
             if (startScreen->init())
             {
                 screen = startScreen;
+                LOG_INFO("Done creating start screen");
             }
             else
             {
                 delete startScreen;
             }
-
-            LOG_INFO("Done creating start screen");
 
             break;
         }
@@ -36,13 +35,12 @@ Screen* Screen::create(Type type)
             if (gameScreen->init())
             {
                 screen = gameScreen;
+                LOG_INFO("Done loading game screen");
             }
             else
             {
                 delete gameScreen;
             }
-
-            LOG_INFO("Done loading game screen");
 
             break;
         }
@@ -54,13 +52,12 @@ Screen* Screen::create(Type type)
             if (showMapScreen->init())
             {
                 screen = showMapScreen;
+                LOG_INFO("Done loading show-map screen");
             }
             else
             {
                 delete showMapScreen;
             }
-
-            LOG_INFO("Done loading show-map screen");
 
             break;
         }

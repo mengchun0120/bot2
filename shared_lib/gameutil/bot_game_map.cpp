@@ -20,6 +20,7 @@ GameMap::GameMap()
     , m_maxViewportY(0.0f)
     , m_viewportWorldX(0.0f)
     , m_viewportWorldY(0.0f)
+    , m_aiRobotCount(0)
 {
     m_viewportPos[0] = 0.0f;
     m_viewportPos[1] = 0.0f;
@@ -187,6 +188,15 @@ bool GameMap::addObject(GameObject* obj)
     addObjectToRect(obj, startRow, endRow, startCol, endCol);
     obj->setCoverRect(startRow, endRow, startCol, endCol);
 
+    if (obj->getType() == GAME_OBJ_TYPE_ROBOT)
+    {
+        Robot* robot = static_cast<Robot*>(obj);
+        if (robot->getSide() == SIDE_AI)
+        {
+            ++m_aiRobotCount;
+        }
+    }
+
     return true;
 }
 
@@ -194,6 +204,15 @@ void GameMap::removeObject(GameObject* obj)
 {
     removeObjectFromRect(obj, obj->getCoverStartRow(), obj->getCoverEndRow(),
                          obj->getCoverStartCol(), obj->getCoverEndCol());
+
+    if (obj->getType() == GAME_OBJ_TYPE_ROBOT)
+    {
+        Robot* robot = static_cast<Robot*>(obj);
+        if (robot->getSide() == SIDE_AI)
+        {
+            --m_aiRobotCount;
+        }
+    }
 }
 
 bool GameMap::repositionObject(GameObject* obj)
@@ -361,14 +380,22 @@ void GameMap::clearFlagsInRect(int startRow, int endRow,
     }
 }
 
-void GameMap::setPlayer(Player* player)
+bool GameMap::setPlayer(Player* player)
 {
-    m_player = player;
     if (m_player)
     {
-        addObject(player);
+        if (!addObject(player))
+        {
+            LOG_ERROR("Failed to add player to map");
+            return false;
+        }
+
         updateViewport();
     }
+
+    m_player = player;
+
+    return true;
 }
 
 void GameMap::getCollideRegion(int& startRow, int& endRow,

@@ -8,10 +8,8 @@
 namespace bot {
 
 GameObjectManager::GameObjectManager()
-    : m_map(nullptr)
-    , m_lib(nullptr)
+    : m_lib(nullptr)
     , m_player(nullptr)
-    , m_aiRobotCount(0)
 {
 }
 
@@ -26,7 +24,6 @@ GameObjectManager::~GameObjectManager()
 void GameObjectManager::init(GameMap* map)
 {
     const AppConfig& cfg = AppConfig::getInstance();
-    m_map = map;
     m_lib = &(GameLib::getInstance());
     m_missilePool.init(cfg.getMissilePoolSize());
     m_goodieGenerator.init(m_lib->getGoodieTemplateLib());
@@ -107,7 +104,6 @@ AIRobot* GameObjectManager::createRobot(
     }
 
     m_activeRobots.add(robot);
-    ++m_aiRobotCount;
 
     return robot;
 }
@@ -233,12 +229,13 @@ void GameObjectManager::sendToDeathQueue(GameObject* obj)
             if (tile->testFlag(GAME_OBJ_FLAG_DISSOLVE))
             {
                 m_dissolveObjects.unlink(tile);
-                m_deadObjects.add(obj);
             }
             else
             {
-                LOG_ERROR("Trying to send non-dissolving tile to death-queue");
+                LOG_WARN("Trying to send non-dissolving tile to death-queue");
+                m_activeTiles.unlink(tile);
             }
+            m_deadObjects.add(obj);
             break;
         }
         case GAME_OBJ_TYPE_ROBOT:
@@ -247,13 +244,13 @@ void GameObjectManager::sendToDeathQueue(GameObject* obj)
             if (robot->testFlag(GAME_OBJ_FLAG_DISSOLVE))
             {
                 m_dissolveObjects.unlink(robot);
-                m_deadObjects.add(robot);
-                --m_aiRobotCount;
             }
             else
             {
-                LOG_ERROR("Trying to send non-dissolving robot to death-queue");
+                LOG_WARN("Trying to send non-dissolving robot to death-queue");
+                m_activeRobots.unlink(robot);
             }
+            m_deadObjects.add(robot);
             break;
         }
         case GAME_OBJ_TYPE_MISSILE:
