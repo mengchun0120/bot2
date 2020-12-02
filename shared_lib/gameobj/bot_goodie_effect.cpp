@@ -9,6 +9,7 @@ namespace bot {
 void GoodieEffect::start()
 {
     m_startTime = Clock::now();
+    m_percent = 0.0f;
 }
 
 bool GoodieEffect::update(const TimePoint& now)

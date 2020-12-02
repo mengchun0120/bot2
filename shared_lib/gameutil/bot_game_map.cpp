@@ -382,6 +382,8 @@ void GameMap::clearFlagsInRect(int startRow, int endRow,
 
 bool GameMap::setPlayer(Player* player)
 {
+    m_player = player;
+
     if (m_player)
     {
         if (!addObject(player))
@@ -393,7 +395,6 @@ bool GameMap::setPlayer(Player* player)
         updateViewport();
     }
 
-    m_player = player;
 
     return true;
 }
