@@ -26,8 +26,9 @@ GeneratedMap::ObjectItem::ObjectItem(const std::string* name,
     m_top = y + t->getCoverBreath();
 }
 
-bool GeneratedMap::ObjectItem::outsideRegion(float leftBound, float bottomBound,
-                                             float rightBound, float topBound) const
+bool GeneratedMap::ObjectItem::outsideRegion(
+                                    float leftBound, float bottomBound,
+                                    float rightBound, float topBound) const
 {
     return compare(m_left, leftBound, THRESHOLD) < 0 ||
            compare(m_right, rightBound, THRESHOLD) > 0 ||
@@ -49,7 +50,8 @@ GeneratedMap::TileItem::TileItem(const std::string* name, const TileTemplate* t,
 {
 }
 
-GeneratedMap::RobotItem::RobotItem(const std::string* name, const AIRobotTemplate* t,
+GeneratedMap::RobotItem::RobotItem(const std::string* name,
+                                   const AIRobotTemplate* t,
                                    float x, float y,
                                    float directionX, float directionY)
     : ObjectItem(name, t, x, y)
@@ -102,7 +104,8 @@ void GeneratedMap::initSlots()
     }
 }
 
-void GeneratedMap::setPlayer(const PlayerTemplate* playerTemplate, int row, int col,
+void GeneratedMap::setPlayer(const PlayerTemplate* playerTemplate,
+                             int row, int col,
                              float directionX, float directionY)
 {
     Slot& slot = m_slots[row][col];

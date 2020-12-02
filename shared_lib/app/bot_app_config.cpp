@@ -175,7 +175,7 @@ bool AppConfig::setLevel(int level)
 
     m_level = level;
 
-    return false;
+    return true;
 }
 
 bool AppConfig::setMaxRobotCount(int count)
@@ -192,7 +192,7 @@ bool AppConfig::setMaxRobotCount(int count)
 
     m_maxRobotCount = count;
 
-    return false;
+    return true;
 }
 
 } // end of namespace bot

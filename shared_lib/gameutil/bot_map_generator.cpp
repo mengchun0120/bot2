@@ -103,6 +103,8 @@ bool MapGenerator::init(const rapidjson::Value& json,
         }
     }
 
+    LOG_INFO("robotSlotSize=%f", m_robotSlotSize);
+
     return true;
 }
 
