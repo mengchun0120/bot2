@@ -10,14 +10,14 @@
 namespace bot {
 
 Missile::Missile()
-    : m_shooter(nullptr)
+    : m_side(SIDE_UNKNOWN)
     , m_damage(0.0f)
 {
     m_direction[0] = 0.0f;
     m_direction[1] = 0.0f;
 }
 
-bool Missile::init(const MissileTemplate* t, const Robot* shooter, float damage,
+bool Missile::init(const MissileTemplate* t, Side side, float damage,
                    float x, float y, float directionX, float directionY)
 {
     if (!GameObject::init(t, x, y))
@@ -25,9 +25,9 @@ bool Missile::init(const MissileTemplate* t, const Robot* shooter, float damage,
         return false;
     }
 
-    if (!shooter)
+    if (!isValid(side))
     {
-        LOG_ERROR("shooter is null");
+        LOG_ERROR("Invalid side %d", static_cast<int>(side));
         return false;
     }
 
@@ -38,8 +38,8 @@ bool Missile::init(const MissileTemplate* t, const Robot* shooter, float damage,
     }
 
     setDirection(directionX, directionY);
-    m_shooter = shooter;
     m_damage = damage;
+    m_side = side;
 
     return true;
 }
@@ -188,7 +188,7 @@ bool Missile::checkExplosion(GameObject* obj, float left, float bottom,
     if (obj->getType() == GAME_OBJ_TYPE_ROBOT)
     {
         Robot* robot = static_cast<Robot*>(obj);
-        if (robot->getSide() == m_shooter->getSide())
+        if (robot->getSide() == m_side)
         {
             return true;
         }

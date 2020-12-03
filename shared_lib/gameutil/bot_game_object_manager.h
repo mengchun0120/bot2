@@ -70,7 +70,7 @@ public:
                          float x, float y, float directionX, float directionY);
 
     Missile* createMissile(const MissileTemplate* missileTemplate,
-                           Robot* shooter, float damage,
+                           Side side, float damage,
                            float x, float y,
                            float directionX, float directionY);
 

@@ -9,6 +9,11 @@ enum Side {
     SIDE_UNKNOWN
 };
 
+inline bool isValid(Side side)
+{
+    return side >= SIDE_AI && side <= SIDE_PLAYER;
+}
+
 } // end of namespace bot
 
 #endif

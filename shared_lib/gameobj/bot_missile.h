@@ -3,10 +3,9 @@
 
 #include "gametemplate/bot_missile_template.h"
 #include "gameobj/bot_game_object.h"
+#include "gameobj/bot_side.h"
 
 namespace bot {
-
-class Robot;
 
 class Missile: public GameObject {
 public:
@@ -15,7 +14,7 @@ public:
     virtual ~Missile()
     {}
 
-    bool init(const MissileTemplate* t, const Robot* shooter, float damage,
+    bool init(const MissileTemplate* t, Side side, float damage,
               float x, float y, float directionX, float directionY);
 
     virtual void present();
@@ -25,11 +24,6 @@ public:
     const MissileTemplate* getTemplate() const
     {
         return static_cast<const MissileTemplate*>(m_template);
-    }
-
-    const Robot* getShooter() const
-    {
-        return m_shooter;
     }
 
     void shiftPos(float deltaX, float deltaY);
@@ -50,13 +44,18 @@ public:
 
     void explode(GameScreen& gameScreen);
 
+    Side getSide() const
+    {
+        return m_side;
+    }
+
 protected:
     bool checkExplosion(GameObject* obj, float left, float bottom,
                         float right, float top);
 
 protected:
     float m_direction[Constants::NUM_FLOATS_PER_POSITION];
-    const Robot* m_shooter;
+    Side m_side;
     float m_damage;
 };
 

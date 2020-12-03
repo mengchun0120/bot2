@@ -615,7 +615,6 @@ ReturnCode GameMap::checkCollision(const Missile* missile)
                 GameObject* o = item->getObj();
                 bool dontCheck =
                   o == static_cast<const GameObject*>(missile) ||
-                  o == static_cast<const GameObject*>(missile->getShooter()) ||
                   o->testFlag(DONT_CHECK_FLAG) ||
                   (o->getType() != GAME_OBJ_TYPE_ROBOT &&
                    o->getType() != GAME_OBJ_TYPE_TILE);

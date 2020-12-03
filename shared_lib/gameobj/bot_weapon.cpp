@@ -193,7 +193,7 @@ bool Weapon::fireMissile(GameScreen& screen)
     {
         Missile* missile = gameObjMgr.createMissile(
                                  m_weaponTemplate->getMissileTemplate(),
-                                 m_robot, m_damage,
+                                 m_robot->getSide(), m_damage,
                                  fp.m_firePos[0], fp.m_firePos[1],
                                  fp.m_fireDirection[0], fp.m_fireDirection[1]);
         if (!missile)
