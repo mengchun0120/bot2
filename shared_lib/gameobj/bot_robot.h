@@ -115,6 +115,25 @@ public:
 
     bool updateMask();
 
+    bool hasDest() const
+    {
+        return m_hasDest;
+    }
+
+    float getDestX() const
+    {
+        return m_destX;
+    }
+
+    float getDestY() const
+    {
+        return m_destY;
+    }
+
+    void setDest(float destX, float destY);
+
+    void unsetDest();
+
 protected:
     Base m_base;
     Weapon m_weapon;
@@ -123,6 +142,8 @@ protected:
     Side m_side;
     Color m_mask;
     TimePoint m_deathTime;
+    bool m_hasDest;
+    float m_destX, m_destY;
 };
 
 } // end of namespace bot

@@ -1,5 +1,6 @@
 #include <cstdio>
 #include "misc/bot_log.h"
+#include "misc/bot_math_utils.h"
 #include "screen/bot_game_screen.h"
 #include "gametemplate/bot_player_template.h"
 #include "gameobj/bot_goodie.h"

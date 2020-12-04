@@ -1,4 +1,5 @@
 #include "misc/bot_log.h"
+#include "misc/bot_math_utils.h"
 #include "opengl/bot_texture.h"
 #include "gametemplate/bot_mover_template.h"
 #include "gameobj/bot_robot.h"
@@ -55,6 +56,21 @@ bool Mover::update(GameScreen& screen, float delta)
         return false;
     }
 
+    bool reachDest = false;
+
+    if (m_robot->hasDest())
+    {
+        float d = dist(m_robot->getPosX(), m_robot->getPosY(),
+                       m_robot->getDestX(), m_robot->getDestY());
+        float toDestTime = d / m_speed;
+
+        if (toDestTime < delta)
+        {
+            reachDest = true;
+            delta = toDestTime;
+        }
+    }
+
     float speedX = m_speed * m_robot->getDirectionX();
     float speedY = m_speed * m_robot->getDirectionY();
     float newDelta;
@@ -72,6 +88,11 @@ bool Mover::update(GameScreen& screen, float delta)
 
     m_robot->shiftPos(speedX * newDelta, speedY * newDelta);
     map.repositionObject(m_robot);
+
+    if (reachDest)
+    {
+        m_moving = false;
+    }
 
     return collide;
 }

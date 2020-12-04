@@ -15,6 +15,9 @@ namespace bot {
 Robot::Robot()
     : m_side(SIDE_UNKNOWN)
     , m_mask()
+    , m_hasDest(false)
+    , m_destX(0.0f)
+    , m_destY(0.0f)
 {
     m_direction[0] = 0.0f;
     m_direction[1] = 0.0f;
@@ -189,6 +192,26 @@ bool Robot::updateMask()
     m_mover.setMask(m_mask);
 
     return maskVisible;
+}
+
+void Robot::setDest(float destX, float destY)
+{
+    m_hasDest = true;
+    m_destX = destX;
+    m_destY = destY;
+
+    float directionX, directionY;
+
+    calculateDirection(directionX, directionY, m_pos[0], m_pos[1],
+                       m_destX, m_destY);
+    setDirection(directionX, directionY);
+}
+
+void Robot::unsetDest()
+{
+    m_hasDest = false;
+    m_destX = 0.0f;
+    m_destY = 0.0f;
 }
 
 } // end of namespace bot

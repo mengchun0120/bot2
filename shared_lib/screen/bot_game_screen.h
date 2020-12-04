@@ -8,6 +8,8 @@
 #include "widget/bot_message_box.h"
 #include "screen/bot_screen.h"
 
+struct GLFWwindow;
+
 namespace bot {
 
 struct MouseMoveEvent;
@@ -91,6 +93,7 @@ private:
     int resume();
 
 private:
+    GLFWwindow* m_window;
     GameMap m_map;
     GameState m_state;
     GameObjectManager m_gameObjManager;

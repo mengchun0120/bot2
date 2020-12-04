@@ -21,7 +21,8 @@ using namespace rapidjson;
 namespace bot {
 
 GameScreen::GameScreen()
-    : m_state(GAME_STATE_INIT)
+    : m_window(nullptr)
+    , m_state(GAME_STATE_INIT)
 {
 }
 
@@ -34,11 +35,12 @@ bool GameScreen::init()
     LOG_INFO("Initializing GameScreen");
 
     const GameLib& lib = GameLib::getInstance();
-    const App& app = App::getInstance();
+    App& app = App::getInstance();
     const AppConfig& cfg = AppConfig::getInstance();
     float viewportWidth = app.getViewportWidth();
     float viewportHeight = app.getViewportHeight();
 
+    m_window = app.getWindow();
     m_gameObjManager.init(&m_map);
 
     if (!initMessageBox())
@@ -357,33 +359,33 @@ void GameScreen::presentOverlay()
 
 int GameScreen::handleMouseMove(const MouseMoveEvent& e)
 {
-    Player* player = m_map.getPlayer();
-    if (!player || player->testFlag(GAME_OBJ_FLAG_DEAD))
-    {
-        return 0;
-    }
+/*    Player* player = m_map.getPlayer();
 
-    float destX = m_map.getWorldX(e.m_x);
-    float destY = m_map.getWorldY(e.m_y);
-    float directionX, directionY;
-    calculateDirection(directionX, directionY,
-                       player->getPosX(), player->getPosY(),
-                       destX, destY);
-    player->setDirection(directionX, directionY);
+    int btnState = glfwGetButton(m_window, GLFW_MOUSE_BUTTON_LEFT);
+    */
+
     return 0;
 }
 
 int GameScreen::handleMouseButton(const MouseButtonEvent& e)
 {
     Player* player = m_map.getPlayer();
-    if (!player || player->testFlag(GAME_OBJ_FLAG_DEAD))
-    {
-        return 0;
-    }
 
-    if (e.m_button == GLFW_MOUSE_BUTTON_LEFT)
+    if (e.m_button == GLFW_MOUSE_BUTTON_RIGHT)
     {
-        player->setShootingEnabled(e.m_action == GLFW_PRESS);
+        if (e.m_action == GLFW_PRESS)
+        {
+            float destX = m_map.getWorldX(e.m_x);
+            float destY = m_map.getWorldY(e.m_y);
+
+            player->setDest(destX, destY);
+
+            bool shiftPressed =
+                glfwGetKey(m_window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS ||
+                glfwGetKey(m_window, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS;
+
+            player->setMovingEnabled(!shiftPressed);
+        }
     }
 
     return 0;
@@ -414,8 +416,25 @@ int GameScreen::handleKey(const KeyEvent& e)
                 m_msgBox.setButtonVisible(BUTTON_RESUME, true);
                 m_msgBox.setVisible(true);
             }
-        }
             break;
+        }
+        case GLFW_KEY_F:
+        {
+            if (e.m_action == GLFW_PRESS || e.m_action == GLFW_REPEAT)
+            {
+                player->setShootingEnabled(true);
+            }
+            else if (e.m_action == GLFW_RELEASE)
+            {
+                player->setShootingEnabled(false);
+            }
+            else
+            {
+                LOG_ERROR("Wrong action %d", e.m_action);
+            }
+
+            break;
+        }
     }
 
     return 0;
