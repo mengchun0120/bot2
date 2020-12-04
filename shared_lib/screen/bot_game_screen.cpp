@@ -359,10 +359,31 @@ void GameScreen::presentOverlay()
 
 int GameScreen::handleMouseMove(const MouseMoveEvent& e)
 {
-/*    Player* player = m_map.getPlayer();
+    Player* player = m_map.getPlayer();
 
-    int btnState = glfwGetButton(m_window, GLFW_MOUSE_BUTTON_LEFT);
-    */
+    int btnState = glfwGetMouseButton(m_window, GLFW_MOUSE_BUTTON_RIGHT);
+    if (btnState == GLFW_PRESS)
+    {
+        float destX = m_map.getWorldX(e.m_x);
+        float destY = m_map.getWorldY(e.m_y);
+
+        player->setDest(destX, destY);
+        player->setMovingEnabled(true);
+    }
+    else
+    {
+        if (!player->isMoving())
+        {
+            float destX = m_map.getWorldX(e.m_x);
+            float destY = m_map.getWorldY(e.m_y);
+            float directionX, directionY;
+
+            calculateDirection(directionX, directionY,
+                               player->getPosX(), player->getPosY(),
+                               destX, destY);
+            player->setDirection(directionX, directionY);
+        }
+    }
 
     return 0;
 }
@@ -379,13 +400,17 @@ int GameScreen::handleMouseButton(const MouseButtonEvent& e)
             float destY = m_map.getWorldY(e.m_y);
 
             player->setDest(destX, destY);
-
-            bool shiftPressed =
-                glfwGetKey(m_window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS ||
-                glfwGetKey(m_window, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS;
-
-            player->setMovingEnabled(!shiftPressed);
+            player->setMovingEnabled(true);
         }
+        else if(e.m_action == GLFW_RELEASE)
+        {
+            player->unsetDest();
+            player->setMovingEnabled(false);
+        }
+    }
+    else if (e.m_button == GLFW_MOUSE_BUTTON_LEFT)
+    {
+        player->setShootingEnabled(e.m_action == GLFW_PRESS);
     }
 
     return 0;
