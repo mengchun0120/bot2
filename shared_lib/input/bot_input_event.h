@@ -8,6 +8,7 @@ struct MouseButtonEvent {
     float m_y;
     int m_button;
     int m_action;
+    int m_mods;
 };
 
 struct MouseMoveEvent {
@@ -18,6 +19,8 @@ struct MouseMoveEvent {
 struct KeyEvent {
     int m_key;
     int m_action;
+    int m_scanCode;
+    int m_mods;
 };
 
 struct InputEvent {

@@ -27,6 +27,11 @@ public:
 
     bool run();
 
+    GLFWwindow* getWindow()
+    {
+        return m_window;
+    }
+
     float getViewportWidth() const
     {
         return m_viewportSize[0];

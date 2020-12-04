@@ -14,8 +14,7 @@ public:
 
     virtual ~InputManager();
 
-    void init(GLFWwindow* window, int eventQueueSize,
-              float viewPortHeight);
+    void init();
 
     void start();
 
@@ -23,11 +22,12 @@ public:
 
     void clear();
 
-    void addMouseButtonEvent(float x, float y, int button, int action);
+    void addMouseButtonEvent(float x, float y, int button,
+                             int action, int mods);
 
     void addMouseMoveEvent(float x, float y);
 
-    void addKeyEvent(int key, int action);
+    void addKeyEvent(int key, int action, int scanCode, int mods);
 
     // Returns true if app should continue; false if app should exit
     bool processInput(InputProcessor& processor);

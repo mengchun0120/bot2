@@ -162,9 +162,7 @@ bool App::initWindow()
 
 bool App::initInputManager()
 {
-    const AppConfig& cfg = AppConfig::getInstance();
-
-    m_inputMgr.init(m_window, cfg.getEventQueueSize(), m_viewportSize[1]);
+    m_inputMgr.init();
 
     LOG_INFO("Done initializing input manager");
 
