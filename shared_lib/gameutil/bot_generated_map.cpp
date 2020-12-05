@@ -3,6 +3,7 @@
 #include <fstream>
 #include "misc/bot_log.h"
 #include "misc/bot_math_utils.h"
+#include "misc/bot_json_utils.h"
 #include "gametemplate/bot_tile_template.h"
 #include "gametemplate/bot_ai_robot_template.h"
 #include "gameutil/bot_generated_map.h"
@@ -164,18 +165,11 @@ bool GeneratedMap::write(const char* fileName)
     Document doc;
     toJson(doc);
 
-    std::ofstream ofs(fileName);
-    if (!ofs.good())
+    if (!writeJson(doc, fileName, 4))
     {
+        LOG_ERROR("Failed to write map to %s", fileName);
         return false;
     }
-
-    OStreamWrapper osw(ofs);
-    Writer<OStreamWrapper> writer(osw);
-
-    doc.Accept(writer);
-
-    ofs.close();
 
     LOG_INFO("Done writing map to %s", fileName);
 

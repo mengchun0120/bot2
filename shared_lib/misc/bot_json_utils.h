@@ -4,40 +4,18 @@
 #include <string>
 #include <vector>
 #include <rapidjson/document.h>
-//#include "misc/bot_log.h"
-//#include "misc/bot_json_data_type.h"
 #include "misc/bot_json_param.h"
 
 namespace bot {
-/*
-struct JsonParseParam {
-    JsonParseParam(void* ptr, const char* name,
-                   JsonDataType type, bool required=true)
-        : m_ptr(ptr)
-        , m_name(name)
-        , m_type(type)
-        , m_required(required)
-    {}
-
-    void* m_ptr;
-    const char* m_name;
-    JsonDataType m_type;
-    bool m_required;
-};
-*/
 
 bool readJson(rapidjson::Document& doc, const char* fileName);
+
+bool writeJson(const rapidjson::Document& doc, const char* fileName,
+               unsigned int indent);
 
 bool parseJson(std::vector<JsonParamPtr>& params,
                const rapidjson::Value& elem);
 
-/*
-int validateJson(const rapidjson::Value& value, const char* name,
-                 JsonDataType type, bool required=true);
-
-bool parseJson(std::vector<JsonParseParam>& params,
-               const rapidjson::Value& value);
-*/
 template <typename PARSER>
 bool parseJsonArray(const rapidjson::Value& value,
                     PARSER& parser, const char* name)
@@ -96,3 +74,4 @@ bool parseJsonArray(std::vector<T>& vec, const rapidjson::Value& value,
 } // end of namespace bot
 
 #endif
+

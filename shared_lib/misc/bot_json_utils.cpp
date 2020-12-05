@@ -1,9 +1,161 @@
 #include <cstdio>
+#include <list>
+#include <fstream>
+#include <iomanip>
+#include <string>
+#include <cstring>
 #include <rapidjson/filereadstream.h>
 #include "misc/bot_log.h"
 #include "misc/bot_json_utils.h"
 
 namespace bot {
+
+struct JsonNode {
+    JsonNode()
+        : m_val(nullptr)
+        , m_level(0)
+    {}
+
+    JsonNode(const JsonNode& other);
+
+    bool init(const rapidjson::Value* val, unsigned int level,
+              unsigned int indent);
+
+    bool isStart();
+
+    bool reachEnd();
+
+    char brac();
+
+    char ket();
+
+    bool empty();
+
+    bool forward();
+
+    const rapidjson::Value& currentValue();
+
+    const rapidjson::Value* m_val;
+    union {
+        rapidjson::Value::ConstValueIterator m_arrItr;
+        rapidjson::Value::ConstMemberIterator m_memItr;
+    };
+    unsigned m_level;
+    std::string m_indent;
+};
+
+JsonNode::JsonNode(const JsonNode& other)
+{
+    m_val = other.m_val;
+    m_level = other.m_level;
+    m_indent = other.m_indent;
+
+    if (other.m_val->IsObject())
+    {
+        m_memItr = other.m_memItr;
+    }
+    else
+    {
+        m_arrItr = other.m_arrItr;
+    }
+}
+
+bool JsonNode::init(const rapidjson::Value* val, unsigned int level,
+                    unsigned int indent)
+{
+    if (!val)
+    {
+        LOG_ERROR("val is null");
+        return false;
+    }
+
+    if (val->IsObject())
+    {
+        m_memItr = val->MemberBegin();
+    }
+    else if (val->IsArray())
+    {
+        m_arrItr = val->Begin();
+    }
+    else
+    {
+        LOG_ERROR("Val must be object or array");
+        return false;
+    }
+
+    m_val = val;
+    m_level = level;
+
+    unsigned int numSpaces = level * indent;
+    if (numSpaces > 0)
+    {
+        m_indent = std::string(numSpaces, ' ');
+    }
+
+    return true;
+}
+
+bool JsonNode::isStart()
+{
+    return m_val->IsObject() ? m_memItr == m_val->MemberBegin() :
+                               m_arrItr == m_val->Begin();
+}
+
+bool JsonNode::reachEnd()
+{
+    return m_val->IsObject() ? m_memItr == m_val->MemberEnd() :
+                               m_arrItr == m_val->End();
+}
+
+char JsonNode::brac()
+{
+    return m_val->IsObject() ? '{' : '[';
+}
+
+char JsonNode::ket()
+{
+    return m_val->IsObject() ? '}' : ']';
+}
+
+bool JsonNode::empty()
+{
+    return m_val->IsObject() ? m_val->ObjectEmpty() : m_val->Empty();
+}
+
+bool JsonNode::forward()
+{
+    if (m_val->IsObject())
+    {
+        if (m_memItr == m_val->MemberEnd())
+        {
+            return false;
+        }
+
+        m_memItr++;
+    }
+    else
+    {
+        if (m_arrItr == m_val->End())
+        {
+            return false;
+        }
+
+        m_arrItr++;
+    }
+
+    return true;
+}
+
+const rapidjson::Value& JsonNode::currentValue()
+{
+    if (m_val->IsObject())
+    {
+        return m_memItr->value;
+    }
+
+    return *m_arrItr;
+}
+
 
 bool readJson(rapidjson::Document& doc, const char* fileName)
 {
@@ -29,6 +181,118 @@ bool readJson(rapidjson::Document& doc, const char* fileName)
 
     return true;
 }
+void writeJsonValue(std::ofstream& os, const rapidjson::Value& val)
+{
+    if (val.IsNull())
+    {
+        os << "null";
+    }
+    else if (val.IsInt())
+    {
+        os << val.GetInt();
+    }
+    else if (val.IsString())
+    {
+        os << '"' << val.GetString() << '"';
+    }
+    else if (val.IsDouble())
+    {
+        os << std::fixed << std::setprecision(6) << val.GetDouble();
+    }
+    else if (val.IsBool())
+    {
+        os << (val.GetBool() ? "true" : "false");
+    }
+}
+
+bool writeJson(const rapidjson::Document& doc, const char* fileName,
+               unsigned int indent)
+{
+    std::list<JsonNode> stack;
+    std::ofstream os(fileName);
+    std::string singleIndent(indent, ' ');
+
+    if (!os.good())
+    {
+        LOG_ERROR("Failed to open file %S", fileName);
+        return false;
+    }
+
+    JsonNode node;
+
+    if (!node.init(&doc, 0, indent))
+    {
+        LOG_ERROR("Failed to init node");
+        return false;
+    }
+
+    if (node.empty())
+    {
+        os << node.brac() << node.ket();
+        return true;
+    }
+
+    stack.push_back(node);
+    os << node.brac();
+
+    while (!stack.empty())
+    {
+        JsonNode& n = stack.back();
+
+        if (n.reachEnd())
+        {
+            os << '\n' << n.m_indent << n.ket();
+            stack.pop_back();
+            continue;
+        }
+
+        if (!n.isStart())
+        {
+            os << ",";
+        }
+
+        os << '\n' << n.m_indent << singleIndent;
+
+        if (n.m_val->IsObject())
+        {
+            os << '"' << n.m_memItr->name.GetString() << "\": ";
+        }
+
+        const rapidjson::Value& val = n.currentValue();
+
+        if (val.IsObject() || val.IsArray())
+        {
+            JsonNode node1;
+            if (!node1.init(&val, n.m_level + 1, indent))
+            {
+                LOG_ERROR("Failed to init node");
+                return false;
+            }
+
+
+            if (node1.empty())
+            {
+                os << node1.brac() << node1.ket();
+            }
+            else
+            {
+                os << node1.brac();
+                stack.push_back(node1);
+            }
+        }
+        else
+        {
+            writeJsonValue(os, val);
+        }
+
+        n.forward();
+    }
+
+    os.close();
+
+    return true;
+}
+
 
 bool parseJson(std::vector<JsonParamPtr>& params,
                const rapidjson::Value& elem)
@@ -46,419 +310,5 @@ bool parseJson(std::vector<JsonParamPtr>& params,
     return true;
 }
 
-/*
-int validateJson(const rapidjson::Value& value, const char* name,
-                 JsonDataType type, bool required)
-{
-    typedef bool (rapidjson::Value::*ValidateFunc)() const;
-
-    static ValidateFunc validateFunc[] =
-    {
-        &rapidjson::Value::IsInt,
-        &rapidjson::Value::IsFloat,
-        &rapidjson::Value::IsBool,
-        &rapidjson::Value::IsDouble,
-        &rapidjson::Value::IsString
-    };
-
-    if (type < JSONTYPE_INT || type > JSONTYPE_STRING_ARRAY)
-    {
-        LOG_ERROR("validateJson: invalid type %d", static_cast<int>(type));
-        return -1;
-    }
-
-    if (!value.HasMember(name))
-    {
-        if (required)
-        {
-            LOG_ERROR("validateJson: name %s is missing", name);
-        }
-
-        return -2;
-    }
-
-    const rapidjson::Value& elem = value[name];
-
-    if (type >= JSONTYPE_INT && type <= JSONTYPE_STRING)
-    {
-        ValidateFunc func = validateFunc[type];
-
-        if (!(elem.*func)())
-        {
-            LOG_ERROR("validateJson: %s has wrong data type", name);
-            return 0;
-        }
-    }
-    else
-    {
-        if (!elem.IsArray())
-        {
-            LOG_ERROR("validateJson: %s has wrong data type", name);
-            return 0;
-        }
-
-        ValidateFunc func2 = validateFunc[type - JSONTYPE_INT_ARRAY];
-        int arraySize = elem.Capacity();
-
-        for (int i = 0; i < arraySize; ++i)
-        {
-            if (!(elem[i].*func2)())
-            {
-                LOG_ERROR("validateJson: %s[%d] has wrong type", name, i);
-                return 0;
-            }
-        }
-    }
-
-    return 1;
-}
-
-bool parseJson(int& r, const rapidjson::Value& value,
-               const char* name, bool required)
-{
-    int ret = validateJson(value, name, JSONTYPE_INT, required);
-    if (!required && ret == -2)
-    {
-        return true;
-    }
-    else if(required && ret != 1)
-    {
-        return false;
-    }
-
-    r = value[name].GetInt();
-
-    return true;
-}
-
-bool parseJson(float& r, const rapidjson::Value& value,
-               const char* name, bool required)
-{
-    int ret = validateJson(value, name, JSONTYPE_FLOAT, required);
-    if (!required && ret == -2)
-    {
-        return true;
-    }
-    else if(required && ret != 1)
-    {
-        return false;
-    }
-
-    r = value[name].GetFloat();
-
-    return true;
-}
-
-bool parseJson(bool& r, const rapidjson::Value& value,
-               const char* name, bool required)
-{
-    int ret = validateJson(value, name, JSONTYPE_BOOL, required);
-    if (!required && ret == -2)
-    {
-        return true;
-    }
-    else if(required && ret != 1)
-    {
-        return false;
-    }
-
-    r = value[name].GetBool();
-
-    return true;
-}
-
-bool parseJson(double& r, const rapidjson::Value& value,
-               const char* name, bool required)
-{
-    int ret = validateJson(value, name, JSONTYPE_DOUBLE, required);
-    if (!required && ret == -2)
-    {
-        return true;
-    }
-    else if(required && ret != 1)
-    {
-        return false;
-    }
-
-    r = value[name].GetDouble();
-
-    return true;
-}
-
-bool parseJson(std::string& r, const rapidjson::Value& value,
-               const char* name, bool required)
-{
-    int ret = validateJson(value, name, JSONTYPE_STRING, required);
-    if (!required && ret == -2)
-    {
-        return true;
-    }
-    else if(required && ret != 1)
-    {
-        return false;
-    }
-
-    r = value[name].GetString();
-
-    return true;
-}
-
-bool parseJson(std::vector<int>& r, const rapidjson::Value& value,
-               const char* name, bool required)
-{
-    int ret = validateJson(value, name, JSONTYPE_INT_ARRAY, required);
-    if (!required && ret == -2)
-    {
-        return true;
-    }
-    else if(required && ret != 1)
-    {
-        return false;
-    }
-
-    const rapidjson::Value& arr = value[name];
-    int arrSize = arr.Capacity();
-
-    r.resize(arrSize);
-    for (int i = 0; i < arrSize; ++i)
-    {
-        r[i] = arr[i].GetInt();
-    }
-
-    return true;
-}
-
-bool parseJson(std::vector<float>& r, const rapidjson::Value& value,
-               const char* name, bool required)
-{
-    int ret = validateJson(value, name, JSONTYPE_FLOAT_ARRAY, required);
-    if (!required && ret == -2)
-    {
-        return true;
-    }
-    else if(required && ret != 1)
-    {
-        return false;
-    }
-
-    const rapidjson::Value& arr = value[name];
-    int arrSize = arr.Capacity();
-
-    r.resize(arrSize);
-    for (int i = 0; i < arrSize; ++i)
-    {
-        r[i] = arr[i].GetFloat();
-    }
-
-    return true;
-}
-
-bool parseJson(std::vector<double>& r, const rapidjson::Value& value,
-               const char* name, bool required)
-{
-    int ret = validateJson(value, name, JSONTYPE_DOUBLE_ARRAY, required);
-    if (!required && ret == -2)
-    {
-        return true;
-    }
-    else if(required && ret != 1)
-    {
-        return false;
-    }
-
-    const rapidjson::Value& arr = value[name];
-    int arrSize = arr.Capacity();
-
-    r.resize(arrSize);
-    for (int i = 0; i < arrSize; ++i)
-    {
-        r[i] = arr[i].GetDouble();
-    }
-
-    return true;
-}
-
-bool parseJson(std::vector<bool>& r, const rapidjson::Value& value,
-               const char* name, bool required)
-{
-    int ret = validateJson(value, name, JSONTYPE_BOOL_ARRAY, required);
-    if (!required && ret == -2)
-    {
-        return true;
-    }
-    else if(required && ret != 1)
-    {
-        return false;
-    }
-
-    const rapidjson::Value& arr = value[name];
-    int arrSize = arr.Capacity();
-
-    r.resize(arrSize);
-    for (int i = 0; i < arrSize; ++i)
-    {
-        r[i] = arr[i].GetBool();
-    }
-
-    return true;
-}
-
-bool parseJson(std::vector<std::string>& r, const rapidjson::Value& value,
-               const char* name, bool required)
-{
-    int ret = validateJson(value, name, JSONTYPE_STRING_ARRAY, required);
-    if (!required && ret == -2)
-    {
-        return true;
-    }
-    else if(required && ret != 1)
-    {
-        return false;
-    }
-
-    const rapidjson::Value& arr = value[name];
-    int arrSize = arr.Capacity();
-
-    r.resize(arrSize);
-    for (int i = 0; i < arrSize; ++i)
-    {
-        r[i] = arr[i].GetString();
-    }
-
-    return true;
-}
-
-bool parseJson(std::vector<JsonParseParam>& params,
-               const rapidjson::Value& value)
-{
-    for (auto it = params.begin(); it != params.end(); ++it)
-    {
-        switch (it->m_type)
-        {
-            case JSONTYPE_INT:
-            {
-                int* r = reinterpret_cast<int*>(it->m_ptr);
-
-                if (!parseJson(*r, value, it->m_name, it->m_required))
-                {
-                    return false;
-                }
-
-                break;
-            }
-            case JSONTYPE_BOOL:
-            {
-                bool* r = reinterpret_cast<bool*>(it->m_ptr);
-
-                if (!parseJson(*r, value, it->m_name, it->m_required))
-                {
-                    return false;
-                }
-
-                break;
-            }
-            case JSONTYPE_FLOAT:
-            {
-                float* r = reinterpret_cast<float*>(it->m_ptr);
-
-                if (!parseJson(*r, value, it->m_name, it->m_required))
-                {
-                    return false;
-                }
-
-                break;
-            }
-            case JSONTYPE_DOUBLE:
-            {
-                double* r = reinterpret_cast<double*>(it->m_ptr);
-
-                if (!parseJson(*r, value, it->m_name, it->m_required))
-                {
-                    return false;
-                }
-
-                break;
-            }
-            case JSONTYPE_STRING:
-            {
-                std::string* r = reinterpret_cast<std::string*>(it->m_ptr);
-
-                if (!parseJson(*r, value, it->m_name, it->m_required))
-                {
-                    return false;
-                }
-
-                break;
-            }
-            case JSONTYPE_INT_ARRAY:
-            {
-                std::vector<int>* r =
-                                reinterpret_cast<std::vector<int>*>(it->m_ptr);
-
-                if (!parseJson(*r, value, it->m_name, it->m_required))
-                {
-                    return false;
-                }
-
-                break;
-            }
-            case JSONTYPE_FLOAT_ARRAY:
-            {
-                std::vector<float>* r =
-                            reinterpret_cast<std::vector<float>*>(it->m_ptr);
-
-                if (!parseJson(*r, value, it->m_name, it->m_required))
-                {
-                    return false;
-                }
-
-                break;
-            }
-            case JSONTYPE_BOOL_ARRAY:
-            {
-                std::vector<bool>* r =
-                            reinterpret_cast<std::vector<bool>*>(it->m_ptr);
-
-                if (!parseJson(*r, value, it->m_name, it->m_required))
-                {
-                    return false;
-                }
-
-                break;
-            }
-            case JSONTYPE_DOUBLE_ARRAY:
-            {
-                std::vector<double>* r =
-                             reinterpret_cast<std::vector<double>*>(it->m_ptr);
-
-                if (!parseJson(*r, value, it->m_name, it->m_required))
-                {
-                    return false;
-                }
-
-                break;
-            }
-            case JSONTYPE_STRING_ARRAY:
-            {
-                std::vector<std::string>* r =
-                        reinterpret_cast<std::vector<std::string>*>(it->m_ptr);
-
-                if (!parseJson(*r, value, it->m_name, it->m_required))
-                {
-                    return false;
-                }
-
-                break;
-            }
-            default:
-            {
-                LOG_ERROR("Invalid json type %d", static_cast<int>(it->m_type));
-                return false;
-            }
-        } // switch (it->m_type)
-    }
-
-    return true;
-}
-*/
 } // end of namespace bot
+
