@@ -23,7 +23,7 @@ public:
     void draw();
 
 private:
-    void initBar();
+    bool initBar(float x, float y);
 
 private:
     const ProgressBarTemplate* m_template;

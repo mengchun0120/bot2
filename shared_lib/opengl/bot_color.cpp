@@ -149,7 +149,7 @@ bool Color::init(const std::vector<int> colorVec)
         return false;
     }
 
-    return init(colorVec[0], colorVec[1], colorVec[2], color[3]);
+    return init(colorVec[0], colorVec[1], colorVec[2], colorVec[3]);
 }
 
 bool Color::init(const std::vector<float> colorVec)
@@ -159,7 +159,7 @@ bool Color::init(const std::vector<float> colorVec)
         return false;
     }
 
-    return init(colorVec[0], colorVec[1], colorVec[2], color[3]);
+    return init(colorVec[0], colorVec[1], colorVec[2], colorVec[3]);
 }
 
 Color& Color::operator=(const Color& other)

@@ -36,13 +36,7 @@ public:
         const NamedMap<Rectangle>& m_rectLib;
     };
 
-    ProgressBarTemplate()
-        : m_texture(nullptr)
-        , m_color(nullptr)
-        , m_rect(nullptr)
-        , m_barWidth(0.0f)
-        , m_slotCount(0)
-    {}
+    ProgressBarTemplate();
 
     ~ProgressBarTemplate()
     {}

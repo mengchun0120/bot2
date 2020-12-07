@@ -23,7 +23,7 @@ ProgressBarTemplate* ProgressBarTemplate::Parser::create(
     return t;
 }
 
-ProgressBarTemplate()
+ProgressBarTemplate::ProgressBarTemplate()
     : m_texture(nullptr)
     , m_color(nullptr)
     , m_rect(nullptr)
