@@ -116,7 +116,7 @@
         "file": "armor_bar.png"
     },
     {
-        "name": "energy_bar",
-        "file": "energy_bar.png"
+        "name": "power_bar",
+        "file": "power_bar.png"
     }
 ]

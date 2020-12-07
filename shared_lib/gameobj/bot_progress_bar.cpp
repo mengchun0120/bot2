@@ -10,7 +10,6 @@ namespace bot {
 
 ProgressBar::ProgressBar()
     : m_template(nullptr)
-    , m_visibleVertices(0)
 {
 }
 
@@ -28,11 +27,6 @@ bool ProgressBar::init(const ProgressBarTemplate* t, float x, float y,
     m_pos[1] = y + t->getTexture()->height() / 2.0f;
 
     if (!initBar(x, y))
-    {
-        return false;
-    }
-
-    if (!setRatio(initialRatio))
     {
         return false;
     }
@@ -75,27 +69,18 @@ bool ProgressBar::initBar(float x, float y)
     return true;
 }
 
-bool ProgressBar::setRatio(float ratio)
+void ProgressBar::draw()
 {
-    if (ratio < 0.0f || ratio > 1.0f)
-    {
-        LOG_ERROR("Invalid ratio %f", ratio);
-        return false;
-    }
+    ratio = clamp(ratio, 0.0f, 1.0f);
 
     int barCount = static_cast<int>(ratio * (m_template->getSlotCount()));
 
-    m_visibleVertices = barCount > 0 ? (barCount + 1) * 2 : 0;
+    visibleVertices = barCount > 0 ? (barCount + 1) * 2 : 0;
 
-    return true;
-}
-
-void ProgressBar::draw()
-{
     m_template->getRect()->draw(m_pos, nullptr, nullptr, nullptr,
                                 m_template->getTexture()->textureId(), nullptr);
 
-    if (m_visibleVertices > 0)
+    if (visibleVertices > 0)
     {
         SimpleShaderProgram& program = SimpleShaderProgram::getInstance();
 
@@ -104,7 +89,7 @@ void ProgressBar::draw()
         program.setUseColor(true);
         program.setUseDirection(false);
         program.setColor(m_template->getColor()->getColor());
-        glDrawArrays(GL_TRIANGLE_STRIP, 0, m_visibleVertices);
+        glDrawArrays(GL_TRIANGLE_STRIP, 0, visibleVertices);
     }
 }
 

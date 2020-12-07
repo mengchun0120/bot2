@@ -27,6 +27,16 @@ public:
 
     virtual void update(float delta, GameScreen& screen);
 
+    float getPowerRatio() const
+    {
+        return m_base.getPowerRatio();
+    }
+
+    float getArmorRatio() const
+    {
+        return m_base.getArmorRatio();
+    }
+
     void consumeGoodie(Goodie* goodie, GameScreen& screen);
 
     const GoodieEffect* getFirstActiveEffect() const

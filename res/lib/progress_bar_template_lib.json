@@ -20,8 +20,8 @@
         "slotCount": 100
     },
     {
-        "name": "energy_bar",
-        "texture": "energy_bar",
+        "name": "power_bar",
+        "texture": "power_bar",
         "rect": "progress_bar_rect",
         "color": [0, 255, 0],
         "startOffset": [8.0, 2.0],

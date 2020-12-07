@@ -61,6 +61,16 @@ public:
         return m_rect;
     }
 
+    float getWidth() const
+    {
+        return m_rect->width();
+    }
+
+    float getHeight() const
+    {
+        return m_rect->height();
+    }
+
     float getStartOffsetX() const
     {
         return m_startOffset[0];

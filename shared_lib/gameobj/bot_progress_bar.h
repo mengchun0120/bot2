@@ -18,9 +18,7 @@ public:
     bool init(const ProgressBarTemplate* t, float x, float y,
               float initialRatio=1.0f);
 
-    bool setRatio(float ratio);
-
-    void draw();
+    void draw(float ratio);
 
 private:
     bool initBar(float x, float y);

@@ -55,6 +55,11 @@ public:
         return m_armor;
     }
 
+    float getArmorRatio() const
+    {
+        return m_armor / m_maxArmor;
+    }
+
     void setArmor(float armor)
     {
         m_armor = clamp(armor, 0.0f, m_maxArmor);
@@ -63,6 +68,11 @@ public:
     float getPower() const
     {
         return m_power;
+    }
+
+    float getPowerRatio() const
+    {
+        return m_power / m_maxPower;
     }
 
     void setPower(float power)
