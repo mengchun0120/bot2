@@ -226,6 +226,11 @@ public:
         return m_mapGeneratorLib;
     }
 
+    const std::string& getProgressBarTemplateLib() const
+    {
+        return m_progressBarTemplateLib;
+    }
+
     void setMapGenerator(const std::string& generator)
     {
         m_mapGenerator = generator;
@@ -302,6 +307,7 @@ private:
     std::string m_mapFile;
     int m_level;
     std::string m_mapGeneratorLib;
+    std::string m_progressBarTemplateLib;
     float m_mapPoolFactor;
     int m_missilePoolSize;
     std::string m_mapGenerator;

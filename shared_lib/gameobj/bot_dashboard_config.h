@@ -11,7 +11,9 @@ public:
         : m_effectSpacingX(0.0f)
         , m_effectStartX(0.0f)
         , m_effectRingRadius(0.0f)
-        , m_headerTopMargin(0.0f)
+        , m_effectMargin(0.0f)
+        , m_barSpacing(0.0f)
+        , m_barMargin(0.0f)
     {}
 
     ~DashboardConfig()
@@ -34,16 +36,28 @@ public:
         return m_effectRingRadius;
     }
 
-    float getHeaderTopMargin() const
+    float getEffectMargin() const
     {
-        return m_headerTopMargin;
+        return m_effectMargin;
+    }
+
+    float getBarSpacing() const
+    {
+        return m_barSpacing;
+    }
+
+    float getBarMargin() const
+    {
+        return m_barMargin;
     }
 
 private:
     float m_effectSpacingX;
     float m_effectStartX;
     float m_effectRingRadius;
-    float m_headerTopMargin;
+    float m_effectMargin;
+    float m_barSpacing;
+    float m_barMargin;
 };
 
 } // end of namespace bot

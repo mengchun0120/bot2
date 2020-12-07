@@ -17,8 +17,19 @@ public:
 
     bool load(const char* fileName);
 
+    bool load(const std::string& fileName)
+    {
+        return load(fileName.c_str());
+    }
+
     template <typename P>
     bool load(const char* fileName, P& parser);
+
+    template <typename P>
+    bool load(const std::string& fileName, P& parser)
+    {
+        return load(fileName.c_str(), parser);
+    }
 
     bool add(const char *name, T* t);
 

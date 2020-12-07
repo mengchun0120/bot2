@@ -26,7 +26,7 @@ void Dashboard::initEffectPos()
 {
     const App& app = App::getInstance();
     float screenHeight = app.getViewportHeight();
-    float y = screenHeight - m_cfg->getHeaderTopMargin() -
+    float y = screenHeight - m_cfg->getEffectMargin() -
               m_cfg->getEffectRingRadius();
     float x = m_cfg->getEffectStartX() + m_cfg->getEffectRingRadius();
     float deltaX = m_cfg->getEffectSpacingX() +

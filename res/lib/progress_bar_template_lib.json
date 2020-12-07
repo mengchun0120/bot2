@@ -1,0 +1,29 @@
+[
+    {
+        "name": "experience_bar",
+        "texture": "experience_bar",
+        "rect": "progress_bar_rect",
+        "color": [0, 255, 255, 255],
+        "startOffset": [8.0, 2.0],
+        "barWidth": 102.0,
+        "slotCount": 100
+    },
+    {
+        "name": "armor_bar",
+        "texture": "armor_bar",
+        "rect": "progress_bar_rect",
+        "color": [255, 215, 0, 255],
+        "startOffset": [8.0, 2.0],
+        "barWidth": 102.0,
+        "slotCount": 100
+    },
+    {
+        "name": "energy_bar",
+        "texture": "energy_bar",
+        "rect": "progress_bar_rect",
+        "color": [0, 255, 0],
+        "startOffset": [8.0, 2.0],
+        "barWidth": 102.0,
+        "slotCount": 100
+    }
+]

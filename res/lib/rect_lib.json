@@ -43,5 +43,10 @@
         "name": "message_box_button_rect",
         "width": 120.0,
         "height": 40.0
+    },
+    {
+        "name": "progress_bar_rect",
+        "width": 118.0,
+        "height": 14.0
     }
 ]

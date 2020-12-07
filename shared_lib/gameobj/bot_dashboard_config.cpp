@@ -27,8 +27,12 @@ bool DashboardConfig::init(const std::string& configFile)
         jsonParam(m_effectStartX, "effectStartX"),
         jsonParam(m_effectRingRadius, "effectRingRadius",
                   gt(m_effectRingRadius, 0.0f)),
-        jsonParam(m_headerTopMargin, "headerTopMargin",
-                  gt(m_headerTopMargin, 0.0f))
+        jsonParam(m_effectMargin, "effectMargin",
+                  gt(m_effectMargin, 0.0f)),
+        jsonParam(m_barSpacing, "barSpacing",
+                  gt(m_barSpacing, 0.0f)),
+        jsonParam(m_barMargin, "barMargin",
+                  gt(m_barMargin, 0.0f))
     };
 
     if (!parseJson(params, val))

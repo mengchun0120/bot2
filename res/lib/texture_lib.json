@@ -106,5 +106,17 @@
     {
         "name": "cyan_base_mover",
         "file": "cyan_base_mover.png"
+    },
+    {
+        "name": "experience_bar",
+        "file": "experience_bar.png"
+    },
+    {
+        "name": "armor_bar",
+        "file": "armor_bar.png"
+    },
+    {
+        "name": "energy_bar",
+        "file": "energy_bar.png"
     }
 ]
