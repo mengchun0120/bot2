@@ -2,6 +2,7 @@
 #define INCLUDE_BOT_COLOR
 
 #include <string>
+#include <vector>
 #include <rapidjson/document.h>
 #include "misc/bot_constants.h"
 
@@ -33,6 +34,8 @@ public:
 
     static bool validateColor(int red, int green, int blue, int alpha);
 
+    static bool validateColor(float red, float green, float blue, float alpha);
+
     static Color* create(const rapidjson::Value& elem);
 
     Color();
@@ -45,6 +48,12 @@ public:
     bool init(const rapidjson::Value& elem);
 
     bool init(int red, int green, int blue, int alpha);
+
+    bool init(float red, float green, float blue, float alpha);
+
+    bool init(const std::vector<int> colorVec);
+
+    bool init(const std::vector<float> colorVec);
 
     Color& operator=(const Color& other);
 

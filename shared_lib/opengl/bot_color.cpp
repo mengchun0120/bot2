@@ -45,6 +45,35 @@ bool Color::validateColor(int red, int green, int blue, int alpha)
     return true;
 }
 
+bool Color::validateColor(float red, float green, float blue, float alpha)
+{
+    if (!validateElem(red))
+    {
+        LOG_ERROR("Invalid red value %d", red);
+        return false;
+    }
+
+    if (!validateElem(green))
+    {
+        LOG_ERROR("Invalid green value %d", green);
+        return false;
+    }
+
+    if (!validateElem(blue))
+    {
+        LOG_ERROR("Invalid blue value %d", blue);
+        return false;
+    }
+
+    if (!validateElem(alpha))
+    {
+        LOG_ERROR("Invalid alpha value %d", alpha);
+        return false;
+    }
+
+    return true;
+}
+
 Color::Color()
 {
     m_color[0] = 0.0f;
@@ -96,6 +125,41 @@ bool Color::init(int red, int green, int blue, int alpha)
     m_color[3] = alpha / 255.0f;
 
     return true;
+}
+
+bool Color::init(float red, float green, float blue, float alpha)
+{
+    if (!validateColor(red, green, blue, alpha))
+    {
+        return false;
+    }
+
+    m_color[0] = red;
+    m_color[1] = green;
+    m_color[2] = blue;
+    m_color[3] = alpha;
+
+    return true;
+}
+
+bool Color::init(const std::vector<int> colorVec)
+{
+    if (colorVec.size() != 4)
+    {
+        return false;
+    }
+
+    return init(colorVec[0], colorVec[1], colorVec[2], color[3]);
+}
+
+bool Color::init(const std::vector<float> colorVec)
+{
+    if (colorVec.size() != 4)
+    {
+        return false;
+    }
+
+    return init(colorVec[0], colorVec[1], colorVec[2], color[3]);
 }
 
 Color& Color::operator=(const Color& other)

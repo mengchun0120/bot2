@@ -23,6 +23,15 @@ ProgressBarTemplate* ProgressBarTemplate::Parser::create(
     return t;
 }
 
+ProgressBarTemplate()
+    : m_texture(nullptr)
+    , m_color(nullptr)
+    , m_rect(nullptr)
+    , m_barWidth(0.0f)
+    , m_barHeight(0.0f)
+    , m_slotCount(0)
+{}
+
 bool ProgressBarTemplate::init(const NamedMap<Texture>& textureLib,
                                const NamedMap<Color>& colorLib,
                                const NamedMap<Rectangle>& rectLib,
@@ -37,6 +46,7 @@ bool ProgressBarTemplate::init(const NamedMap<Texture>& textureLib,
         jsonParam(colorVec, "color"),
         jsonParam(startOffsetVec, "startOffset"),
         jsonParam(m_barWidth, "barWidth", gt(m_barWidth, 0.0f)),
+        jsonParam(m_barHeight, "barHeight", gt(m_barHeight, 0.0f)),
         jsonParam(m_slotCount, "slotCount", gt(m_slotCount, 0))
     };
 

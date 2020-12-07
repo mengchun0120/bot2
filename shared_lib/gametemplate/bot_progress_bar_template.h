@@ -82,6 +82,11 @@ public:
         return m_barWidth;
     }
 
+    float getBarHeight() const
+    {
+        return m_barHeight;
+    }
+
     float getSlotCount() const
     {
         return m_slotCount;
@@ -93,6 +98,7 @@ private:
     const Rectangle* m_rect;
     float m_startOffset[Constants::NUM_FLOATS_PER_POSITION];
     float m_barWidth;
+    float m_barHeight;
     int m_slotCount;
 };
 
