@@ -4,7 +4,6 @@
 #include "opengl/bot_texture.h"
 #include "opengl/bot_color.h"
 #include "geometry/bot_rectangle.h"
-#include "gameobj/bot_progress_ring.h"
 #include "gametemplate/bot_goodie_template.h"
 
 namespace bot {

@@ -4,13 +4,13 @@
 #include <string>
 #include <rapidjson/document.h>
 #include "misc/bot_constants.h"
+#include "geometry/bot_rectangle.h"
 
 namespace bot {
 
 template <typename T> class NamedMap;
 class Texture;
 class Color;
-class Rectangle;
 
 class ProgressBarTemplate {
 public:

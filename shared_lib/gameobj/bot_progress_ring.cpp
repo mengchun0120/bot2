@@ -23,6 +23,7 @@ ProgressRing* ProgressRing::Parser::create(const std::string& name,
 
 ProgressRing::ProgressRing()
     : m_backColor(nullptr)
+    , m_radius(0.0f)
     , m_maxIdx(0)
     , m_numFrontColors(0)
 {
@@ -33,13 +34,12 @@ bool ProgressRing::init(const NamedMap<Color>& colorLib,
 {
     std::string backColorName;
     std::vector<std::string> frontColorNames;
-    float radius;
     int numEdges;
 
     std::vector<JsonParamPtr> params = {
         jsonParam(backColorName, "backColor"),
         jsonParam(frontColorNames, "frontColors"),
-        jsonParam(radius, "radius", gt(radius, 0.0f)),
+        jsonParam(m_radius, "radius", gt(m_radius, 0.0f)),
         jsonParam(numEdges, "numEdges", gt(numEdges, 3))
     };
 
@@ -71,7 +71,7 @@ bool ProgressRing::init(const NamedMap<Color>& colorLib,
         m_frontColors[i] = color;
     }
 
-    if (!initVertexArray(radius, numEdges))
+    if (!initVertexArray(numEdges))
     {
         LOG_ERROR("Failed to initialize vertex array for progress ring");
         return false;
@@ -80,7 +80,7 @@ bool ProgressRing::init(const NamedMap<Color>& colorLib,
     return true;
 }
 
-bool ProgressRing::initVertexArray(float radius, int numEdges)
+bool ProgressRing::initVertexArray(int numEdges)
 {
     m_maxIdx = numEdges - 1;
 
@@ -89,7 +89,7 @@ bool ProgressRing::initVertexArray(float radius, int numEdges)
     float* vertices = new float[numFloats];
     float delta = 2.0f * Constants::PI / numEdges;
     float theta = delta;
-    float prevX = 0.0f, prevY = radius;
+    float prevX = 0.0f, prevY = m_radius;
 
     for (int i = 0, k = 0; i < numEdges; ++i)
     {
@@ -97,8 +97,8 @@ bool ProgressRing::initVertexArray(float radius, int numEdges)
         vertices[k + 1] = 0.0f;
         vertices[k + 2] = prevX;
         vertices[k + 3] = prevY;
-        prevX = sin(theta) * radius;
-        prevY = cos(theta) * radius;
+        prevX = sin(theta) * m_radius;
+        prevY = cos(theta) * m_radius;
         vertices[k + 4] = prevX;
         vertices[k + 5] = prevY;
 

@@ -2,6 +2,8 @@
 #define INCLUDE_BOT_PLAYER
 
 #include <vector>
+#include <functional>
+#include <list>
 #include "gameobj/bot_goodie_effect.h"
 #include "gameobj/bot_robot.h"
 
@@ -27,17 +29,12 @@ public:
 
     virtual void update(float delta, GameScreen& screen);
 
-    float getPowerRatio() const
-    {
-        return m_base.getPowerRatio();
-    }
-
-    float getArmorRatio() const
-    {
-        return m_base.getArmorRatio();
-    }
-
     void consumeGoodie(Goodie* goodie, GameScreen& screen);
+
+    int getActiveEffectCount() const
+    {
+        return m_activeEffectCount;
+    }
 
     const GoodieEffect* getFirstActiveEffect() const
     {

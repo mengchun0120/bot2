@@ -42,6 +42,21 @@ public:
         m_next = next;
     }
 
+    float getWidth() const
+    {
+        return m_template->getWidth();
+    }
+
+    float getHeight() const
+    {
+        return m_template->getHeight();
+    }
+
+    float getRadius() const
+    {
+        return m_template->getProgressRing()->getRadius();
+    }
+
     void start();
 
     void draw(const float* pos) const;

@@ -3,7 +3,6 @@
 #include "structure/bot_named_map.h"
 #include "opengl/bot_texture.h"
 #include "opengl/bot_color.h"
-#include "geometry/bot_rectangle.h"
 #include "gametemplate/bot_progress_bar_template.h"
 
 namespace bot {

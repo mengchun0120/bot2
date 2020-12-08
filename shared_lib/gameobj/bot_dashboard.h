@@ -9,19 +9,13 @@
 namespace bot {
 
 class Player;
-class DashboardConfig;
-class TextSystem;
 
 class Dashboard {
+public:
     enum {
         BAR_POWER,
         BAR_ARMOR,
         BAR_COUNT
-    };
-
-public:
-    struct Point {
-        float m_pos[Constants::NUM_FLOATS_PER_POSITION];
     };
 
     Dashboard();
@@ -29,17 +23,14 @@ public:
     ~Dashboard()
     {}
 
-    void init(const Player* player);
+    bool init(const Player* player);
 
     void draw();
 
 private:
-    bool getStatusBarTemplates(
-            std::vector<const ProgressBarTemplate*>& barTemplates);
+    void drawEffects();
 
-    bool initStatusBars();
-
-    void initEffectPos();
+    void drawStatusBars();
 
 private:
     const Player* m_player;

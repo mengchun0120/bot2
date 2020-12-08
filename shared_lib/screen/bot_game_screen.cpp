@@ -34,7 +34,6 @@ bool GameScreen::init()
 {
     LOG_INFO("Initializing GameScreen");
 
-    const GameLib& lib = GameLib::getInstance();
     App& app = App::getInstance();
     const AppConfig& cfg = AppConfig::getInstance();
     float viewportWidth = app.getViewportWidth();
@@ -54,7 +53,7 @@ bool GameScreen::init()
         return false;
     }
 
-    m_dashboard.init(m_map.getPlayer(), &lib.getDashboardConfig());
+    m_dashboard.init(m_map.getPlayer());
 
     LOG_INFO("Done loading dashboard");
 

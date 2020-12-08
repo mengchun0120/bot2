@@ -22,9 +22,8 @@ bool DashboardConfig::init(const std::string& configFile)
     const rapidjson::Value& val = doc.GetObject();
 
     std::vector<JsonParamPtr> params = {
-        jsonParam(m_effectSpacingX, "effectSpacingX",
-                  gt(m_effectSpacingX, 0.0f)),
-        jsonParam(m_effectStartX, "effectStartX"),
+        jsonParam(m_effectSpacing, "effectSpacing",
+                  gt(m_effectSpacing, 0.0f)),
         jsonParam(m_effectRingRadius, "effectRingRadius",
                   gt(m_effectRingRadius, 0.0f)),
         jsonParam(m_effectMargin, "effectMargin",

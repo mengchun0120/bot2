@@ -1,6 +1,5 @@
 {
-    "effectSpacingX": 15.0,
-    "effectStartX": 400.0,
+    "effectSpacing": 15.0,
     "effectRingRadius": 15.0,
     "effectMargin": 50.0,
     "barSpacing": 15.0,

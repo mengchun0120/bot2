@@ -8,8 +8,7 @@ namespace bot {
 class DashboardConfig {
 public:
     DashboardConfig()
-        : m_effectSpacingX(0.0f)
-        , m_effectStartX(0.0f)
+        : m_effectSpacing(0.0f)
         , m_effectRingRadius(0.0f)
         , m_effectMargin(0.0f)
         , m_barSpacing(0.0f)
@@ -21,14 +20,9 @@ public:
 
     bool init(const std::string& configFile);
 
-    float getEffectSpacingX() const
+    float getEffectSpacing() const
     {
-        return m_effectSpacingX;
-    }
-
-    float getEffectStartX() const
-    {
-        return m_effectStartX;
+        return m_effectSpacing;
     }
 
     float getEffectRingRadius() const
@@ -52,8 +46,7 @@ public:
     }
 
 private:
-    float m_effectSpacingX;
-    float m_effectStartX;
+    float m_effectSpacing;
     float m_effectRingRadius;
     float m_effectMargin;
     float m_barSpacing;

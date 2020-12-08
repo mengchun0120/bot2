@@ -4,6 +4,7 @@
 #include <string>
 #include <rapidjson/document.h>
 #include "gameobj/bot_goodie_type.h"
+#include "gameobj/bot_progress_ring.h"
 #include "gametemplate/bot_game_object_template.h"
 
 namespace bot {
@@ -12,7 +13,6 @@ template <typename T> class NamedMap;
 class Rectangle;
 class Texture;
 class Color;
-class ProgressRing;
 
 class GoodieTemplate : public GameObjectTemplate {
 public:
@@ -133,6 +133,16 @@ public:
     void setWeight(float weight)
     {
         m_weight = weight;
+    }
+
+    float getWidth() const
+    {
+        return 2.0f * m_ring->getRadius();
+    }
+
+    float getHeight() const
+    {
+        return 2.0f * m_ring->getRadius();
     }
 
 private:

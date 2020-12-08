@@ -1,4 +1,5 @@
 #include "misc/bot_log.h"
+#include "misc/bot_math_utils.h"
 #include "gametemplate/bot_progress_bar_template.h"
 #include "gameobj/bot_progress_bar.h"
 #include "opengl/bot_texture.h"
@@ -69,13 +70,12 @@ bool ProgressBar::initBar(float x, float y)
     return true;
 }
 
-void ProgressBar::draw()
+void ProgressBar::draw(float ratio)
 {
     ratio = clamp(ratio, 0.0f, 1.0f);
 
     int barCount = static_cast<int>(ratio * (m_template->getSlotCount()));
-
-    visibleVertices = barCount > 0 ? (barCount + 1) * 2 : 0;
+    int visibleVertices = barCount > 0 ? (barCount + 1) * 2 : 0;
 
     m_template->getRect()->draw(m_pos, nullptr, nullptr, nullptr,
                                 m_template->getTexture()->textureId(), nullptr);
