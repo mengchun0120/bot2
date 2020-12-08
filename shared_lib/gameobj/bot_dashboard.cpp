@@ -108,13 +108,13 @@ void Dashboard::drawEffects()
     totalWidth += (m_player->getActiveEffectCount() - 1) *
                   cfg.getEffectSpacing();
 
+    effect = m_player->getFirstActiveEffect();
+
     float x = (viewportWidth - totalWidth) / 2.0f + effect->getRadius();
     float pos[] = {x, cfg.getEffectMargin()};
-
-    effect = m_player->getFirstActiveEffect();
-    effect->draw(pos);
-
     const GoodieEffect* prevEffect = effect;
+
+    effect->draw(pos);
 
     for (effect = effect->getNext(); effect; effect = effect->getNext())
     {

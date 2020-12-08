@@ -5,8 +5,8 @@
         "rect": "progress_bar_rect",
         "color": [0, 255, 255, 255],
         "startOffset": [8.0, 2.0],
-        "barWidth": 100.0,
-        "barHeight": 8.0,
+        "barWidth": 102.0,
+        "barHeight": 10.0,
         "slotCount": 100
     },
     {
@@ -15,18 +15,18 @@
         "rect": "progress_bar_rect",
         "color": [255, 215, 0, 255],
         "startOffset": [8.0, 2.0],
-        "barWidth": 100.0,
-        "barHeight": 8.0,
+        "barWidth": 102.0,
+        "barHeight": 10.0,
         "slotCount": 100
     },
     {
         "name": "power_bar",
         "texture": "power_bar",
         "rect": "progress_bar_rect",
-        "color": [0, 255, 0],
+        "color": [0, 255, 0, 255],
         "startOffset": [8.0, 2.0],
-        "barWidth": 100.0,
-        "barHeight": 8.0,
+        "barWidth": 102.0,
+        "barHeight": 10.0,
         "slotCount": 100
     }
 ]

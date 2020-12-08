@@ -88,7 +88,7 @@ void ProgressBar::draw(float ratio)
         program.setPosition(m_bar, false);
         program.setUseColor(true);
         program.setUseDirection(false);
-        program.setColor(m_template->getColor()->getColor());
+        program.setColor(m_template->getColor().getColor());
         glDrawArrays(GL_TRIANGLE_STRIP, 0, visibleVertices);
     }
 }

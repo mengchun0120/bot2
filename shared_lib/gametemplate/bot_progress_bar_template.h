@@ -4,13 +4,13 @@
 #include <string>
 #include <rapidjson/document.h>
 #include "misc/bot_constants.h"
+#include "opengl/bot_color.h"
 #include "geometry/bot_rectangle.h"
 
 namespace bot {
 
 template <typename T> class NamedMap;
 class Texture;
-class Color;
 
 class ProgressBarTemplate {
 public:
@@ -51,7 +51,7 @@ public:
         return m_texture;
     }
 
-    const Color* getColor() const
+    const Color& getColor() const
     {
         return m_color;
     }
@@ -98,7 +98,7 @@ public:
 
 private:
     const Texture* m_texture;
-    const Color* m_color;
+    Color m_color;
     const Rectangle* m_rect;
     float m_startOffset[Constants::NUM_FLOATS_PER_POSITION];
     float m_barWidth;

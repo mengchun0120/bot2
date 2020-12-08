@@ -2,7 +2,6 @@
 #include "misc/bot_json_utils.h"
 #include "structure/bot_named_map.h"
 #include "opengl/bot_texture.h"
-#include "opengl/bot_color.h"
 #include "gametemplate/bot_progress_bar_template.h"
 
 namespace bot {
@@ -24,7 +23,6 @@ ProgressBarTemplate* ProgressBarTemplate::Parser::create(
 
 ProgressBarTemplate::ProgressBarTemplate()
     : m_texture(nullptr)
-    , m_color(nullptr)
     , m_rect(nullptr)
     , m_barWidth(0.0f)
     , m_barHeight(0.0f)
@@ -67,6 +65,21 @@ bool ProgressBarTemplate::init(const NamedMap<Texture>& textureLib,
         LOG_ERROR("Failed to find rectangle %s", rectName.c_str());
         return false;
     }
+
+    if (!m_color.init(colorVec))
+    {
+        LOG_ERROR("Invalid color");
+        return false;
+    }
+
+    if (startOffsetVec.size() != Constants::NUM_FLOATS_PER_POSITION)
+    {
+        LOG_ERROR("Invalid startOffset");
+        return false;
+    }
+
+    m_startOffset[0] = startOffsetVec[0];
+    m_startOffset[1] = startOffsetVec[1];
 
     return true;
 }
