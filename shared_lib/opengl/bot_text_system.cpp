@@ -16,7 +16,7 @@ bool loadTextSystemTextures(const std::string& fontFolder, Texture *textures)
     for (int ch = TextSystem::MIN_CHAR; ch <= TextSystem::MAX_CHAR; ++ch)
     {
         std::string fileName = getTextSystemImageFile(fontFolder, ch);
-        if (!textures[ch-TextSystem::MIN_CHAR].init(fileName))
+        if (!textures[ch - TextSystem::MIN_CHAR].init(fileName))
         {
             LOG_ERROR("Failed to create texture for ascii %d", ch);
             return false;
@@ -28,25 +28,26 @@ bool loadTextSystemTextures(const std::string& fontFolder, Texture *textures)
 
 bool loadTextSystemRectangles(std::unordered_map<int, Rectangle> *rects,
                               Rectangle *rectMap[][TextSystem::CHAR_COUNT],
+                              float* charHeight, float* maxCharWidth,
                               const Texture* textures)
 {
     const float SCALE_FACTOR[] = {1.0f, 0.75f, 0.5f, 0.36f};
 
     for(int size = TEXT_SIZE_BIG; size < TEXT_SIZE_COUNT; ++size)
     {
+        charHeight[size] = textures[0].height() * SCALE_FACTOR[size];
+        maxCharWidth[size] = 0.0f;
+
         for (int ch = 0; ch < TextSystem::CHAR_COUNT; ++ch)
         {
-            int height = static_cast<int>(textures[ch].height() *
-                                          SCALE_FACTOR[size]);
             int width = static_cast<int>(textures[ch].width() *
                                          SCALE_FACTOR[size]);
 
             auto it = rects[size].find(width);
             if (it == rects[size].end())
             {
-                bool ret = rects[size][width].init(
-                                            static_cast<float>(width),
-                                            static_cast<float>(height), true);
+                bool ret = rects[size][width].init(static_cast<float>(width),
+                                                   charHeight[size], true);
                 if(!ret)
                 {
                     LOG_ERROR("Failed to create Rectangle for size=%d width=%d",
@@ -55,6 +56,11 @@ bool loadTextSystemRectangles(std::unordered_map<int, Rectangle> *rects,
                 }
 
                 rectMap[size][ch] = &(rects[size][width]);
+
+                if (maxCharWidth[size] < width)
+                {
+                    maxCharWidth[size] = width;
+                }
             }
             else
             {
@@ -97,7 +103,9 @@ bool TextSystem::init(const std::string& fontFolder)
         return false;
     }
 
-    if (!loadTextSystemRectangles(m_rects, m_rectMap, m_textures))
+    bool ret = loadTextSystemRectangles(m_rects, m_rectMap, m_charHeight,
+                                        m_maxCharWidth, m_textures);
+    if (!ret)
     {
         return false;
     }
@@ -159,6 +167,27 @@ void TextSystem::drawString(const char* str, TextSize size,
         halfWidth = rect->width() / 2.0f;
         realPos[0] += halfWidth;
     }
+}
+
+
+float TextSystem::getCharHeight(TextSize sz) const
+{
+    if (!isValidTextSize(sz))
+    {
+        return 0.0f;
+    }
+
+    return m_charHeight[sz];
+}
+
+float TextSystem::getMaxCharWidth(TextSize sz) const
+{
+    if (!isValidTextSize(sz))
+    {
+        return 0.0f;
+    }
+
+    return m_maxCharWidth[sz];
 }
 
 void TextSystem::getStringSize(float& width, float& height, TextSize sz,

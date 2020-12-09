@@ -68,10 +68,10 @@ bool Dashboard::init(const Player* player)
         m_player->getBase().getArmorRatio()
     };
 
-    m_statusBars.resize(BAR_COUNT);
+    m_progressBars.resize(BAR_COUNT);
     for (int i = 0; i < BAR_COUNT; ++i)
     {
-        if (!m_statusBars[i].init(barTemplates[i], x, y, ratios[i]))
+        if (!m_progressBars[i].init(barTemplates[i], x, y, ratios[i]))
         {
             LOG_ERROR("Failed to initialize status-bar %d", i);
             return false;
@@ -90,7 +90,7 @@ void Dashboard::draw()
         drawEffects();
     }
 
-    drawStatusBars();
+    drawProgressBars();
 }
 
 void Dashboard::drawEffects()
@@ -125,10 +125,10 @@ void Dashboard::drawEffects()
     }
 }
 
-void Dashboard::drawStatusBars()
+void Dashboard::drawProgressBars()
 {
-    m_statusBars[BAR_POWER].draw(m_player->getBase().getPowerRatio());
-    m_statusBars[BAR_ARMOR].draw(m_player->getBase().getArmorRatio());
+    m_progressBars[BAR_POWER].draw(m_player->getBase().getPowerRatio());
+    m_progressBars[BAR_ARMOR].draw(m_player->getBase().getArmorRatio());
 }
 
 } // end of namespace bot

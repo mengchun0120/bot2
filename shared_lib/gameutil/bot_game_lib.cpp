@@ -208,6 +208,17 @@ bool GameLib::load()
         return false;
     }
 
+    StatusBarTemplate::Parser statusBarParser(m_textureLib);
+
+    ret = m_statusBarTemplateLib.load(cfg.getStatusBarTemplateLib(),
+                                      statusBarParser);
+    if (!ret)
+    {
+        LOG_ERROR("Failed to load status-bar template from %s",
+                  cfg.getStatusBarTemplateLib().c_str());
+        return false;
+    }
+
     ret = m_dashboardConfig.init(cfg.getDashboardConfigFile());
     if (!ret)
     {

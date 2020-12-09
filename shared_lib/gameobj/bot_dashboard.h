@@ -30,11 +30,11 @@ public:
 private:
     void drawEffects();
 
-    void drawStatusBars();
+    void drawProgressBars();
 
 private:
     const Player* m_player;
-    std::vector<ProgressBar> m_statusBars;
+    std::vector<ProgressBar> m_progressBars;
 };
 
 } // end of namespace bot

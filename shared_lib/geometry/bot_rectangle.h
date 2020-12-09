@@ -2,6 +2,7 @@
 #define INCLUDE_BOT_RECTANGLE
 
 #include <string>
+#include <vector>
 #include <rapidjson/document.h>
 #include "geometry/bot_polygon.h"
 
@@ -28,6 +29,8 @@ public:
     bool init(const rapidjson::Value& elem);
 
     bool init(float width, float height, bool hasTexCoord);
+
+    bool init(const std::vector<float>& rectVec, bool hasTexCoord);
 
     float width() const
     {

@@ -39,6 +39,10 @@ public:
         drawString(str.c_str(), size, pos, color);
     }
 
+    float getCharHeight(TextSize sz) const;
+
+    float getMaxCharWidth(TextSize sz) const;
+
     void getStringSize(float& width, float& height, TextSize sz,
                        const char* str) const;
 
@@ -56,6 +60,8 @@ private:
 private:
     static std::shared_ptr<TextSystem> k_textSys;
     std::unordered_map<int, Rectangle> m_rects[TEXT_SIZE_COUNT];
+    float m_charHeight[TEXT_SIZE_COUNT];
+    float m_maxCharWidth[TEXT_SIZE_COUNT];
     Rectangle *m_rectMap[TEXT_SIZE_COUNT][CHAR_COUNT];
     Texture m_textures[CHAR_COUNT];
 };

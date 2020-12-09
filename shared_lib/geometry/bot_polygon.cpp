@@ -28,7 +28,7 @@ bool Polygon::init(const float *vertices, unsigned int numVertices,
 
 void Polygon::draw(const float* pos, const float* direction,
                    const Color* fillColor, const Color* borderColor,
-                   const unsigned int textureId, const Color* texColor) const
+                   unsigned int textureId, const Color* texColor) const
 {
     SimpleShaderProgram& program = SimpleShaderProgram::getInstance();
 

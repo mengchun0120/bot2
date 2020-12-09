@@ -50,6 +50,17 @@ bool Rectangle::init(const rapidjson::Value& elem)
     return true;
 }
 
+bool Rectangle::init(const std::vector<float>& rectVec, bool hasTexCoord)
+{
+    if (rectVec.size() != 2)
+    {
+        LOG_ERROR("rectVec must have two elements");
+        return false;
+    }
+
+    return init(rectVec[0], rectVec[1], hasTexCoord);
+}
+
 bool Rectangle::init(float width, float height, bool hasTexCoord)
 {
     if (width <= 0.0f)

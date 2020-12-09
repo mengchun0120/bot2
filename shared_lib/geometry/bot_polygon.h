@@ -16,7 +16,7 @@ public:
 
     virtual void draw(const float* pos, const float* direction,
                       const Color* fillColor, const Color* borderColor,
-                      const unsigned int textureId,
+                      unsigned int textureId,
                       const Color* texColor) const;
 };
 

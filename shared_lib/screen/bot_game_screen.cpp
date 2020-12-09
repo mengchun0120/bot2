@@ -360,7 +360,7 @@ int GameScreen::handleMouseMove(const MouseMoveEvent& e)
 {
     Player* player = m_map.getPlayer();
 
-    int btnState = glfwGetMouseButton(m_window, GLFW_MOUSE_BUTTON_RIGHT);
+    int btnState = glfwGetMouseButton(m_window, GLFW_MOUSE_BUTTON_LEFT);
     if (btnState == GLFW_PRESS)
     {
         float destX = m_map.getWorldX(e.m_x);
@@ -391,7 +391,7 @@ int GameScreen::handleMouseButton(const MouseButtonEvent& e)
 {
     Player* player = m_map.getPlayer();
 
-    if (e.m_button == GLFW_MOUSE_BUTTON_RIGHT)
+    if (e.m_button == GLFW_MOUSE_BUTTON_LEFT)
     {
         if (e.m_action == GLFW_PRESS)
         {
@@ -407,7 +407,7 @@ int GameScreen::handleMouseButton(const MouseButtonEvent& e)
             player->setMovingEnabled(false);
         }
     }
-    else if (e.m_button == GLFW_MOUSE_BUTTON_LEFT)
+    else if (e.m_button == GLFW_MOUSE_BUTTON_RIGHT)
     {
         player->setShootingEnabled(e.m_action == GLFW_PRESS);
     }

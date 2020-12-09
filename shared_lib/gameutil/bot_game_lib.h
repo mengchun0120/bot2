@@ -18,6 +18,7 @@
 #include "gametemplate/bot_mover_template.h"
 #include "gametemplate/bot_player_template.h"
 #include "gametemplate/bot_progress_bar_template.h"
+#include "gametemplate/bot_status_bar_template.h"
 #include "gameutil/bot_map_generator.h"
 #include "gameutil/bot_game_config.h"
 #include "gameobj/bot_progress_ring.h"
@@ -116,6 +117,11 @@ public:
         return m_progressBarTemplateLib;
     }
 
+    const NamedMap<StatusBarTemplate>& getStatusBarTemplateLib() const
+    {
+        return m_statusBarTemplateLib;
+    }
+
     const DashboardConfig& getDashboardConfig() const
     {
         return m_dashboardConfig;
@@ -175,6 +181,7 @@ private:
     PlayerTemplate m_playerTemplate;
     NamedMap<MapGenerator> m_mapGeneratorLib;
     NamedMap<ProgressBarTemplate> m_progressBarTemplateLib;
+    NamedMap<StatusBarTemplate> m_statusBarTemplateLib;
     DashboardConfig m_dashboardConfig;
     ButtonConfig m_buttonConfig;
     MessageBoxConfig m_messageBoxConfig;

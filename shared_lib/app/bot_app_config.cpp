@@ -95,6 +95,7 @@ bool AppConfig::readConfig(const std::string& cfgFile)
         jsonParam(m_mapFile, "mapFile"),
         jsonParam(m_mapGeneratorLib, "mapGeneratorLib"),
         jsonParam(m_progressBarTemplateLib, "progressBarTemplateLib"),
+        jsonParam(m_statusBarTemplateLib, "statusBarTemplateLib"),
         jsonParam(m_mapPoolFactor, "mapPoolFactor"),
         jsonParam(m_missilePoolSize, "missilePoolSize")
     };
@@ -166,6 +167,8 @@ void AppConfig::marshalConfig()
                                                   m_mapGeneratorLib });
     m_progressBarTemplateLib    = constructPath({ m_libDir,
                                                   m_progressBarTemplateLib });
+    m_statusBarTemplateLib      = constructPath({ m_libDir,
+                                                  m_statusBarTemplateLib });
 }
 
 bool AppConfig::setLevel(int level)
