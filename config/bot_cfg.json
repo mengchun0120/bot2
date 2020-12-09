@@ -30,6 +30,7 @@
     "playerTemplate": "player_template.json",
     "mapGeneratorLib": "map_generator_lib.json",
     "progressBarTemplateLib": "progress_bar_template_lib.json",
+    "statusBarTemplateLib": "status_bar_template_lib.json",
     "dashboardConfig": "dashboard_config.json",
     "buttonConfig": "button_config.json",
     "startScreenConfig": "start_screen_config.json",

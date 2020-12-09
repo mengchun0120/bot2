@@ -3,5 +3,7 @@
     "effectRingRadius": 15.0,
     "effectMargin": 80.0,
     "barSpacing": 15.0,
-    "barMargin": 20.0
+    "barMargin": 20.0,
+    "statusMargin": 20.0,
+    "statusSpacing": 15.0
 }

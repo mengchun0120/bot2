@@ -45,12 +45,24 @@ public:
         return m_barMargin;
     }
 
+    float getStatusMargin() const
+    {
+        return m_statusMargin;
+    }
+
+    float getStatusSpacing() const
+    {
+        return m_statusSpacing;
+    }
+
 private:
     float m_effectSpacing;
     float m_effectRingRadius;
     float m_effectMargin;
     float m_barSpacing;
     float m_barMargin;
+    float m_statusMargin;
+    float m_statusSpacing;
 };
 
 } // end of namespace bot

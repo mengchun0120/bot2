@@ -39,7 +39,7 @@ bool StatusBarTemplate::init(const NamedMap<Texture>& textureLib,
     std::string textureName;
     std::vector<float> rectVec;
     std::vector<int> colorVec;
-    int textSize;
+    std::string textSizeName;
     std::vector<JsonParamPtr> params = {
         jsonParam(textureName, "texture"),
         jsonParam(rectVec, "rect"),
@@ -47,7 +47,7 @@ bool StatusBarTemplate::init(const NamedMap<Texture>& textureLib,
                   gt(m_textureTextSpacing, 0.0f)),
         jsonParam(colorVec, "textColor"),
         jsonParam(m_textLen, "textLen", gt(m_textLen, 1)),
-        jsonParam(textSize, "textSize")
+        jsonParam(textSizeName, "textSize")
     };
 
     if (!parseJson(params, elem))
@@ -74,7 +74,7 @@ bool StatusBarTemplate::init(const NamedMap<Texture>& textureLib,
         return false;
     }
 
-    m_textSize = static_cast<TextSize>(textSize);
+    m_textSize = strToTextSize(textSizeName);
     if (!isValidTextSize(m_textSize))
     {
         LOG_ERROR("Invalid textSize %d", textSize);

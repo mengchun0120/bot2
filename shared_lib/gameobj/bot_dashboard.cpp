@@ -12,17 +12,17 @@
 
 namespace bot {
 
-bool getStatusBarTemplates(
-            std::vector<const ProgressBarTemplate*>& barTemplates)
+bool getProgressBarTemplates(
+            std::vector<const ProgressBarTemplate*>& barTemplates,
+            const char* barNames[], int barCount)
 {
     const NamedMap<ProgressBarTemplate>& lib =
                 GameLib::getInstance().getProgressBarTemplateLib();
-    const char* barNames[] = {"power_bar", "armor_bar"};
 
-    barTemplates.resize(Dashboard::BAR_COUNT);
-    for (int i = 0; i < Dashboard::BAR_COUNT; ++i)
+    barTemplates.resize(barCount);
+    for (int i = 0; i < barCount; ++i)
     {
-        ProgressBarTemplate* t = lib.search(barNames[i]);
+        const ProgressBarTemplate* t = lib.search(barNames[i]);
         if (!t)
         {
             LOG_ERROR("Failed to find progress-bar %s", barNames[i]);
@@ -33,7 +33,29 @@ bool getStatusBarTemplates(
     }
 
     return true;
+}
 
+bool getStatusBarTemplates(
+            std::vector<const StatusBarTemplate*>& statusTemplates,
+            const char* statusNames[], int statusCount)
+{
+    const NamedMap<StatusBarTemplate>& lib =
+                GameLib::getInstance().getStatusBarTemplateLib();
+
+    statusTemplates.resize(statusCount);
+    for (int i = 0; i < statusCount; ++i)
+    {
+        const StatusBarTemplate* t = lib.search(statusNames[i]);
+        if (!t)
+        {
+            LOG_ERROR("Failed to find progress-bar %s", statusNames[i]);
+            return false;
+        }
+
+        statusTemplates[i] = t;
+    }
+
+    return true;
 }
 
 Dashboard::Dashboard()
@@ -44,9 +66,14 @@ Dashboard::Dashboard()
 bool Dashboard::init(const Player* player)
 {
     m_player = player;
+}
 
+bool Dashboard::initProgressBars()
+{
     std::vector<const ProgressBarTemplate*> barTemplates;
-    if (!getStatusBarTemplates(barTemplates))
+    const char* barNames[] = {"power_bar", "armor_bar"};
+
+    if (!getProgressBarTemplates(barTemplates, barNames, BAR_COUNT))
     {
         return false;
     }
@@ -81,6 +108,11 @@ bool Dashboard::init(const Player* player)
     }
 
     return true;
+}
+
+bool Dashboard::initStatusBars()
+{
+    std::vector<const StatusBarTemplate*>
 }
 
 void Dashboard::draw()

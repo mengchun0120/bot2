@@ -9,10 +9,10 @@
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    sodipodi:docname="texture.svg"
-   inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
-   inkscape:export-ydpi="97.595192"
-   inkscape:export-xdpi="97.595192"
-   inkscape:export-filename="C:\Users\mengc\work\bot2\res\texture\empty_bar.png"
+   inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)"
+   inkscape:export-ydpi="32.400017"
+   inkscape:export-xdpi="32.400017"
+   inkscape:export-filename="C:\Users\MengChun\Documents\chun_private\bot2\res\texture\robot_icon.png"
    id="svg8"
    version="1.1"
    viewBox="0 0 210 297"
@@ -394,17 +394,17 @@
   </defs>
   <sodipodi:namedview
      inkscape:window-maximized="1"
-     inkscape:window-y="-11"
-     inkscape:window-x="-11"
-     inkscape:window-height="1000"
-     inkscape:window-width="1920"
+     inkscape:window-y="-6"
+     inkscape:window-x="-6"
+     inkscape:window-height="668"
+     inkscape:window-width="1280"
      showgrid="false"
      inkscape:document-rotation="0"
      inkscape:current-layer="layer1"
      inkscape:document-units="mm"
-     inkscape:cy="449.33189"
-     inkscape:cx="220.15577"
-     inkscape:zoom="4.5899087"
+     inkscape:cy="202.84096"
+     inkscape:cx="469.24288"
+     inkscape:zoom="1.6227778"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1.0"
@@ -784,5 +784,37 @@
        id="path1037-7-1"
        style="opacity:0.7;fill:#19870c;fill-opacity:1;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none"
        d="m -106.5411,70.623222 a 1.8520833,2.1166666 0 0 1 -0.92604,1.833087 1.8520833,2.1166666 0 0 1 -1.85208,0 1.8520833,2.1166666 0 0 1 -0.92604,-1.833087 h 1.85208 z" />
+    <g
+       id="g1057"
+       inkscape:export-xdpi="32.400017"
+       inkscape:export-ydpi="32.400017">
+      <ellipse
+         inkscape:export-ydpi="97.300003"
+         inkscape:export-xdpi="97.300003"
+         ry="7.8077617"
+         rx="7.8231978"
+         cy="144.45653"
+         cx="-44.426872"
+         id="path10-5-75"
+         style="mix-blend-mode:lighten;fill:#dcdcdc;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.201914;stroke-miterlimit:1.6;stroke-dasharray:none;stroke-opacity:1"
+         transform="rotate(-90)" />
+      <rect
+         inkscape:export-ydpi="97.300003"
+         inkscape:export-xdpi="97.300003"
+         ry="0"
+         y="141.81575"
+         x="-39.05616"
+         height="5.2916665"
+         width="5.2916641"
+         id="rect985-5-2"
+         style="fill:#dcdcdc;fill-opacity:1;stroke:none;stroke-width:0.23094;stroke-miterlimit:1.6;stroke-dasharray:none;stroke-opacity:1"
+         transform="rotate(-90)" />
+      <path
+         inkscape:export-ydpi="97.595192"
+         inkscape:export-xdpi="97.595192"
+         id="path1083-2-3"
+         d="m 141.81576,54.931154 1.32291,-5.29167 h 2.64584 l 1.32291,5.29167 z"
+         style="fill:#dcdcdc;fill-opacity:1;stroke:none;stroke-width:0.374176px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    </g>
   </g>
 </svg>

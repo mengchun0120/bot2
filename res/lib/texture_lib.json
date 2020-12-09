@@ -118,5 +118,9 @@
     {
         "name": "power_bar",
         "file": "power_bar.png"
+    },
+    {
+        "name": "robot_icon",
+        "file": "robot_icon.png"
     }
 ]
