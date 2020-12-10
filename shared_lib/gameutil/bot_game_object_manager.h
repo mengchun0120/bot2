@@ -35,6 +35,11 @@ public:
     Tile* createTile(const TileTemplate* tileTemplate, int level,
                      float x, float y);
 
+    int getNumActiveAIRobots() const
+    {
+        return m_numActiveAIRobots;
+    }
+
     Tile* getFirstActiveTile()
     {
         return m_activeTiles.getFirst();
@@ -157,6 +162,7 @@ protected:
     DoubleLinkedList<GameObject> m_dissolveObjects;
     DoubleLinkedList<GameObject> m_deadObjects;
     Player* m_player;
+    int m_numActiveAIRobots;
 };
 
 } // end of namespace bot

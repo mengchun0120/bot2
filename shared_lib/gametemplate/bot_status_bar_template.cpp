@@ -77,7 +77,7 @@ bool StatusBarTemplate::init(const NamedMap<Texture>& textureLib,
     m_textSize = strToTextSize(textSizeName);
     if (!isValidTextSize(m_textSize))
     {
-        LOG_ERROR("Invalid textSize %d", textSize);
+        LOG_ERROR("Invalid textSize %s", textSizeName.c_str());
         return false;
     }
 

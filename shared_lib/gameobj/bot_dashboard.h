@@ -9,7 +9,7 @@
 
 namespace bot {
 
-class Player;
+class GameObjectManager;
 
 class Dashboard {
 public:
@@ -29,7 +29,7 @@ public:
     ~Dashboard()
     {}
 
-    bool init(const Player* player);
+    bool init(const GameObjectManager* gameObjMgr);
 
     void draw();
 
@@ -42,10 +42,12 @@ private:
 
     void drawProgressBars();
 
+    void drawStatusBars();
+
 private:
-    const Player* m_player;
+    const GameObjectManager* m_gameObjMgr;
     std::vector<ProgressBar> m_progressBars;
-    std::vector<StatusBar> m_statusBar;
+    std::vector<StatusBar> m_statusBars;
 };
 
 } // end of namespace bot

@@ -10,6 +10,7 @@ namespace bot {
 GameObjectManager::GameObjectManager()
     : m_lib(nullptr)
     , m_player(nullptr)
+    , m_numActiveAIRobots(0)
 {
 }
 
@@ -104,6 +105,7 @@ AIRobot* GameObjectManager::createRobot(
     }
 
     m_activeRobots.add(robot);
+    ++m_numActiveAIRobots;
 
     return robot;
 }
@@ -206,6 +208,7 @@ void GameObjectManager::sendToDissolveQueue(GameObject* obj)
             {
                 m_activeRobots.unlink(robot);
                 m_dissolveObjects.add(obj);
+                --m_numActiveAIRobots;
             }
             break;
         }
@@ -313,6 +316,7 @@ void GameObjectManager::clearActiveObjects()
 {
     m_activeTiles.clear();
     m_activeRobots.clear();
+    m_numActiveAIRobots = 0;
     m_activeGoodies.clear();
 
     auto missileDeallocator = [this](Missile* missile)

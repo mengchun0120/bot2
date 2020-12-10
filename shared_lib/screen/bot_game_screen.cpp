@@ -53,7 +53,10 @@ bool GameScreen::init()
         return false;
     }
 
-    m_dashboard.init(m_map.getPlayer());
+    if (!m_dashboard.init(&m_gameObjManager))
+    {
+        return false;
+    }
 
     LOG_INFO("Done loading dashboard");
 
