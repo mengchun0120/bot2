@@ -42,6 +42,11 @@ bool GameScreen::init()
     m_window = app.getWindow();
     m_gameObjManager.init(&m_dashboard);
 
+    if (!m_dashboard.init(this))
+    {
+        return false;
+    }
+
     if (!initMessageBox())
     {
         return false;
@@ -50,11 +55,6 @@ bool GameScreen::init()
     if (!loadMap(cfg.getMapFile()))
     {
         LOG_ERROR("Failed to load map from %s", cfg.getMapFile().c_str());
-        return false;
-    }
-
-    if (!m_dashboard.init(m_player))
-    {
         return false;
     }
 

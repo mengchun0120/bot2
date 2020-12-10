@@ -80,7 +80,7 @@ private:
     float m_experienceMultiplier;
     int m_gold;
     char m_goldStr[GOLD_STR_LEN];
-    Dashboard m_dashboard;
+    Dashboard *m_dashboard;
 };
 
 } // end of namespace bot

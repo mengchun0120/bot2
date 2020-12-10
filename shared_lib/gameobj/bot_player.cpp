@@ -5,6 +5,7 @@
 #include "gametemplate/bot_player_template.h"
 #include "gameutil/bot_game_lib.h"
 #include "gameobj/bot_goodie.h"
+#include "gameobj/bot_dashboard.h"
 #include "gameobj/bot_player.h"
 #include "app/bot_app.h"
 
@@ -17,6 +18,7 @@ Player::Player()
     , m_experience(0)
     , m_experienceMultiplier(1.0f)
     , m_gold(0)
+    , m_dashboard(nullptr)
 {
 }
 
@@ -213,7 +215,6 @@ bool Player::addEffect(Goodie* goodie)
 
 void Player::expireEffect(GoodieEffect* effect)
 {
-    bool valid = true;
     switch (effect->getType())
     {
         case GOODIE_INDESTRUCTABLE:
@@ -243,16 +244,10 @@ void Player::expireEffect(GoodieEffect* effect)
         }
         default:
         {
-            valid = true;
             LOG_ERROR("Invalid non-instantaneous goodie type %d",
                       static_cast<int>(effect->getType()));
             break;
         }
-    }
-
-    if (valid)
-    {
-        resetEffectPos();
     }
 }
 
@@ -283,6 +278,8 @@ void Player::updateEffects()
             m_firstFreeEffect = cur;
 
             --m_activeEffectCount;
+
+            resetEffectPos();
         }
         else
         {
@@ -306,25 +303,21 @@ void Player::resetEffectPos()
     const DashboardConfig& cfg = GameLib::getInstance().getDashboardConfig();
     float viewportWidth = App::getInstance().getViewportWidth();
     float totalWidth = 0.0f;
-    GoodieEffect* effect = m_firstActiveEffect;
+    GoodieEffect* effect;
 
-    while (effect)
+    for (effect = m_firstActiveEffect; effect; effect = effect->getNext())
     {
         totalWidth += effect->getWidth();
-        effect = effect->getNext();
     }
     totalWidth += (m_activeEffectCount - 1) * cfg.getEffectSpacing();
 
-    effect = m_firstActiveEffect;
-
-    float x = (viewportWidth - totalWidth) / 2.0f + effect->getRadius();
+    float x = (viewportWidth - totalWidth) / 2.0f;
     float y = cfg.getEffectMargin();
-    float prevRadius = 0.0f;
 
     for(effect = m_firstActiveEffect; effect; effect = effect->getNext())
     {
         effect->setPos(x, y);
-        x += prevRadius + cfg.getEffectSpacing() + effect->getRadius();
+        x += effect->getWidth() + cfg.getEffectSpacing();
     }
 }
 

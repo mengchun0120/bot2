@@ -8,6 +8,7 @@
 #include "gameobj/bot_dashboard_config.h"
 #include "gameobj/bot_dashboard.h"
 #include "gameobj/bot_player.h"
+#include "screen/bot_game_screen.h"
 #include "app/bot_app.h"
 
 namespace bot {
@@ -59,19 +60,19 @@ bool getStatusBarTemplates(
 }
 
 Dashboard::Dashboard()
-    : m_player(nullptr)
+    : m_screen(nullptr)
 {
 }
 
-bool Dashboard::init(const Player* player)
+bool Dashboard::init(const GameScreen* screen)
 {
-    if (!player)
+    if (!screen)
     {
-        LOG_ERROR("player is null");
+        LOG_ERROR("screen is null");
         return false;
     }
 
-    m_player = player;
+    m_screen = screen;
 
     if (!initProgressBars())
     {
@@ -109,6 +110,7 @@ bool Dashboard::initProgressBars()
     float y = cfg.getBarMargin();
     float x = (viewportWidth - totalWidth) / 2.0f;
 
+    m_progressBars.resize(BAR_COUNT);
     for (int i = 0; i < BAR_COUNT; ++i)
     {
         if (!m_progressBars[i].init(barTemplates[i], x, y))
@@ -181,9 +183,21 @@ void Dashboard::setAIRobotCount(int count)
     m_statusBars[STATUS_AI_ROBOT].setText(count);
 }
 
+bool Dashboard::setProgressBarRatio(ProgressBarIndex idx, float ratio)
+{
+    if (idx < BAR_POWER || idx >= BAR_COUNT)
+    {
+        LOG_ERROR("Invalid ProgressBarIndex %d", static_cast<int>(idx));
+        return false;
+    }
+
+    return m_progressBars[idx].setRatio(ratio);
+}
+
 void Dashboard::drawEffects()
 {
-    const GoodieEffect* effect = m_player->getFirstActiveEffect();
+    const Player* player = m_screen->getGameObjManager().getPlayer();
+    const GoodieEffect* effect = player->getFirstActiveEffect();
 
     for (; effect; effect = effect->getNext())
 

@@ -9,7 +9,7 @@
 
 namespace bot {
 
-class Player;
+class GameScreen;
 
 class Dashboard {
 public:
@@ -29,11 +29,11 @@ public:
     ~Dashboard()
     {}
 
-    bool init(const Player* m_player);
+    bool init(const GameScreen* screen);
 
     void draw();
 
-    void setProgressBarRatio(ProgressBarIndex idx, float ratio);
+    bool setProgressBarRatio(ProgressBarIndex idx, float ratio);
 
     void setAIRobotCount(int count);
 
@@ -49,7 +49,7 @@ private:
     void drawStatusBars();
 
 private:
-    const Player* m_player;
+    const GameScreen* m_screen;
     std::vector<ProgressBar> m_progressBars;
     std::vector<StatusBar> m_statusBars;
 };

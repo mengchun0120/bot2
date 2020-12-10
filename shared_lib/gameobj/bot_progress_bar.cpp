@@ -95,7 +95,7 @@ void ProgressBar::draw()
     m_template->getRect()->draw(m_pos, nullptr, nullptr, nullptr,
                                 m_template->getTexture()->textureId(), nullptr);
 
-    if (visibleVertices > 0)
+    if (m_visibleVertices > 0)
     {
         SimpleShaderProgram& program = SimpleShaderProgram::getInstance();
 

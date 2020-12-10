@@ -1,5 +1,6 @@
 #include "misc/bot_log.h"
 #include "gameobj/bot_player.h"
+#include "gameobj/bot_dashboard.h"
 #include "gameutil/bot_game_map.h"
 #include "gameutil/bot_game_lib.h"
 #include "gameutil/bot_game_object_manager.h"
