@@ -37,7 +37,6 @@ int GoodieGenerator::generate(float prob)
 
     if (s < m_weightSums[0])
     {
-        LOG_INFO("gen-goodie 0");
         return 0;
     }
 

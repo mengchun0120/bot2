@@ -195,8 +195,6 @@ bool GameMapLoader::addRobot(GameMap& map, const std::string& name,
                              int level, float x, float y,
                              float directionX, float directionY)
 {
-    LOG_INFO("Loading robot %s", name.c_str());
-
     AIRobot* robot = m_gameObjManager.createRobot(name, SIDE_AI,
                                                   level, 0,
                                                   level, 0,

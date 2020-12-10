@@ -2,9 +2,9 @@
     {
         "name": "ai_robot_status",
         "texture": "robot_icon",
-        "rect": [20.0, 20.7],
+        "rect": [30.0, 40.0],
         "textureTextSpacing": 15.0,
-        "color": [220, 220, 220, 255],
+        "textColor": [255, 0, 0, 255],
         "textLen": 5,
         "textSize": "medium"
     }

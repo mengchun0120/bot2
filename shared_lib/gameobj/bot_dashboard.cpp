@@ -229,6 +229,8 @@ void Dashboard::drawProgressBars()
 
 void Dashboard::drawStatusBars()
 {
+    m_statusBars[STATUS_AI_ROBOT].setText(m_gameObjMgr->getNumActiveAIRobots());
+
     for (int i = 0; i < STATUS_COUNT; ++i)
     {
         m_statusBars[i].draw();
