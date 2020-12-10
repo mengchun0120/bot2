@@ -3,8 +3,10 @@
 #include "misc/bot_math_utils.h"
 #include "screen/bot_game_screen.h"
 #include "gametemplate/bot_player_template.h"
+#include "gameutil/bot_game_lib.h"
 #include "gameobj/bot_goodie.h"
 #include "gameobj/bot_player.h"
+#include "app/bot_app.h"
 
 namespace bot {
 
@@ -23,7 +25,7 @@ Player::~Player()
 }
 
 bool Player::init(const PlayerTemplate* playerTemplate, float x, float y,
-                  float directionX, float directionY)
+                  float directionX, float directionY, Dashboard* dashboard)
 {
     bool ret = Robot::init(playerTemplate, SIDE_PLAYER,
                            playerTemplate->getHPLevel(),
@@ -50,6 +52,8 @@ bool Player::init(const PlayerTemplate* playerTemplate, float x, float y,
     m_gold = 0;
     resetGoldStr();
 
+    m_dashboard = dashboard;
+
     return true;
 }
 
@@ -71,6 +75,15 @@ void Player::update(float delta, GameScreen& screen)
         }
 
         updateWeapon(screen);
+        updateBase();
+
+        if (m_dashboard)
+        {
+            m_dashboard->setProgressBarRatio(Dashboard::BAR_ARMOR,
+                                             m_base.getArmorRatio());
+            m_dashboard->setProgressBarRatio(Dashboard::BAR_POWER,
+                                             m_base.getPowerRatio());
+        }
     }
     else
     {
@@ -193,12 +206,14 @@ bool Player::addEffect(Goodie* goodie)
     ++m_activeEffectCount;
 
     m_firstActiveEffect->start();
+    resetEffectPos();
 
     return true;
 }
 
 void Player::expireEffect(GoodieEffect* effect)
 {
+    bool valid = true;
     switch (effect->getType())
     {
         case GOODIE_INDESTRUCTABLE:
@@ -228,10 +243,16 @@ void Player::expireEffect(GoodieEffect* effect)
         }
         default:
         {
+            valid = true;
             LOG_ERROR("Invalid non-instantaneous goodie type %d",
                       static_cast<int>(effect->getType()));
             break;
         }
+    }
+
+    if (valid)
+    {
+        resetEffectPos();
     }
 }
 
@@ -273,6 +294,38 @@ void Player::updateEffects()
 void Player::resetGoldStr()
 {
     snprintf(m_goldStr, sizeof(m_goldStr), "%d", m_gold);
+}
+
+void Player::resetEffectPos()
+{
+    if (m_activeEffectCount == 0)
+    {
+        return;
+    }
+
+    const DashboardConfig& cfg = GameLib::getInstance().getDashboardConfig();
+    float viewportWidth = App::getInstance().getViewportWidth();
+    float totalWidth = 0.0f;
+    GoodieEffect* effect = m_firstActiveEffect;
+
+    while (effect)
+    {
+        totalWidth += effect->getWidth();
+        effect = effect->getNext();
+    }
+    totalWidth += (m_activeEffectCount - 1) * cfg.getEffectSpacing();
+
+    effect = m_firstActiveEffect;
+
+    float x = (viewportWidth - totalWidth) / 2.0f + effect->getRadius();
+    float y = cfg.getEffectMargin();
+    float prevRadius = 0.0f;
+
+    for(effect = m_firstActiveEffect; effect; effect = effect->getNext())
+    {
+        effect->setPos(x, y);
+        x += prevRadius + cfg.getEffectSpacing() + effect->getRadius();
+    }
 }
 
 void Player::onDeath(GameScreen& screen)

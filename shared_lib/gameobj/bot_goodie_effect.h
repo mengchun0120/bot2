@@ -2,6 +2,7 @@
 #define INCLUDE_BOT_GOODIE_EFFECT
 
 #include "misc/bot_time_utils.h"
+#include "misc/bot_constants.h"
 #include "gametemplate/bot_goodie_template.h"
 
 namespace bot {
@@ -59,7 +60,9 @@ public:
 
     void start();
 
-    void draw(const float* pos) const;
+    void setPos(float x, float y);
+
+    void draw() const;
 
     const TimePoint& getStartTime() const
     {
@@ -69,6 +72,7 @@ public:
     bool update(const TimePoint& now);
 
 private:
+    float m_pos[Constants::NUM_FLOATS_PER_POSITION];
     const GoodieTemplate* m_template;
     TimePoint m_startTime;
     float m_percent;

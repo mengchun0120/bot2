@@ -9,7 +9,7 @@
 
 namespace bot {
 
-class GameObjectManager;
+class Player;
 
 class Dashboard {
 public:
@@ -29,9 +29,13 @@ public:
     ~Dashboard()
     {}
 
-    bool init(const GameObjectManager* gameObjMgr);
+    bool init(const Player* m_player);
 
     void draw();
+
+    void setProgressBarRatio(ProgressBarIndex idx, float ratio);
+
+    void setAIRobotCount(int count);
 
 private:
     bool initProgressBars();
@@ -45,7 +49,7 @@ private:
     void drawStatusBars();
 
 private:
-    const GameObjectManager* m_gameObjMgr;
+    const Player* m_player;
     std::vector<ProgressBar> m_progressBars;
     std::vector<StatusBar> m_statusBars;
 };

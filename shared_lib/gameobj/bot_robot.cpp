@@ -172,6 +172,11 @@ bool Robot::updateWeapon(GameScreen& gameScreen)
     return m_weapon.update(gameScreen);
 }
 
+void Robot::updateBase()
+{
+    m_base.update();
+}
+
 bool Robot::updateMask()
 {
     const GameConfig& cfg = GameLib::getInstance().getGameConfig();

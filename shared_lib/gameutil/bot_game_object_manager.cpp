@@ -11,6 +11,7 @@ GameObjectManager::GameObjectManager()
     : m_lib(nullptr)
     , m_player(nullptr)
     , m_numActiveAIRobots(0)
+    , m_dashboard(nullptr)
 {
 }
 
@@ -22,12 +23,13 @@ GameObjectManager::~GameObjectManager()
     delete m_player;
 }
 
-void GameObjectManager::init(GameMap* map)
+void GameObjectManager::init(Dashboard* dashboard)
 {
     const AppConfig& cfg = AppConfig::getInstance();
     m_lib = &(GameLib::getInstance());
     m_missilePool.init(cfg.getMissilePoolSize());
     m_goodieGenerator.init(m_lib->getGoodieTemplateLib());
+    m_dashboard = dashboard;
 }
 
 Tile* GameObjectManager::createTile(const std::string& tileName, int level,
@@ -107,6 +109,11 @@ AIRobot* GameObjectManager::createRobot(
     m_activeRobots.add(robot);
     ++m_numActiveAIRobots;
 
+    if (m_dashboard)
+    {
+        m_dashboard->setAIRobotCount(m_numActiveAIRobots);
+    }
+
     return robot;
 }
 
@@ -151,8 +158,7 @@ Player* GameObjectManager::createPlayer(float x, float y,
 {
     m_player = new Player();
     bool ret = m_player->init(&(m_lib->getPlayerTemplate()),
-                              x, y,
-                              directionX, directionY);
+                              x, y, directionX, directionY, m_dashboard);
     if (!ret)
     {
         delete m_player;
@@ -209,6 +215,10 @@ void GameObjectManager::sendToDissolveQueue(GameObject* obj)
                 m_activeRobots.unlink(robot);
                 m_dissolveObjects.add(obj);
                 --m_numActiveAIRobots;
+                if (m_dashboard)
+                {
+                    m_dashboard->setAIRobotCount(m_numActiveAIRobots);
+                }
             }
             break;
         }

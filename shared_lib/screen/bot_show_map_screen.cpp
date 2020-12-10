@@ -41,7 +41,7 @@ bool ShowMapScreen::init()
         LOG_INFO("Done generating map %s", mapFile.c_str());
     }
 
-    m_gameObjManager.init(&m_map);
+    m_gameObjManager.init(nullptr);
 
     const App& app = App::getInstance();
 

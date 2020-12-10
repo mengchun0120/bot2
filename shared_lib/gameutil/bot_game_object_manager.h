@@ -16,10 +16,10 @@ namespace bot {
 
 class GameLib;
 class Player;
-class GameMap;
 class AppConfig;
 class GameLib;
 class PlayerTemplate;
+class Dashboard;
 
 class GameObjectManager {
 public:
@@ -27,7 +27,7 @@ public:
 
     ~GameObjectManager();
 
-    void init(GameMap* map);
+    void init(Dashboard* dashboard);
 
     Tile* createTile(const std::string& tileName, int level,
                      float x, float y);
@@ -163,6 +163,7 @@ protected:
     DoubleLinkedList<GameObject> m_deadObjects;
     Player* m_player;
     int m_numActiveAIRobots;
+    Dashboard* m_dashboard;
 };
 
 } // end of namespace bot

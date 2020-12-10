@@ -29,16 +29,22 @@ bool GoodieEffect::update(const TimePoint& now)
     return m_percent >= 1.0f;
 }
 
-void GoodieEffect::draw(const float* pos) const
+void GoodieEffect::setPos(float x, float y)
+{
+    m_pos[0] = x + getRadius();
+    m_pos[1] = y + getRadius();
+}
+
+void GoodieEffect::draw() const
 {
     if (m_template->getProgressRing())
     {
-        m_template->getProgressRing()->draw(pos, m_percent);
+        m_template->getProgressRing()->draw(m_pos, m_percent);
     }
 
     if (m_template->getEffectRect())
     {
-        m_template->getEffectRect()->draw(pos, nullptr, nullptr, nullptr,
+        m_template->getEffectRect()->draw(m_pos, nullptr, nullptr, nullptr,
                                           m_template->getTexture()->textureId(),
                                           nullptr);
     }

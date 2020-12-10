@@ -95,6 +95,8 @@ public:
 
     bool updateWeapon(GameScreen& gameScreen);
 
+    void updateBase();
+
     void processCollisions(LinkedList<GameObjectItem>& collideObjs,
                            GameScreen& gameScreen);
 

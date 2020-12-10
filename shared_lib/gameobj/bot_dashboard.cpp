@@ -3,7 +3,6 @@
 #include "opengl/bot_color.h"
 #include "geometry/bot_rectangle.h"
 #include "gameutil/bot_game_lib.h"
-#include "gameutil/bot_game_object_manager.h"
 #include "gametemplate/bot_goodie_template.h"
 #include "gametemplate/bot_progress_bar_template.h"
 #include "gameobj/bot_dashboard_config.h"
@@ -60,19 +59,19 @@ bool getStatusBarTemplates(
 }
 
 Dashboard::Dashboard()
-    : m_gameObjMgr(nullptr)
+    : m_player(nullptr)
 {
 }
 
-bool Dashboard::init(const GameObjectManager* gameObjMgr)
+bool Dashboard::init(const Player* player)
 {
-    if (!gameObjMgr)
+    if (!player)
     {
-        LOG_ERROR("GameObjectManager is null");
+        LOG_ERROR("player is null");
         return false;
     }
 
-    m_gameObjMgr = gameObjMgr;
+    m_player = player;
 
     if (!initProgressBars())
     {
@@ -107,18 +106,12 @@ bool Dashboard::initProgressBars()
     }
     totalWidth += (BAR_COUNT - 1) * cfg.getBarSpacing();
 
-    const Player* player = m_gameObjMgr->getPlayer();
     float y = cfg.getBarMargin();
     float x = (viewportWidth - totalWidth) / 2.0f;
-    float ratios[] = {
-        player->getBase().getPowerRatio(),
-        player->getBase().getArmorRatio()
-    };
 
-    m_progressBars.resize(BAR_COUNT);
     for (int i = 0; i < BAR_COUNT; ++i)
     {
-        if (!m_progressBars[i].init(barTemplates[i], x, y, ratios[i]))
+        if (!m_progressBars[i].init(barTemplates[i], x, y))
         {
             LOG_ERROR("Failed to initialize progress-bar %d", i);
             return false;
@@ -178,59 +171,37 @@ bool Dashboard::initStatusBars()
 
 void Dashboard::draw()
 {
-    if (m_gameObjMgr->getPlayer()->getActiveEffectCount() > 0)
-    {
-        drawEffects();
-    }
-
+    drawEffects();
     drawProgressBars();
     drawStatusBars();
 }
 
+void Dashboard::setAIRobotCount(int count)
+{
+    m_statusBars[STATUS_AI_ROBOT].setText(count);
+}
+
 void Dashboard::drawEffects()
 {
-    const DashboardConfig& cfg = GameLib::getInstance().getDashboardConfig();
-    float viewportWidth = App::getInstance().getViewportWidth();
-    float totalWidth = 0.0f;
-    const Player* player = m_gameObjMgr->getPlayer();
-    const GoodieEffect* effect = player->getFirstActiveEffect();
+    const GoodieEffect* effect = m_player->getFirstActiveEffect();
 
-    while (effect)
+    for (; effect; effect = effect->getNext())
+
     {
-        totalWidth += effect->getWidth();
-        effect = effect->getNext();
-    }
-    totalWidth += (player->getActiveEffectCount() - 1) *
-                  cfg.getEffectSpacing();
-
-    effect = player->getFirstActiveEffect();
-
-    float x = (viewportWidth - totalWidth) / 2.0f + effect->getRadius();
-    float pos[] = {x, cfg.getEffectMargin()};
-    const GoodieEffect* prevEffect = effect;
-
-    effect->draw(pos);
-
-    for (effect = effect->getNext(); effect; effect = effect->getNext())
-    {
-        pos[0] += prevEffect->getRadius() + cfg.getEffectSpacing() +
-                  effect->getRadius();
-        effect->draw(pos);
-        prevEffect = effect;
+        effect->draw();
     }
 }
 
 void Dashboard::drawProgressBars()
 {
-    const Player* player = m_gameObjMgr->getPlayer();
-    m_progressBars[BAR_POWER].draw(player->getBase().getPowerRatio());
-    m_progressBars[BAR_ARMOR].draw(player->getBase().getArmorRatio());
+    for (int i = BAR_POWER; i < BAR_COUNT; ++i)
+    {
+        m_progressBars[i].draw();
+    }
 }
 
 void Dashboard::drawStatusBars()
 {
-    m_statusBars[STATUS_AI_ROBOT].setText(m_gameObjMgr->getNumActiveAIRobots());
-
     for (int i = 0; i < STATUS_COUNT; ++i)
     {
         m_statusBars[i].draw();

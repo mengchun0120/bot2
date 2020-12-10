@@ -11,6 +11,7 @@ namespace bot {
 
 class PlayerTemplate;
 class Goodie;
+class Dashboard;
 
 class Player : public Robot {
     enum {
@@ -23,7 +24,7 @@ public:
     virtual ~Player();
 
     bool init(const PlayerTemplate* playerTemplate, float x, float y,
-              float directionX, float directionY);
+              float directionX, float directionY, Dashboard* dashboard);
 
     virtual void present();
 
@@ -68,6 +69,8 @@ private:
 
     void resetGoldStr();
 
+    void resetEffectPos();
+
 private:
     std::vector<GoodieEffect> m_effects;
     GoodieEffect* m_firstActiveEffect;
@@ -77,6 +80,7 @@ private:
     float m_experienceMultiplier;
     int m_gold;
     char m_goldStr[GOLD_STR_LEN];
+    Dashboard m_dashboard;
 };
 
 } // end of namespace bot
