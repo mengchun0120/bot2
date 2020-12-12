@@ -12,13 +12,16 @@ namespace bot {
 Missile::Missile()
     : m_side(SIDE_UNKNOWN)
     , m_damage(0.0f)
+    , m_ability(MISSILE_ABILITY_NONE)
+    , m_collideObjs(nullptr)
 {
     m_direction[0] = 0.0f;
     m_direction[1] = 0.0f;
 }
 
 bool Missile::init(const MissileTemplate* t, Side side, float damage,
-                   float x, float y, float directionX, float directionY)
+                   float x, float y, float directionX, float directionY,
+                   MissileAbility ability)
 {
     if (!GameObject::init(t, x, y))
     {
@@ -37,9 +40,16 @@ bool Missile::init(const MissileTemplate* t, Side side, float damage,
         return false;
     }
 
+    if (!isValidMissileAbility(ability))
+    {
+        LOG_ERROR("Invalid ability %d", static_cast<int>(ability));
+        return false;
+    }
+
     setDirection(directionX, directionY);
     m_damage = damage;
     m_side = side;
+    m_ability = ability;
 
     return true;
 }

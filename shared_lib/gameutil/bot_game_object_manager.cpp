@@ -24,13 +24,21 @@ GameObjectManager::~GameObjectManager()
     delete m_player;
 }
 
-void GameObjectManager::init(Dashboard* dashboard)
+bool GameObjectManager::init(Dashboard* dashboard)
 {
+    if (gameObjItemPoolSize <= 0)
+    {
+        LOG_ERROR("Invalid gameObjItemPoolSize %d", gameObjItemPoolSize);
+        return false;
+    }
+
     const AppConfig& cfg = AppConfig::getInstance();
     m_lib = &(GameLib::getInstance());
     m_missilePool.init(cfg.getMissilePoolSize());
     m_goodieGenerator.init(m_lib->getGoodieTemplateLib());
     m_dashboard = dashboard;
+
+    return true;
 }
 
 Tile* GameObjectManager::createTile(const std::string& tileName, int level,

@@ -40,12 +40,13 @@ bool GameScreen::init()
     float viewportHeight = app.getViewportHeight();
 
     m_window = app.getWindow();
-    m_gameObjManager.init(&m_dashboard);
 
     if (!m_dashboard.init(this))
     {
         return false;
     }
+
+    m_gameObjManager.init(&m_dashboard);
 
     if (!initMessageBox())
     {

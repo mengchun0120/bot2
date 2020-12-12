@@ -4,6 +4,7 @@
 #include "gametemplate/bot_missile_template.h"
 #include "gameobj/bot_game_object.h"
 #include "gameobj/bot_side.h"
+#include "gameobj/bot_missile_ability.h"
 
 namespace bot {
 
@@ -15,7 +16,8 @@ public:
     {}
 
     bool init(const MissileTemplate* t, Side side, float damage,
-              float x, float y, float directionX, float directionY);
+              float x, float y, float directionX, float directionY,
+              MissileAbility ability);
 
     virtual void present();
 
@@ -49,6 +51,11 @@ public:
         return m_side;
     }
 
+    bool testMissileFlag(MissileFlag flag) const
+    {
+        return (m_missileFlag & flag);
+    }
+
 protected:
     bool checkExplosion(GameObject* obj, float left, float bottom,
                         float right, float top);
@@ -57,6 +64,8 @@ protected:
     float m_direction[Constants::NUM_FLOATS_PER_POSITION];
     Side m_side;
     float m_damage;
+    MissileAbility m_ability;
+    GameObjectItem *m_collideObjs;
 };
 
 } // end of namespace bot

@@ -168,6 +168,9 @@ public:
     virtual void onDeath(GameScreen& screen)
     {}
 
+    virtual void onDealloc()
+    {}
+
 protected:
     const GameObjectTemplate* m_template;
     int m_coverStartRow, m_coverEndRow;

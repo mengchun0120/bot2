@@ -8,9 +8,10 @@
 #include "gameobj/bot_missile.h"
 #include "gameobj/bot_particle_effect.h"
 #include "gameobj/bot_goodie.h"
-#include "gameutil/bot_goodie_generator.h"
 #include "gameobj/bot_side.h"
 #include "gameobj/bot_ai_robot.h"
+#include "gameobj/bot_game_object_item.h"
+#include "gameutil/bot_goodie_generator.h"
 
 namespace bot {
 
@@ -27,7 +28,7 @@ public:
 
     ~GameObjectManager();
 
-    void init(Dashboard* dashboard);
+    bool init(Dashboard* dashboard);
 
     Tile* createTile(const std::string& tileName, int level,
                      float x, float y);
@@ -149,11 +150,16 @@ public:
 
     void clearDissolveObjects();
 
+    GameObjectItem* allocGameObjectItem(GameObject* obj);
+
+    void freeGameObjectItem(GameObjectItem* item);
+
 protected:
     const GameLib* m_lib;
     GoodieGenerator m_goodieGenerator;
     ObjectPool<Missile> m_missilePool;
     ObjectPool<ParticleEffect> m_particleEffectPool;
+    ObjectPool<GameObjectItem> m_gameObjectItemPool;
     DoubleLinkedList<Robot> m_activeRobots;
     DoubleLinkedList<Tile> m_activeTiles;
     DoubleLinkedList<Missile> m_activeMissiles;
