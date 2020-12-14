@@ -83,7 +83,8 @@ bool Mover::update(GameScreen& screen, float delta)
     if (!collideObjs.isEmpty())
     {
         m_robot->processCollisions(collideObjs, screen);
-        map.freeGameObjList(collideObjs);
+        GameObjectManager& gameObjMgr = screen.getGameObjectManager();
+        gameObjMgr.freeGameObjItems(collideObjs);
     }
 
     m_robot->shiftPos(speedX * newDelta, speedY * newDelta);

@@ -1,6 +1,7 @@
 #ifndef INCLUDE_BOT_MISSILE
 #define INCLUDE_BOT_MISSILE
 
+#include "structure/bot_linked_list.h"
 #include "gametemplate/bot_missile_template.h"
 #include "gameobj/bot_game_object.h"
 #include "gameobj/bot_side.h"
@@ -17,7 +18,7 @@ public:
 
     bool init(const MissileTemplate* t, Side side, float damage,
               float x, float y, float directionX, float directionY,
-              MissileAbility ability);
+              MissileAbility ability=MISSILE_ABILITY_NONE);
 
     virtual void present();
 
@@ -42,6 +43,26 @@ public:
         return m_direction[1];
     }
 
+    float getDamage() const
+    {
+        return m_damage;
+    }
+
+    float getSpeed() const
+    {
+        return m_template->getSpeed();
+    }
+
+    float getSpeedX() const
+    {
+        return m_template->getSpeed() * m_direction[0];
+    }
+
+    float getSpeedY() const
+    {
+        return m_template->getSpeed() * m_direction[1];
+    }
+
     void setDirection(float directionX, float directionY);
 
     void explode(GameScreen& gameScreen);
@@ -51,21 +72,26 @@ public:
         return m_side;
     }
 
-    bool testMissileFlag(MissileFlag flag) const
+    MissileAbility getAbility() const
     {
-        return (m_missileFlag & flag);
+        return m_ability;
     }
+
+    virtual void onDealloc();
 
 protected:
     bool checkExplosion(GameObject* obj, float left, float bottom,
                         float right, float top);
+
+    bool processPenetrateObjs(LinkedList<GameObjectItem>& collideObjs,
+                              GameScreen& screen);
 
 protected:
     float m_direction[Constants::NUM_FLOATS_PER_POSITION];
     Side m_side;
     float m_damage;
     MissileAbility m_ability;
-    GameObjectItem *m_collideObjs;
+    LinkedList<GameObjectItem> m_penetrateObjs;
 };
 
 } // end of namespace bot

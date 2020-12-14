@@ -6,6 +6,7 @@
 #include "gameobj/bot_tile.h"
 #include "gameobj/bot_missile.h"
 #include "screen/bot_game_screen.h"
+#include "screen/bot_screen_manager.h"
 
 namespace bot {
 
@@ -13,11 +14,16 @@ Missile::Missile()
     : m_side(SIDE_UNKNOWN)
     , m_damage(0.0f)
     , m_ability(MISSILE_ABILITY_NONE)
-    , m_collideObjs(nullptr)
 {
     m_direction[0] = 0.0f;
     m_direction[1] = 0.0f;
 }
+
+Missile::~Missile()
+{
+    onDealloc();
+}
+
 
 bool Missile::init(const MissileTemplate* t, Side side, float damage,
                    float x, float y, float directionX, float directionY,
@@ -74,18 +80,56 @@ void Missile::update(float delta, GameScreen& screen)
 
     shiftPos(deltaX, deltaY);
 
-    ReturnCode rc = map.checkCollision(this);
-
-    if (RET_CODE_OUT_OF_SIGHT == rc)
+    switch(m_ability)
     {
-        gameObjManager.sendToDeathQueue(this);
-        return;
-    }
+        case MISSILE_ABILITY_NONE:
+        {
+            ReturnCode rc = map.checkCollision(this, nullptr);
 
-    if (RET_CODE_COLLIDE == rc)
-    {
-        explode(screen);
-        return;
+            if (RET_CODE_OUT_OF_SIGHT == rc)
+            {
+                gameObjManager.sendToDeathQueue(this);
+                return;
+            }
+
+            if (RET_CODE_COLLIDE == rc)
+            {
+                explode(screen);
+                return;
+            }
+
+            break;
+        }
+        case MISSILE_ABILITY_PENETRATE:
+        {
+            LinkedList<GameObjectItem> collideObjs;
+
+            ReturnCode rc = map.checkCollision(this, &collideObjs);
+
+            if (RET_CODE_OUT_OF_SIGHT == rc)
+            {
+                gameObjManager.sendToDeathQueue(this);
+                return;
+            }
+
+            if (!colldeObjs.isEmpty())
+            {
+                bool stop = processPenetrate(collideObjs, screen)
+
+                if (!collideObjs.isEmpty())
+                {
+                    gameObjManager.freeGameObjItems(collideObjs);
+                }
+
+                if (stop)
+                {
+                    gameObjManager.sendToDeathQueue(this);
+                    return;
+                }
+            }
+
+            break;
+        }
     }
 
     map.repositionObject(this);
@@ -165,6 +209,18 @@ void Missile::explode(GameScreen& gameScreen)
     gameObjMgr.sendToDeathQueue(this);
 }
 
+void onDealloc()
+{
+    if (m_penetrateObjs.isEmpty())
+    {
+        return;
+    }
+
+    GameScreen* screen = static_cast<GameScreen*>(
+                                screenManager::getInstance().getCurScreen());
+    screen->getGameObjManager().freeGameObjItems(m_penetrateObjs);
+}
+
 bool Missile::checkExplosion(GameObject* obj, float left, float bottom,
                              float right, float top)
 {
@@ -212,6 +268,75 @@ bool Missile::checkExplosion(GameObject* obj, float left, float bottom,
     }
 
     return active;
+}
+
+bool Missile::processPenetrateObjs(LinkedList<GameObjectItem>& collideObjs,
+                                   GameScreen& screen)
+{
+    GameObjectItem* prev = nullptr, * next, * cur;
+    GameObjectManager& gameObjMgr = screen.getGameObjManager();
+
+    for (cur = m_penetrateObjs.getFirst(); cur; cur = next)
+    {
+        next = cur->getNext();
+
+        // If cur is not in collideObjs, remove it from penetrateObjs
+        if (!collideObjs.find(GameObjetItem::match, cur))
+        {
+            m_penetrateObjs.unlink(prev, cur);
+            gameObjMgr.freeGameObjItem(cur);
+        }
+        else
+        {
+            prev = cur;
+        }
+    }
+
+    bool stop = false;
+
+    prev = nullptr;
+    for (cur = collideObjs.getFirst(); cur; cur = next)
+    {
+        next = cur->getNext();
+
+        // If cur has been penetrated before, don't penetrate it again
+        if (m_penetrateObjs.find(GameObject::match, cur))
+        {
+            prev = cur;
+            continue;
+        }
+
+        GameObject* o = cur->getObj();
+        bool alive = true;
+
+        if (o->testFlag(GAME_FLAG_INDESTRUCTABLE))
+        {
+            stop = true;
+        }
+        else if (o->getType() == GAME_OBJ_TYPE_ROBOT)
+        {
+            Robot* robot = static_cast<Robot*>(o);
+            alive = robot->addHP(-m_damage);
+        }
+        else if (o->getType() == GAME_OBJ_TYPE_TILE)
+        {
+            Tile* tile = static_cast<Tile*>(o);
+            alive = tile->addHP(-m_damage);
+        }
+
+        if (!alive)
+        {
+            o->onDeath();
+            prev = cur;
+        }
+        else
+        {
+            m_collideObjs.unlink(prev, cur);
+            m_penetrateObjs.add(cur);
+        }
+    }
+
+    return stop;
 }
 
 } // end of namespace bot

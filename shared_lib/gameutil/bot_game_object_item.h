@@ -9,6 +9,11 @@ class GameObject;
 
 class GameObjectItem : public LinkedItem {
 public:
+    static bool match(const GameObjectItem* i1, const GameObjectItem* i2)
+    {
+        return i1.m_obj == i2.m_obj;
+    }
+
     GameObjectItem()
         : LinkedItem()
         , m_obj(nullptr)

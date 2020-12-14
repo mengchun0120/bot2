@@ -4,6 +4,7 @@
 #include "gameobj/bot_player.h"
 #include "gameobj/bot_missile.h"
 #include "gameutil/bot_collide.h"
+#include "gameutil/bot_game_object_manager.h"
 #include "gameutil/bot_game_map.h"
 
 namespace bot {
@@ -32,7 +33,8 @@ GameMap::~GameMap()
 }
 
 void GameMap::initMap(int numRows, int numCols, int gameObjPoolSize,
-                      float viewportWidth, float viewportHeight)
+                      float viewportWidth, float viewportHeight,
+                      GameObjectManager* gameObjMgr)
 {
     m_gameObjItemPool.init(gameObjPoolSize);
 
@@ -50,6 +52,8 @@ void GameMap::initMap(int numRows, int numCols, int gameObjPoolSize,
 
     m_maxViewportX = m_mapWidth - m_viewportBreathX;
     m_maxViewportY = m_mapHeight - m_viewportBreathY;
+
+    m_gameObjMgr = gameObjMgr;
 }
 
 void GameMap::present()
@@ -567,8 +571,7 @@ void GameMap::checkCollidePassthrough(LinkedList<GameObjectItem>* collideObjs,
 
                 if (collide)
                 {
-                    GameObjectItem* item = m_gameObjItemPool.alloc();
-                    item->setObj(o);
+                    GameObjectItem* item = m_gameObjMgr.allocGameObjItem(o);
                     collideObjs->add(item);
                 }
 
@@ -579,7 +582,8 @@ void GameMap::checkCollidePassthrough(LinkedList<GameObjectItem>* collideObjs,
     }
 }
 
-ReturnCode GameMap::checkCollision(const Missile* missile)
+ReturnCode GameMap::checkCollision(const Missile* missile,
+                                   LinkedList<GameObjectItem>* collidObjs)
 {
     if (isOutsideViewport(missile))
     {
@@ -633,7 +637,13 @@ ReturnCode GameMap::checkCollision(const Missile* missile)
 
                 if (collide)
                 {
-                    return RET_CODE_COLLIDE;
+                    if (!collideObjs)
+                    {
+                        return RET_CODE_COLLIDE;
+                    }
+
+                    GameObjectItem* item = m_gameObjMgr->allocGameObjItem(o);
+                    collideObjs->add(item);
                 }
 
                 o->setFlag(GAME_OBJ_FLAG_CHECKED);

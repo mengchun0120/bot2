@@ -22,7 +22,9 @@ bool GameConfig::load(const std::string& fileName)
     const rapidjson::Value& val = doc.GetObject();
     std::vector<JsonParamPtr> params = {
         jsonParam(m_dissolveTimeMS, "dissolveTimeMS",
-                  gt(m_dissolveTimeMS, 0.0f))
+                  gt(m_dissolveTimeMS, 0.0f)),
+        jsonParam(m_gameObjItemPoolSize, "gameObjItemPoolSize",
+                  gt(m_gameObjItemPoolSize, 0))
     };
 
     if (!parseJson(params, val))

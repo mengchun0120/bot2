@@ -71,7 +71,7 @@ void Player::update(float delta, GameScreen& screen)
         updateEffects();
         updateMover(delta, screen);
 
-        if (testFlag(GAME_OBJ_FLAG_DEAD))
+        if (testFlag(GAME_OBJ_FLAG_DEAD | GAME_OBJ_FLAG_DISSOLVE))
         {
             return;
         }

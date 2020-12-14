@@ -51,10 +51,11 @@ void ChaseShootAI::apply(AIRobot& robot, float delta, GameScreen& screen)
 {
     GameMap& map = screen.getMap();
     Player* player = map.getPlayer();
+    int DEAD_FLAG = GAME_OBJ_FLAG_DISSOLVE | GAME_OBJ_FLAG_DEAD;
 
-    bool dontApply = robot.testFlag(GAME_OBJ_FLAG_DEAD) ||
+    bool dontApply = robot.testFlag(DEAD_FLAG) ||
                      player == nullptr ||
-                     player->testFlag(GAME_OBJ_FLAG_DEAD);
+                     player->testFlag(DEAD_FLAG);
 
     if (dontApply)
     {
@@ -186,8 +187,9 @@ void ChaseShootAI::applyChaseAction(AIRobot& robot, float delta,
                                     GameScreen& screen)
 {
     bool collide = robot.updateMover(delta, screen);
+    const int DEAD_FLAG = GAME_OBJ_FLAG_DEAD | GAME_OBJ_FLAG_DISSOLVE;
 
-    if (robot.testFlag(GAME_OBJ_FLAG_DEAD))
+    if (robot.testFlag(DEAD_FLAG))
     {
         return;
     }

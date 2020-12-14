@@ -29,6 +29,11 @@ public:
 
     bool switchScreen(Screen::Type type);
 
+    Screen* getCurScreen()
+    {
+        return m_curScreen;
+    }
+
 private:
     ScreenManager();
 

@@ -24,21 +24,16 @@ GameObjectManager::~GameObjectManager()
     delete m_player;
 }
 
-bool GameObjectManager::init(Dashboard* dashboard)
+void GameObjectManager::init(Dashboard* dashboard)
 {
-    if (gameObjItemPoolSize <= 0)
-    {
-        LOG_ERROR("Invalid gameObjItemPoolSize %d", gameObjItemPoolSize);
-        return false;
-    }
-
     const AppConfig& cfg = AppConfig::getInstance();
     m_lib = &(GameLib::getInstance());
     m_missilePool.init(cfg.getMissilePoolSize());
     m_goodieGenerator.init(m_lib->getGoodieTemplateLib());
     m_dashboard = dashboard;
 
-    return true;
+    const GameConfig& gameCfg = m_lib->getGameConfig();
+    m_gameObjItemPool.init(gameCfg.getGameObjItemPoolSize());
 }
 
 Tile* GameObjectManager::createTile(const std::string& tileName, int level,
@@ -316,6 +311,7 @@ void GameObjectManager::clearDeadObjects()
     {
         if (obj->getType() == GAME_OBJ_TYPE_MISSILE)
         {
+            obj->onDealloc();
             m_missilePool.free(static_cast<Missile*>(obj));
         }
         else if (obj->getType() == GAME_OBJ_TYPE_PARTICLE_EFFECT)
@@ -340,6 +336,7 @@ void GameObjectManager::clearActiveObjects()
 
     auto missileDeallocator = [this](Missile* missile)
     {
+        missile->onDealloc();
         m_missilePool.free(missile);
     };
 
@@ -356,6 +353,28 @@ void GameObjectManager::clearActiveObjects()
 void GameObjectManager::clearDissolveObjects()
 {
     m_dissolveObjects.clear();
+}
+
+GameObjectItem* GameObjectManager::allocGameObjItem(GameObject* obj)
+{
+    GameObjectItem* item = m_gameObjItemPool.alloc();
+    item->setObj(obj);
+    return item;
+}
+
+void GameObjectManager::freeGameObjItem(GameObjectItem* item)
+{
+    m_gameObjItemPool.free(item);
+}
+
+void GameObjectManager::freeGameObjItems(LinkedList<GameObjectItem>& items)
+{
+    GameObjectItem* next;
+    for (GameObjectItem* cur = items.getFirst(); cur; cur = next)
+    {
+        next = cur->getNext();
+        m_gameObjItemPool.free(cur);
+    }
 }
 
 } // end of namespace bot

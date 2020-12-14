@@ -9,6 +9,7 @@ class GameConfig {
 public:
     GameConfig()
         : m_dissolveTimeMS(0.0f)
+        , m_gameObjItemPoolSize(0)
     {}
 
     bool load(const std::string& fileName);
@@ -18,8 +19,14 @@ public:
         return m_dissolveTimeMS;
     }
 
+    int getGameObjItemPoolSize() const
+    {
+        return m_gameObjItemPoolSize;
+    }
+
 private:
     float m_dissolveTimeMS;
+    int m_gameObjItemPoolSize;
 };
 
 } // end of namespace bot

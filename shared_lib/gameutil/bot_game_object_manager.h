@@ -4,6 +4,7 @@
 #include <string>
 #include "structure/bot_double_linked_list.h"
 #include "structure/bot_object_pool.h"
+#include "structure/bot_linked_list.h"
 #include "gameobj/bot_tile.h"
 #include "gameobj/bot_missile.h"
 #include "gameobj/bot_particle_effect.h"
@@ -28,7 +29,7 @@ public:
 
     ~GameObjectManager();
 
-    bool init(Dashboard* dashboard);
+    void init(Dashboard* dashboard);
 
     Tile* createTile(const std::string& tileName, int level,
                      float x, float y);
@@ -150,16 +151,18 @@ public:
 
     void clearDissolveObjects();
 
-    GameObjectItem* allocGameObjectItem(GameObject* obj);
+    GameObjectItem* allocGameObjItem(GameObject* obj);
 
-    void freeGameObjectItem(GameObjectItem* item);
+    void freeGameObjItem(GameObjectItem* item);
+
+    void freeGameObjItems(LinkedList<GameObjectItem>& items);
 
 protected:
     const GameLib* m_lib;
     GoodieGenerator m_goodieGenerator;
     ObjectPool<Missile> m_missilePool;
     ObjectPool<ParticleEffect> m_particleEffectPool;
-    ObjectPool<GameObjectItem> m_gameObjectItemPool;
+    ObjectPool<GameObjectItem> m_gameObjItemPool;
     DoubleLinkedList<Robot> m_activeRobots;
     DoubleLinkedList<Tile> m_activeTiles;
     DoubleLinkedList<Missile> m_activeMissiles;

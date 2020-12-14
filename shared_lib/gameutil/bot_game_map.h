@@ -14,6 +14,7 @@ namespace bot {
 class Player;
 class Robot;
 class Missile;
+class GameObjectManager;
 
 class GameMap {
 public:
@@ -27,7 +28,8 @@ public:
     virtual ~GameMap();
 
     void initMap(int numRows, int numCols, int gameObjPoolSize,
-                 float viewportWidth, float viewportHeight);
+                 float viewportWidth, float viewportHeight,
+                 GameObjectManager* gameObjMgr);
 
     void clear();
 
@@ -104,7 +106,8 @@ public:
                         float delta);
 
     // Returns RET_CODE_OUT_OF_SIGHT, RET_CODE_COLLIDE and RETCODE_OK
-    ReturnCode checkCollision(const Missile* missile);
+    ReturnCode checkCollision(const Missile* missile,
+                              LinkedList<GameObjectItem>* collidObjs);
 
     void freeGameObjList(LinkedList<GameObjectItem>& objs);
 
@@ -189,6 +192,7 @@ protected:
     float m_viewportWorldX, m_viewportWorldY;
     float m_viewportPos[Constants::NUM_FLOATS_PER_POSITION];
     int m_aiRobotCount;
+    GameObjectManager* m_gameObjMgr;
 };
 
 } // end of namespace bot

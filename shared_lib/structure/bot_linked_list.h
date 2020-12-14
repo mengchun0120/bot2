@@ -35,7 +35,10 @@ public:
     void unlink(T* prev, T* elem);
 
     template <typename MATCHER>
-    T* matchAndUnlink(MATCHER& matcher);
+    T* find(MATCHER& matcher, const T* other);
+
+    template <typename MATCHER>
+    T* findAndUnlink(MATCHER& matcher, const T* other);
 
     template <typename PROCESSOR>
     int forEach(PROCESSOR& processor);
@@ -100,12 +103,28 @@ void LinkedList<T>::unlink(T* prev, T* elem)
 
 template <typename T>
 template <typename MATCHER>
-T* LinkedList<T>::matchAndUnlink(MATCHER& matcher)
+T* LinkedList<T>::find(MATCHER& matcher, const T* other)
+{
+    T* cur;
+    for (cur = m_first; cur; cur = cur->getNext())
+    {
+        if (matcher(cur, other))
+        {
+            return cur;
+        }
+    }
+
+    return nullptr;
+}
+
+template <typename T>
+template <typename MATCHER>
+T* LinkedList<T>::findAndUnlink(MATCHER& matcher, const T* other)
 {
     T* prev = nullptr, * cur;
-    for (cur = m_first; cur; cur = static_cast<T*>(cur->getNext()))
+    for (cur = m_first; cur; cur = cur->getNext())
     {
-        if (matcher(cur))
+        if (matcher(cur, other))
         {
             break;
         }
@@ -123,7 +142,7 @@ T* LinkedList<T>::matchAndUnlink(MATCHER& matcher)
     }
     else
     {
-        m_first = static_cast<T*>(cur->getNext());
+        m_first = cur->getNext();
     }
 
     return cur;

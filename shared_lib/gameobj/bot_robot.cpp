@@ -131,6 +131,9 @@ void Robot::processCollisions(LinkedList<GameObjectItem>& collideObjs,
                               GameScreen& gameScreen)
 {
     GameObjectItem* item = collideObjs.getFirst();
+    GameObjectManager& gameObjMgr = gameScreen.getGameObjManager();
+    const int DEAD_FLAG = GAME_OBJ_FLAG_DEAD | GAME_OBJ_FLAG_DISSOLVE;
+
     while (item)
     {
         switch (item->getObj()->getType())
@@ -138,7 +141,22 @@ void Robot::processCollisions(LinkedList<GameObjectItem>& collideObjs,
             case GAME_OBJ_TYPE_MISSILE:
             {
                 Missile* missile = static_cast<Missile*>(item->getObj());
-                missile->explode(gameScreen);
+                if (missile->getAbility() != MISSILE_ABILITY_PENETRATE)
+                {
+                    missile->explode(gameScreen);
+                }
+                else if (!testFlag(GAME_OBJ_FLAG_INDESTRUCTABLE))
+                {
+                    if (testFlag(DEAD_FLAG) && !addHP(-missile->getDamage()))
+                    {
+                        onDeath(gameScreen);
+                    }
+                }
+                else
+                {
+                    gameObjMgr.sendToDeathQueue(missile);
+                }
+
                 break;
             }
             case GAME_OBJ_TYPE_GOODIE:
