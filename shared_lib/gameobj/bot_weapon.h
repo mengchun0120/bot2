@@ -4,6 +4,7 @@
 #include <vector>
 #include "misc/bot_time_utils.h"
 #include "opengl/bot_color.h"
+#include "gameobj/bot_missile_ability.h"
 #include "gameobj/bot_fire_point.h"
 
 namespace bot {
@@ -50,12 +51,13 @@ public:
         m_mask = mask;
     }
 
+    bool fireMissile(GameScreen& screen,
+                     MissileAbility ability=MISSILE_ABILITY_NONE);
+
 private:
     void resetFireDuration();
 
     void resetDamage();
-
-    bool fireMissile(GameScreen& screen);
 
 protected:
     const WeaponTemplate* m_weaponTemplate;

@@ -83,7 +83,7 @@ bool Mover::update(GameScreen& screen, float delta)
     if (!collideObjs.isEmpty())
     {
         m_robot->processCollisions(collideObjs, screen);
-        GameObjectManager& gameObjMgr = screen.getGameObjectManager();
+        GameObjectManager& gameObjMgr = screen.getGameObjManager();
         gameObjMgr.freeGameObjItems(collideObjs);
     }
 

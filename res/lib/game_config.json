@@ -1,3 +1,4 @@
 {
-    "dissolveTimeMS": 800.0
+    "dissolveTimeMS": 800.0,
+    "gameObjItemPoolSize": 100
 }

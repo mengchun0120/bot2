@@ -2,8 +2,7 @@
 #define INCLUDE_BOT_PLAYER
 
 #include <vector>
-#include <functional>
-#include <list>
+#include "misc/bot_math_utils.h"
 #include "gameobj/bot_goodie_effect.h"
 #include "gameobj/bot_robot.h"
 

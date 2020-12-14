@@ -463,6 +463,14 @@ int GameScreen::handleKey(const KeyEvent& e)
 
             break;
         }
+        case GLFW_KEY_A:
+        {
+            if (e.m_action == GLFW_PRESS || e.m_action == GLFW_REPEAT)
+            {
+                player->getWeapon().fireMissile(*this,
+                                                MISSILE_ABILITY_PENETRATE);
+            }
+        }
     }
 
     return 0;

@@ -112,9 +112,9 @@ void Missile::update(float delta, GameScreen& screen)
                 return;
             }
 
-            if (!colldeObjs.isEmpty())
+            if (!collideObjs.isEmpty())
             {
-                bool stop = processPenetrate(collideObjs, screen)
+                bool stop = processPenetrateObjs(collideObjs, screen);
 
                 if (!collideObjs.isEmpty())
                 {
@@ -209,7 +209,7 @@ void Missile::explode(GameScreen& gameScreen)
     gameObjMgr.sendToDeathQueue(this);
 }
 
-void onDealloc()
+void Missile::onDealloc()
 {
     if (m_penetrateObjs.isEmpty())
     {
@@ -217,7 +217,7 @@ void onDealloc()
     }
 
     GameScreen* screen = static_cast<GameScreen*>(
-                                screenManager::getInstance().getCurScreen());
+                                ScreenManager::getInstance().getCurScreen());
     screen->getGameObjManager().freeGameObjItems(m_penetrateObjs);
 }
 
@@ -281,7 +281,7 @@ bool Missile::processPenetrateObjs(LinkedList<GameObjectItem>& collideObjs,
         next = cur->getNext();
 
         // If cur is not in collideObjs, remove it from penetrateObjs
-        if (!collideObjs.find(GameObjetItem::match, cur))
+        if (!collideObjs.find(GameObjectItem::match, cur))
         {
             m_penetrateObjs.unlink(prev, cur);
             gameObjMgr.freeGameObjItem(cur);
@@ -300,7 +300,7 @@ bool Missile::processPenetrateObjs(LinkedList<GameObjectItem>& collideObjs,
         next = cur->getNext();
 
         // If cur has been penetrated before, don't penetrate it again
-        if (m_penetrateObjs.find(GameObject::match, cur))
+        if (m_penetrateObjs.find(GameObjectItem::match, cur))
         {
             prev = cur;
             continue;
@@ -309,7 +309,7 @@ bool Missile::processPenetrateObjs(LinkedList<GameObjectItem>& collideObjs,
         GameObject* o = cur->getObj();
         bool alive = true;
 
-        if (o->testFlag(GAME_FLAG_INDESTRUCTABLE))
+        if (o->testFlag(GAME_OBJ_FLAG_INDESTRUCTABLE))
         {
             stop = true;
         }
@@ -326,12 +326,12 @@ bool Missile::processPenetrateObjs(LinkedList<GameObjectItem>& collideObjs,
 
         if (!alive)
         {
-            o->onDeath();
+            o->onDeath(screen);
             prev = cur;
         }
         else
         {
-            m_collideObjs.unlink(prev, cur);
+            collideObjs.unlink(prev, cur);
             m_penetrateObjs.add(cur);
         }
     }

@@ -184,7 +184,7 @@ void Weapon::resetDamage()
     m_damage = t->getDamage(m_missileLevel) * m_damageMultiplier;
 }
 
-bool Weapon::fireMissile(GameScreen& screen)
+bool Weapon::fireMissile(GameScreen& screen, MissileAbility ability)
 {
     GameObjectManager& gameObjMgr = screen.getGameObjManager();
     GameMap& map = screen.getMap();
@@ -195,7 +195,8 @@ bool Weapon::fireMissile(GameScreen& screen)
                                  m_weaponTemplate->getMissileTemplate(),
                                  m_robot->getSide(), m_damage,
                                  fp.m_firePos[0], fp.m_firePos[1],
-                                 fp.m_fireDirection[0], fp.m_fireDirection[1]);
+                                 fp.m_fireDirection[0], fp.m_fireDirection[1],
+                                 ability);
         if (!missile)
         {
             LOG_ERROR("Failed to create missile");

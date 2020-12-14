@@ -13,8 +13,7 @@ class Missile: public GameObject {
 public:
     Missile();
 
-    virtual ~Missile()
-    {}
+    virtual ~Missile();
 
     bool init(const MissileTemplate* t, Side side, float damage,
               float x, float y, float directionX, float directionY,
@@ -50,17 +49,17 @@ public:
 
     float getSpeed() const
     {
-        return m_template->getSpeed();
+        return getTemplate()->getSpeed();
     }
 
     float getSpeedX() const
     {
-        return m_template->getSpeed() * m_direction[0];
+        return getTemplate()->getSpeed() * m_direction[0];
     }
 
     float getSpeedY() const
     {
-        return m_template->getSpeed() * m_direction[1];
+        return getTemplate()->getSpeed() * m_direction[1];
     }
 
     void setDirection(float directionX, float directionY);

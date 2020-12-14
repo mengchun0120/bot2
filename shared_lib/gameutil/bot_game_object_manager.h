@@ -11,7 +11,7 @@
 #include "gameobj/bot_goodie.h"
 #include "gameobj/bot_side.h"
 #include "gameobj/bot_ai_robot.h"
-#include "gameobj/bot_game_object_item.h"
+#include "gameutil/bot_game_object_item.h"
 #include "gameutil/bot_goodie_generator.h"
 
 namespace bot {
@@ -78,8 +78,8 @@ public:
 
     Missile* createMissile(const MissileTemplate* missileTemplate,
                            Side side, float damage,
-                           float x, float y,
-                           float directionX, float directionY);
+                           float x, float y, float directionX, float directionY,
+                           MissileAbility ability=MISSILE_ABILITY_NONE);
 
     Goodie* createGoodie(float prob, float x, float y);
 
