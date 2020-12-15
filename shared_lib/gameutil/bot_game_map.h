@@ -107,7 +107,7 @@ public:
 
     // Returns RET_CODE_OUT_OF_SIGHT, RET_CODE_COLLIDE and RETCODE_OK
     ReturnCode checkCollision(const Missile* missile,
-                              LinkedList<GameObjectItem>* collidObjs);
+                              LinkedList<GameObjectItem>* collideObjs);
 
     void freeGameObjList(LinkedList<GameObjectItem>& objs);
 

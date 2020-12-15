@@ -103,7 +103,8 @@ bool GameMapLoader::initMap(GameMap& map, const rapidjson::Value& mapJson,
 
     int mapPoolSize = static_cast<int>(numRows * numCols * m_mapPoolFactor);
 
-    map.initMap(numRows, numCols, mapPoolSize, viewportWidth, viewportHeight);
+    map.initMap(numRows, numCols, mapPoolSize, viewportWidth, viewportHeight,
+                &m_gameObjManager);
 
     return true;
 }

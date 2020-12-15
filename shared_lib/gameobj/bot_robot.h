@@ -100,14 +100,29 @@ public:
     void processCollisions(LinkedList<GameObjectItem>& collideObjs,
                            GameScreen& gameScreen);
 
+    Base& getBase()
+    {
+        return m_base;
+    }
+
     const Base& getBase() const
     {
         return m_base;
     }
 
+    Weapon& getWeapon()
+    {
+        return m_weapon;
+    }
+
     const Weapon& getWeapon() const
     {
         return m_weapon;
+    }
+
+    Mover& getMover()
+    {
+        return m_mover;
     }
 
     const Mover& getMover() const

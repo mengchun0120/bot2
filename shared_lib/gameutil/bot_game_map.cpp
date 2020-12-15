@@ -571,7 +571,7 @@ void GameMap::checkCollidePassthrough(LinkedList<GameObjectItem>* collideObjs,
 
                 if (collide)
                 {
-                    GameObjectItem* item = m_gameObjMgr.allocGameObjItem(o);
+                    GameObjectItem* item = m_gameObjMgr->allocGameObjItem(o);
                     collideObjs->add(item);
                 }
 
@@ -583,7 +583,7 @@ void GameMap::checkCollidePassthrough(LinkedList<GameObjectItem>* collideObjs,
 }
 
 ReturnCode GameMap::checkCollision(const Missile* missile,
-                                   LinkedList<GameObjectItem>* collidObjs)
+                                   LinkedList<GameObjectItem>* collideObjs)
 {
     if (isOutsideViewport(missile))
     {

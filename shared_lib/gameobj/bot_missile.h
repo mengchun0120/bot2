@@ -9,6 +9,9 @@
 
 namespace bot {
 
+template <typename T> class LinkedList;
+class GameObjectItem;
+
 class Missile: public GameObject {
 public:
     Missile();
@@ -22,6 +25,8 @@ public:
     virtual void present();
 
     virtual void update(float delta, GameScreen& screen);
+
+    bool checkCollision(GameScreen& screen);
 
     const MissileTemplate* getTemplate() const
     {
@@ -79,6 +84,10 @@ public:
     virtual void onDealloc();
 
 protected:
+    bool checkCollideAbilityNone(GameScreen& screen);
+
+    bool checkCollideAbilityPenetrate(GameScreen& screen);
+
     bool checkExplosion(GameObject* obj, float left, float bottom,
                         float right, float top);
 

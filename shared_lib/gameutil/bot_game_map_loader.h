@@ -3,12 +3,10 @@
 
 #include <string>
 #include <rapidjson/document.h>
-#include "gameutil/bot_game_map.h"
-#include "gameutil/bot_game_object_manager.h"
 
 namespace bot {
 
-class Map;
+class GameMap;
 class GameObjectManager;
 
 class GameMapLoader {

@@ -203,20 +203,10 @@ bool Weapon::fireMissile(GameScreen& screen, MissileAbility ability)
             return false;
         }
 
-        ReturnCode rc = map.checkCollision(missile);
-
-        if (rc == RET_CODE_OUT_OF_SIGHT)
+        if (missile->checkCollision(screen))
         {
-            gameObjMgr.sendToDeathQueue(missile);
-            continue;
+            map.addObject(missile);
         }
-        else if (rc == RET_CODE_COLLIDE)
-        {
-            missile->explode(screen);
-            continue;
-        }
-
-        map.addObject(missile);
     }
 
     return true;

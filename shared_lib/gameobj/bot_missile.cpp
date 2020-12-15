@@ -1,7 +1,9 @@
 #include "misc/bot_log.h"
+#include "structure/bot_linked_list.h"
 #include "opengl/bot_texture.h"
 #include "geometry/bot_rectangle.h"
 #include "gameutil/bot_collide.h"
+#include "gameutil/bot_game_object_item.h"
 #include "gameobj/bot_robot.h"
 #include "gameobj/bot_tile.h"
 #include "gameobj/bot_missile.h"
@@ -71,7 +73,6 @@ void Missile::update(float delta, GameScreen& screen)
 {
     const MissileTemplate* t = getTemplate();
     GameMap& map = screen.getMap();
-    GameObjectManager& gameObjManager = screen.getGameObjManager();
 
     float speedX = t->getSpeed() * m_direction[0];
     float speedY = t->getSpeed() * m_direction[1];
@@ -80,60 +81,80 @@ void Missile::update(float delta, GameScreen& screen)
 
     shiftPos(deltaX, deltaY);
 
+    if (checkCollision(screen))
+    {
+        map.repositionObject(this);
+    }
+}
+
+bool Missile::checkCollision(GameScreen& screen)
+{
     switch(m_ability)
     {
         case MISSILE_ABILITY_NONE:
-        {
-            ReturnCode rc = map.checkCollision(this, nullptr);
-
-            if (RET_CODE_OUT_OF_SIGHT == rc)
-            {
-                gameObjManager.sendToDeathQueue(this);
-                return;
-            }
-
-            if (RET_CODE_COLLIDE == rc)
-            {
-                explode(screen);
-                return;
-            }
-
-            break;
-        }
+            return checkCollideAbilityNone(screen);
         case MISSILE_ABILITY_PENETRATE:
+            return checkCollideAbilityPenetrate(screen);
+    }
+
+    return true;
+}
+
+bool Missile::checkCollideAbilityNone(GameScreen& screen)
+{
+    GameMap& map = screen.getMap();
+    GameObjectManager& gameObjMgr = screen.getGameObjManager();
+
+    ReturnCode rc = map.checkCollision(this, nullptr);
+
+    if (RET_CODE_OUT_OF_SIGHT == rc)
+    {
+        gameObjMgr.sendToDeathQueue(this);
+        return false;
+    }
+
+    if (RET_CODE_COLLIDE == rc)
+    {
+        explode(screen);
+        return false;
+    }
+
+    return true;
+}
+
+bool Missile::checkCollideAbilityPenetrate(GameScreen& screen)
+{
+    LinkedList<GameObjectItem> collideObjs;
+    GameMap& map = screen.getMap();
+    GameObjectManager gameObjMgr = screen.getGameObjManager();
+
+    ReturnCode rc = map.checkCollision(this, &collideObjs);
+
+    if (RET_CODE_OUT_OF_SIGHT == rc)
+    {
+        gameObjMgr.sendToDeathQueue(this);
+        return false;
+    }
+
+    if (!collideObjs.isEmpty())
+    {
+        bool stop = processPenetrateObjs(collideObjs, screen);
+
+        if (!collideObjs.isEmpty())
         {
-            LinkedList<GameObjectItem> collideObjs;
+            gameObjMgr.freeGameObjItems(collideObjs);
+        }
 
-            ReturnCode rc = map.checkCollision(this, &collideObjs);
-
-            if (RET_CODE_OUT_OF_SIGHT == rc)
-            {
-                gameObjManager.sendToDeathQueue(this);
-                return;
-            }
-
-            if (!collideObjs.isEmpty())
-            {
-                bool stop = processPenetrateObjs(collideObjs, screen);
-
-                if (!collideObjs.isEmpty())
-                {
-                    gameObjManager.freeGameObjItems(collideObjs);
-                }
-
-                if (stop)
-                {
-                    gameObjManager.sendToDeathQueue(this);
-                    return;
-                }
-            }
-
-            break;
+        if (stop)
+        {
+            gameObjMgr.sendToDeathQueue(this);
+            return false;
         }
     }
 
-    map.repositionObject(this);
+    return true;
 }
+
 
 void Missile::shiftPos(float deltaX, float deltaY)
 {
