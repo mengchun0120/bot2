@@ -1,3 +1,5 @@
+#include <cassert>
+#include <sstream>
 #include "misc/bot_log.h"
 #include "structure/bot_linked_list.h"
 #include "opengl/bot_texture.h"
@@ -126,7 +128,7 @@ bool Missile::checkCollideAbilityPenetrate(GameScreen& screen)
 {
     LinkedList<GameObjectItem> collideObjs;
     GameMap& map = screen.getMap();
-    GameObjectManager gameObjMgr = screen.getGameObjManager();
+    GameObjectManager& gameObjMgr = screen.getGameObjManager();
 
     ReturnCode rc = map.checkCollision(this, &collideObjs);
 

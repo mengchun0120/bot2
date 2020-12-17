@@ -370,10 +370,11 @@ void GameObjectManager::freeGameObjItem(GameObjectItem* item)
 
 void GameObjectManager::freeGameObjItems(LinkedList<GameObjectItem>& items)
 {
-    GameObjectItem* next;
-    for (GameObjectItem* cur = items.getFirst(); cur; cur = next)
+    GameObjectItem* next, * prev = nullptr;
+    for (GameObjectItem* cur = items.getFirst(); cur; prev = cur, cur = next)
     {
         next = cur->getNext();
+        items.unlink(prev, cur);
         m_gameObjItemPool.free(cur);
     }
 }
