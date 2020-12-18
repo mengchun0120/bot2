@@ -370,13 +370,12 @@ void GameObjectManager::freeGameObjItem(GameObjectItem* item)
 
 void GameObjectManager::freeGameObjItems(LinkedList<GameObjectItem>& items)
 {
-    GameObjectItem* next, * prev = nullptr;
-    for (GameObjectItem* cur = items.getFirst(); cur; prev = cur, cur = next)
+    auto deallocator = [this](GameObjectItem* i)
     {
-        next = cur->getNext();
-        items.unlink(prev, cur);
-        m_gameObjItemPool.free(cur);
-    }
+        m_gameObjItemPool.free(i);
+    };
+
+    items.clear(deallocator);
 }
 
 } // end of namespace bot

@@ -465,7 +465,7 @@ int GameScreen::handleKey(const KeyEvent& e)
         }
         case GLFW_KEY_A:
         {
-            if (e.m_action == GLFW_PRESS || e.m_action == GLFW_REPEAT)
+            if (e.m_action == GLFW_PRESS)
             {
                 player->getWeapon().fireMissile(*this,
                                                 MISSILE_ABILITY_PENETRATE);
