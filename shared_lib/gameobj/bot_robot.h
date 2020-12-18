@@ -1,12 +1,14 @@
 #ifndef INCLUDE_BOT_ROBOT
 #define INCLUDE_BOT_ROBOT
 
+#include <vector>
 #include "misc/bot_time_utils.h"
 #include "gameobj/bot_game_object.h"
 #include "gameobj/bot_side.h"
 #include "gameobj/bot_base.h"
 #include "gameobj/bot_weapon.h"
 #include "gameobj/bot_mover.h"
+#include "skill/bot_skill_data.h"
 
 namespace bot {
 
@@ -27,7 +29,7 @@ public:
               int powerLevel, int powerRestoreLevel,
               int weaponLevel, int missileLevel,
               int moverLevel, float x, float y,
-              float directionX, float directionY);
+              float directionX, float direction);
 
     virtual void present();
 
@@ -161,6 +163,7 @@ protected:
     TimePoint m_deathTime;
     bool m_hasDest;
     float m_destX, m_destY;
+    std::vector<SkillData> m_skills;
 };
 
 } // end of namespace bot
