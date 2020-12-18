@@ -3,6 +3,7 @@
 #include "misc/bot_log.h"
 #include "misc/bot_json_utils.h"
 #include "misc/bot_math_utils.h"
+#include "geometry/bot_rectangle.h"
 #include "gametemplate/bot_base_template.h"
 #include "gametemplate/bot_weapon_template.h"
 #include "gametemplate/bot_mover_template.h"

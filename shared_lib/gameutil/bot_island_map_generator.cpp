@@ -1,9 +1,8 @@
 #include "misc/bot_log.h"
 #include "misc/bot_json_utils.h"
-#include "structure/bot_named_map.h"
-#include "gametemplate/bot_tile_template.h"
 #include "gameutil/bot_generated_map.h"
 #include "gameutil/bot_island_map_generator.h"
+#include "gameutil/bot_game_lib.h"
 
 namespace bot {
 
@@ -18,15 +17,9 @@ IslandMapGenerator::IslandMapGenerator()
 {
 }
 
-bool IslandMapGenerator::init(const rapidjson::Value& json,
-                              const PlayerTemplate* playerTemplate,
-                              const NamedMap<AIRobotTemplate>& robotTemplateLib,
-                              const NamedMap<TileTemplate>& tileTemplateLib,
-                              int maxRobotCount)
+bool IslandMapGenerator::init(const rapidjson::Value& json)
 {
-    bool ret = MapGenerator::init(json, playerTemplate, robotTemplateLib,
-                                  tileTemplateLib, maxRobotCount);
-    if (!ret)
+    if (!MapGenerator::init(json))
     {
         return false;
     }
@@ -48,12 +41,13 @@ bool IslandMapGenerator::init(const rapidjson::Value& json,
         return false;
     }
 
+    const GameLib& lib = GameLib::getInstance();
     int islandTileCount = static_cast<int>(m_islandTiles.size());
 
     m_islandTileTemplates.resize(islandTileCount);
     for (int i = 0; i < islandTileCount; ++i)
     {
-        const TileTemplate* t = tileTemplateLib.search(m_islandTiles[i]);
+        const TileTemplate* t = lib.getTileTemplate(m_islandTiles[i]);
         if (!t)
         {
             LOG_ERROR("Failed to find tile template %s",

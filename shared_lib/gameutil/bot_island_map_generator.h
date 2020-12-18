@@ -14,11 +14,7 @@ public:
     virtual ~IslandMapGenerator()
     {}
 
-    virtual bool init(const rapidjson::Value& json,
-                      const PlayerTemplate* playerTemplate,
-                      const NamedMap<AIRobotTemplate>& robotTemplateLib,
-                      const NamedMap<TileTemplate>& tileTemplateLib,
-                      int maxRobotCount);
+    virtual bool init(const rapidjson::Value& json);
 
     virtual bool generate(const char* fileName);
 

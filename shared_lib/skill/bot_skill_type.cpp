@@ -11,11 +11,11 @@ static std::vector<std::string> k_skillTypeStr = {
 
 SkillType strToSkillType(const std::string& s)
 {
-    for (SkillType t = SKILL_SHOOT; t < SKILL_COUNT; ++i)
+    for (int t = SKILL_SHOOT; t < SKILL_COUNT; ++t)
     {
         if (k_skillTypeStr[t] == s)
         {
-            return t;
+            return static_cast<SkillType>(t);
         }
     }
 

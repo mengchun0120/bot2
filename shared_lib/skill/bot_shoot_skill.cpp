@@ -44,7 +44,7 @@ bool ShootSkill::init(const rapidjson::Value& elem)
 
 bool ShootSkill::apply(Robot& robot, GameScreen& screen)
 {
-
+    return true;
 }
 
 } // end of namespace bot

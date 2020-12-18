@@ -137,7 +137,8 @@ bool GameLib::load()
         return false;
     }
 
-    ret = m_mapGeneratorLib.load(cfg.getMapGeneratorLib());
+    ret = m_mapGeneratorLib.load(cfg.getMapGeneratorLib(),
+                                 MapGenerator::create);
     if (!ret)
     {
         LOG_ERROR("Failed to load map-generator lib from %s",
@@ -145,12 +146,7 @@ bool GameLib::load()
         return false;
     }
 
-    ProgressBarTemplate::Parser progressBarParser(m_textureLib,
-                                                  m_colorLib,
-                                                  m_rectLib);
-
-    ret = m_progressBarTemplateLib.load(cfg.getProgressBarTemplateLib(),
-                                        progressBarParser);
+    ret = m_progressBarTemplateLib.load(cfg.getProgressBarTemplateLib());
     if (!ret)
     {
         LOG_ERROR("Failed to load progress-bar template from %s",

@@ -11,7 +11,7 @@ class GameScreen;
 
 class AI {
 public:
-    static AI* create(const rapidjson::Value& elem);
+    static AI* create(const std::string& name, const rapidjson::Value& elem);
 
     AI()
     {}

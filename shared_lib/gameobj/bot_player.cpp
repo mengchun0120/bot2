@@ -1,12 +1,12 @@
 #include <cstdio>
 #include "misc/bot_log.h"
 #include "misc/bot_math_utils.h"
-#include "screen/bot_game_screen.h"
 #include "gametemplate/bot_player_template.h"
 #include "gameutil/bot_game_lib.h"
 #include "gameobj/bot_goodie.h"
 #include "gameobj/bot_dashboard.h"
 #include "gameobj/bot_player.h"
+#include "screen/bot_game_screen.h"
 #include "app/bot_app.h"
 
 namespace bot {

@@ -24,7 +24,7 @@ MapGenerator* MapGenerator::create(const std::string& name,
     if ("islandMapGenerator" == name)
     {
         g = new IslandMapGenerator();
-        bool ret = g->init(elem, m_maxRobotCount);
+        bool ret = g->init(elem);
         if (!ret)
         {
             delete g;
@@ -52,7 +52,6 @@ MapGenerator::MapGenerator()
 
 bool MapGenerator::init(const rapidjson::Value& json)
 {
-    m_playerTemplate = playerTemplate;
 
     std::vector<JsonParamPtr> params = {
         jsonParam(m_minRowCount, "minRowCount", gt(m_minRowCount, 0)),
@@ -71,7 +70,8 @@ bool MapGenerator::init(const rapidjson::Value& json)
     int count = static_cast<int>(m_robotNames.size());
     const GameLib& lib = GameLib::getInstance();
 
-    m_robotSlotSize = 2.0f * playerTemplate->getCoverBreath();
+    m_playerTemplate = &lib.getPlayerTemplate();
+    m_robotSlotSize = 2.0f * m_playerTemplate->getCoverBreath();
     m_robotTemplates.resize(count);
     for (int i = 0; i < count; ++i)
     {

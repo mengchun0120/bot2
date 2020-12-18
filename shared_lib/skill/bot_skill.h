@@ -7,6 +7,7 @@
 namespace bot {
 
 class GameScreen;
+class Robot;
 
 class Skill {
 public:
