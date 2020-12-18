@@ -1,11 +1,6 @@
 #include "misc/bot_log.h"
 #include "opengl/bot_text_system.h"
-#include "opengl/bot_color.h"
-#include "geometry/bot_rectangle.h"
 #include "gameutil/bot_game_lib.h"
-#include "gametemplate/bot_goodie_template.h"
-#include "gametemplate/bot_progress_bar_template.h"
-#include "gameobj/bot_dashboard_config.h"
 #include "gameobj/bot_dashboard.h"
 #include "gameobj/bot_player.h"
 #include "screen/bot_game_screen.h"
@@ -17,13 +12,12 @@ bool getProgressBarTemplates(
             std::vector<const ProgressBarTemplate*>& barTemplates,
             const char* barNames[], int barCount)
 {
-    const NamedMap<ProgressBarTemplate>& lib =
-                GameLib::getInstance().getProgressBarTemplateLib();
+    const GameLib& lib = GameLib::getInstance();
 
     barTemplates.resize(barCount);
     for (int i = 0; i < barCount; ++i)
     {
-        const ProgressBarTemplate* t = lib.search(barNames[i]);
+        const ProgressBarTemplate* t = lib.getProgressBarTemplate(barNames[i]);
         if (!t)
         {
             LOG_ERROR("Failed to find progress-bar %s", barNames[i]);
@@ -40,13 +34,12 @@ bool getStatusBarTemplates(
             std::vector<const StatusBarTemplate*>& statusTemplates,
             const char* statusNames[], int statusCount)
 {
-    const NamedMap<StatusBarTemplate>& lib =
-                GameLib::getInstance().getStatusBarTemplateLib();
+    const GameLib& lib = GameLib::getInstance();
 
     statusTemplates.resize(statusCount);
     for (int i = 0; i < statusCount; ++i)
     {
-        const StatusBarTemplate* t = lib.search(statusNames[i]);
+        const StatusBarTemplate* t = lib.getStatusBarTemplate(statusNames[i]);
         if (!t)
         {
             LOG_ERROR("Failed to find progress-bar %s", statusNames[i]);

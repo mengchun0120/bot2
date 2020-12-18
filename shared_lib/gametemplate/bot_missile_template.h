@@ -12,41 +12,12 @@ class Color;
 
 class MissileTemplate : public GameObjectTemplate, public SingleUnitTemplate {
 public:
-    class Parser {
-    public:
-        Parser(const NamedMap<Texture>& textureLib,
-               const NamedMap<Rectangle>& rectLib,
-               const NamedMap<ParticleEffectTemplate>& particleEffectLib,
-               const NamedMap<Color>& colorLib)
-            : m_textureLib(textureLib)
-            , m_rectLib(rectLib)
-            , m_particleEffectLib(particleEffectLib)
-            , m_colorLib(colorLib)
-        {}
-
-        ~Parser()
-        {}
-
-        MissileTemplate* create(const std::string& name,
-                                const rapidjson::Value& elem);
-
-    private:
-        const NamedMap<Texture>& m_textureLib;
-        const NamedMap<Rectangle>& m_rectLib;
-        const NamedMap<ParticleEffectTemplate>& m_particleEffectLib;
-        const NamedMap<Color>& m_colorLib;
-    };
-
     MissileTemplate();
 
     virtual ~MissileTemplate()
     {}
 
-    bool init(const NamedMap<Texture>& textureLib,
-              const NamedMap<Rectangle>& rectLib,
-              const NamedMap<ParticleEffectTemplate>& particleEffectLib,
-              const NamedMap<Color>& colorLib,
-              const rapidjson::Value& elem);
+    bool init(const rapidjson::Value& elem);
 
     float getSpeed() const
     {

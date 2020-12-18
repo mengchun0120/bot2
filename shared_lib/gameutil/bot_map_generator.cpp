@@ -2,12 +2,9 @@
 #include <cmath>
 #include "misc/bot_log.h"
 #include "misc/bot_json_utils.h"
-#include "structure/bot_named_map.h"
-#include "gametemplate/bot_player_template.h"
-#include "gametemplate/bot_ai_robot_template.h"
 #include "gameutil/bot_generated_map.h"
-#include "gameutil/bot_map_generator.h"
 #include "gameutil/bot_island_map_generator.h"
+#include "gameutil/bot_game_lib.h"
 
 namespace bot {
 
@@ -19,16 +16,15 @@ void randomDirection(Random& rand, float& directionX, float& directionY)
     directionY = static_cast<float>(sin(theta));
 }
 
-MapGenerator* MapGenerator::Parser::create(const std::string& name,
-                                           const rapidjson::Value& elem)
+MapGenerator* MapGenerator::create(const std::string& name,
+                                   const rapidjson::Value& elem)
 {
     MapGenerator* g = nullptr;
 
     if ("islandMapGenerator" == name)
     {
         g = new IslandMapGenerator();
-        bool ret = g->init(elem, m_playerTemplate, m_robotTemplateLib,
-                           m_tileTemplateLib, m_maxRobotCount);
+        bool ret = g->init(elem, m_maxRobotCount);
         if (!ret)
         {
             delete g;
@@ -54,11 +50,7 @@ MapGenerator::MapGenerator()
 {
 }
 
-bool MapGenerator::init(const rapidjson::Value& json,
-                        const PlayerTemplate* playerTemplate,
-                        const NamedMap<AIRobotTemplate>& robotTemplateLib,
-                        const NamedMap<TileTemplate>& tileTemplateLib,
-                        int maxRobotCount)
+bool MapGenerator::init(const rapidjson::Value& json)
 {
     m_playerTemplate = playerTemplate;
 
@@ -76,18 +68,14 @@ bool MapGenerator::init(const rapidjson::Value& json,
         return false;
     }
 
-    if (maxRobotCount > 0)
-    {
-        m_maxRobotCount = maxRobotCount;
-    }
-
     int count = static_cast<int>(m_robotNames.size());
+    const GameLib& lib = GameLib::getInstance();
 
     m_robotSlotSize = 2.0f * playerTemplate->getCoverBreath();
     m_robotTemplates.resize(count);
     for (int i = 0; i < count; ++i)
     {
-        const AIRobotTemplate* t = robotTemplateLib.search(m_robotNames[i]);
+        const AIRobotTemplate* t = lib.getAIRobotTemplate(m_robotNames[i]);
         if (!t)
         {
             LOG_ERROR("Failed to find robot template %s",

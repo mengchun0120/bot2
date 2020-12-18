@@ -9,33 +9,12 @@ namespace bot {
 
 class TileTemplate: public GameObjectTemplate, public SingleUnitTemplate {
 public:
-    class Parser {
-    public:
-        Parser(const NamedMap<Texture>& textureLib,
-               const NamedMap<Rectangle>& rectLib)
-            : m_textureLib(textureLib)
-            , m_rectLib(rectLib)
-        {}
-
-        ~Parser()
-        {}
-
-        TileTemplate* create(const std::string& name,
-                             const rapidjson::Value& elem);
-
-    private:
-        const NamedMap<Texture>& m_textureLib;
-        const NamedMap<Rectangle>& m_rectLib;
-    };
-
     TileTemplate();
 
     virtual ~TileTemplate()
     {}
 
-    bool init(const NamedMap<Texture>& textureLib,
-              const NamedMap<Rectangle>& rectLib,
-              const rapidjson::Value& elem);
+    bool init(const rapidjson::Value& elem);
 
     float getHP(int level) const
     {

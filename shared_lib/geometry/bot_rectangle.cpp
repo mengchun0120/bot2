@@ -4,19 +4,6 @@
 
 namespace bot {
 
-Rectangle* Rectangle::Parser::create(const std::string& name,
-                                     const rapidjson::Value& elem)
-{
-    Rectangle* rect = new Rectangle();
-    if (!rect->init(elem))
-    {
-        delete rect;
-        return nullptr;
-    }
-
-    return rect;
-}
-
 Rectangle::Rectangle()
 : Polygon()
 , m_width(0)

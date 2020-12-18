@@ -5,7 +5,6 @@
 
 namespace bot {
 
-template <typename T> class NamedMap;
 class Texture;
 class Rectangle;
 
@@ -19,9 +18,7 @@ public:
     virtual ~SingleUnitTemplate()
     {}
 
-    bool init(const NamedMap<Texture>& textureLib,
-              const NamedMap<Rectangle>& rectLib,
-              const rapidjson::Value& elem);
+    bool init(const rapidjson::Value& elem);
 
     const Texture* getTexture() const
     {

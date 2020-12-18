@@ -3,11 +3,7 @@
 #include "misc/bot_constants.h"
 #include "misc/bot_json_utils.h"
 #include "misc/bot_math_utils.h"
-#include "structure/bot_named_map.h"
-#include "opengl/bot_texture.h"
-#include "geometry/bot_rectangle.h"
-#include "gametemplate/bot_missile_template.h"
-#include "gametemplate/bot_weapon_template.h"
+#include "gameutil/bot_game_lib.h"
 
 namespace bot {
 
@@ -63,31 +59,15 @@ bool initFirePoints(std::vector<FirePoint>& firePoints,
     return true;
 }
 
-WeaponTemplate* WeaponTemplate::Parser::create(std::string& name,
-                                               const rapidjson::Value& elem)
-{
-    WeaponTemplate* t = new WeaponTemplate();
-    if (!t->init(m_textureLib, m_rectLib, m_missileLib, elem))
-    {
-        delete t;
-        return nullptr;
-    }
-
-    return t;
-}
-
 WeaponTemplate::WeaponTemplate()
     : m_fireDuration(0.0f)
     , m_fireDurReductionPerLevel(0.0f)
     , m_missileTemplate(nullptr)
 {}
 
-bool WeaponTemplate::init(const NamedMap<Texture>& textureLib,
-                          const NamedMap<Rectangle>& rectLib,
-                          const NamedMap<MissileTemplate>& missileLib,
-                          const rapidjson::Value& elem)
+bool WeaponTemplate::init(const rapidjson::Value& elem)
 {
-    if (!SingleUnitTemplate::init(textureLib, rectLib, elem))
+    if (!SingleUnitTemplate::init(elem))
     {
         return false;
     }
@@ -112,9 +92,11 @@ bool WeaponTemplate::init(const NamedMap<Texture>& textureLib,
         return false;
     }
 
+    const GameLib& lib = GameLib::getInstance();
+
     if (!missileName.empty())
     {
-        m_missileTemplate = missileLib.search(missileName);
+        m_missileTemplate = lib.getMissileTemplate(missileName);
         if (!m_missileTemplate)
         {
             LOG_ERROR("Failed to find missile-template %s",
@@ -132,12 +114,10 @@ bool WeaponTemplate::init(const NamedMap<Texture>& textureLib,
     return true;
 }
 
-bool WeaponTemplate::init(const NamedMap<Texture>& textureLib,
-                          const NamedMap<Rectangle>& rectLib,
-                          const MissileTemplate* missileTemplate,
+bool WeaponTemplate::init(const MissileTemplate* missileTemplate,
                           const rapidjson::Value& elem)
 {
-    if (!SingleUnitTemplate::init(textureLib, rectLib, elem))
+    if (!SingleUnitTemplate::init(elem))
     {
         return false;
     }

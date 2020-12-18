@@ -25,9 +25,7 @@ bool GameLib::load()
 {
     const AppConfig& cfg = AppConfig::getInstance();
 
-    Texture::Parser textureParser(cfg.getTextureDir());
-
-    bool ret = m_textureLib.load(cfg.getTextureLib().c_str(), textureParser);
+    bool ret = m_textureLib.load(cfg.getTextureLib());
     if (!ret)
     {
         LOG_ERROR("Failed to read texture lib from %s",
@@ -35,9 +33,7 @@ bool GameLib::load()
         return false;
     }
 
-    Rectangle::Parser rectParser;
-
-    ret = m_rectLib.load(cfg.getRectLib().c_str(), rectParser);
+    ret = m_rectLib.load(cfg.getRectLib());
     if (!ret)
     {
         LOG_ERROR("Failed to read rect lib from %s",
@@ -45,9 +41,7 @@ bool GameLib::load()
         return false;
     }
 
-    Color::Parser colorParser;
-
-    ret = m_colorLib.load(cfg.getColorLib().c_str(), colorParser);
+    ret = m_colorLib.load(cfg.getColorLib());
     if (!ret)
     {
         LOG_ERROR("Failed to read color lib from %s",
@@ -55,10 +49,7 @@ bool GameLib::load()
         return false;
     }
 
-    TileTemplate::Parser tileTemplateParser(m_textureLib, m_rectLib);
-
-    ret = m_tileTemplateLib.load(cfg.getTileTemplateLib().c_str(),
-                                 tileTemplateParser);
+    ret = m_tileTemplateLib.load(cfg.getTileTemplateLib());
     if (!ret)
     {
         LOG_ERROR("Failed to read tile template lib from %s",
@@ -66,12 +57,8 @@ bool GameLib::load()
         return false;
     }
 
-    ParticleEffectTemplate::Parser particleEffectParser(m_textureLib,
-                                                        m_colorLib);
-
     ret = m_particleEffectTemplateLib.load(
-                            cfg.getParticleEffectTemplateLib().c_str(),
-                            particleEffectParser);
+                            cfg.getParticleEffectTemplateLib());
     if (!ret)
     {
         LOG_ERROR("Failed to read particle effect lib from %s",
@@ -79,12 +66,7 @@ bool GameLib::load()
         return false;
     }
 
-    MissileTemplate::Parser missileParser(m_textureLib, m_rectLib,
-                                          m_particleEffectTemplateLib,
-                                          m_colorLib);
-
-    ret = m_missileTemplateLib.load(cfg.getMissileTemplateLib().c_str(),
-                                    missileParser);
+    ret = m_missileTemplateLib.load(cfg.getMissileTemplateLib());
     if (!ret)
     {
         LOG_ERROR("Failed to read missile template lib from %s",
@@ -92,10 +74,7 @@ bool GameLib::load()
         return false;
     }
 
-    ProgressRing::Parser progressRingParser(m_colorLib);
-
-    ret = m_progressRingLib.load(cfg.getProgressRingLib().c_str(),
-                                 progressRingParser);
+    ret = m_progressRingLib.load(cfg.getProgressRingLib());
     if (!ret)
     {
         LOG_ERROR("Failed to read progress ring from %s",
@@ -103,11 +82,7 @@ bool GameLib::load()
         return false;
     }
 
-    GoodieTemplate::Parser goodieParser(m_rectLib, m_textureLib,
-                                        m_colorLib, m_progressRingLib);
-
-    ret = m_goodieTemplateLib.load(cfg.getGoodieTemplateLib().c_str(),
-                                   goodieParser);
+    ret = m_goodieTemplateLib.load(cfg.getGoodieTemplateLib());
     if (!ret)
     {
         LOG_ERROR("Failed to read goodie template lib from %s",
@@ -115,18 +90,14 @@ bool GameLib::load()
         return false;
     }
 
-    AI::Parser aiParser;
-
-    ret = m_aiLib.load(cfg.getAILib().c_str(), aiParser);
+    ret = m_aiLib.load(cfg.getAILib(), AI::create);
     if (!ret)
     {
         LOG_ERROR("Failed to read AI from %s", cfg.getAILib().c_str());
         return false;
     }
 
-    BaseTemplate::Parser baseParser(m_textureLib, m_rectLib, m_colorLib);
-
-    ret = m_baseTemplateLib.load(cfg.getBaseTemplateLib().c_str(), baseParser);
+    ret = m_baseTemplateLib.load(cfg.getBaseTemplateLib());
     if (!ret)
     {
         LOG_ERROR("Failed to read base-template library from %s",
@@ -134,11 +105,7 @@ bool GameLib::load()
         return false;
     }
 
-    WeaponTemplate::Parser weaponParser(m_textureLib, m_rectLib,
-                                        m_missileTemplateLib);
-
-    ret = m_weaponTemplateLib.load(cfg.getWeaponTemplateLib().c_str(),
-                                   weaponParser);
+    ret = m_weaponTemplateLib.load(cfg.getWeaponTemplateLib());
     if (!ret)
     {
         LOG_ERROR("Failed to read weapon-template library from %s",
@@ -146,10 +113,7 @@ bool GameLib::load()
         return false;
     }
 
-    MoverTemplate::Parser moverParser(m_textureLib, m_rectLib);
-
-    ret = m_moverTemplateLib.load(cfg.getMoverTemplateLib().c_str(),
-                                  moverParser);
+    ret = m_moverTemplateLib.load(cfg.getMoverTemplateLib());
     if (!ret)
     {
         LOG_ERROR("Failed to read mover-template library from %s",
@@ -157,13 +121,7 @@ bool GameLib::load()
         return false;
     }
 
-    AIRobotTemplate::Parser aiRobotParser(m_baseTemplateLib,
-                                          m_weaponTemplateLib,
-                                          m_moverTemplateLib,
-                                          m_aiLib);
-
-    ret = m_aiRobotTemplateLib.load(cfg.getAIRobotTemplateLib().c_str(),
-                                    aiRobotParser);
+    ret = m_aiRobotTemplateLib.load(cfg.getAIRobotTemplateLib());
     if (!ret)
     {
         LOG_ERROR("Failed to read ai-robot template lib from %s",
@@ -171,10 +129,7 @@ bool GameLib::load()
         return false;
     }
 
-    ret = m_playerTemplate.init(cfg.getPlayerTemplate(),
-                                m_textureLib, m_rectLib,
-                                m_particleEffectTemplateLib, m_colorLib);
-
+    ret = m_playerTemplate.init(cfg.getPlayerTemplate());
     if (!ret)
     {
         LOG_ERROR("Failed to read player template from %s",
@@ -182,12 +137,7 @@ bool GameLib::load()
         return false;
     }
 
-    MapGenerator::Parser mapGeneratorParser(&m_playerTemplate,
-                                            m_tileTemplateLib,
-                                            m_aiRobotTemplateLib,
-                                            cfg.getMaxRobotCount());
-    ret = m_mapGeneratorLib.load(cfg.getMapGeneratorLib().c_str(),
-                                 mapGeneratorParser);
+    ret = m_mapGeneratorLib.load(cfg.getMapGeneratorLib());
     if (!ret)
     {
         LOG_ERROR("Failed to load map-generator lib from %s",
@@ -208,10 +158,7 @@ bool GameLib::load()
         return false;
     }
 
-    StatusBarTemplate::Parser statusBarParser(m_textureLib);
-
-    ret = m_statusBarTemplateLib.load(cfg.getStatusBarTemplateLib(),
-                                      statusBarParser);
+    ret = m_statusBarTemplateLib.load(cfg.getStatusBarTemplateLib());
     if (!ret)
     {
         LOG_ERROR("Failed to load status-bar template from %s",

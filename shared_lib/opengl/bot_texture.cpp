@@ -5,21 +5,9 @@
 #include "misc/bot_file_utils.h"
 #include "misc/bot_json_parser.h"
 #include "opengl/bot_texture.h"
+#include "app/bot_app_config.h"
 
 namespace bot {
-
-Texture* Texture::Parser::create(const std::string& name,
-                                 const rapidjson::Value& elem)
-{
-    Texture* texture = new Texture();
-    if (!texture->init(m_textureDir, elem))
-    {
-        delete texture;
-        return nullptr;
-    }
-
-    return texture;
-}
 
 Texture::Texture()
     : m_textureId(0)
@@ -37,7 +25,7 @@ Texture::~Texture()
     }
 }
 
-bool Texture::init(const std::string& textureDir, const rapidjson::Value& elem)
+bool Texture::init(const rapidjson::Value& elem)
 {
     std::string fileName;
     if (!JsonParser::parse(fileName, elem, "file"))
@@ -46,7 +34,8 @@ bool Texture::init(const std::string& textureDir, const rapidjson::Value& elem)
         return false;
     }
 
-    std::string filePath = constructPath({ textureDir, fileName });
+    const AppConfig& cfg = AppConfig::getInstance();
+    std::string filePath = constructPath({ cfg.getTextureDir(), fileName });
 
     if (!init(filePath))
     {

@@ -8,34 +8,16 @@
 
 namespace bot {
 
-template <typename T> class NamedMap;
 class Texture;
 
 class StatusBarTemplate {
 public:
-    class Parser {
-    public:
-        Parser(const NamedMap<Texture>& textureLib)
-            : m_textureLib(textureLib)
-        {}
-
-        ~Parser()
-        {}
-
-        StatusBarTemplate* create(const std::string& name,
-                                  const rapidjson::Value& elem);
-
-    private:
-        const NamedMap<Texture>& m_textureLib;
-    };
-
     StatusBarTemplate();
 
     ~StatusBarTemplate()
     {}
 
-    bool init(const NamedMap<Texture>& textureLib,
-              const rapidjson::Value& elem);
+    bool init(const rapidjson::Value& elem);
 
     const Texture* getTexture() const
     {

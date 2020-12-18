@@ -12,42 +12,14 @@ class MissileTemplate;
 
 class WeaponTemplate: public SingleUnitTemplate {
 public:
-    class Parser {
-    public:
-        Parser(const NamedMap<Texture>& textureLib,
-               const NamedMap<Rectangle>& rectLib,
-               const NamedMap<MissileTemplate>& missileLib)
-            : m_textureLib(textureLib)
-            , m_rectLib(rectLib)
-            , m_missileLib(missileLib)
-        {}
-
-        ~Parser()
-        {}
-
-        WeaponTemplate* create(std::string& name,
-                               const rapidjson::Value& elem);
-
-    private:
-        const NamedMap<Texture>& m_textureLib;
-        const NamedMap<Rectangle>& m_rectLib;
-        const NamedMap<MissileTemplate>& m_missileLib;
-    };
-
-public:
     WeaponTemplate();
 
     virtual ~WeaponTemplate()
     {}
 
-    bool init(const NamedMap<Texture>& textureLib,
-              const NamedMap<Rectangle>& rectLib,
-              const NamedMap<MissileTemplate>& missileLib,
-              const rapidjson::Value& elem);
+    bool init(const rapidjson::Value& elem);
 
-    bool init(const NamedMap<Texture>& textureLib,
-              const NamedMap<Rectangle>& rectLib,
-              const MissileTemplate* missileTemplate,
+    bool init(const MissileTemplate* missileTemplate,
               const rapidjson::Value& elem);
 
     float getFireDuration(int level) const;

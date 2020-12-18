@@ -1,24 +1,8 @@
 #include "misc/bot_log.h"
 #include "misc/bot_json_utils.h"
-#include "structure/bot_named_map.h"
-#include "opengl/bot_texture.h"
-#include "geometry/bot_rectangle.h"
-#include "gametemplate/bot_base_template.h"
+#include "gameutil/bot_game_lib.h"
 
 namespace bot {
-
-BaseTemplate* BaseTemplate::Parser::create(std::string& name,
-                                           const rapidjson::Value& elem)
-{
-    BaseTemplate* t = new BaseTemplate();
-    if (!t->init(m_textureLib, m_rectLib, m_colorLib, elem))
-    {
-        delete t;
-        return nullptr;
-    }
-
-    return t;
-}
 
 BaseTemplate::BaseTemplate()
     : m_hp(0.0f)
@@ -36,12 +20,9 @@ BaseTemplate::BaseTemplate()
     , m_hpColor(nullptr)
 {}
 
-bool BaseTemplate::init(const NamedMap<Texture>& textureLib,
-                        const NamedMap<Rectangle>& rectLib,
-                        const NamedMap<Color>& colorLib,
-                        const rapidjson::Value& elem)
+bool BaseTemplate::init(const rapidjson::Value& elem)
 {
-    if (!SingleUnitTemplate::init(textureLib, rectLib, elem))
+    if (!SingleUnitTemplate::init(elem))
     {
         LOG_ERROR("Failed to initialize SingleUnitTemplate");
         return false;
@@ -91,7 +72,9 @@ bool BaseTemplate::init(const NamedMap<Texture>& textureLib,
         return false;
     }
 
-    m_hpColor = colorLib.search(hpColorName);
+    const GameLib& lib = GameLib::getInstance();
+
+    m_hpColor = lib.getColor(hpColorName);
     if (!m_hpColor)
     {
         LOG_ERROR("Failed to find color %s", hpColorName.c_str());

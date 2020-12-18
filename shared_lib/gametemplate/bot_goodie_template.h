@@ -9,38 +9,12 @@
 
 namespace bot {
 
-template <typename T> class NamedMap;
 class Rectangle;
 class Texture;
 class Color;
 
 class GoodieTemplate : public GameObjectTemplate {
 public:
-    class Parser {
-    public:
-        Parser(const NamedMap<Rectangle>& rectLib,
-               const NamedMap<Texture>& textureLib,
-               const NamedMap<Color>& colorLib,
-               const NamedMap<ProgressRing>& ringLib)
-            : m_rectLib(rectLib)
-            , m_textureLib(textureLib)
-            , m_colorLib(colorLib)
-            , m_ringLib(ringLib)
-        {}
-
-        ~Parser()
-        {}
-
-        GoodieTemplate* create(const std::string& name,
-                               const rapidjson::Value& elem);
-
-    private:
-        const NamedMap<Rectangle>& m_rectLib;
-        const NamedMap<Texture>& m_textureLib;
-        const NamedMap<Color>& m_colorLib;
-        const NamedMap<ProgressRing>& m_ringLib;
-    };
-
     GoodieTemplate()
         : GameObjectTemplate(GAME_OBJ_TYPE_GOODIE)
         , m_goodieType(GOODIE_UNKNOWN)
@@ -53,12 +27,7 @@ public:
     virtual ~GoodieTemplate()
     {}
 
-    bool init(const std::string& name,
-              const NamedMap<Rectangle>& rectLib,
-              const NamedMap<Texture>& textureLib,
-              const NamedMap<Color>& colorLib,
-              const NamedMap<ProgressRing>& ringLib,
-              const rapidjson::Value& elem);
+    bool init(const rapidjson::Value& elem);
 
     GoodieType getGoodieType() const
     {

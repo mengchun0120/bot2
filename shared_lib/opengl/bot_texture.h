@@ -8,27 +8,11 @@ namespace bot {
 
 class Texture {
 public:
-    class Parser {
-    public:
-        Parser(const std::string& textureDir)
-            : m_textureDir(textureDir)
-        {}
-
-        ~Parser()
-        {}
-
-        Texture* create(const std::string& name,
-                        const rapidjson::Value& elem);
-
-    private:
-        const std::string& m_textureDir;
-    };
-
     Texture();
 
     virtual ~Texture();
 
-    bool init(const std::string& textureDir, const rapidjson::Value& elem);
+    bool init(const rapidjson::Value& elem);
 
     bool init(const std::string& imageFile);
 

@@ -1,27 +1,10 @@
 #include <algorithm>
 #include "misc/bot_log.h"
 #include "misc/bot_json_utils.h"
-#include "structure/bot_named_map.h"
-#include "opengl/bot_texture.h"
 #include "opengl/bot_text_system.h"
-#include "gametemplate/bot_status_bar_template.h"
+#include "gameutil/bot_game_lib.h"
 
 namespace bot {
-
-StatusBarTemplate* StatusBarTemplate::Parser::create(
-                                            const std::string& name,
-                                            const rapidjson::Value& elem)
-{
-    StatusBarTemplate* bar = new StatusBarTemplate();
-
-    if (!bar->init(m_textureLib, elem))
-    {
-        delete bar;
-        return nullptr;
-    }
-
-    return bar;
-}
 
 StatusBarTemplate::StatusBarTemplate()
     : m_texture(nullptr)
@@ -33,8 +16,7 @@ StatusBarTemplate::StatusBarTemplate()
 {
 }
 
-bool StatusBarTemplate::init(const NamedMap<Texture>& textureLib,
-                             const rapidjson::Value& elem)
+bool StatusBarTemplate::init(const rapidjson::Value& elem)
 {
     std::string textureName;
     std::vector<float> rectVec;
@@ -55,7 +37,9 @@ bool StatusBarTemplate::init(const NamedMap<Texture>& textureLib,
         return false;
     }
 
-    m_texture = textureLib.search(textureName);
+    const GameLib& lib = GameLib::getInstance();
+
+    m_texture = lib.getTexture(textureName);
     if (!m_texture)
     {
         LOG_ERROR("Failed to find texture %s", textureName.c_str());

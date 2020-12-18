@@ -5,7 +5,6 @@
 
 namespace bot {
 
-template <typename T> class NamedMap;
 class BaseTemplate;
 class WeaponTemplate;
 class MoverTemplate;
@@ -17,10 +16,7 @@ public:
     virtual ~RobotTemplate()
     {}
 
-    bool init(const NamedMap<BaseTemplate>& baseLib,
-              const NamedMap<WeaponTemplate>& weaponLib,
-              const NamedMap<MoverTemplate>& moverLib,
-              const rapidjson::Value& elem);
+    bool init(const rapidjson::Value& elem);
 
     const BaseTemplate* getBaseTemplate() const
     {

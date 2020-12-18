@@ -1,15 +1,11 @@
 #include "misc/bot_log.h"
 #include "misc/bot_json_utils.h"
-#include "structure/bot_named_map.h"
-#include "opengl/bot_texture.h"
-#include "geometry/bot_rectangle.h"
+#include "gameutil/bot_game_lib.h"
 #include "gametemplate/bot_single_unit_template.h"
 
 namespace bot {
 
-bool SingleUnitTemplate::init(const NamedMap<Texture>& textureLib,
-                              const NamedMap<Rectangle>& rectLib,
-                              const rapidjson::Value& elem)
+bool SingleUnitTemplate::init(const rapidjson::Value& elem)
 {
     std::string textureName, rectName;
     std::vector<JsonParamPtr> params = {
@@ -22,14 +18,16 @@ bool SingleUnitTemplate::init(const NamedMap<Texture>& textureLib,
         return false;
     }
 
-    m_texture = textureLib.search(textureName);
+    const GameLib& lib = GameLib::getInstance();
+
+    m_texture = lib.getTexture(textureName);
     if (!m_texture)
     {
         LOG_ERROR("Failed to find texture %s", textureName.c_str());
         return false;
     }
 
-    m_rect = rectLib.search(rectName);
+    m_rect = lib.getRect(rectName);
     if (!m_rect)
     {
         LOG_ERROR("Failed to find rect %s", rectName.c_str());

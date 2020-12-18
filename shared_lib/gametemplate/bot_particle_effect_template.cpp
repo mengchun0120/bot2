@@ -1,25 +1,9 @@
 #include "misc/bot_log.h"
 #include "misc/bot_constants.h"
 #include "misc/bot_json_utils.h"
-#include "structure/bot_named_map.h"
-#include "opengl/bot_texture.h"
-#include "opengl/bot_color.h"
-#include "gametemplate/bot_particle_effect_template.h"
+#include "gameutil/bot_game_lib.h"
 
 namespace bot {
-
-ParticleEffectTemplate* ParticleEffectTemplate::Parser::create(
-                                            const std::string& name,
-                                            const rapidjson::Value& elem)
-{
-    ParticleEffectTemplate* t = new ParticleEffectTemplate();
-    if (!t->init(m_textureLib, m_colorLib, elem))
-    {
-        delete t;
-        return nullptr;
-    }
-    return t;
-}
 
 ParticleEffectTemplate::ParticleEffectTemplate()
     : GameObjectTemplate(GAME_OBJ_TYPE_PARTICLE_EFFECT)
@@ -31,9 +15,7 @@ ParticleEffectTemplate::ParticleEffectTemplate()
     , m_color(nullptr)
 {}
 
-bool ParticleEffectTemplate::init(const NamedMap<Texture>& textureLib,
-                                  const NamedMap<Color>& colorLib,
-                                  const rapidjson::Value& elem)
+bool ParticleEffectTemplate::init(const rapidjson::Value& elem)
 {
     if (!GameObjectTemplate::init(elem))
     {
@@ -75,14 +57,16 @@ bool ParticleEffectTemplate::init(const NamedMap<Texture>& textureLib,
 
     m_numParticles = static_cast<int>(data.size()) / NUM_FLOATS_PER_PARTICLE;
 
-    m_texture = textureLib.search(textureName);
+    const GameLib& lib = GameLib::getInstance();
+
+    m_texture = lib.getTexture(textureName);
     if (!m_texture)
     {
         LOG_ERROR("Cannot find texture %s", textureName.c_str());
         return false;
     }
 
-    m_color = colorLib.search(colorName);
+    m_color = lib.getColor(colorName);
     if (!m_color)
     {
         LOG_ERROR("Cannot find color %s", colorName.c_str());

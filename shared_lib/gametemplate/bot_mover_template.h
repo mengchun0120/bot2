@@ -8,34 +8,12 @@ namespace bot {
 
 class MoverTemplate: public SingleUnitTemplate {
 public:
-    class Parser {
-    public:
-        Parser(const NamedMap<Texture>& textureLib,
-               const NamedMap<Rectangle>& rectLib)
-            : m_textureLib(textureLib)
-            , m_rectLib(rectLib)
-        {}
-
-        ~Parser()
-        {}
-
-        MoverTemplate* create(const std::string& name,
-                              const rapidjson::Value& elem);
-
-    private:
-        const NamedMap<Texture>& m_textureLib;
-        const NamedMap<Rectangle>& m_rectLib;
-    };
-
-public:
     MoverTemplate();
 
     virtual ~MoverTemplate()
     {}
 
-    bool init(const NamedMap<Texture>& textureLib,
-              const NamedMap<Rectangle>& rectLib,
-              const rapidjson::Value& elem);
+    bool init(const rapidjson::Value& elem);
 
     float getSpeed(int level) const;
 

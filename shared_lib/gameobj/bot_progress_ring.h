@@ -8,34 +8,17 @@
 
 namespace bot {
 
-template <typename T> class NamedMap;
 class Color;
 class SimpleShaderProgram;
 
 class ProgressRing {
 public:
-    class Parser {
-    public:
-        Parser(const NamedMap<Color>& colorLib)
-            : m_colorLib(colorLib)
-        {}
-
-        ~Parser()
-        {}
-
-        ProgressRing* create(const std::string& name,
-                             const rapidjson::Value& elem);
-
-    private:
-        const NamedMap<Color>& m_colorLib;
-    };
-
     ProgressRing();
 
     ~ProgressRing()
     {}
 
-    bool init(const NamedMap<Color>& colorLib, const rapidjson::Value& elem);
+    bool init(const rapidjson::Value& elem);
 
     float getRadius() const
     {

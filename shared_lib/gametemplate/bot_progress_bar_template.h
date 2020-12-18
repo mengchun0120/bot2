@@ -9,42 +9,16 @@
 
 namespace bot {
 
-template <typename T> class NamedMap;
 class Texture;
 
 class ProgressBarTemplate {
 public:
-    class Parser {
-    public:
-        Parser(const NamedMap<Texture>& textureLib,
-               const NamedMap<Color>& colorLib,
-               const NamedMap<Rectangle>& rectLib)
-            : m_textureLib(textureLib)
-            , m_colorLib(colorLib)
-            , m_rectLib(rectLib)
-        {}
-
-        ~Parser()
-        {}
-
-        ProgressBarTemplate* create(const std::string& name,
-                                    const rapidjson::Value& elem);
-
-    private:
-        const NamedMap<Texture>& m_textureLib;
-        const NamedMap<Color>& m_colorLib;
-        const NamedMap<Rectangle>& m_rectLib;
-    };
-
     ProgressBarTemplate();
 
     ~ProgressBarTemplate()
     {}
 
-    bool init(const NamedMap<Texture>& textureLib,
-              const NamedMap<Color>& colorLib,
-              const NamedMap<Rectangle>& rectLib,
-              const rapidjson::Value& elem);
+    bool init(const rapidjson::Value& elem);
 
     const Texture* getTexture() const
     {

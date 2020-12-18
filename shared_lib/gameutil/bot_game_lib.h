@@ -62,9 +62,20 @@ public:
         return m_tileTemplateLib.search(name);
     }
 
+    const ParticleEffectTemplate* getParticleEffectTemplate(
+                                            const std::string& name) const
+    {
+        return m_particleEffectTemplateLib.search(name);
+    }
+
     const MissileTemplate* getMissileTemplate(const std::string& name) const
     {
         return m_missileTemplateLib.search(name);
+    }
+
+    const ProgressRing* getProgressRing(const std::string& name) const
+    {
+        return m_progressRingLib.search(name);
     }
 
     const AI* getAI(const std::string& name) const
@@ -77,19 +88,19 @@ public:
         return m_aiLib.search(name);
     }
 
-    const NamedMap<BaseTemplate>& getBaseTemplateLib() const
+    const BaseTemplate* getBaseTemplate(const std::string& name) const
     {
-        return m_baseTemplateLib;
+        return m_baseTemplateLib.search(name);
     }
 
-    const NamedMap<WeaponTemplate>& getWeaponTemplateLib() const
+    const WeaponTemplate* getWeaponTemplate(const std::string& name) const
     {
-        return m_weaponTemplateLib;
+        return m_weaponTemplateLib.search(name);
     }
 
-    const NamedMap<MoverTemplate>& getMoverTemplateLib() const
+    const MoverTemplate* getMoverTemplate(const std::string& name) const
     {
-        return m_moverTemplateLib;
+        return m_moverTemplateLib.search(name);
     }
 
     const AIRobotTemplate* getAIRobotTemplate(const std::string& name) const
@@ -97,29 +108,20 @@ public:
         return m_aiRobotTemplateLib.search(name);
     }
 
+    const ProgressBarTemplate* getProgressBarTemplate(
+                                           const std::string& name) const
+    {
+        return m_progressBarTemplateLib.search(name);
+    }
+
+    const StatusBarTemplate* getStatusBarTemplate(const std::string& name) const
+    {
+        return m_statusBarTemplateLib.search(name);
+    }
+
     const PlayerTemplate& getPlayerTemplate() const
     {
         return m_playerTemplate;
-    }
-
-    const NamedMap<GoodieTemplate>& getGoodieTemplateLib() const
-    {
-        return m_goodieTemplateLib;
-    }
-
-    const ProgressRing* getProgressRing(const std::string& name) const
-    {
-        return m_progressRingLib.search(name);
-    }
-
-    const NamedMap<ProgressBarTemplate>& getProgressBarTemplateLib() const
-    {
-        return m_progressBarTemplateLib;
-    }
-
-    const NamedMap<StatusBarTemplate>& getStatusBarTemplateLib() const
-    {
-        return m_statusBarTemplateLib;
     }
 
     const DashboardConfig& getDashboardConfig() const

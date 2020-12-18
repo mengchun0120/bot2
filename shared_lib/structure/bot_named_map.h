@@ -132,10 +132,11 @@ bool NamedMap<T>::load(const char* fileName)
             return false;
         }
 
-        T* t = T::create(elem);
-        if (!t)
+        T* t = new T();
+        if (!t->init(elem))
         {
             LOG_ERROR("Failed to parse the %dth object of %s", i, fileName);
+            delete t;
             return false;
         }
 
@@ -181,7 +182,7 @@ bool NamedMap<T>::load(const char* fileName, P& parser)
             return false;
         }
 
-        T* t = parser.create(name, elem);
+        T* t = parser(name, elem);
         if (!t)
         {
             LOG_ERROR("Failed to parse the %dth object of %s", i, fileName);

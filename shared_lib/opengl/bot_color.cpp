@@ -4,18 +4,6 @@
 
 namespace bot {
 
-Color* Color::Parser::create(const std::string& name,
-                             const rapidjson::Value& elem)
-{
-    Color* color = new Color();
-    if (!color->init(elem))
-    {
-        delete color;
-        return nullptr;
-    }
-    return color;
-}
-
 bool Color::validateColor(int red, int green, int blue, int alpha)
 {
     if (!validateElem(red))

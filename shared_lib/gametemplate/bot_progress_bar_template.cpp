@@ -1,25 +1,8 @@
 #include "misc/bot_log.h"
 #include "misc/bot_json_utils.h"
-#include "structure/bot_named_map.h"
-#include "opengl/bot_texture.h"
-#include "gametemplate/bot_progress_bar_template.h"
+#include "gameutil/bot_game_lib.h"
 
 namespace bot {
-
-ProgressBarTemplate* ProgressBarTemplate::Parser::create(
-                                        const std::string& name,
-                                        const rapidjson::Value& elem)
-{
-    ProgressBarTemplate* t = new ProgressBarTemplate();
-
-    if (!t->init(m_textureLib, m_colorLib, m_rectLib, elem))
-    {
-        delete t;
-        return nullptr;
-    }
-
-    return t;
-}
 
 ProgressBarTemplate::ProgressBarTemplate()
     : m_texture(nullptr)
@@ -29,10 +12,7 @@ ProgressBarTemplate::ProgressBarTemplate()
     , m_slotCount(0)
 {}
 
-bool ProgressBarTemplate::init(const NamedMap<Texture>& textureLib,
-                               const NamedMap<Color>& colorLib,
-                               const NamedMap<Rectangle>& rectLib,
-                               const rapidjson::Value& elem)
+bool ProgressBarTemplate::init(const rapidjson::Value& elem)
 {
     std::string textureName, rectName;
     std::vector<int> colorVec;
@@ -52,14 +32,16 @@ bool ProgressBarTemplate::init(const NamedMap<Texture>& textureLib,
         return false;
     }
 
-    m_texture = textureLib.search(textureName);
+    const GameLib& lib = GameLib::getInstance();
+
+    m_texture = lib.getTexture(textureName);
     if (!m_texture)
     {
         LOG_ERROR("Failed to find texture %s", textureName.c_str());
         return false;
     }
 
-    m_rect = rectLib.search(rectName);
+    m_rect = lib.getRect(rectName);
     if (!m_rect)
     {
         LOG_ERROR("Failed to find rectangle %s", rectName.c_str());

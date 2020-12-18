@@ -1,25 +1,8 @@
 #include "misc/bot_log.h"
 #include "misc/bot_json_utils.h"
-#include "structure/bot_named_map.h"
-#include "gametemplate/bot_base_template.h"
-#include "gametemplate/bot_weapon_template.h"
-#include "gametemplate/bot_mover_template.h"
-#include "gametemplate/bot_ai_robot_template.h"
-#include "ai/bot_ai.h"
+#include "gameutil/bot_game_lib.h"
 
 namespace bot {
-
-AIRobotTemplate* AIRobotTemplate::Parser::create(const std::string& name,
-                                                 const rapidjson::Value& elem)
-{
-    AIRobotTemplate* t = new AIRobotTemplate();
-    if (!t->init(m_baseLib, m_weaponLib, m_moverLib, m_aiLib, elem))
-    {
-        delete t;
-        return nullptr;
-    }
-    return t;
-}
 
 AIRobotTemplate::AIRobotTemplate()
     : m_ai(nullptr)
@@ -27,13 +10,9 @@ AIRobotTemplate::AIRobotTemplate()
 {
 }
 
-bool AIRobotTemplate::init(const NamedMap<BaseTemplate>& baseLib,
-                           const NamedMap<WeaponTemplate>& weaponLib,
-                           const NamedMap<MoverTemplate>& moverLib,
-                           const NamedMap<AI>& aiLib,
-                           const rapidjson::Value& elem)
+bool AIRobotTemplate::init(const rapidjson::Value& elem)
 {
-    if (!RobotTemplate::init(baseLib, weaponLib, moverLib, elem))
+    if (!RobotTemplate::init(elem))
     {
         LOG_ERROR("Failed to initialize RobotTemplate");
         return false;
@@ -57,7 +36,9 @@ bool AIRobotTemplate::init(const NamedMap<BaseTemplate>& baseLib,
         return false;
     }
 
-    m_ai = aiLib.search(aiName);
+    GameLib& lib = GameLib::getInstance();
+
+    m_ai = lib.getAI(aiName);
     if (!m_ai)
     {
         LOG_ERROR("Failed to find AI %s", aiName.c_str());

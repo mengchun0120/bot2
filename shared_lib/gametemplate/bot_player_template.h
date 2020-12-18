@@ -5,11 +5,6 @@
 
 namespace bot {
 
-template <typename T> class NamedMap;
-class Texture;
-class Rectangle;
-class Color;
-class ParticleEffectTemplate;
 class MissileTemplate;
 
 class PlayerTemplate: public RobotTemplate {
@@ -18,11 +13,7 @@ public:
 
     virtual ~PlayerTemplate();
 
-    bool init(const std::string& fileName,
-              const NamedMap<Texture>& textureLib,
-              const NamedMap<Rectangle>& rectLib,
-              const NamedMap<ParticleEffectTemplate>& particleLib,
-              const NamedMap<Color>& colorLib);
+    bool init(const std::string& fileName);
 
     int getGold() const
     {

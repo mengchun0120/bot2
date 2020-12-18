@@ -1,24 +1,8 @@
 #include "misc/bot_log.h"
 #include "misc/bot_json_utils.h"
-#include "structure/bot_named_map.h"
-#include "opengl/bot_texture.h"
-#include "geometry/bot_rectangle.h"
-#include "gametemplate/bot_mover_template.h"
+#include "gameutil/bot_game_lib.h"
 
 namespace bot {
-
-MoverTemplate* MoverTemplate::Parser::create(const std::string& name,
-                                             const rapidjson::Value& elem)
-{
-    MoverTemplate* t = new MoverTemplate();
-    if (!t->init(m_textureLib, m_rectLib, elem))
-    {
-        delete t;
-        return nullptr;
-    }
-
-    return t;
-}
 
 MoverTemplate::MoverTemplate()
     : m_speed(0.0f)
@@ -26,11 +10,9 @@ MoverTemplate::MoverTemplate()
 {
 }
 
-bool MoverTemplate::init(const NamedMap<Texture>& textureLib,
-                         const NamedMap<Rectangle>& rectLib,
-                         const rapidjson::Value& elem)
+bool MoverTemplate::init(const rapidjson::Value& elem)
 {
-    if (!SingleUnitTemplate::init(textureLib, rectLib, elem))
+    if (!SingleUnitTemplate::init(elem))
     {
         return false;
     }

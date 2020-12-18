@@ -1,24 +1,9 @@
 #include "misc/bot_log.h"
 #include "misc/bot_json_utils.h"
-#include "structure/bot_named_map.h"
-#include "opengl/bot_texture.h"
-#include "geometry/bot_rectangle.h"
 #include "gametemplate/bot_tile_template.h"
 #include "gameobj/bot_game_object_flag.h"
 
 namespace bot {
-
-TileTemplate* TileTemplate::Parser::create(const std::string& name,
-                                           const rapidjson::Value& elem)
-{
-    TileTemplate* t = new TileTemplate();
-    if (!t->init(m_textureLib, m_rectLib, elem))
-    {
-        delete t;
-        return nullptr;
-    }
-    return t;
-}
 
 TileTemplate::TileTemplate()
     : GameObjectTemplate(GAME_OBJ_TYPE_TILE)
@@ -27,16 +12,14 @@ TileTemplate::TileTemplate()
 {
 }
 
-bool TileTemplate::init(const NamedMap<Texture>& textureLib,
-                        const NamedMap<Rectangle>& rectLib,
-                        const rapidjson::Value& elem)
+bool TileTemplate::init(const rapidjson::Value& elem)
 {
     if (!GameObjectTemplate::init(elem))
     {
         return false;
     }
 
-    if (!SingleUnitTemplate::init(textureLib, rectLib, elem))
+    if (!SingleUnitTemplate::init(elem))
     {
         return false;
     }

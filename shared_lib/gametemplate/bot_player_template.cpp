@@ -3,9 +3,6 @@
 #include "misc/bot_log.h"
 #include "misc/bot_json_utils.h"
 #include "misc/bot_math_utils.h"
-#include "structure/bot_named_map.h"
-#include "opengl/bot_texture.h"
-#include "geometry/bot_rectangle.h"
 #include "gametemplate/bot_base_template.h"
 #include "gametemplate/bot_weapon_template.h"
 #include "gametemplate/bot_mover_template.h"
@@ -14,10 +11,7 @@
 
 namespace bot {
 
-BaseTemplate* parseBaseTemplate(const NamedMap<Texture>& textureLib,
-                                const NamedMap<Rectangle>& rectLib,
-                                const NamedMap<Color>& colorLib,
-                                const rapidjson::Value& elem)
+BaseTemplate* parseBaseTemplate(const rapidjson::Value& elem)
 {
     const char name[] = "base";
 
@@ -35,7 +29,7 @@ BaseTemplate* parseBaseTemplate(const NamedMap<Texture>& textureLib,
     }
 
     BaseTemplate* t = new BaseTemplate();
-    if (!t->init(textureLib, rectLib, colorLib, obj))
+    if (!t->init(obj))
     {
         delete t;
         return nullptr;
@@ -44,12 +38,7 @@ BaseTemplate* parseBaseTemplate(const NamedMap<Texture>& textureLib,
     return t;
 }
 
-MissileTemplate* parseMissileTemplate(
-                        const NamedMap<Texture>& textureLib,
-                        const NamedMap<Rectangle>& rectLib,
-                        const NamedMap<ParticleEffectTemplate>& particleLib,
-                        const NamedMap<Color>& colorLib,
-                        const rapidjson::Value& elem)
+MissileTemplate* parseMissileTemplate(const rapidjson::Value& elem)
 {
     const char name[] = "missile";
 
@@ -67,7 +56,7 @@ MissileTemplate* parseMissileTemplate(
     }
 
     MissileTemplate* t = new MissileTemplate();
-    if (!t->init(textureLib, rectLib, particleLib, colorLib, obj))
+    if (!t->init(obj))
     {
         delete t;
         return nullptr;
@@ -76,9 +65,7 @@ MissileTemplate* parseMissileTemplate(
     return t;
 }
 
-WeaponTemplate* parseWeaponTemplate(const NamedMap<Texture>& textureLib,
-                                    const NamedMap<Rectangle>& rectLib,
-                                    const MissileTemplate* missileTemplate,
+WeaponTemplate* parseWeaponTemplate(const MissileTemplate* missileTemplate,
                                     const rapidjson::Value& elem)
 {
     const char name[] = "weapon";
@@ -97,7 +84,7 @@ WeaponTemplate* parseWeaponTemplate(const NamedMap<Texture>& textureLib,
     }
 
     WeaponTemplate* t = new WeaponTemplate();
-    if (!t->init(textureLib, rectLib, missileTemplate, obj))
+    if (!t->init(missileTemplate, obj))
     {
         delete t;
         return nullptr;
@@ -106,9 +93,7 @@ WeaponTemplate* parseWeaponTemplate(const NamedMap<Texture>& textureLib,
     return t;
 }
 
-MoverTemplate* parseMoverTemplate(const NamedMap<Texture>& textureLib,
-                                  const NamedMap<Rectangle>& rectLib,
-                                  const rapidjson::Value& elem)
+MoverTemplate* parseMoverTemplate(const rapidjson::Value& elem)
 {
     const char name[] = "mover";
 
@@ -126,7 +111,7 @@ MoverTemplate* parseMoverTemplate(const NamedMap<Texture>& textureLib,
     }
 
     MoverTemplate* t = new MoverTemplate();
-    if (!t->init(textureLib, rectLib, obj))
+    if (!t->init(obj))
     {
         delete t;
         return nullptr;
@@ -175,11 +160,7 @@ PlayerTemplate::~PlayerTemplate()
     }
 }
 
-bool PlayerTemplate::init(const std::string& fileName,
-                          const NamedMap<Texture>& textureLib,
-                          const NamedMap<Rectangle>& rectLib,
-                          const NamedMap<ParticleEffectTemplate>& particleLib,
-                          const NamedMap<Color>& colorLib)
+bool PlayerTemplate::init(const std::string& fileName)
 {
     rapidjson::Document doc;
     if (!readJson(doc, fileName.c_str()))
@@ -195,27 +176,25 @@ bool PlayerTemplate::init(const std::string& fileName,
 
     const rapidjson::Value& elem = doc.GetObject();
 
-    m_baseTemplate = parseBaseTemplate(textureLib, rectLib, colorLib, elem);
+    m_baseTemplate = parseBaseTemplate(elem);
     if (!m_baseTemplate)
     {
         return false;
     }
 
-    m_missileTemplate = parseMissileTemplate(textureLib, rectLib, particleLib,
-                                             colorLib, elem);
+    m_missileTemplate = parseMissileTemplate(elem);
     if (!m_missileTemplate)
     {
         return false;
     }
 
-    m_weaponTemplate = parseWeaponTemplate(textureLib, rectLib,
-                                           m_missileTemplate, elem);
+    m_weaponTemplate = parseWeaponTemplate(m_missileTemplate, elem);
     if (!m_weaponTemplate)
     {
         return false;
     }
 
-    m_moverTemplate = parseMoverTemplate(textureLib, rectLib, elem);
+    m_moverTemplate = parseMoverTemplate(elem);
     if (!m_moverTemplate)
     {
         return false;

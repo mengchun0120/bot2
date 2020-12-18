@@ -4,7 +4,7 @@
 
 namespace bot {
 
-AI* AI::Parser::create(const std::string& name, const rapidjson::Value& elem)
+AI* AI::create(const rapidjson::Value& elem)
 {
     std::string algorithm;
     if (!JsonParser::parse(algorithm, elem, "algorithm"))

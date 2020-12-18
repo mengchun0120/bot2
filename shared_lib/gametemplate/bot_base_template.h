@@ -11,37 +11,12 @@ class Color;
 
 class BaseTemplate: public SingleUnitTemplate {
 public:
-    class Parser {
-    public:
-        Parser(const NamedMap<Texture>& textureLib,
-               const NamedMap<Rectangle>& rectLib,
-               const NamedMap<Color>& colorLib)
-            : m_textureLib(textureLib)
-            , m_rectLib(rectLib)
-            , m_colorLib(colorLib)
-        {}
-
-        ~Parser()
-        {}
-
-        BaseTemplate* create(std::string& name, const rapidjson::Value& elem);
-
-    private:
-        const NamedMap<Texture>& m_textureLib;
-        const NamedMap<Rectangle>& m_rectLib;
-        const NamedMap<Color>& m_colorLib;
-    };
-
-public:
     BaseTemplate();
 
     virtual ~BaseTemplate()
     {}
 
-    bool init(const NamedMap<Texture>& textureLib,
-              const NamedMap<Rectangle>& rectLib,
-              const NamedMap<Color>& colorLib,
-              const rapidjson::Value& elem);
+    bool init(const rapidjson::Value& elem);
 
     float getHP(int level) const
     {

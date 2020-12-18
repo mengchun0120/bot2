@@ -10,18 +10,6 @@ namespace bot {
 
 class Rectangle: public Polygon {
 public:
-    class Parser {
-    public:
-        Parser()
-        {}
-
-        ~Parser()
-        {}
-
-        Rectangle* create(const std::string& name,
-                          const rapidjson::Value& elem);
-    };
-
     Rectangle();
 
     virtual ~Rectangle();
