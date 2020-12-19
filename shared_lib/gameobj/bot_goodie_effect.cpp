@@ -1,7 +1,7 @@
 #include "misc/bot_constants.h"
 #include "geometry/bot_rectangle.h"
 #include "opengl/bot_texture.h"
-#include "gameobj/bot_progress_ring.h"
+#include "widget/bot_progress_ring.h"
 #include "gameobj/bot_goodie_effect.h"
 
 namespace bot {

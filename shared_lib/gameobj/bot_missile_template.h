@@ -2,8 +2,8 @@
 #define INCLUDE_BOT_MISSILE_TEMPLATE
 
 #include <string>
-#include "gametemplate/bot_game_object_template.h"
-#include "gametemplate/bot_single_unit_template.h"
+#include "gameobj/bot_game_object_template.h"
+#include "gameobj/bot_single_unit_template.h"
 
 namespace bot {
 

@@ -1,6 +1,6 @@
 #include "misc/bot_log.h"
 #include "structure/bot_named_map.h"
-#include "gametemplate/bot_goodie_template.h"
+#include "gameobj/bot_goodie_template.h"
 #include "gameutil/bot_goodie_generator.h"
 
 namespace bot {

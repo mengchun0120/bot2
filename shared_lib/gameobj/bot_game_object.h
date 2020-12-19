@@ -3,7 +3,7 @@
 
 #include "misc/bot_constants.h"
 #include "structure/bot_double_linked_item.h"
-#include "gametemplate/bot_game_object_template.h"
+#include "gameobj/bot_game_object_template.h"
 
 namespace bot {
 

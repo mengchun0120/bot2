@@ -4,7 +4,7 @@
 #include <string>
 #include <rapidjson/document.h>
 #include "opengl/bot_vertex_array.h"
-#include "gametemplate/bot_game_object_template.h"
+#include "gameobj/bot_game_object_template.h"
 
 namespace bot {
 

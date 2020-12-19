@@ -4,8 +4,8 @@
 #include <utility>
 #include <vector>
 #include "misc/bot_constants.h"
-#include "gameobj/bot_progress_bar.h"
-#include "gameobj/bot_status_bar.h"
+#include "widget/bot_progress_bar.h"
+#include "widget/bot_status_bar.h"
 
 namespace bot {
 

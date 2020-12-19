@@ -2,7 +2,7 @@
 #define INCLUDE_BOT_AI_ROBOT
 
 #include "misc/bot_time_utils.h"
-#include "gametemplate/bot_ai_robot_template.h"
+#include "gameobj/bot_ai_robot_template.h"
 #include "gameobj/bot_action.h"
 #include "gameobj/bot_robot.h"
 

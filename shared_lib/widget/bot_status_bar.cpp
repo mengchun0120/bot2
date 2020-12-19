@@ -4,7 +4,7 @@
 #include "opengl/bot_texture.h"
 #include "opengl/bot_text_system.h"
 #include "geometry/bot_rectangle.h"
-#include "gameobj/bot_status_bar.h"
+#include "widget/bot_status_bar.h"
 
 namespace bot {
 

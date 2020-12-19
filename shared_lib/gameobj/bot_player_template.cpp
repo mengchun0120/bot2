@@ -4,11 +4,11 @@
 #include "misc/bot_json_utils.h"
 #include "misc/bot_math_utils.h"
 #include "geometry/bot_rectangle.h"
-#include "gametemplate/bot_base_template.h"
-#include "gametemplate/bot_weapon_template.h"
-#include "gametemplate/bot_mover_template.h"
-#include "gametemplate/bot_missile_template.h"
-#include "gametemplate/bot_player_template.h"
+#include "gameobj/bot_base_template.h"
+#include "gameobj/bot_weapon_template.h"
+#include "gameobj/bot_mover_template.h"
+#include "gameobj/bot_missile_template.h"
+#include "gameobj/bot_player_template.h"
 
 namespace bot {
 

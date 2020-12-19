@@ -1,8 +1,8 @@
 #include "misc/bot_log.h"
 #include "opengl/bot_text_system.h"
 #include "gameutil/bot_game_lib.h"
-#include "gameobj/bot_dashboard.h"
 #include "gameobj/bot_player.h"
+#include "widget/bot_dashboard.h"
 #include "screen/bot_game_screen.h"
 #include "app/bot_app.h"
 

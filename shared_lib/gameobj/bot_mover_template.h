@@ -2,7 +2,7 @@
 #define INCLUDE_BOT_MOVER_TEMPLATE
 
 #include <string>
-#include "gametemplate/bot_single_unit_template.h"
+#include "gameobj/bot_single_unit_template.h"
 
 namespace bot {
 

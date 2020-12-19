@@ -2,7 +2,7 @@
 #define INCLUDE_BOT_STATUS_BAR
 
 #include "misc/bot_constants.h"
-#include "gametemplate/bot_status_bar_template.h"
+#include "widget/bot_status_bar_template.h"
 
 namespace bot {
 

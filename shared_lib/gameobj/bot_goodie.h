@@ -2,7 +2,7 @@
 #define INCLUDE_BOT_GOODIE
 
 #include "gameobj/bot_game_object.h"
-#include "gametemplate/bot_goodie_template.h"
+#include "gameobj/bot_goodie_template.h"
 
 namespace bot {
 

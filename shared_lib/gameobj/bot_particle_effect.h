@@ -2,7 +2,7 @@
 #define INCLUDE_BOT_PARTICLE_EFFECT
 
 #include "misc/bot_time_utils.h"
-#include "gametemplate/bot_particle_effect_template.h"
+#include "gameobj/bot_particle_effect_template.h"
 #include "gameobj/bot_game_object.h"
 
 namespace bot {

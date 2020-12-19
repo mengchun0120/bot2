@@ -1,5 +1,4 @@
 #include "misc/bot_log.h"
-#include "gametemplate/bot_ai_robot_template.h"
 #include "gameobj/bot_game_object_flag.h"
 #include "gameobj/bot_ai_robot.h"
 #include "ai/bot_ai.h"

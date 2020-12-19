@@ -1,6 +1,6 @@
 #include "misc/bot_log.h"
 #include "misc/bot_json_utils.h"
-#include "gameobj/bot_dashboard_config.h"
+#include "widget/bot_dashboard_config.h"
 
 namespace bot {
 

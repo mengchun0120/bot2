@@ -2,7 +2,7 @@
 #define INCLUDE_BOT_MISSILE
 
 #include "structure/bot_linked_list.h"
-#include "gametemplate/bot_missile_template.h"
+#include "gameobj/bot_missile_template.h"
 #include "gameobj/bot_game_object.h"
 #include "gameobj/bot_side.h"
 #include "gameobj/bot_missile_ability.h"

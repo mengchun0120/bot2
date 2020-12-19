@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 #include "gameobj/bot_fire_point.h"
-#include "gametemplate/bot_single_unit_template.h"
+#include "gameobj/bot_single_unit_template.h"
 
 namespace bot {
 

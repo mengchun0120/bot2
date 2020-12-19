@@ -4,8 +4,8 @@
 #include "misc/bot_log.h"
 #include "misc/bot_math_utils.h"
 #include "misc/bot_json_utils.h"
-#include "gametemplate/bot_tile_template.h"
-#include "gametemplate/bot_ai_robot_template.h"
+#include "gameobj/bot_tile_template.h"
+#include "gameobj/bot_ai_robot_template.h"
 #include "gameutil/bot_generated_map.h"
 #include "gameutil/bot_game_map.h"
 

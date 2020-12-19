@@ -3,7 +3,7 @@
 
 #include "misc/bot_time_utils.h"
 #include "misc/bot_constants.h"
-#include "gametemplate/bot_goodie_template.h"
+#include "gameobj/bot_goodie_template.h"
 
 namespace bot {
 

@@ -1,7 +1,7 @@
 #include "misc/bot_log.h"
 #include "misc/bot_math_utils.h"
 #include "opengl/bot_texture.h"
-#include "gametemplate/bot_mover_template.h"
+#include "gameobj/bot_mover_template.h"
 #include "gameobj/bot_robot.h"
 #include "screen/bot_game_screen.h"
 

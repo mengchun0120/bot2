@@ -2,7 +2,7 @@
 #include "misc/bot_math_utils.h"
 #include "geometry/bot_rectangle.h"
 #include "opengl/bot_texture.h"
-#include "gametemplate/bot_tile_template.h"
+#include "gameobj/bot_tile_template.h"
 #include "gameutil/bot_game_lib.h"
 #include "gameobj/bot_game_object_flag.h"
 #include "gameobj/bot_tile.h"

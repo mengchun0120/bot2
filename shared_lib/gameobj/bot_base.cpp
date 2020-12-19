@@ -6,7 +6,7 @@
 #include "opengl/bot_simple_shader_program.h"
 #include "opengl/bot_text_system.h"
 #include "geometry/bot_rectangle.h"
-#include "gametemplate/bot_base_template.h"
+#include "gameobj/bot_base_template.h"
 #include "gameobj/bot_robot.h"
 #include "screen/bot_game_screen.h"
 

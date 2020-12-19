@@ -1,11 +1,11 @@
 #include "misc/bot_log.h"
 #include "misc/bot_math_utils.h"
-#include "gametemplate/bot_progress_bar_template.h"
-#include "gameobj/bot_progress_bar.h"
 #include "opengl/bot_texture.h"
 #include "opengl/bot_simple_shader_program.h"
 #include "opengl/bot_color.h"
 #include "geometry/bot_rectangle.h"
+#include "widget/bot_progress_bar_template.h"
+#include "widget/bot_progress_bar.h"
 
 namespace bot {
 

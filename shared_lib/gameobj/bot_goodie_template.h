@@ -4,8 +4,8 @@
 #include <string>
 #include <rapidjson/document.h>
 #include "gameobj/bot_goodie_type.h"
-#include "gameobj/bot_progress_ring.h"
-#include "gametemplate/bot_game_object_template.h"
+#include "widget/bot_progress_ring.h"
+#include "gameobj/bot_game_object_template.h"
 
 namespace bot {
 

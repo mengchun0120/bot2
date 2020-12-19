@@ -2,7 +2,7 @@
 #define INCLUDE_BOT_AI_ROBOT_TEMPLATE
 
 #include <string>
-#include "gametemplate/bot_robot_template.h"
+#include "gameobj/bot_robot_template.h"
 
 namespace bot {
 

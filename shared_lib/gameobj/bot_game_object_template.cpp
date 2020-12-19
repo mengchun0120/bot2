@@ -1,6 +1,6 @@
 #include "misc/bot_log.h"
 #include "misc/bot_json_utils.h"
-#include "gametemplate/bot_game_object_template.h"
+#include "gameobj/bot_game_object_template.h"
 
 namespace bot {
 

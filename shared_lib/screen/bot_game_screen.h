@@ -4,7 +4,7 @@
 #include "gameutil/bot_game_map.h"
 #include "gameutil/bot_game_object_manager.h"
 #include "gameutil/bot_game_state.h"
-#include "gameobj/bot_dashboard.h"
+#include "widget/bot_dashboard.h"
 #include "widget/bot_message_box.h"
 #include "screen/bot_screen.h"
 
