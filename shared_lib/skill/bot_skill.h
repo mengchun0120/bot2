@@ -1,46 +1,30 @@
 #ifndef INCLUDE_BOT_SKILL
 #define INCLUDE_BOT_SKILL
 
-#include <rapidjson/document.h>
-#include "skill/bot_skill_type.h"
+#include "misc/bot_time_utils.h"
 
 namespace bot {
 
+class SkillTemplate;
 class GameScreen;
-class Robot;
 
 class Skill {
 public:
-    static Skill* create(const rapidjson::Value& elem);
-
     Skill();
 
-    virtual ~Skill()
-    {}
+    virtual ~Skill();
 
-    bool init(const rapidjson::Value& elem);
+    bool init(const SkillTemplate* t, Robot* robot, unsigned int level);
 
-    SkillType getType() const
-    {
-        return m_type;
-    }
+    virtual void apply(GameScreen& screen, const TimePoint& t);
 
-    float getConsumedPower() const
-    {
-        return m_consumedPower;
-    }
-
-    float getCooldownMS() const
-    {
-        return m_cooldownMS;
-    }
-
-    virtual bool apply(Robot& robot, GameScreen& screen) = 0;
+    virtual bool available(const TimePoint& t) const;
 
 protected:
-    SkillType m_type;
-    float m_consumedPower;
-    float m_cooldownMS;
+    const SkillTemplate* m_template;
+    Robot* m_robot;
+    TimePoint m_lastApplyTime;
+    unsigned int m_level;
 };
 
 } // end of namespace bot

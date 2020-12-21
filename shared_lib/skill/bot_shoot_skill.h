@@ -1,30 +1,26 @@
-#ifndef INCLUDE_BOT_SHOOT_SILL
-#define INCLUDE_BOT_SHOOT_SILL
+#ifndef INCLUDE_BOT_SHOOT_SKILL
+#define INCLUDE_BOT_SHOOT_SKILL
 
+#include "skill/bot_shoot_skill_template.h"
 #include "skill/bot_skill.h"
 
 namespace bot {
-
-template <typename T> class NamedMap;
-class MissileTemplate;
 
 class ShootSkill: public Skill {
 public:
     ShootSkill();
 
-    virtual ~ShootSkill();
+    virtual ~ShootSkill()
+    {}
 
-    bool init(const rapidjson::Value& elem);
-
-    const MissileTemplate* getMissileTemplate() const
+    const ShootSkillTemplate* getTemplate() const
     {
-        return m_missile;
+        return static_cast<ShootSkillTemplate*>(m_template);
     }
 
-    virtual bool apply(Robot& robot, GameScreen& screen);
+    bool init(const ShootSkillTemplate* t, Robot* robot, unsigned int level);
 
-protected:
-    const MissileTemplate* m_missile;
+    virtual void apply(GameScreen& screen, const TimePoint& t);
 };
 
 } // end of namespace bot

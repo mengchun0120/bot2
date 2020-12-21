@@ -1,0 +1,6 @@
+#ifndef INCLUDE_BOT_SKILL_FLAG
+#define INCLUDE_BOT_SKILL_FLAG
+
+
+#endif
+

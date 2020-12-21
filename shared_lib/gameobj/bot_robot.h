@@ -8,7 +8,7 @@
 #include "gameobj/bot_base.h"
 #include "gameobj/bot_weapon.h"
 #include "gameobj/bot_mover.h"
-#include "skill/bot_skill_data.h"
+#include "skill/bot_skill.h"
 
 namespace bot {
 
@@ -163,7 +163,7 @@ protected:
     TimePoint m_deathTime;
     bool m_hasDest;
     float m_destX, m_destY;
-    std::vector<SkillData> m_skills;
+    std::vector<Skill> m_skills;
 };
 
 } // end of namespace bot

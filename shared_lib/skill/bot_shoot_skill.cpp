@@ -1,50 +1,26 @@
-#include "misc/bot_log.h"
-#include "misc/bot_json_utils.h"
-#include "gameutil/bot_game_lib.h"
 #include "skill/bot_shoot_skill.h"
 
 namespace bot {
 
 ShootSkill::ShootSkill()
     : Skill()
-    , m_missile(nullptr)
 {
 }
 
-bool ShootSkill::init(const rapidjson::Value& elem)
+bool ShootSkill::init(const ShootSkillTemplate* t, Robot* robot,
+                      unsigned int level)
 {
-    m_type = SKILL_SHOOT;
-
-    if (!Skill::init(elem))
+    if (!Skill::init(t, robot, level))
     {
-        return false;
-    }
-
-    std::string missileName;
-    std::vector<JsonParamPtr> params = {
-        jsonParam(missileName, "missile")
-    };
-
-    if (!parseJson(params, elem))
-    {
-        return false;
-    }
-
-    const GameLib& lib = GameLib::getInstance();
-
-    m_missile = lib.getMissileTemplate(missileName);
-    if (!m_missile)
-    {
-        LOG_ERROR("Failed to find missile-template %s", missileName.c_str());
         return false;
     }
 
     return true;
 }
 
-bool ShootSkill::apply(Robot& robot, GameScreen& screen)
+void ShootSkill::apply(GameScreen& screen, const TimePoint& t)
 {
-    return true;
+
 }
 
 } // end of namespace bot
