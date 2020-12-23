@@ -13,7 +13,7 @@ class GameObject: public DoubleLinkedItem {
 public:
     GameObject();
 
-    virtual ~GameObject()
+    virtual ~GameObject();
     {}
 
     bool init(const GameObjectTemplate* t, float x, float y);
