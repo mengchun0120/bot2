@@ -29,6 +29,8 @@ public:
 
     virtual void update(float delta, GameScreen& screen);
 
+    virtual void onDeath(GameScreen& screen);
+
 protected:
     TimePoint m_startTime;
     float m_duration;

@@ -47,15 +47,21 @@ void ParticleEffect::update(float delta, GameScreen& screen)
     GameObjectManager& gameObjManager = screen.getGameObjManager();
 
     if (screen.getMap().isOutsideViewport(this)) {
-        gameObjManager.sendToDeathQueue(this);
+        onDeath(screen);
         return;
     }
 
     m_duration = elapsedTimeMs(m_startTime);
     if (m_duration >= getTemplate()->getDuration())
     {
-        gameObjManager.sendToDeathQueue(this);
+        onDeath(screen);
     }
+}
+
+void ParticleEffect::onDeath(GameScreen& screen)
+{
+    GameObjectManager& gameObjMgr = screen.getGameObjManager();
+    gameObjMgr.sendToDeathQueue(this);
 }
 
 } // end of namespace bot

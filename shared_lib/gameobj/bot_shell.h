@@ -28,6 +28,9 @@ public:
 
 private:
     void explode(GameScreen& screen);
+
+    bool checkExplosion(GameObject* obj, float left, float bottom,
+                        float right, float top);
 };
 
 } // end of namespace bot
