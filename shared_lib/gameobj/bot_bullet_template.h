@@ -20,14 +20,8 @@ public:
         return m_impactEffectTemplate;
     }
 
-    float getSpeed() const
-    {
-        return m_speed;
-    }
-
 protected:
     const ParticleEffectTemplate* m_impactEffectTemplate;
-    float m_speed;
 };
 
 } // end of namespace bot

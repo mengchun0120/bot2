@@ -13,7 +13,7 @@ public:
     virtual ~Shell();
 
     bool init(const ShellTemplate* t, Side side, float x, float y,
-              float directionX, float directionY, float damage);
+              float directionX, float directionY, float damage, float speed);
 
     const ShellTemplate* getTemplate() const
     {
@@ -25,12 +25,6 @@ public:
     virtual void update(float delta, GameScreen& screen);
 
     virtual void onDeath(GameScreen& screen);
-
-private:
-    void explode(GameScreen& screen);
-
-    bool checkExplosion(GameObject* obj, float left, float bottom,
-                        float right, float top);
 };
 
 } // end of namespace bot

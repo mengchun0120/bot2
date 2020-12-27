@@ -3,7 +3,7 @@
 #include "misc/bot_constants.h"
 #include "misc/bot_json_utils.h"
 #include "misc/bot_math_utils.h"
-#include "gameutil/bot_game_lib.h"
+#include "gameutil/bot_base_template.h"
 
 namespace bot {
 
@@ -72,11 +72,7 @@ bool WeaponTemplate::init(const rapidjson::Value& elem)
         return false;
     }
 
-    float fireDuration, fireDurReductionPerLevel = 0.0f;
-    std::string missileName;
     std::vector<JsonParamPtr> params = {
-        jsonParam(fireDuration, "fireDuration"),
-        jsonParam(fireDurReductionPerLevel, "fireDurReductionPerLevel", false),
         jsonParam(missileName, "missile", false)
     };
 
@@ -122,20 +118,11 @@ bool WeaponTemplate::init(const MissileTemplate* missileTemplate,
         return false;
     }
 
-    float fireDuration, fireDurReductionPerLevel = 0.0f;
     std::vector<JsonParamPtr> params = {
-        jsonParam(fireDuration, "fireDuration"),
-        jsonParam(fireDurReductionPerLevel, "fireDurReductionPerLevel", false)
+        jsonParam(m_damage, "damage", gt(m_damage, 0.0f))
     };
 
     if (!parseJson(params, elem))
-    {
-        return false;
-    }
-
-    bool ret = setFireDuration(fireDuration) &&
-               setFireDurReductionPerLevel(fireDurReductionPerLevel);
-    if (!ret)
     {
         return false;
     }
@@ -146,57 +133,6 @@ bool WeaponTemplate::init(const MissileTemplate* missileTemplate,
         return false;
     }
 
-    setMissileTemplate(missileTemplate);
-
-    return true;
-}
-
-bool WeaponTemplate::setFireDuration(float duration)
-{
-    if (duration < 0.0f)
-    {
-        LOG_ERROR("Invalid duration %f", duration);
-        return false;
-    }
-
-    m_fireDuration = duration;
-    return true;
-}
-
-float WeaponTemplate::getFireDuration(int level) const
-{
-    const float MIN_DURATION = 100.0f;
-
-    float duration = m_fireDuration - m_fireDurReductionPerLevel * level;
-    if (duration < MIN_DURATION)
-    {
-        duration = MIN_DURATION;
-    }
-
-    return duration;
-}
-
-bool WeaponTemplate::setFireDurReductionPerLevel(float reductionPerLevel)
-{
-    if (reductionPerLevel < 0.0f)
-    {
-        LOG_ERROR("Invalid fireDurReductionPerLevel %f", reductionPerLevel);
-        return false;
-    }
-
-    m_fireDurReductionPerLevel = reductionPerLevel;
-    return true;
-}
-
-bool WeaponTemplate::setNumFirePoints(int count)
-{
-    if (count <= 0)
-    {
-        LOG_ERROR("Invalid num-fire-points %d", count);
-        return false;
-    }
-
-    m_firePoints.resize(count);
     return true;
 }
 

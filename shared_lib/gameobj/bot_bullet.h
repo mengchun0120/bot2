@@ -16,7 +16,7 @@ public:
     virtual ~Bullet();
 
     bool init(const BulletTemplate* t, Side side, float x, float y,
-              float directionX, float directionY, float damage);
+              float directionX, float directionY, float damage, float speed);
 
     const BulletTemplate* getTemplate() const
     {
@@ -26,6 +26,8 @@ public:
     virtual void present();
 
     virtual void update(float delta, GameScreen& screen);
+
+    virtual void onEntry(GameScreen& screen);
 
     virtual void onDeath(GameScreen& screen);
 

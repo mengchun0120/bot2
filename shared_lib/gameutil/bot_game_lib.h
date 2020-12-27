@@ -18,6 +18,7 @@
 #include "gameobj/bot_player_template.h"
 #include "gameutil/bot_map_generator.h"
 #include "gameutil/bot_game_config.h"
+#include "skill/bot_skill_template.h"
 #include "widget/bot_progress_bar_template.h"
 #include "widget/bot_status_bar_template.h"
 #include "widget/bot_progress_ring.h"
@@ -233,6 +234,8 @@ public:
         return m_gameConfig;
     }
 
+    const SkillTemplate* getSkillTemplate(const std::string& name);
+
     MapGenerator* getMapGenerator(const std::string& name)
     {
         return m_mapGeneratorLib.search(name);
@@ -274,6 +277,7 @@ private:
     StartScreenConfig m_startScreenConfig;
     GameScreenConfig m_gameScreenConfig;
     GameConfig m_gameConfig;
+    NamedMap<SkillTemplate> m_skillTemplateLib;
 };
 
 } // end of namespace bot

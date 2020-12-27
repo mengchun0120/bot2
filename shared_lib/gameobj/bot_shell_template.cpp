@@ -23,7 +23,6 @@ bool ShellTemplate::init(const rapidjson::Value& elem)
     std::string explodeEffectName;
     std::vector<JsonParamPtr> params = {
         jsonParam(explodeEffectName, "explodeEffect"),
-        jsonParam(m_speed, "speed", gt(m_speed, 0.0f)),
         jsonParam(m_explodeBreath, "explodeBreath", gt(m_explodeBreath, 0.0f))
     };
 

@@ -1,6 +1,5 @@
 #include "misc/bot_log.h"
 #include "gameobj/bot_robot.h"
-#include "skill/bot_skill_template.h"
 #include "skill/bot_skill.h"
 
 namespace bot {

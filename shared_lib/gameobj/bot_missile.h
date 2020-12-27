@@ -7,6 +7,8 @@
 
 namespace bot {
 
+class ParticleEffectTemplate;
+
 class Missile: public GameObject {
 public:
     Missile();
@@ -62,6 +64,13 @@ public:
     }
 
     void setDirection(float directionX, float directionY);
+
+protected:
+    void explode(GameScreen& screen, float explodeBreath,
+                 const ParticleEffectTemplate* explosionTemplate);
+
+    bool checkExplosion(GameObject* obj, float left, float bottom,
+                        float right, float top);
 
 protected:
     float m_direction[Constants::NUM_FLOATS_PER_POSITION];

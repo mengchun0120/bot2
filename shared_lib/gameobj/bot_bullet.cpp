@@ -13,10 +13,9 @@ Bullet::~Bullet()
 }
 
 bool Bullet::init(const BulletTemplate* t, Side side, float x, float y,
-                  float directionX, float directionY, float damage)
+                  float directionX, float directionY, float damage, float speed)
 {
-    return Missile::init(t, side, x, y, directionX, directionY,
-                         damage, t->getSpeed());
+    return Missile::init(t, side, x, y, directionX, directionY, damage, speed);
 }
 
 void Bullet::present()

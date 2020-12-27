@@ -4,9 +4,10 @@
 namespace bot {
 
 static std::vector<std::string> k_skillTypeStr = {
-    "Shoot",
-    "Penetrate Shoot",
-    "Invalid Skill"
+    "shoot-bullet",
+    "shoot-shell",
+    "shoot-deck-piercer",
+    "invalid"
 };
 
 SkillType strToSkillType(const std::string& s)

@@ -66,7 +66,8 @@ bool GameLib::load()
         return false;
     }
 
-    ret = m_missileTemplateLib.load(cfg.getMissileTemplateLib());
+    ret = m_missileTemplateLib.load(cfg.getMissileTemplateLib(),
+                                    MissileTemplate::create);
     if (!ret)
     {
         LOG_ERROR("Failed to read missile template lib from %s",
@@ -209,6 +210,14 @@ bool GameLib::load()
         LOG_ERROR("Failed to load game-config from %s",
                   cfg.getGameConfigFile().c_str());
         return false;
+    }
+
+    ret = m_skillTemplateLib.load(cfg.getSkillTemplateLib(),
+                                  SkillTemplate::create);
+    if (!ret)
+    {
+        LOG_ERROR("Failed to load skill-template lib from %s",
+                  cfg.getSkillTemplateLib().c_str());
     }
 
     return true;

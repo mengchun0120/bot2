@@ -122,18 +122,17 @@ AIRobot* GameObjectManager::createRobot(
 }
 
 Missile* GameObjectManager::createMissile(
-                            const MissileTemplate* missileTemplate,
-                            Side side, float damage,
-                            float x, float y,
-                            float directionX, float directionY,
-                            MissileAbility ability)
+                           const MissileTemplate* missileTemplate,
+                           Side side, float x, float y,
+                           float directionX, float directionY,
+                           float damage, float speed)
 {
-    Missile* missile = m_missilePool.alloc();
-    bool ret = missile->init(missileTemplate, side, damage,
-                             x, y, directionX, directionY, ability);
-    if (!ret)
+    Missile* missile = m_missilePool.alloc(
+                            missileTemplate, side, x, y
+                            directionX, directionY, damage, speed);
+
+    if (!missile)
     {
-        sendToDeathQueue(missile);
         return nullptr;
     }
 

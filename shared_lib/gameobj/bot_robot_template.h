@@ -1,7 +1,9 @@
 #ifndef INCLUDE_BOT_ROBOT_TEMPLATE
 #define INCLUDE_BOT_ROBOT_TEMPLATE
 
+#include <vector>
 #include "gameobj/bot_game_object_template.h"
+#include "skill/bot_skill_template.h"
 
 namespace bot {
 
@@ -48,10 +50,21 @@ public:
         m_moverTemplate = moverTemplate;
     }
 
+    int numSkills() const
+    {
+        return m_skillTemplates.size();
+    }
+
+    const SkillTemplate* getSkillTemplate(int idx) const
+    {
+        return m_skillTemplates[idx];
+    }
+
 protected:
     const BaseTemplate* m_baseTemplate;
     const WeaponTemplate* m_weaponTemplate;
     const MoverTemplate* m_moverTemplate;
+    std::vector<SkillTemplate*> m_skillTemplates;
 };
 
 } // end of namespace bot

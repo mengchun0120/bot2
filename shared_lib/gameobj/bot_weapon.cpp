@@ -11,13 +11,6 @@ namespace bot {
 Weapon::Weapon()
     : m_weaponTemplate(nullptr)
     , m_robot(nullptr)
-    , m_missileLevel(1)
-    , m_firing(false)
-    , m_normalFireDuration(0.0f)
-    , m_fireDuration(0.0f)
-    , m_fireDurationMultiplier(1.0f)
-    , m_damage(0.0f)
-    , m_damageMultiplier(1.0f)
 {
     m_mask.init(255, 255, 255, 255);
 }
@@ -53,14 +46,6 @@ bool Weapon::init(const WeaponTemplate* weaponTemplate, Robot* robot,
     m_robot = robot;
     m_missileLevel = missileLevel;
 
-    m_firing = false;
-    m_normalFireDuration = weaponTemplate->getFireDuration(weaponLevel);
-    m_fireDurationMultiplier = 1.0f;
-    resetFireDuration();
-
-    m_damageMultiplier = 1.0f;
-    resetDamage();
-
     m_firePoints.resize(m_weaponTemplate->numFirePoints());
     resetFirePoints();
 
@@ -71,26 +56,6 @@ bool Weapon::init(const WeaponTemplate* weaponTemplate, Robot* robot,
 
 bool Weapon::update(GameScreen& screen)
 {
-    if (!m_firing)
-    {
-        return true;
-    }
-
-    TimePoint now = Clock::now();
-    float dur = timeDistMs(m_lastFireTime, now);
-    if (dur < m_fireDuration)
-    {
-        return true;
-    }
-
-    if (!fireMissile(screen))
-    {
-        return false;
-    }
-
-    m_lastFireTime = now;
-
-    return true;
 }
 
 void Weapon::present()
@@ -140,72 +105,42 @@ void Weapon::resetFirePoints()
     }
 }
 
-bool Weapon::setFireDurationMultiplier(float multiplier)
+bool Weapon::fireMissile(GameScreen& screen,
+                         const MissileTemplate* missileTemplate,
+                         float powerCost, float damageMultiplier,
+                         float speedMultiplier)
 {
-    if (multiplier <= 0.0f)
+    Base& base = m_robot->getBase();
+    float newPower = base.getPower() - powerCost;
+
+    if (newPower < 0.0f)
     {
-        LOG_ERROR("Invalid fire-duration multiplier %f", multiplier);
-        return false;
+        newPower = 0.0f;
     }
 
-    m_fireDurationMultiplier = multiplier;
-    resetFireDuration();
+    base.setPower(newPower);
 
-    return true;
-}
-
-bool Weapon::setDamageMultiplier(float multiplier)
-{
-    if (multiplier <= 0.0f)
-    {
-        LOG_ERROR("Invalid damage multiplier %f", multiplier);
-        return false;
-    }
-
-    m_damageMultiplier = multiplier;
-    resetDamage();
-
-    return true;
-}
-
-void Weapon::resetFireDuration()
-{
-    const float MIN_FIRE_DURATION = 100.0f;
-    m_fireDuration = m_normalFireDuration * m_fireDurationMultiplier;
-    if (m_fireDuration < MIN_FIRE_DURATION)
-    {
-        m_fireDuration = MIN_FIRE_DURATION;
-    }
-}
-
-void Weapon::resetDamage()
-{
-    const MissileTemplate* t = m_weaponTemplate->getMissileTemplate();
-    m_damage = t->getDamage(m_missileLevel) * m_damageMultiplier;
-}
-
-bool Weapon::fireMissile(GameScreen& screen, MissileAbility ability)
-{
     GameObjectManager& gameObjMgr = screen.getGameObjManager();
     GameMap& map = screen.getMap();
+    float damage = m_weaponTemplate->getDamage() * damageMultiplier;
+    float speed = missileTemplate->getSpeed() * speedMultiplier;
 
     for(auto& fp: m_firePoints)
     {
         Missile* missile = gameObjMgr.createMissile(
-                                 m_weaponTemplate->getMissileTemplate(),
-                                 m_robot->getSide(), m_damage,
+                                 missileTemplate, m_robot->getSide(), m_damage,
                                  fp.m_firePos[0], fp.m_firePos[1],
                                  fp.m_fireDirection[0], fp.m_fireDirection[1],
-                                 ability);
+                                 damage, speed);
         if (!missile)
         {
             LOG_ERROR("Failed to create missile");
             return false;
         }
 
-        if (missile->checkCollision(screen))
+        if (!map.addObject(missile))
         {
-            map.addObject(missile);
+            missile->onDeath(screen);
         }
     }
 

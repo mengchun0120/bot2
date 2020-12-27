@@ -253,6 +253,11 @@ public:
 
     bool setMaxRobotCount(int count);
 
+    const std::string& getSkillTemplateLib() const
+    {
+        return m_skillTemplateLib;
+    }
+
 private:
     AppConfig()
         : m_width(0)
@@ -309,6 +314,7 @@ private:
     std::string m_gameScreenConfigFile;
     std::string m_messageBoxConfigFile;
     std::string m_gameConfigFile;
+    std::string m_skillTemplateLib;
     std::string m_mapFile;
     int m_level;
     std::string m_mapGeneratorLib;

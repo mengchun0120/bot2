@@ -27,27 +27,21 @@ public:
         return m_passThroughMask;
     }
 
-    float getSpeed() const
-    {
-        return m_speed;
-    }
-
-    int getMaxPierceTimes() const
-    {
-        return m_maxPierceTimes;
-    }
-
     bool getExplodeOnDeath() const
     {
         return m_explodeOnDeath;
     }
 
+    float getExplodeBreath() const
+    {
+        return m_explodeBreath;
+    }
+
 protected:
     const ParticleEffectTemplate* m_deathEffectTemplate;
     Color m_passThroughMask;
-    float m_speed;
-    int m_maxPierceTimes;
     bool m_explodeOnDeath;
+    float m_explodeBreath;
 };
 
 } // end of namespace bot

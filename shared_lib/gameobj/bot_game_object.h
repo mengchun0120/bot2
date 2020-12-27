@@ -165,6 +165,9 @@ public:
         return m_flags;
     }
 
+    virtual void onEntry(GameScreen& screen)
+    {}
+
     virtual void onDeath(GameScreen& screen)
     {}
 

@@ -21,10 +21,12 @@ bool RobotTemplate::init(const rapidjson::Value& elem)
     }
 
     std::string baseName, weaponName, moverName;
+    std::vector<std::string> skillTemplateNames;
     std::vector<JsonParamPtr> params = {
         jsonParam(baseName, "base"),
         jsonParam(weaponName, "weapon"),
         jsonParam(moverName, "mover"),
+        jsonParam(skillTemplateNames, "skills")
     };
 
     if (!parseJson(params, elem))
@@ -55,7 +57,27 @@ bool RobotTemplate::init(const rapidjson::Value& elem)
         return false;
     }
 
+    if (skillTemplateNames.empty())
+    {
+        LOG_ERROR("Skills must be non-empty");
+        return false;
+    }
+
+    int skillCount = skillTemplateNames.size();
+
+    m_skillTemplates.resize(skillCount);
+    for (int i = 0; i < skillCount; ++i)
+    {
+        const SkillTemplate* t = lib.getSkillTemplate(skillTemplateNames[i]);
+        if (!t)
+        {
+            LOG_ERROR("Failed to find SkillTemplate %s", skillTemplateNames[i]);
+            return false;
+        }
+    }
+
     return true;
 }
 
 } // end of namespace bot
+

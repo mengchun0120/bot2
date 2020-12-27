@@ -21,11 +21,6 @@ public:
         return return m_explodeEffectTemplate;
     }
 
-    float getSpeed() const
-    {
-        return m_speed;
-    }
-
     float getExplodeBreath() const
     {
         return m_explodeBreath;
@@ -33,7 +28,6 @@ public:
 
 protected:
     const ParticleEffectTemplate* m_explodeEffectTemplate;
-    float m_speed;
     float m_explodeBreath;
 };
 

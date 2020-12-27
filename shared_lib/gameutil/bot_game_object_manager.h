@@ -13,6 +13,7 @@
 #include "gameobj/bot_ai_robot.h"
 #include "gameutil/bot_game_object_item.h"
 #include "gameutil/bot_goodie_generator.h"
+#include "gameutil/bot_missile_pool.h"
 
 namespace bot {
 
@@ -77,9 +78,9 @@ public:
                          float x, float y, float directionX, float directionY);
 
     Missile* createMissile(const MissileTemplate* missileTemplate,
-                           Side side, float damage,
-                           float x, float y, float directionX, float directionY,
-                           MissileAbility ability=MISSILE_ABILITY_NONE);
+                           Side side, float x, float y,
+                           float directionX, float directionY,
+                           float damage, float speed);
 
     Goodie* createGoodie(float prob, float x, float y);
 
@@ -160,7 +161,7 @@ public:
 protected:
     const GameLib* m_lib;
     GoodieGenerator m_goodieGenerator;
-    ObjectPool<Missile> m_missilePool;
+    MissilePool m_missilePool;
     ObjectPool<ParticleEffect> m_particleEffectPool;
     ObjectPool<GameObjectItem> m_gameObjItemPool;
     DoubleLinkedList<Robot> m_activeRobots;

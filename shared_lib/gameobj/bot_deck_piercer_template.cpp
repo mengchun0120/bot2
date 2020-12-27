@@ -26,9 +26,8 @@ bool DeckPiercerTemplate::init(const rapidjson::Value& elem)
     std::vector<JsonParamPtr> params = {
         jsonParam(deathEffectName, "deathEffect", false),
         jsonParam(passThroughMaskVec, "passThroughMask"),
-        jsonParam(m_speed, "speed", gt(m_speed, 0.0f)),
-        jsonParam(m_maxPierceTimes, "maxPierceTimes", gt(m_maxPierceTimes, 0)),
-        jsonParam(m_explodeOnDeath, "explodeOnDeath")
+        jsonParam(m_explodeOnDeath, "explodeOnDeath"),
+        jsonParam(m_explodeBreath, "explodeBreath", ge(m_explodeBreath, 0.0f))
     };
 
     if (!parseJson(params, elem))

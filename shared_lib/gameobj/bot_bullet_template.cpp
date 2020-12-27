@@ -21,7 +21,6 @@ bool BulletTemplate::init(const rapidjson::Value& elem)
 
     std::string impactEffectName;
     std::vector<JsonParamPtr> params = {
-        jsonParam(m_speed, "speed", gt(m_speed, 0.0f)),
         jsonParam(impactEffectName, "impactEffect", false)
     };
 

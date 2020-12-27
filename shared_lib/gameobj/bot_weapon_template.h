@@ -8,8 +8,6 @@
 
 namespace bot {
 
-class MissileTemplate;
-
 class WeaponTemplate: public SingleUnitTemplate {
 public:
     WeaponTemplate();
@@ -19,23 +17,9 @@ public:
 
     bool init(const rapidjson::Value& elem);
 
-    bool init(const MissileTemplate* missileTemplate,
-              const rapidjson::Value& elem);
-
-    float getFireDuration(int level) const;
-
-    bool setFireDuration(float duration);
-
-    bool setFireDurReductionPerLevel(float reductionPerLevel);
-
-    const MissileTemplate* getMissileTemplate() const
+    float getDamage() const
     {
-        return m_missileTemplate;
-    }
-
-    void setMissileTemplate(const MissileTemplate* missileTemplate)
-    {
-        m_missileTemplate = missileTemplate;
+        return m_damage;
     }
 
     int numFirePoints() const
@@ -56,9 +40,7 @@ public:
     }
 
 protected:
-    float m_fireDuration;
-    float m_fireDurReductionPerLevel;
-    const MissileTemplate* m_missileTemplate;
+    float m_damage;
     std::vector<FirePoint> m_firePoints;
 };
 
