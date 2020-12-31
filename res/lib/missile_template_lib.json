@@ -1,28 +1,70 @@
 [
     {
         "name": "red_bullet",
-        "texture": "bullet",
+        "type": "bullet",
+        "texture": "red_bullet",
         "rect": "square18",
-        "color": "red",
         "coverBreath": 9.0,
         "collideBreath": 6.4,
         "speed": 80.0,
-        "damage": 4.0,
-        "damagePerLevel": 2.0,
-        "explosionBreath": 20.0,
-        "explosionEffect": "red_explosion"
+        "impactEffect": "red_explosion"
     },
     {
-        "name": "blue_bullet",
-        "texture": "bullet",
-        "rect": "square18",
-        "color": "blue",
-        "coverBreath": 9.0,
+        "name": "blue_shell",
+        "type": "shell",
+        "texture": "blue_shell",
+        "rect": "shell",
+        "coverBreath": 12.0,
         "collideBreath": 6.4,
         "speed": 80.0,
-        "damage": 6.0,
-        "damagePerLevel": 5.0,
-        "explosionBreath": 20.0,
-        "explosionEffect": "blue_explosion"
+        "explodeBreath": 20.0,
+        "explodeEffect": "blue_explosion"
+    },
+    {
+        "name": "purple_deck_piercer",
+        "type": "deck-piercer",
+        "texture": "purple_deck_piercer",
+        "rect": "deck-piercer",
+        "coverBreath": 12.0,
+        "collideBreath": 6.4,
+        "speed": 80.0,
+        "deathEffect": "purple_explosion",
+        "explodeOnDeath": true,
+        "explodeBreath": 20.0,
+        "passThroughMask": [255, 255, 255, 120]
+    },
+    {
+        "name": "player_basic_bullet",
+        "type": "bullet",
+        "texture": "player_basic_bullet",
+        "rect": "square18",
+        "coverBreath": 9.0,
+        "collideBreath": 6.4,
+        "speed": 300.0,
+        "impactEffect": "green_explosion"
+    },
+    {
+        "name": "player_basic_shell",
+        "type": "shell",
+        "texture": "player_basic_shell",
+        "rect": "shell",
+        "coverBreath": 12.0,
+        "collideBreath": 6.4,
+        "speed": 300.0,
+        "explodeBreath": 20.0,
+        "explodeEffect": "green_explosion"
+    },
+    {
+        "name": "player_basic_deck_piercer",
+        "type": "deck-piercer",
+        "texture": "player_basic_deck_piercer",
+        "rect": "deck-piercer",
+        "coverBreath": 12.0,
+        "collideBreath": 6.4,
+        "speed": 80.0,
+        "deathEffect": "green_explosion",
+        "explodeOnDeath": true,
+        "explodeBreath": 20.0,
+        "passThroughMask": [255, 255, 255, 120]
     }
 ]

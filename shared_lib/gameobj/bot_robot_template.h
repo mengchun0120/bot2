@@ -50,7 +50,7 @@ public:
         m_moverTemplate = moverTemplate;
     }
 
-    int numSkills() const
+    unsigned int numSkills() const
     {
         return m_skillTemplates.size();
     }
@@ -61,10 +61,13 @@ public:
     }
 
 protected:
+    bool initSkillTemplates(const std::vector<std::string>& skillNames);
+
+protected:
     const BaseTemplate* m_baseTemplate;
     const WeaponTemplate* m_weaponTemplate;
     const MoverTemplate* m_moverTemplate;
-    std::vector<SkillTemplate*> m_skillTemplates;
+    std::vector<const SkillTemplate*> m_skillTemplates;
 };
 
 } // end of namespace bot

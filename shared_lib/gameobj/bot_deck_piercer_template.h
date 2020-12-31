@@ -6,8 +6,6 @@
 
 namespace bot {
 
-class ParticleEffectTemplate;
-
 class DeckPiercerTemplate: public MissileTemplate {
 public:
     DeckPiercerTemplate();
@@ -16,11 +14,6 @@ public:
     {}
 
     bool init(const rapidjson::Value& elem);
-
-    const ParticleEffectTemplate* getDeathEffectTemplate() const
-    {
-        return m_deathEffectTemplate;
-    }
 
     const Color& getPassThroughMask() const
     {
@@ -38,7 +31,6 @@ public:
     }
 
 protected:
-    const ParticleEffectTemplate* m_deathEffectTemplate;
     Color m_passThroughMask;
     bool m_explodeOnDeath;
     float m_explodeBreath;

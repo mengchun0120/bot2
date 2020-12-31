@@ -26,10 +26,18 @@ public:
 
     virtual void update(float delta, GameScreen& screen);
 
+    virtual bool onEntry(GameScreen& screen);
+
+    virtual void onHit(GameScreen& screen, GameObject& obj);
+
     virtual void onDeath(GameScreen& screen);
 
+    virtual void onDealloc();
+
 private:
-    void processPenetrateObjs(LinkedList<GameObjectItem>& collideObjs,
+    bool checkCollision(GameScreen& screen);
+
+    bool processPenetrateObjs(LinkedList<GameObjectItem>& collideObjs,
                               GameScreen& screen);
 
 private:

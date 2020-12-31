@@ -3,26 +3,11 @@
 
 namespace bot {
 
-bool MissilePool::init(const std::vector<int> poolSizes)
+bool MissilePool::init(int poolSize)
 {
-    if (poolSizes.size() != MISSILE_COUNT)
-    {
-        LOG_ERROR("poolSizes is invalid");
-        return false;
-    }
-
-    for (int i = 0; i < MISSILE_COUNT; ++i)
-    {
-        if (poolSizes[i] <= 0)
-        {
-            LOG_ERROR("poolSizes[%d]=%d is invalid", i, poolSizes[i]);
-            return false;
-        }
-    }
-
-    m_bulletPool.init(poolSizes[MISSILE_BULLET]);
-    m_shellPool.init(poolSizes[MISSILE_SHELL]);
-    m_deckPiercerPool.init(poolSizes[MISSILE_DECK_PIERCER]);
+    m_bulletPool.init(poolSize);
+    m_shellPool.init(poolSize);
+    m_deckPiercerPool.init(poolSize);
 
     return true;
 }
@@ -83,7 +68,7 @@ Missile* MissilePool::alloc(const MissileTemplate* t, Side side,
             if (!ret)
             {
                 LOG_ERROR("Failed to initialize deck-piercer");
-                m_deckPiercer.free(deckPiercer);
+                m_deckPiercerPool.free(deckPiercer);
                 return nullptr;
             }
 
@@ -120,7 +105,7 @@ void MissilePool::free(Missile* missile)
         case MISSILE_DECK_PIERCER:
         {
             DeckPiercer* deckPiercer = static_cast<DeckPiercer*>(missile);
-            m_deckPiercer.free(deckPiercer);
+            m_deckPiercerPool.free(deckPiercer);
             break;
         }
         default:

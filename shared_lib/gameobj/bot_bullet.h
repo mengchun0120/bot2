@@ -20,18 +20,22 @@ public:
 
     const BulletTemplate* getTemplate() const
     {
-        return static_cast<BulletTemplate*>(m_template);
+        return static_cast<const BulletTemplate*>(m_template);
     }
 
     virtual void present();
 
     virtual void update(float delta, GameScreen& screen);
 
-    virtual void onEntry(GameScreen& screen);
+    virtual bool onEntry(GameScreen& screen);
+
+    virtual void onHit(GameScreen& screen, GameObject& obj);
 
     virtual void onDeath(GameScreen& screen);
 
 private:
+    bool checkCollision(GameScreen& screen);
+
     void processCollideObjs(GameScreen& screen,
                             LinkedList<GameObjectItem>& collideObjs);
 };

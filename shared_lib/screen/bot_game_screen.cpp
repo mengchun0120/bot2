@@ -394,6 +394,7 @@ int GameScreen::handleMouseMove(const MouseMoveEvent& e)
 int GameScreen::handleMouseButton(const MouseButtonEvent& e)
 {
     Player* player = m_map.getPlayer();
+    TimePoint now = Clock::now();
 
     if (e.m_button == GLFW_MOUSE_BUTTON_RIGHT)
     {
@@ -413,7 +414,7 @@ int GameScreen::handleMouseButton(const MouseButtonEvent& e)
     }
     else if (e.m_button == GLFW_MOUSE_BUTTON_LEFT)
     {
-        player->setShootingEnabled(e.m_action == GLFW_PRESS);
+        player->applySkill(*this, now, 0);
     }
 
     return 0;
@@ -422,16 +423,22 @@ int GameScreen::handleMouseButton(const MouseButtonEvent& e)
 int GameScreen::handleKey(const KeyEvent& e)
 {
     Player* player = m_map.getPlayer();
+    TimePoint now = Clock::now();
     switch (e.m_key)
     {
-        case GLFW_KEY_W:
+        case GLFW_KEY_A:
         {
-            player->setMovingEnabled(true);
+            player->applySkill(*this, now, 0);
             break;
         }
         case GLFW_KEY_S:
         {
-            player->setMovingEnabled(false);
+            player->applySkill(*this, now, 1);
+            break;
+        }
+        case GLFW_KEY_D:
+        {
+            player->applySkill(*this, now, 2);
             break;
         }
         case GLFW_KEY_ESCAPE:
@@ -445,31 +452,6 @@ int GameScreen::handleKey(const KeyEvent& e)
                 m_msgBox.setVisible(true);
             }
             break;
-        }
-        case GLFW_KEY_F:
-        {
-            if (e.m_action == GLFW_PRESS || e.m_action == GLFW_REPEAT)
-            {
-                player->setShootingEnabled(true);
-            }
-            else if (e.m_action == GLFW_RELEASE)
-            {
-                player->setShootingEnabled(false);
-            }
-            else
-            {
-                LOG_ERROR("Wrong action %d", e.m_action);
-            }
-
-            break;
-        }
-        case GLFW_KEY_A:
-        {
-            if (e.m_action == GLFW_PRESS)
-            {
-                player->getWeapon().fireMissile(*this,
-                                                MISSILE_ABILITY_PENETRATE);
-            }
         }
     }
 

@@ -37,8 +37,8 @@ bool Player::init(const PlayerTemplate* playerTemplate, float x, float y,
                            playerTemplate->getPowerLevel(),
                            playerTemplate->getPowerRestoreLevel(),
                            playerTemplate->getWeaponLevel(),
-                           playerTemplate->getMissileLevel(),
                            playerTemplate->getMoverLevel(),
+                           playerTemplate->getSkillLevels(),
                            x, y, directionX, directionY);
 
     if (!ret)
@@ -76,7 +76,6 @@ void Player::update(float delta, GameScreen& screen)
             return;
         }
 
-        updateWeapon(screen);
         updateBase();
 
         if (m_dashboard)
@@ -166,7 +165,7 @@ void Player::applyNonInstantaneousEffect(Goodie* goodie)
         }
         case GOODIE_QUICK_SHOOTER:
         {
-            m_weapon.setFireDurationMultiplier(0.5f);
+            scaleSkillCooldown(0.5f);
             break;
         }
         case GOODIE_DOUBLE_DAMAGE:
@@ -234,7 +233,7 @@ void Player::expireEffect(GoodieEffect* effect)
         }
         case GOODIE_QUICK_SHOOTER:
         {
-            m_weapon.setFireDurationMultiplier(1.0f);
+            scaleSkillCooldown(1.0f);
             break;
         }
         case GOODIE_DOUBLE_DAMAGE:
@@ -328,3 +327,4 @@ void Player::onDeath(GameScreen& screen)
 }
 
 } // end of namespace bot
+

@@ -8,6 +8,7 @@
 #include "gameobj/bot_goodie.h"
 #include "gameobj/bot_robot.h"
 #include "gameobj/bot_player.h"
+#include "skill/bot_skill.h"
 #include "screen/bot_game_screen.h"
 
 namespace bot {
@@ -24,13 +25,73 @@ Robot::Robot()
     m_mask.init(255, 255, 255, 255);
 }
 
+Robot::~Robot()
+{
+    unsigned int count = numSkills();
+    for (unsigned int i = 0; i < count; ++i)
+    {
+        delete m_skills[i];
+    }
+}
+
 bool Robot::init(const RobotTemplate* t, Side side,
                  int hpLevel, int hpRestoreLevel,
                  int armorLevel, int armorRepairLevel,
                  int powerLevel, int powerRestoreLevel,
-                 int weaponLevel, int missileLevel,
-                 int moverLevel, float x, float y,
+                 int weaponLevel, int moverLevel,
+                 const std::vector<int>& skillLevels,
+                 float x, float y,
                  float directionX, float directionY)
+{
+    bool ret = initBasic(t, side, hpLevel, hpRestoreLevel,
+                         armorLevel, armorRepairLevel,
+                         powerLevel, powerRestoreLevel,
+                         weaponLevel, moverLevel,
+                         x, y, directionX, directionY);
+    if (!ret)
+    {
+        return false;
+    }
+
+    if (!initSkills(skillLevels))
+    {
+        return false;
+    }
+
+    return true;
+}
+
+bool Robot::init(const RobotTemplate* t, Side side,
+                 int hpLevel, int hpRestoreLevel,
+                 int armorLevel, int armorRepairLevel,
+                 int powerLevel, int powerRestoreLevel,
+                 int weaponLevel, int moverLevel, int skillLevel,
+                 float x, float y, float directionX, float directionY)
+{
+    bool ret = initBasic(t, side, hpLevel, hpRestoreLevel,
+                         armorLevel, armorRepairLevel,
+                         powerLevel, powerRestoreLevel,
+                         weaponLevel, moverLevel,
+                         x, y, directionX, directionY);
+    if (!ret)
+    {
+        return false;
+    }
+
+    if (!initSkills(skillLevel))
+    {
+        return false;
+    }
+
+    return true;
+}
+
+bool Robot::initBasic(const RobotTemplate* t, Side side,
+                      int hpLevel, int hpRestoreLevel,
+                      int armorLevel, int armorRepairLevel,
+                      int powerLevel, int powerRestoreLevel,
+                      int weaponLevel, int moverLevel,
+                      float x, float y, float directionX, float directionY)
 {
     bool ret = GameObject::init(t, x, y);
     if (!ret)
@@ -49,7 +110,7 @@ bool Robot::init(const RobotTemplate* t, Side side,
         return false;
     }
 
-    ret = m_weapon.init(t->getWeaponTemplate(), this, weaponLevel, missileLevel);
+    ret = m_weapon.init(t->getWeaponTemplate(), this, weaponLevel);
     if (!ret)
     {
         return false;
@@ -70,6 +131,73 @@ bool Robot::init(const RobotTemplate* t, Side side,
     m_side = side;
 
     return true;
+}
+
+bool Robot::initSkills(const std::vector<int>& skillLevels)
+{
+    const RobotTemplate* t = getTemplate();
+    unsigned int numSkills = t->numSkills();
+
+    if (numSkills == 0)
+    {
+        LOG_ERROR("skills is empty");
+        return false;
+    }
+
+    if (numSkills != skillLevels.size())
+    {
+        LOG_ERROR("skillLevels is invalid");
+        return false;
+    }
+
+    m_skills.resize(numSkills);
+    for (unsigned int i = 0; i < numSkills; ++i)
+    {
+        m_skills[i] = Skill::create(t->getSkillTemplate(i), this,
+                                    skillLevels[i]);
+
+        if (!m_skills[i])
+        {
+            LOG_ERROR("Failed to create Skill: idx=%d", i);
+            return false;
+        }
+    }
+
+    return true;
+}
+
+bool Robot::initSkills(int skillLevel)
+{
+    const RobotTemplate* t = getTemplate();
+    unsigned int numSkills = t->numSkills();
+
+    if (numSkills == 0)
+    {
+        LOG_ERROR("skills is empty");
+        return false;
+    }
+
+    if (skillLevel < 0)
+    {
+        LOG_ERROR("Invalid skillLevel %d", skillLevel);
+        return false;
+    }
+
+    m_skills.resize(numSkills);
+    for (unsigned int i = 0; i < numSkills; ++i)
+    {
+        m_skills[i] = Skill::create(t->getSkillTemplate(i), this,
+                                    skillLevel);
+
+        if (!m_skills[i])
+        {
+            LOG_ERROR("Failed to create Skill: idx=%d", i);
+            return false;
+        }
+    }
+
+    return true;
+   
 }
 
 void Robot::present()
@@ -128,35 +256,26 @@ void Robot::refillHP()
 }
 
 void Robot::processCollisions(LinkedList<GameObjectItem>& collideObjs,
-                              GameScreen& gameScreen)
+                              GameScreen& screen)
 {
-    GameObjectItem* item = collideObjs.getFirst();
-    GameObjectManager& gameObjMgr = gameScreen.getGameObjManager();
+    GameObjectItem* item;
     const int DEAD_FLAG = GAME_OBJ_FLAG_DEAD | GAME_OBJ_FLAG_DISSOLVE;
 
-    while (item)
+    for (item = collideObjs.getFirst(); item; item = item->getNext())
     {
-        switch (item->getObj()->getType())
+        GameObject* o = item->getObj();
+
+        if (o->testFlag(DEAD_FLAG))
+        {
+            continue;
+        }
+
+        switch (o->getType())
         {
             case GAME_OBJ_TYPE_MISSILE:
             {
-                Missile* missile = static_cast<Missile*>(item->getObj());
-                if (missile->getAbility() != MISSILE_ABILITY_PENETRATE)
-                {
-                    missile->explode(gameScreen);
-                }
-                else if (!testFlag(GAME_OBJ_FLAG_INDESTRUCTABLE))
-                {
-                    if (testFlag(DEAD_FLAG) && !addHP(-missile->getDamage()))
-                    {
-                        onDeath(gameScreen);
-                    }
-                }
-                else
-                {
-                    gameObjMgr.sendToDeathQueue(missile);
-                }
-
+                Missile* missile = static_cast<Missile*>(o);
+                missile->onHit(screen, *this);
                 break;
             }
             case GAME_OBJ_TYPE_GOODIE:
@@ -164,8 +283,8 @@ void Robot::processCollisions(LinkedList<GameObjectItem>& collideObjs,
                 if (m_side == SIDE_PLAYER)
                 {
                     Player* player = static_cast<Player*>(this);
-                    Goodie* goodie = static_cast<Goodie*>(item->getObj());
-                    player->consumeGoodie(goodie, gameScreen);
+                    Goodie* goodie = static_cast<Goodie*>(o);
+                    player->consumeGoodie(goodie, screen);
                 }
                 break;
             }
@@ -175,19 +294,12 @@ void Robot::processCollisions(LinkedList<GameObjectItem>& collideObjs,
                          static_cast<int>(item->getObj()->getType()));
             }
         }
-
-        item = static_cast<GameObjectItem*>(item->getNext());
     }
 }
 
 bool Robot::updateMover(float delta, GameScreen& gameScreen)
 {
     return m_mover.update(gameScreen, delta);
-}
-
-bool Robot::updateWeapon(GameScreen& gameScreen)
-{
-    return m_weapon.update(gameScreen);
 }
 
 void Robot::updateBase()
@@ -210,10 +322,6 @@ bool Robot::updateMask()
         m_mask.setAlpha(0.0f);
     }
 
-    m_base.setMask(m_mask);
-    m_weapon.setMask(m_mask);
-    m_mover.setMask(m_mask);
-
     return maskVisible;
 }
 
@@ -235,6 +343,40 @@ void Robot::unsetDest()
     m_hasDest = false;
     m_destX = 0.0f;
     m_destY = 0.0f;
+}
+
+bool Robot::applySkill(GameScreen& screen, const TimePoint& t, unsigned int idx)
+{
+    if (idx >= numSkills())
+    {
+        LOG_WARN("Skill index %d out of range", idx);
+        return false;
+    }
+
+    Skill* skill = getSkill(idx);
+    if (!skill->available(t))
+    {
+        return false;
+    }
+
+    skill->apply(screen, t);
+
+    return true;
+}
+
+bool Robot::scaleSkillCooldown(float cooldownMultiplier)
+{
+    unsigned int count = numSkills();
+    for (unsigned int i = 0; i < count; ++i)
+    {
+        if (!m_skills[i]->setCooldownMultiplier(cooldownMultiplier))
+        {
+            LOG_ERROR("setCooldownMultiplier failed for skill idx=%d", i);
+            return false;
+        }
+    }
+
+    return true;
 }
 
 } // end of namespace bot

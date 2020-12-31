@@ -78,11 +78,15 @@ void Missile::explode(GameScreen& screen, float explodeBreath,
     GameMap& map = screen.getMap();
     GameObjectManager& gameObjMgr = screen.getGameObjManager();
 
-    ParticleEffect* explosion = gameObjMgr.createParticleEffect(
-                                     explosionTemplate, getPosX(), getPosY());
-    if (!map.addObject(explosion))
+    if (explosionTemplate)
     {
-        explosion->onDeath(screen);
+        ParticleEffect* explosion = gameObjMgr.createParticleEffect(
+                                                    explosionTemplate,
+                                                    getPosX(), getPosY());
+        if (!map.addObject(explosion))
+        {
+            explosion->onDeath(screen);
+        }
     }
 
     int startRow, endRow, startCol, endCol;

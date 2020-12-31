@@ -11,12 +11,12 @@ namespace bot {
 Weapon::Weapon()
     : m_weaponTemplate(nullptr)
     , m_robot(nullptr)
+    , m_damageMultiplier(1.0f)
 {
-    m_mask.init(255, 255, 255, 255);
 }
 
 bool Weapon::init(const WeaponTemplate* weaponTemplate, Robot* robot,
-                  int weaponLevel, int missileLevel)
+                  int weaponLevel)
 {
     if (!weaponTemplate)
     {
@@ -36,26 +36,20 @@ bool Weapon::init(const WeaponTemplate* weaponTemplate, Robot* robot,
         return false;
     }
 
-    if (missileLevel < 0)
-    {
-        LOG_ERROR("Invalid missile-level %d", missileLevel);
-        return false;
-    }
-
     m_weaponTemplate = weaponTemplate;
     m_robot = robot;
-    m_missileLevel = missileLevel;
 
     m_firePoints.resize(m_weaponTemplate->numFirePoints());
     resetFirePoints();
 
-    m_lastFireTime = Clock::now();
+    m_damageMultiplier = 1.0f;
 
     return true;
 }
 
 bool Weapon::update(GameScreen& screen)
 {
+    return true;
 }
 
 void Weapon::present()
@@ -65,7 +59,7 @@ void Weapon::present()
                                 base.getWeaponPos(), m_robot->getDirection(),
                                 nullptr, nullptr,
                                 m_weaponTemplate->getTexture()->textureId(),
-                                &m_mask);
+                                &(m_robot->getMask()));
 }
 
 void Weapon::shiftFirePoints(float deltaX, float deltaY)
@@ -105,30 +99,32 @@ void Weapon::resetFirePoints()
     }
 }
 
-bool Weapon::fireMissile(GameScreen& screen,
-                         const MissileTemplate* missileTemplate,
-                         float powerCost, float damageMultiplier,
-                         float speedMultiplier)
+bool Weapon::setDamageMultiplier(float multiplier)
 {
-    Base& base = m_robot->getBase();
-    float newPower = base.getPower() - powerCost;
-
-    if (newPower < 0.0f)
+    if (multiplier < 0.0f)
     {
-        newPower = 0.0f;
+        LOG_ERROR("Invalid multiplier %f", multiplier);
+        return false;
     }
 
-    base.setPower(newPower);
+    m_damageMultiplier = multiplier;
 
+    return true;
+}
+
+bool Weapon::fireMissile(GameScreen& screen,
+                         const MissileTemplate* missileTemplate,
+                         float damageMultiplier, float speedMultiplier)
+{
     GameObjectManager& gameObjMgr = screen.getGameObjManager();
-    GameMap& map = screen.getMap();
-    float damage = m_weaponTemplate->getDamage() * damageMultiplier;
+    float damage = m_weaponTemplate->getDamage() * damageMultiplier *
+                   m_damageMultiplier;
     float speed = missileTemplate->getSpeed() * speedMultiplier;
 
     for(auto& fp: m_firePoints)
     {
         Missile* missile = gameObjMgr.createMissile(
-                                 missileTemplate, m_robot->getSide(), m_damage,
+                                 missileTemplate, m_robot->getSide(),
                                  fp.m_firePos[0], fp.m_firePos[1],
                                  fp.m_fireDirection[0], fp.m_fireDirection[1],
                                  damage, speed);
@@ -138,10 +134,7 @@ bool Weapon::fireMissile(GameScreen& screen,
             return false;
         }
 
-        if (!map.addObject(missile))
-        {
-            missile->onDeath(screen);
-        }
+        missile->onEntry(screen);
     }
 
     return true;

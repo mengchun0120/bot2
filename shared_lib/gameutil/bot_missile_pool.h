@@ -16,7 +16,7 @@ public:
     ~MissilePool()
     {}
 
-    bool init(const std::vector<int> poolSizes);
+    bool init(int poolSize);
 
     Missile* alloc(const MissileTemplate* t, Side side, float x, float y,
                    float directionX, float directionY,

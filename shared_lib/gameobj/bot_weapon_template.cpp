@@ -1,9 +1,8 @@
-#include <algorithm>
 #include "misc/bot_log.h"
 #include "misc/bot_constants.h"
 #include "misc/bot_json_utils.h"
 #include "misc/bot_math_utils.h"
-#include "gameutil/bot_base_template.h"
+#include "gameobj/bot_weapon_template.h"
 
 namespace bot {
 
@@ -60,58 +59,11 @@ bool initFirePoints(std::vector<FirePoint>& firePoints,
 }
 
 WeaponTemplate::WeaponTemplate()
-    : m_fireDuration(0.0f)
-    , m_fireDurReductionPerLevel(0.0f)
-    , m_missileTemplate(nullptr)
+    : SingleUnitTemplate()
+    , m_damage(0.0f)
 {}
 
 bool WeaponTemplate::init(const rapidjson::Value& elem)
-{
-    if (!SingleUnitTemplate::init(elem))
-    {
-        return false;
-    }
-
-    std::vector<JsonParamPtr> params = {
-        jsonParam(missileName, "missile", false)
-    };
-
-    if (!parseJson(params, elem))
-    {
-        return false;
-    }
-
-    bool ret = setFireDuration(fireDuration) &&
-               setFireDurReductionPerLevel(fireDurReductionPerLevel);
-    if (!ret)
-    {
-        return false;
-    }
-
-    const GameLib& lib = GameLib::getInstance();
-
-    if (!missileName.empty())
-    {
-        m_missileTemplate = lib.getMissileTemplate(missileName);
-        if (!m_missileTemplate)
-        {
-            LOG_ERROR("Failed to find missile-template %s",
-                      missileName.c_str());
-            return false;
-        }
-    }
-
-    if (!initFirePoints(m_firePoints, elem))
-    {
-        LOG_ERROR("Failed to initialize fire-points");
-        return false;
-    }
-
-    return true;
-}
-
-bool WeaponTemplate::init(const MissileTemplate* missileTemplate,
-                          const rapidjson::Value& elem)
 {
     if (!SingleUnitTemplate::init(elem))
     {

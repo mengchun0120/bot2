@@ -23,7 +23,8 @@ public:
     virtual ~Player();
 
     bool init(const PlayerTemplate* playerTemplate, float x, float y,
-              float directionX, float directionY, Dashboard* dashboard);
+              float directionX, float directionY,
+              Dashboard* dashboard);
 
     virtual void present();
 

@@ -70,7 +70,8 @@ AIRobot* GameObjectManager::createRobot(
                          int hpLevel, int hpRestoreLevel,
                          int armorLevel, int armorRepairLevel,
                          int powerLevel, int powerRestoreLevel,
-                         int weaponLevel, int missileLevel, int moverLevel,
+                         int weaponLevel, int moverLevel,
+                         const std::vector<int>& skillLevels,
                          float x, float y, float directionX, float directionY)
 {
     const AIRobotTemplate* aiRobotTemplate =
@@ -85,7 +86,7 @@ AIRobot* GameObjectManager::createRobot(
                        hpLevel, hpRestoreLevel,
                        armorLevel, armorRepairLevel,
                        powerLevel, powerRestoreLevel,
-                       weaponLevel, missileLevel, moverLevel,
+                       weaponLevel, moverLevel, skillLevels,
                        x, y, directionX, directionY);
 }
 
@@ -94,7 +95,8 @@ AIRobot* GameObjectManager::createRobot(
                          int hpLevel, int hpRestoreLevel,
                          int armorLevel, int armorRepairLevel,
                          int powerLevel, int powerRestoreLevel,
-                         int weaponLevel, int missileLevel, int moverLevel,
+                         int weaponLevel, int moverLevel,
+                         const std::vector<int>& skillLevels,
                          float x, float y, float directionX, float directionY)
 {
     AIRobot* robot = new AIRobot();
@@ -102,7 +104,63 @@ AIRobot* GameObjectManager::createRobot(
                            hpLevel, hpRestoreLevel,
                            armorLevel, armorRepairLevel,
                            powerLevel, powerRestoreLevel,
-                           weaponLevel, missileLevel, moverLevel,
+                           weaponLevel, moverLevel, skillLevels,
+                           x, y, directionX, directionY);
+    if (!ret)
+    {
+        delete robot;
+        return nullptr;
+    }
+
+    m_activeRobots.add(robot);
+    ++m_numActiveAIRobots;
+
+    if (m_dashboard)
+    {
+        m_dashboard->setAIRobotCount(m_numActiveAIRobots);
+    }
+
+    return robot;
+}
+
+AIRobot* GameObjectManager::createRobot(
+                         const std::string& robotName, Side side,
+                         int hpLevel, int hpRestoreLevel,
+                         int armorLevel, int armorRepairLevel,
+                         int powerLevel, int powerRestoreLevel,
+                         int weaponLevel, int moverLevel, int skillLevel,
+                         float x, float y, float directionX, float directionY)
+{
+    const AIRobotTemplate* aiRobotTemplate =
+                                 m_lib->getAIRobotTemplate(robotName);
+    if (!aiRobotTemplate)
+    {
+        LOG_ERROR("Failed to find ai-robot template %s", robotName.c_str());
+        return nullptr;
+    }
+
+    return createRobot(aiRobotTemplate, side,
+                       hpLevel, hpRestoreLevel,
+                       armorLevel, armorRepairLevel,
+                       powerLevel, powerRestoreLevel,
+                       weaponLevel, moverLevel, skillLevel,
+                       x, y, directionX, directionY);
+}
+
+AIRobot* GameObjectManager::createRobot(
+                         const AIRobotTemplate* aiRobotTemplate, Side side,
+                         int hpLevel, int hpRestoreLevel,
+                         int armorLevel, int armorRepairLevel,
+                         int powerLevel, int powerRestoreLevel,
+                         int weaponLevel, int moverLevel, int skillLevel,
+                         float x, float y, float directionX, float directionY)
+{
+    AIRobot* robot = new AIRobot();
+    bool ret = robot->init(aiRobotTemplate, side,
+                           hpLevel, hpRestoreLevel,
+                           armorLevel, armorRepairLevel,
+                           powerLevel, powerRestoreLevel,
+                           weaponLevel, moverLevel, skillLevel,
                            x, y, directionX, directionY);
     if (!ret)
     {
@@ -128,7 +186,7 @@ Missile* GameObjectManager::createMissile(
                            float damage, float speed)
 {
     Missile* missile = m_missilePool.alloc(
-                            missileTemplate, side, x, y
+                            missileTemplate, side, x, y,
                             directionX, directionY, damage, speed);
 
     if (!missile)

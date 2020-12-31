@@ -3,17 +3,20 @@
 #include "gameobj/bot_bullet_template.h"
 #include "gameobj/bot_shell_template.h"
 #include "gameobj/bot_deck_piercer_template.h"
+#include "gameutil/bot_game_lib.h"
 
 namespace bot {
 
-MissileTemplate* MissileTemplaet::create(const std::string& name,
+MissileTemplate* MissileTemplate::create(const std::string& name,
                                          const rapidjson::Value& elem)
 {
     std::string typeStr;
+    std::vector<JsonParamPtr> params = {
+        jsonParam(typeStr, "type")
+    };
 
-    if (!parseJson(typeStr, elem, "type"))
+    if (!parseJson(params, elem))
     {
-        LOG_ERROR("Cannot find type");
         return nullptr;
     }
 
@@ -24,51 +27,55 @@ MissileTemplate* MissileTemplaet::create(const std::string& name,
         return nullptr;
     }
 
-    MissileTemplate* t = nullptr;
-
     switch(type)
     {
         case MISSILE_BULLET:
         {
-            t = new BulletTemplate();
+            BulletTemplate* t = new BulletTemplate();
             if (!t->init(elem))
             {
                 LOG_ERROR("Failed to initialize BulletTemplate");
                 delete t;
                 return nullptr;
             }
-            break;
+            return t;
         }
         case MISSILE_SHELL:
         {
-            t = new ShellTemplate();
+            ShellTemplate* t = new ShellTemplate();
             if (!t->init(elem))
             {
                 LOG_ERROR("Failed to initialize ShellTemplate");
                 delete t;
                 return nullptr;
             }
-            break;
+            return t;
         }
         case MISSILE_DECK_PIERCER:
         {
-            t = new DeckPiercerTemplate();
+            DeckPiercerTemplate* t = new DeckPiercerTemplate();
             if (!t->init(elem))
             {
                 LOG_ERROR("Failed to initialize DeckPiercerTemplate");
                 delete t;
                 return nullptr;
             }
-            break;
+            return t;
+        }
+        default:
+        {
+            LOG_ERROR("Invalid type %d", static_cast<int>(type));
         }
     }
 
-    return t;
+    return nullptr;
 }
 
 MissileTemplate::MissileTemplate()
     : GameObjectTemplate(GAME_OBJ_TYPE_MISSILE)
+    , SingleUnitTemplate()
     , m_missileType(MISSILE_INVALID)
+    , m_impactEffectTemplate(nullptr)
     , m_speed(0.0f)
 {
 }
@@ -92,13 +99,29 @@ bool MissileTemplate::init(MissileType missileType,
         return false;
     }
 
+    std::string impactEffectName;
     std::vector<JsonParamPtr> params = {
-        jsonParam(m_speed, "speed", gt(m_speed, 0.0f)
+        jsonParam(impactEffectName, "impactEffect"),
+        jsonParam(m_speed, "speed", gt(m_speed, 0.0f))
     };
 
     if (!parseJson(params, elem))
     {
         return false;
+    }
+
+    if (!impactEffectName.empty())
+    {
+        const GameLib& lib = GameLib::getInstance();
+
+        m_impactEffectTemplate =
+                        lib.getParticleEffectTemplate(impactEffectName);
+        if (!m_impactEffectTemplate)
+        {
+            LOG_ERROR("Failed to find ParticleEffectTemplate %s",
+                      impactEffectName.c_str());
+            return false;
+        }
     }
 
     return true;

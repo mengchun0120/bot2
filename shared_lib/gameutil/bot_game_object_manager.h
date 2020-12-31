@@ -67,14 +67,30 @@ public:
                          int hpLevel, int hpRestoreLevel,
                          int armorLevel, int armorRepairLevel,
                          int powerLevel, int powerRestoreLevel,
-                         int weaponLevel, int missileLevel, int moverLevel,
+                         int weaponLevel, int moverLevel,
+                         const std::vector<int>& skillLevels,
                          float x, float y, float directionX, float directionY);
 
     AIRobot* createRobot(const AIRobotTemplate* aiRobotTemplate, Side side,
                          int hpLevel, int hpRestoreLevel,
                          int armorLevel, int armorRepairLevel,
                          int powerLevel, int powerRestoreLevel,
-                         int weaponLevel, int missileLevel, int moverLevel,
+                         int weaponLevel, int moverLevel,
+                         const std::vector<int>& skillLevels,
+                         float x, float y, float directionX, float directionY);
+
+    AIRobot* createRobot(const std::string& robotName, Side side,
+                         int hpLevel, int hpRestoreLevel,
+                         int armorLevel, int armorRepairLevel,
+                         int powerLevel, int powerRestoreLevel,
+                         int weaponLevel, int moverLevel, int skillLevel,
+                         float x, float y, float directionX, float directionY);
+
+    AIRobot* createRobot(const AIRobotTemplate* aiRobotTemplate, Side side,
+                         int hpLevel, int hpRestoreLevel,
+                         int armorLevel, int armorRepairLevel,
+                         int powerLevel, int powerRestoreLevel,
+                         int weaponLevel, int moverLevel, int skillLevel,
                          float x, float y, float directionX, float directionY);
 
     Missile* createMissile(const MissileTemplate* missileTemplate,

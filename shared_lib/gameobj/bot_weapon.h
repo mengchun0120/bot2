@@ -31,10 +31,7 @@ public:
 
     void resetFirePoints();
 
-    void setMask(const Color& mask)
-    {
-        m_mask = mask;
-    }
+    bool setDamageMultiplier(float multiplier);
 
     bool fireMissile(GameScreen& screen, const MissileTemplate* missileTemplate,
                      float damageMultiplier, float speedMultiplier);
@@ -43,7 +40,7 @@ protected:
     const WeaponTemplate* m_weaponTemplate;
     Robot* m_robot;
     std::vector<FirePoint> m_firePoints;
-    Color m_mask;
+    float m_damageMultiplier;
 };
 
 } // end of namespace bot

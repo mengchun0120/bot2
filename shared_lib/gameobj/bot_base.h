@@ -114,11 +114,6 @@ public:
 
     void resetWeaponMoverPos();
 
-    void setMask(const Color& mask)
-    {
-        m_mask = mask;
-    }
-
 private:
     void resetHPPercentStr();
 
@@ -136,7 +131,6 @@ protected:
     float m_moverPos[Constants::NUM_FLOATS_PER_POSITION];
     char m_hpPercentStr[HP_PERCENT_STR_LEN];
     float m_hpStrPos[Constants::NUM_FLOATS_PER_POSITION];
-    Color m_mask;
 };
 
 } // end of namespace bot

@@ -5,8 +5,6 @@
 
 namespace bot {
 
-class MissileTemplate;
-
 class PlayerTemplate: public RobotTemplate {
 public:
     PlayerTemplate();
@@ -71,13 +69,6 @@ public:
 
     bool setPowerRestoreLevel(int level);
 
-    int getMissileLevel() const
-    {
-        return m_missileLevel;
-    }
-
-    bool setMissileLevel(int level);
-
     int getWeaponLevel() const
     {
         return m_weaponLevel;
@@ -92,11 +83,17 @@ public:
 
     bool setMoverLevel(int level);
 
+    const std::vector<int>& getSkillLevels() const
+    {
+        return m_skillLevels;
+    }
+
 private:
     void configCoverCollideBreath();
 
+    bool checkSkillLevels();
+
 protected:
-    MissileTemplate* m_missileTemplate;
     int m_gold;
     int m_experience;
     int m_hpLevel;
@@ -105,9 +102,9 @@ protected:
     int m_armorRepairLevel;
     int m_powerLevel;
     int m_powerRestoreLevel;
-    int m_missileLevel;
     int m_weaponLevel;
     int m_moverLevel;
+    std::vector<int> m_skillLevels;
 };
 
 } // end of namespace bot

@@ -1,4 +1,6 @@
+#include "misc/bot_log.h"
 #include "gameobj/bot_bullet.h"
+#include "gameobj/bot_robot.h"
 #include "screen/bot_game_screen.h"
 
 namespace bot {
@@ -22,7 +24,7 @@ void Bullet::present()
 {
     const BulletTemplate* t = getTemplate();
     t->getRect()->draw(m_pos, m_direction, nullptr, nullptr,
-                       t->getTexture(), nullptr);
+                       *(t->getTexture()), nullptr);
 }
 
 void Bullet::update(float delta, GameScreen& screen)
@@ -32,6 +34,38 @@ void Bullet::update(float delta, GameScreen& screen)
 
     shiftPos(deltaX, deltaY);
 
+    checkCollision(screen);
+}
+
+bool Bullet::onEntry(GameScreen& screen)
+{
+    if (checkCollision(screen))
+    {
+        screen.getMap().addObject(this);
+        return true;
+    }
+
+    return false;
+}
+
+void Bullet::onHit(GameScreen& screen, GameObject& obj)
+{
+    if (obj.getType() != GAME_OBJ_TYPE_ROBOT)
+    {
+        return;
+    }
+
+    checkCollision(screen);
+}
+
+void Bullet::onDeath(GameScreen& screen)
+{
+    GameObjectManager& gameObjMgr = screen.getGameObjManager();
+    gameObjMgr.sendToDeathQueue(this);
+}
+
+bool Bullet::checkCollision(GameScreen& screen)
+{
     LinkedList<GameObjectItem> collideObjs;
     GameMap& map = screen.getMap();
 
@@ -40,25 +74,25 @@ void Bullet::update(float delta, GameScreen& screen)
     if (RET_CODE_OUT_OF_SIGHT == rc)
     {
         onDeath(screen);
-        return;
+        return false;
     }
 
     if (collideObjs.isEmpty())
     {
-        return;
+        return true;
     }
 
     GameObjectManager& gameObjMgr = screen.getGameObjManager();
     const BulletTemplate* t = getTemplate();
 
     processCollideObjs(screen, collideObjs);
-    gameObjMgr.freeGameObjectItems(collideObjs);
+    gameObjMgr.freeGameObjItems(collideObjs);
 
     const ParticleEffectTemplate* e = t->getImpactEffectTemplate();
     if (e)
     {
         ParticleEffect* effect = gameObjMgr.createParticleEffect(
-                                                e, getPosX(), getPosY())
+                                                e, getPosX(), getPosY());
 
         if (!map.addObject(effect))
         {
@@ -67,17 +101,18 @@ void Bullet::update(float delta, GameScreen& screen)
     }
 
     onDeath(screen);
+
+    return false;
 }
 
 void Bullet::processCollideObjs(GameScreen& screen,
                                 LinkedList<GameObjectItem>& collideObjs)
 {
-    GameObjectManager& gameObjMgr = screen.getGameObjManager();
     GameObjectItem* item;
 
-    for (item = collideObjs.getFirst() item; item = item->getNext())
+    for (item = collideObjs.getFirst(); item; item = item->getNext())
     {
-        GameObject* obj = item->getObject();
+        GameObject* obj = item->getObj();
         switch(obj->getType())
         {
             case GAME_OBJ_TYPE_TILE:
@@ -112,12 +147,6 @@ void Bullet::processCollideObjs(GameScreen& screen,
             }
         }
     }
-}
-
-void Bullet::onDeath(GameScreen& screen)
-{
-    GameObjectManager& gameObjMgr = screen.getGameObjManager();
-    gameObjMgr.sendToDeathQueue(this);
 }
 
 } // end of namespace bot

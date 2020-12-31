@@ -8,28 +8,40 @@
 #include "gameobj/bot_base.h"
 #include "gameobj/bot_weapon.h"
 #include "gameobj/bot_mover.h"
-#include "skill/bot_skill.h"
+#include "gameobj/bot_robot_template.h"
 
 namespace bot {
 
 template <typename T> class LinkedList;
 class GameObjectItem;
-class RobotTemplate;
+class Skill;
 
 class Robot : public GameObject {
 public:
     Robot();
 
-    virtual ~Robot()
-    {}
+    virtual ~Robot();
 
     bool init(const RobotTemplate* t, Side side,
               int hpLevel, int hpRestoreLevel,
               int armorLevel, int armorRepairLevel,
               int powerLevel, int powerRestoreLevel,
-              int weaponLevel, int missileLevel,
-              int moverLevel, float x, float y,
-              float directionX, float direction);
+              int weaponLevel, int moverLevel,
+              const std::vector<int>& skillLevels,
+              float x, float y, float directionX, float directionY);
+
+    bool init(const RobotTemplate* t, Side side,
+              int hpLevel, int hpRestoreLevel,
+              int armorLevel, int armorRepairLevel,
+              int powerLevel, int powerRestoreLevel,
+              int weaponLevel, int moverLevel, int skillLevel,
+              float x, float y, float directionX, float directionY);
+
+
+    const RobotTemplate* getTemplate() const
+    {
+        return static_cast<const RobotTemplate*>(m_template);
+    }
 
     virtual void present();
 
@@ -78,24 +90,12 @@ public:
         return m_mover.getSpeed();
     }
 
-    void setShootingEnabled(bool enabled)
-    {
-        m_weapon.setFiring(enabled);
-    }
-
-    bool isShooting() const
-    {
-        return m_weapon.isFiring();
-    }
-
     Side getSide() const
     {
         return m_side;
     }
 
     bool updateMover(float delta, GameScreen& gameScreen);
-
-    bool updateWeapon(GameScreen& gameScreen);
 
     void updateBase();
 
@@ -132,6 +132,11 @@ public:
         return m_mover;
     }
 
+    const Color& getMask() const
+    {
+        return m_mask;
+    }
+
     bool updateMask();
 
     bool hasDest() const
@@ -153,6 +158,32 @@ public:
 
     void unsetDest();
 
+    unsigned int numSkills() const
+    {
+        return m_skills.size();
+    }
+
+    Skill* getSkill(unsigned int idx)
+    {
+        return m_skills[idx];
+    }
+
+    bool applySkill(GameScreen& screen, const TimePoint& t, unsigned int idx);
+
+    bool scaleSkillCooldown(float cooldownMultiplier);
+
+protected:
+    bool initBasic(const RobotTemplate* t, Side side,
+                   int hpLevel, int hpRestoreLevel,
+                   int armorLevel, int armorRepairLevel,
+                   int powerLevel, int powerRestoreLevel,
+                   int weaponLevel, int moverLevel,
+                   float x, float y, float directionX, float directionY);
+
+    bool initSkills(const std::vector<int>& skillLevels);
+
+    bool initSkills(int skillLevel);
+
 protected:
     Base m_base;
     Weapon m_weapon;
@@ -163,7 +194,7 @@ protected:
     TimePoint m_deathTime;
     bool m_hasDest;
     float m_destX, m_destY;
-    std::vector<Skill> m_skills;
+    std::vector<Skill*> m_skills;
 };
 
 } // end of namespace bot

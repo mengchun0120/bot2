@@ -5,6 +5,7 @@
 #include "gameobj/bot_tile.h"
 #include "gameobj/bot_deck_piercer.h"
 #include "screen/bot_game_screen.h"
+#include "screen/bot_screen_manager.h"
 
 namespace bot {
 
@@ -31,10 +32,111 @@ void DeckPiercer::present()
                                 nullptr : &(t->getPassThroughMask());
 
     t->getRect()->draw(m_pos, m_direction, nullptr, nullptr,
-                       t->getTexture(), color);
+                       *(t->getTexture()), color);
 }
 
 void DeckPiercer::update(float delta, GameScreen& screen)
+{
+    float deltaX = getSpeedX() * delta;
+    float deltaY = getSpeedY() * delta;
+
+    shiftPos(deltaX, deltaY);
+
+    checkCollision(screen);
+}
+
+bool DeckPiercer::onEntry(GameScreen& screen)
+{
+    if (checkCollision(screen))
+    {
+        screen.getMap().addObject(this);
+        return true;
+    }
+
+    return false;
+}
+
+void DeckPiercer::onHit(GameScreen& screen, GameObject& obj)
+{
+    if (obj.getType() != GAME_OBJ_TYPE_ROBOT)
+    {
+        return;
+    }
+
+    Robot& robot = static_cast<Robot&>(obj);
+
+    if (robot.getSide() == m_side)
+    {
+        return;
+    }
+
+    for (GameObjectItem* i = m_penetrateObjs.getFirst(); i; i = i->getNext())
+    {
+        if (i->getObj() == &obj)
+        {
+            return;
+        }
+    }
+
+    bool alive = true;
+
+    if (robot.testFlag(GAME_OBJ_FLAG_INDESTRUCTABLE))
+    {
+        const DeckPiercerTemplate* t = getTemplate();
+
+        if (t->getExplodeOnDeath())
+        {
+            explode(screen, t->getExplodeBreath(),
+                    t->getImpactEffectTemplate());
+        }
+        else
+        {
+            onDeath(screen);
+        }
+
+        alive = false;
+    }
+    else
+    {
+        if (!robot.addHP(-m_damage))
+        {
+            robot.onDeath(screen);
+        }
+    }
+
+    if (alive)
+    {
+        GameObjectManager& gameObjMgr = screen.getGameObjManager();
+        GameObjectItem* item = gameObjMgr.allocGameObjItem(&obj);
+        m_penetrateObjs.add(item);
+    }
+}
+
+void DeckPiercer::onDeath(GameScreen& screen)
+{
+    GameObjectManager& gameObjMgr = screen.getGameObjManager();
+
+    if (!m_penetrateObjs.isEmpty())
+    {
+        gameObjMgr.freeGameObjItems(m_penetrateObjs);
+    }
+
+    gameObjMgr.sendToDeathQueue(this);
+}
+
+void DeckPiercer::onDealloc()
+{
+    if (m_penetrateObjs.isEmpty())
+    {
+        return;
+    }
+
+    ScreenManager& screenMgr = ScreenManager::getInstance();
+    GameScreen* screen = static_cast<GameScreen*>(screenMgr.getCurScreen());
+    screen->getGameObjManager().freeGameObjItems(m_penetrateObjs);
+}
+
+bool DeckPiercer::checkCollision(GameScreen& screen)
 {
     LinkedList<GameObjectItem> collideObjs;
     GameMap& map = screen.getMap();
@@ -45,49 +147,41 @@ void DeckPiercer::update(float delta, GameScreen& screen)
     if (RET_CODE_OUT_OF_SIGHT == rc)
     {
         onDeath(screen);
-        return;
+        return false;
     }
+
+    if (collideObjs.isEmpty())
+    {
+        return true;
+    }
+
+    bool stop = processPenetrateObjs(collideObjs, screen);
 
     if (!collideObjs.isEmpty())
     {
-        bool stop = processPenetrateObjs(collideObjs, screen);
-
-        if (!collideObjs.isEmpty())
-        {
-            gameObjMgr.freeGameObjItems(collideObjs);
-        }
-
-        if (stop)
-        {
-            const DeckPiercerTemplate* t = getTemplate();
-
-            if (t->getExplodeOnDeath())
-            {
-                explode(screen, t->getExplodeBreath(),
-                        t->getExplodeEffectTemplate());
-            }
-            else
-            {
-                onDeath(screen);
-            }
-        }
+        gameObjMgr.freeGameObjItems(collideObjs);
     }
-}
 
-void DeckPiercer::onDeath(GameScreen& screen)
-{
-    GameObjectManager& gameObjMgr = screen.getGameObjManager();
-
-    gameObjMgr.sendToDeathQueue(this);
-
-    if (!m_penetrateObjs.isEmpty())
+    if (stop)
     {
-        gameObjMgr.freeGameObjectItems(m_penetrateObjs);
+        const DeckPiercerTemplate* t = getTemplate();
+
+        if (t->getExplodeOnDeath())
+        {
+            explode(screen, t->getExplodeBreath(),
+                    t->getImpactEffectTemplate());
+        }
+        else
+        {
+            onDeath(screen);
+        }
     }
+
+    return stop;
 }
 
-void DeckPiercer::processPenetrateObjs(LinkedList<GameObjectItem>& collideObjs,
-                          GameScreen& screen)
+bool DeckPiercer::processPenetrateObjs(LinkedList<GameObjectItem>& collideObjs,
+                                       GameScreen& screen)
 {
     GameObjectItem* prev = nullptr, * next, * cur;
     GameObjectManager& gameObjMgr = screen.getGameObjManager();
@@ -132,7 +226,10 @@ void DeckPiercer::processPenetrateObjs(LinkedList<GameObjectItem>& collideObjs,
         else if (o->getType() == GAME_OBJ_TYPE_ROBOT)
         {
             Robot* robot = static_cast<Robot*>(o);
-            alive = robot->addHP(-m_damage);
+            if (robot->getSide() != m_side)
+            {
+                alive = robot->addHP(-m_damage);
+            }
         }
         else if (o->getType() == GAME_OBJ_TYPE_TILE)
         {

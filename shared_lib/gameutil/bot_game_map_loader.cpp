@@ -200,7 +200,7 @@ bool GameMapLoader::addRobot(GameMap& map, const std::string& name,
                                                   level, 0,
                                                   level, 0,
                                                   level, level,
-                                                  0, level, 0,
+                                                  0, level, level,
                                                   x, y,
                                                   directionX, directionY);
     if (!robot)

@@ -98,7 +98,8 @@ bool AppConfig::readConfig(const std::string& cfgFile)
         jsonParam(m_progressBarTemplateLib, "progressBarTemplateLib"),
         jsonParam(m_statusBarTemplateLib, "statusBarTemplateLib"),
         jsonParam(m_mapPoolFactor, "mapPoolFactor"),
-        jsonParam(m_missilePoolSize, "missilePoolSize")
+        jsonParam(m_missilePoolSize, "missilePoolSize",
+                  gt(m_missilePoolSize, 0))
     };
 
     if (!parseJson(params, cfg))
@@ -164,7 +165,7 @@ void AppConfig::marshalConfig()
                                                   m_messageBoxConfigFile });
     m_gameConfigFile            = constructPath({ m_libDir, m_gameConfigFile });
     m_skillTemplateLib          = constructPath({ m_libDir,
-                                                  m_skillTemplateLIb });
+                                                  m_skillTemplateLib });
     m_mapFile                   = constructPath({ m_mapDir, m_mapFile });
     m_mapGeneratorLib           = constructPath({ m_libDir,
                                                   m_mapGeneratorLib });

@@ -23,14 +23,13 @@
         "name": "player_base_gun",
         "texture": "player_base_gun",
         "rect": "square20",
-        "fireDuration": 200.0,
-        "fireDurReductionPerLevel": 0.5,
         "firePoints": [
             {
                 "firePos": [10.0, 0.0],
                 "fireDirection": [1.0, 0.0]
             }
-        ]
+        ],
+        "damage": 20.0
     },
     "mover": {
         "name": "player_base_mover",
@@ -39,19 +38,14 @@
         "speed": 150.0,
         "speedPerLevel": 2.0
     },
-    "missile": {
-        "name": "green_bullet",
-        "texture": "bullet",
-        "rect": "square18",
-        "color": "green",
-        "coverBreath": 9.0,
-        "collideBreath": 6.4,
-        "speed": 300.0,
-        "damage": 20.0,
-        "damagePerLevel": 3.0,
-        "explosionBreath": 20.0,
-        "explosionEffect": "blue_explosion"
-    },
+    "skills": [
+        "player_shoot_basic_bullet_skill",
+        "player_shoot_basic_shell_skill",
+        "player_shoot_basic_deck_piercer_skill"
+    ],
+    "skillLevels": [
+        1, 1, 1
+    ],
     "gold": 0,
     "experience": 0,
     "hpLevel": 0,

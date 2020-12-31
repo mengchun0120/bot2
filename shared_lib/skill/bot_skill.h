@@ -11,9 +11,13 @@ class Robot;
 
 class Skill {
 public:
+    static Skill* create(const SkillTemplate* t, Robot* robot,
+                         unsigned int level);
+
     Skill();
 
-    virtual ~Skill();
+    virtual ~Skill()
+    {}
 
     const SkillTemplate* getTemplate() const
     {
@@ -41,11 +45,14 @@ public:
 
     virtual bool available(const TimePoint& t) const;
 
+    bool setCooldownMultiplier(float multiplier);
+
 protected:
     const SkillTemplate* m_template;
     Robot* m_robot;
     TimePoint m_lastApplyTime;
     unsigned int m_level;
+    float m_cooldownMultiplier;
 };
 
 } // end of namespace bot

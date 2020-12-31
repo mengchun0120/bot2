@@ -44,8 +44,6 @@ void ParticleEffect::present()
 
 void ParticleEffect::update(float delta, GameScreen& screen)
 {
-    GameObjectManager& gameObjManager = screen.getGameObjManager();
-
     if (screen.getMap().isOutsideViewport(this)) {
         onDeath(screen);
         return;

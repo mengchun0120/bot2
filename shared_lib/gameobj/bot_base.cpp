@@ -26,7 +26,6 @@ Base::Base()
     , m_maxPower(0.0f)
     , m_powerRestoreRate(0.0f)
 {
-    m_mask.init(255, 255, 255, 255);
 }
 
 bool Base::init(const BaseTemplate* t, Robot* robot,
@@ -125,14 +124,14 @@ void Base::present()
 {
     m_baseTemplate->getRect()->draw(m_robot->getPos(), m_robot->getDirection(),
                                     nullptr, nullptr,
-                                    m_baseTemplate->getTexture()->textureId(),
-                                    &m_mask);
+                                    *(m_baseTemplate->getTexture()),
+                                    &(m_robot->getMask()));
 
     SimpleShaderProgram& shader = SimpleShaderProgram::getInstance();
     const TextSystem& textSys = TextSystem::getInstance();
 
     Color textColor(*(m_baseTemplate->getHPColor()));
-    textColor *= m_mask;
+    textColor *= m_robot->getMask();
 
     shader.setUseDirection(false);
     textSys.drawString(m_hpPercentStr, TEXT_SIZE_TINY,

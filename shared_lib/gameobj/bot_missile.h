@@ -8,6 +8,7 @@
 namespace bot {
 
 class ParticleEffectTemplate;
+class Robot;
 
 class Missile: public GameObject {
 public:
@@ -26,7 +27,7 @@ public:
 
     MissileType getMissileType() const
     {
-        return m_template->getMissileType();
+        return static_cast<const MissileTemplate*>(m_template)->getMissileType();
     }
 
     void shiftPos(float deltaX, float deltaY);

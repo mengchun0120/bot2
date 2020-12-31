@@ -12,7 +12,7 @@ static std::vector<std::string> k_skillTypeStr = {
 
 SkillType strToSkillType(const std::string& s)
 {
-    for (int t = SKILL_SHOOT; t < SKILL_COUNT; ++t)
+    for (int t = SKILL_SHOOT_BULLET; t < SKILL_COUNT; ++t)
     {
         if (k_skillTypeStr[t] == s)
         {

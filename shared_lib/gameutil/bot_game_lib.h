@@ -234,7 +234,10 @@ public:
         return m_gameConfig;
     }
 
-    const SkillTemplate* getSkillTemplate(const std::string& name);
+    const SkillTemplate* getSkillTemplate(const std::string& name) const
+    {
+        return m_skillTemplateLib.search(name);
+    }
 
     MapGenerator* getMapGenerator(const std::string& name)
     {

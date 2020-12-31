@@ -19,8 +19,17 @@ public:
               int hpLevel, int hpRestoreLevel,
               int armorLevel, int armorRepairLevel,
               int powerLevel, int powerRestoreLevel,
-              int weaponLevel, int missileLevel,
-              int moverLevel, float x, float y,
+              int weaponLevel, int moverLevel,
+              const std::vector<int>& skillLevels,
+              float x, float y,
+              float directionX, float directionY);
+
+    bool init(const AIRobotTemplate* t, Side side,
+              int hpLevel, int hpRestoreLevel,
+              int armorLevel, int armorRepairLevel,
+              int powerLevel, int powerRestoreLevel,
+              int weaponLevel, int moverLevel, int skillLevel,
+              float x, float y,
               float directionX, float directionY);
 
     const AIRobotTemplate* getTemplate() const
@@ -67,3 +76,4 @@ protected:
 } // end of namespace bot
 
 #endif
+

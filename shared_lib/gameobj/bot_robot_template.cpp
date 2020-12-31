@@ -1,7 +1,7 @@
 #include "misc/bot_log.h"
 #include "misc/bot_json_utils.h"
-#include "gameutil/bot_game_lib.h"
 #include "gameobj/bot_robot_template.h"
+#include "gameutil/bot_game_lib.h"
 
 namespace bot {
 
@@ -21,12 +21,12 @@ bool RobotTemplate::init(const rapidjson::Value& elem)
     }
 
     std::string baseName, weaponName, moverName;
-    std::vector<std::string> skillTemplateNames;
+    std::vector<std::string> skillNames;
     std::vector<JsonParamPtr> params = {
         jsonParam(baseName, "base"),
         jsonParam(weaponName, "weapon"),
         jsonParam(moverName, "mover"),
-        jsonParam(skillTemplateNames, "skills")
+        jsonParam(skillNames, "skills")
     };
 
     if (!parseJson(params, elem))
@@ -57,23 +57,38 @@ bool RobotTemplate::init(const rapidjson::Value& elem)
         return false;
     }
 
-    if (skillTemplateNames.empty())
+    if (!initSkillTemplates(skillNames))
+    {
+        LOG_ERROR("Failed to initialize skill templates");
+        return false;
+    }
+
+    return true;
+}
+
+bool RobotTemplate::initSkillTemplates(
+                             const std::vector<std::string>& skillNames)
+{
+    if (skillNames.empty())
     {
         LOG_ERROR("Skills must be non-empty");
         return false;
     }
 
-    int skillCount = skillTemplateNames.size();
+    const GameLib& lib = GameLib::getInstance();
+    unsigned int skillCount = skillNames.size();
 
     m_skillTemplates.resize(skillCount);
-    for (int i = 0; i < skillCount; ++i)
+    for (unsigned int i = 0; i < skillCount; ++i)
     {
-        const SkillTemplate* t = lib.getSkillTemplate(skillTemplateNames[i]);
+        const SkillTemplate* t = lib.getSkillTemplate(skillNames[i]);
         if (!t)
         {
-            LOG_ERROR("Failed to find SkillTemplate %s", skillTemplateNames[i]);
+            LOG_ERROR("Failed to find SkillTemplate %s", skillNames[i]);
             return false;
         }
+
+        m_skillTemplates[i] = t;
     }
 
     return true;

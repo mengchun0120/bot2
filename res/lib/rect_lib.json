@@ -20,6 +20,16 @@
         "height": 18.0
     },
     {
+        "name": "shell",
+        "width": 24.0,
+        "height": 18.0
+    },
+    {
+        "name": "deck-piercer",
+        "width": 24.0,
+        "height": 18.0
+    },
+    {
         "name": "button",
         "width": 320.0,
         "height": 60.0

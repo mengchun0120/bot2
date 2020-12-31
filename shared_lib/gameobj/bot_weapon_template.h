@@ -1,7 +1,6 @@
 #ifndef INCLUDE_BOT_WEAPON_TEMPLATE
 #define INCLUDE_BOT_WEAPON_TEMPLATE
 
-#include <string>
 #include <vector>
 #include "gameobj/bot_fire_point.h"
 #include "gameobj/bot_single_unit_template.h"
@@ -28,13 +27,6 @@ public:
     }
 
     const FirePoint& getFirePoint(int idx) const
-    {
-        return m_firePoints[idx];
-    }
-
-    bool setNumFirePoints(int count);
-
-    FirePoint& getFirePoint(int idx)
     {
         return m_firePoints[idx];
     }

@@ -4,6 +4,7 @@
 #include "misc/bot_json_utils.h"
 #include "gameobj/bot_ai_robot.h"
 #include "gameobj/bot_player.h"
+#include "skill/bot_skill.h"
 #include "screen/bot_game_screen.h"
 #include "ai/bot_chase_shoot_ai.h"
 
@@ -166,17 +167,14 @@ void ChaseShootAI::resetAction(AIRobot& robot, Action action)
         case ACTION_NONE:
             robot.setCurAction(action);
             robot.setMovingEnabled(false);
-            robot.setShootingEnabled(false);
             return;
         case ACTION_SHOOT:
             robot.setCurAction(action);
-            robot.setShootingEnabled(true);
             robot.setMovingEnabled(false);
             return;
         case ACTION_CHASE:
             robot.setCurAction(action);
             robot.setMovingEnabled(true);
-            robot.setShootingEnabled(false);
             return;
         default:
             LOG_ERROR("Invalid action: %d", static_cast<int>(action));
@@ -219,7 +217,24 @@ void ChaseShootAI::applyShootAction(AIRobot& robot, float delta,
                        player->getPosX(), player->getPosY());
     robot.setDirection(directionX, directionY);
 
-    robot.updateWeapon(screen);
+    unsigned int numSkills = robot.numSkills();
+    Skill* skill = nullptr;
+    TimePoint now = Clock::now();
+
+    for (unsigned int i = 0; i < numSkills; ++i)
+    {
+        Skill* s = robot.getSkill(i);
+        if (s->isOffensive() && s->available(now))
+        {
+            skill= s;
+            break;
+        }
+    }
+
+    if (skill)
+    {
+        skill->apply(screen, now);
+    }
 }
 
 bool ChaseShootAI::resetChaseDirection(AIRobot& robot, float delta,

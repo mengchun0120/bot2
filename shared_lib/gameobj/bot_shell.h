@@ -24,7 +24,14 @@ public:
 
     virtual void update(float delta, GameScreen& screen);
 
+    virtual bool onEntry(GameScreen& screen);
+
+    virtual void onHit(GameScreen& screen, GameObject& obj);
+
     virtual void onDeath(GameScreen& screen);
+
+private:
+    bool checkCollision(GameScreen& screen);
 };
 
 } // end of namespace bot

@@ -23,9 +23,9 @@ bool Shell::init(const ShellTemplate* t, Side side, float x, float y,
 
 void Shell::present()
 {
-    const BulletTemplate* t = getTemplate();
+    const ShellTemplate* t = getTemplate();
     t->getRect()->draw(m_pos, m_direction, nullptr, nullptr,
-                       t->getTexture(), nullptr);
+                       *(t->getTexture()), nullptr);
 }
 
 void Shell::update(float delta, GameScreen& screen)
@@ -34,7 +34,39 @@ void Shell::update(float delta, GameScreen& screen)
     float deltaY = getSpeedY() * delta;
 
     shiftPos(deltaX, deltaY);
+    checkCollision(screen);
+}
 
+bool Shell::onEntry(GameScreen& screen)
+{
+    if (checkCollision(screen))
+    {
+        screen.getMap().addObject(this);
+        return true;
+    }
+
+    return false;
+}
+
+void Shell::onHit(GameScreen& screen, GameObject& obj)
+{
+    if (obj.getType() != GAME_OBJ_TYPE_ROBOT)
+    {
+        return;
+    }
+
+    const ShellTemplate* t = getTemplate();
+    explode(screen, t->getExplodeBreath(), t->getImpactEffectTemplate());
+}
+
+void Shell::onDeath(GameScreen& screen)
+{
+    GameObjectManager& gameObjMgr = screen.getGameObjManager();
+    gameObjMgr.sendToDeathQueue(this);
+}
+
+bool Shell::checkCollision(GameScreen& screen)
+{
     GameMap& map = screen.getMap();
 
     ReturnCode rc = map.checkCollision(this, nullptr);
@@ -42,23 +74,19 @@ void Shell::update(float delta, GameScreen& screen)
     if (RET_CODE_OUT_OF_SIGHT == rc)
     {
         onDeath(screen);
-        return;
+        return false;
     }
 
-    if (RET_COLLIDE == rc)
+    if (RET_CODE_COLLIDE != rc)
     {
-        return;
+        return true;
     }
 
     const ShellTemplate* t = getTemplate();
 
-    explode(screen, t->getExplodeBreath(), t->getExplodeEffectTemplate());
-}
+    explode(screen, t->getExplodeBreath(), t->getImpactEffectTemplate());
 
-void Shell::onDeath(GameScreen& screen)
-{
-    GameObjectManager& gameObjMgr = screen.getGameObjManager();
-    gameObjMgr.sendToDeathQueue(this);
+    return false;
 }
 
 } // end of namespace bot

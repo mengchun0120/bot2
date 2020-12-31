@@ -39,35 +39,7 @@ BaseTemplate* parseBaseTemplate(const rapidjson::Value& elem)
     return t;
 }
 
-MissileTemplate* parseMissileTemplate(const rapidjson::Value& elem)
-{
-    const char name[] = "missile";
-
-    if (!elem.HasMember(name))
-    {
-        LOG_ERROR("%s is missing", name);
-        return nullptr;
-    }
-
-    const rapidjson::Value& obj = elem[name];
-    if (!obj.IsObject())
-    {
-        LOG_ERROR("%s is ill-formatted", name);
-        return nullptr;
-    }
-
-    MissileTemplate* t = new MissileTemplate();
-    if (!t->init(obj))
-    {
-        delete t;
-        return nullptr;
-    }
-
-    return t;
-}
-
-WeaponTemplate* parseWeaponTemplate(const MissileTemplate* missileTemplate,
-                                    const rapidjson::Value& elem)
+WeaponTemplate* parseWeaponTemplate(const rapidjson::Value& elem)
 {
     const char name[] = "weapon";
 
@@ -85,7 +57,7 @@ WeaponTemplate* parseWeaponTemplate(const MissileTemplate* missileTemplate,
     }
 
     WeaponTemplate* t = new WeaponTemplate();
-    if (!t->init(missileTemplate, obj))
+    if (!t->init(obj))
     {
         delete t;
         return nullptr;
@@ -123,18 +95,16 @@ MoverTemplate* parseMoverTemplate(const rapidjson::Value& elem)
 
 PlayerTemplate::PlayerTemplate()
     : RobotTemplate()
-    , m_missileTemplate(nullptr)
     , m_gold(0)
     , m_experience(0L)
     , m_hpLevel(1)
-    , m_hpRestoreLevel(1)
-    , m_armorLevel(1)
-    , m_armorRepairLevel(1)
-    , m_powerLevel(1)
-    , m_powerRestoreLevel(1)
-    , m_missileLevel(1)
-    , m_weaponLevel(1)
-    , m_moverLevel(1)
+    , m_hpRestoreLevel(0)
+    , m_armorLevel(0)
+    , m_armorRepairLevel(0)
+    , m_powerLevel(0)
+    , m_powerRestoreLevel(0)
+    , m_weaponLevel(0)
+    , m_moverLevel(0)
 {
 }
 
@@ -148,11 +118,6 @@ PlayerTemplate::~PlayerTemplate()
     if (m_weaponTemplate)
     {
         delete m_weaponTemplate;
-    }
-
-    if (m_missileTemplate)
-    {
-        delete m_missileTemplate;
     }
 
     if (m_moverTemplate)
@@ -183,13 +148,7 @@ bool PlayerTemplate::init(const std::string& fileName)
         return false;
     }
 
-    m_missileTemplate = parseMissileTemplate(elem);
-    if (!m_missileTemplate)
-    {
-        return false;
-    }
-
-    m_weaponTemplate = parseWeaponTemplate(m_missileTemplate, elem);
+    m_weaponTemplate = parseWeaponTemplate(elem);
     if (!m_weaponTemplate)
     {
         return false;
@@ -206,6 +165,7 @@ bool PlayerTemplate::init(const std::string& fileName)
     int armorLevel, armorRepairLevel;
     int powerLevel, powerRestoreLevel;
     int missileLevel, weaponLevel, moverLevel;
+    std::vector<std::string> skillNames;
     std::vector<JsonParamPtr> params = {
         jsonParam(gold, "gold"),
         jsonParam(experience, "experience"),
@@ -217,7 +177,9 @@ bool PlayerTemplate::init(const std::string& fileName)
         jsonParam(powerRestoreLevel, "powerRestoreLevel"),
         jsonParam(missileLevel, "missileLevel"),
         jsonParam(weaponLevel, "weaponLevel"),
-        jsonParam(moverLevel, "moverLevel")
+        jsonParam(moverLevel, "moverLevel"),
+        jsonParam(skillNames, "skills"),
+        jsonParam(m_skillLevels, "skillLevels")
     };
 
     if (!parseJson(params, elem))
@@ -233,7 +195,6 @@ bool PlayerTemplate::init(const std::string& fileName)
                    setArmorRepairLevel(armorRepairLevel) &&
                    setPowerLevel(powerLevel) &&
                    setPowerRestoreLevel(powerRestoreLevel) &&
-                   setMissileLevel(missileLevel) &&
                    setWeaponLevel(weaponLevel) &&
                    setMoverLevel(moverLevel);
     if (!success)
@@ -242,6 +203,39 @@ bool PlayerTemplate::init(const std::string& fileName)
     }
 
     configCoverCollideBreath();
+
+    if (!initSkillTemplates(skillNames))
+    {
+        LOG_ERROR("Failed to initialize skill templates");
+        return false;
+    }
+
+    if (!checkSkillLevels())
+    {
+        return false;
+    }
+
+    return true;
+}
+
+bool PlayerTemplate::checkSkillLevels()
+{
+    unsigned int numSkills = m_skillTemplates.size();
+
+    if (numSkills != m_skillLevels.size())
+    {
+        LOG_ERROR("Invalid skillLevels");
+        return false;
+    }
+
+    for (unsigned int i = 0; i < numSkills; ++i)
+    {
+        if (m_skillLevels[i] < 0)
+        {
+            LOG_ERROR("skillLevels[%d]=%d is invalid", i, m_skillLevels[i]);
+            return false;
+        }
+    }
 
     return true;
 }
@@ -339,18 +333,6 @@ bool PlayerTemplate::setPowerRestoreLevel(int level)
     }
 
     m_powerRestoreLevel = level;
-    return true;
-}
-
-bool PlayerTemplate::setMissileLevel(int level)
-{
-    if (level < 0)
-    {
-        LOG_ERROR("Invalid missile-level %d", level);
-        return false;
-    }
-
-    m_missileLevel = level;
     return true;
 }
 

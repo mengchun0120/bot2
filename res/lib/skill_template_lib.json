@@ -1,0 +1,62 @@
+[
+    {
+        "name": "ai_shoot_red_bullet_skill",
+        "type": "shoot-bullet",
+        "powerCost": 0.0,
+        "cooldownMS": 4000.0,
+        "baseDamageMultiplier": 1.0,
+        "damageMultiplierPerLevel": 0.2,
+        "missile": "red_bullet",
+        "speedMultiplier": 1.0
+    },
+    {
+        "name": "ai_shoot_blue_shell_skill",
+        "type": "shoot-shell",
+        "powerCost": 0.0,
+        "cooldownMS": 6000.0,
+        "baseDamageMultiplier": 1.0,
+        "damageMultiplierPerLevel": 0.2,
+        "missile": "blue_shell",
+        "speedMultiplier": 1.0
+    },
+    {
+        "name": "ai_shoot_purple_deck_piercer_skill",
+        "type": "shoot-deck-piercer",
+        "powerCost": 0.0,
+        "cooldownMS": 10000.0,
+        "baseDamageMultiplier": 1.0,
+        "damageMultiplierPerLevel": 0.2,
+        "missile": "purple_deck_piercer",
+        "speedMultiplier": 1.0
+    },
+    {
+        "name": "player_shoot_basic_bullet_skill",
+        "type": "shoot-bullet",
+        "powerCost": 5.0,
+        "cooldownMS": 1000.0,
+        "baseDamageMultiplier": 1.5,
+        "damageMultiplierPerLevel": 0.2,
+        "missile": "player_basic_bullet",
+        "speedMultiplier": 1.0
+    },
+    {
+        "name": "player_shoot_basic_shell_skill",
+        "type": "shoot-shell",
+        "powerCost": 10.0,
+        "cooldownMS": 1200.0,
+        "baseDamageMultiplier": 1.8,
+        "damageMultiplierPerLevel": 0.2,
+        "missile": "player_basic_shell",
+        "speedMultiplier": 1.0
+    },
+    {
+        "name": "player_shoot_basic_deck_piercer_skill",
+        "type": "shoot-deck-piercer",
+        "powerCost": 15.0,
+        "cooldownMS": 1600.0,
+        "baseDamageMultiplier": 2.0,
+        "damageMultiplierPerLevel": 0.2,
+        "missile": "player_basic_deck_piercer",
+        "speedMultiplier": 1.0
+    }
+]

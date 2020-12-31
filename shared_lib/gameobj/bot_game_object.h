@@ -13,7 +13,7 @@ class GameObject: public DoubleLinkedItem {
 public:
     GameObject();
 
-    virtual ~GameObject();
+    virtual ~GameObject()
     {}
 
     bool init(const GameObjectTemplate* t, float x, float y);
@@ -165,7 +165,12 @@ public:
         return m_flags;
     }
 
-    virtual void onEntry(GameScreen& screen)
+    virtual bool onEntry(GameScreen& screen)
+    {
+        return true;
+    }
+
+    virtual void onHit(GameScreen& screen, GameObject& obj)
     {}
 
     virtual void onDeath(GameScreen& screen)

@@ -1,11 +1,9 @@
-#ifndef INCLUDE_BOT_SHELL
-#define INCLUDE_BOT_SHELL
+#ifndef INCLUDE_BOT_SHELL_TEMPLATE
+#define INCLUDE_BOT_SHELL_TEMPLATE
 
 #include "gameobj/bot_missile_template.h"
 
 namespace bot {
-
-class ParticleEffectTemplate;
 
 class ShellTemplate: public MissileTemplate {
 public:
@@ -16,18 +14,12 @@ public:
 
     bool init(const rapidjson::Value& elem);
 
-    const ParticleEffectTemplate* getExplodeEffectTemplate() const
-    {
-        return return m_explodeEffectTemplate;
-    }
-
     float getExplodeBreath() const
     {
         return m_explodeBreath;
     }
 
 protected:
-    const ParticleEffectTemplate* m_explodeEffectTemplate;
     float m_explodeBreath;
 };
 

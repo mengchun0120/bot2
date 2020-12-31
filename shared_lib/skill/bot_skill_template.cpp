@@ -1,8 +1,8 @@
 #include "misc/bot_log.h"
 #include "misc/bot_json_utils.h"
-#include "misc/bot_shoot_bullet_skill_template.h"
-#include "misc/bot_shoot_shell_skill_template.h"
-#include "misc/bot_shoot_deck_piercer_template.h"
+#include "skill/bot_shoot_bullet_skill_template.h"
+#include "skill/bot_shoot_shell_skill_template.h"
+#include "skill/bot_shoot_deck_piercer_skill_template.h"
 
 namespace bot {
 
@@ -10,10 +10,12 @@ SkillTemplate* SkillTemplate::create(const std::string& name,
                                      const rapidjson::Value& elem)
 {
     std::string typeStr;
+    std::vector<JsonParamPtr> params = {
+        jsonParam(typeStr, "type")
+    };
 
-    if (!parseJson(typeStr, elem, "type"))
+    if (!parseJson(params, elem))
     {
-        LOG_ERROR("Cannot find type");
         return nullptr;
     }
 
@@ -25,43 +27,49 @@ SkillTemplate* SkillTemplate::create(const std::string& name,
         return nullptr;
     }
 
-    SkillTemplate* t = nullptr;
-
     switch (type)
     {
         case SKILL_SHOOT_BULLET:
         {
-            t = new ShootBulletSkillTemplate();
+            ShootBulletSkillTemplate *t = new ShootBulletSkillTemplate();
             if (!t->init(elem))
             {
                 LOG_ERROR("Failed to initialize ShootBulletSkillTemplate");
+                delete t;
+                return nullptr;
             }
-
-            break;
+            return t;
         }
         case SKILL_SHOOT_SHELL:
         {
-            t = new ShootShellSkillTemplate();
+            ShootShellSkillTemplate* t = new ShootShellSkillTemplate();
             if (!t->init(elem))
             {
                 LOG_ERROR("Failed to initialize ShootShellSkillTemplate");
+                delete t;
+                return nullptr;
             }
-
-            break;
+            return t;
         }
         case SKILL_SHOOT_DECK_PIERCER:
         {
-            t = new ShootDeckPiercerSkillTemplate();
+            ShootDeckPiercerSkillTemplate* t =
+                                        new ShootDeckPiercerSkillTemplate();
             if (!t->init(elem))
             {
                 LOG_ERROR("Failed to initialize ShootDeckPiercerSkillTemplate");
+                delete t;
+                return nullptr;
             }
-
-            break;
+            return t;
+        }
+        default:
+        {
+            LOG_ERROR("Invalid skill-type %d", static_cast<int>(type));
         }
     }
 
-    return t;
+    return nullptr;
 }
 
 SkillTemplate::SkillTemplate()
@@ -81,6 +89,7 @@ bool SkillTemplate::init(SkillType type, const rapidjson::Value& elem)
     }
 
     m_type = type;
+    m_flags = 0;
 
     std::vector<JsonParamPtr> params = {
         jsonParam(m_viewName, "viewName", false),

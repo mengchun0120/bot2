@@ -15,7 +15,6 @@ Mover::Mover()
     , m_normalSpeed(0.0f)
     , m_speedMultiplier(1.0f)
 {
-    m_mask.init(255, 255, 255, 255);
 }
 
 bool Mover::init(const MoverTemplate* moverTemplate, Robot* robot,
@@ -80,19 +79,19 @@ bool Mover::update(GameScreen& screen, float delta)
     bool collide = map.checkCollision(newDelta, &collideObjs, m_robot,
                                       speedX, speedY, delta);
 
-    if (!collideObjs.isEmpty())
-    {
-        m_robot->processCollisions(collideObjs, screen);
-        GameObjectManager& gameObjMgr = screen.getGameObjManager();
-        gameObjMgr.freeGameObjItems(collideObjs);
-    }
-
     m_robot->shiftPos(speedX * newDelta, speedY * newDelta);
     map.repositionObject(m_robot);
 
     if (reachDest)
     {
         m_moving = false;
+    }
+
+    if (!collideObjs.isEmpty())
+    {
+        m_robot->processCollisions(collideObjs, screen);
+        GameObjectManager& gameObjMgr = screen.getGameObjManager();
+        gameObjMgr.freeGameObjItems(collideObjs);
     }
 
     return collide;
@@ -104,8 +103,8 @@ void Mover::present()
     m_moverTemplate->getRect()->draw(
                                 base.getMoverPos(), m_robot->getDirection(),
                                 nullptr, nullptr,
-                                m_moverTemplate->getTexture()->textureId(),
-                                &m_mask);
+                                *(m_moverTemplate->getTexture()),
+                                &(m_robot->getMask()));
 }
 
 bool Mover::setSpeedMultiplier(float multiplier)

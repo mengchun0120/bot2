@@ -15,13 +15,38 @@ bool AIRobot::init(const AIRobotTemplate* t, Side side,
                    int hpLevel, int hpRestoreLevel,
                    int armorLevel, int armorRepairLevel,
                    int powerLevel, int powerRestoreLevel,
-                   int weaponLevel, int missileLevel,
-                   int moverLevel, float x, float y,
+                   int weaponLevel, int moverLevel,
+                   const std::vector<int>& skillLevels,
+                   float x, float y,
                    float directionX, float directionY)
 {
     bool ret = Robot::init(t, side, hpLevel, hpRestoreLevel, armorLevel,
                            armorRepairLevel, powerLevel, powerRestoreLevel,
-                           weaponLevel, missileLevel, moverLevel,
+                           weaponLevel, moverLevel, skillLevels,
+                           x, y, directionX, directionY);
+
+    if (!ret)
+    {
+        return false;
+    }
+
+    m_lastChangeActionTime = Clock::now();
+    m_lastChangeDirectionTime = Clock::now();
+
+    return true;
+}
+
+bool AIRobot::init(const AIRobotTemplate* t, Side side,
+                   int hpLevel, int hpRestoreLevel,
+                   int armorLevel, int armorRepairLevel,
+                   int powerLevel, int powerRestoreLevel,
+                   int weaponLevel, int moverLevel, int skillLevel,
+                   float x, float y,
+                   float directionX, float directionY)
+{
+    bool ret = Robot::init(t, side, hpLevel, hpRestoreLevel, armorLevel,
+                           armorRepairLevel, powerLevel, powerRestoreLevel,
+                           weaponLevel, moverLevel, skillLevel,
                            x, y, directionX, directionY);
 
     if (!ret)
@@ -103,3 +128,4 @@ void AIRobot::onDeath(GameScreen& screen)
 }
 
 } // end of namespace bot
+

@@ -8,6 +8,8 @@
 
 namespace bot {
 
+class ParticleEffectTemplate;
+
 class MissileTemplate : public GameObjectTemplate, public SingleUnitTemplate {
 public:
     static MissileTemplate* create(const std::string& name,
@@ -25,6 +27,11 @@ public:
         return m_missileType;
     }
 
+    const ParticleEffectTemplate* getImpactEffectTemplate() const
+    {
+        return m_impactEffectTemplate;
+    }
+
     float getSpeed() const
     {
         return m_speed;
@@ -32,9 +39,11 @@ public:
 
 protected:
     MissileType m_missileType;
+    const ParticleEffectTemplate* m_impactEffectTemplate;
     float m_speed;
 };
 
 } // end of namespace bot
 
 #endif
+
