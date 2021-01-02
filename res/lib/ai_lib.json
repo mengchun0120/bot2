@@ -2,11 +2,11 @@
     {
         "name": "steady_shooter",
         "algorithm": "chase_shoot",
-        "chaseDuration": 1000.0,
-        "shootDuration": 2000.0,
-        "chaseProb": 0.25,
+        "chaseDuration": 500.0,
+        "shootDuration": 10000.0,
+        "chaseProb": 0.01,
         "directionChangeInterval": 500.0,
-        "stopChaseDist": 300.0
+        "stopChaseDist": 400.0
     },
     {
         "name": "rush_chaser",
@@ -18,11 +18,11 @@
         "stopChaseDist": 200.0
     },
     {
-        "name": "balanced_chaser",
+        "name": "balanced_shooter",
         "algorithm": "chase_shoot",
         "chaseDuration": 1500.0,
         "shootDuration": 1500.0,
-        "chaseProb": 0.5,
+        "chaseProb": 0.25,
         "directionChangeInterval": 500.0,
         "stopChaseDist": 250.0
     }

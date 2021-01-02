@@ -1,14 +1,20 @@
 [
     {
-        "name": "red_base_mover",
-        "texture": "red_base_mover",
-        "rect": "square20",
+        "name": "red_basic_mover",
+        "texture": "red_basic_mover",
+        "rect": "basic_mover",
         "speed": 60.0
     },
     {
-        "name": "cyan_base_mover",
-        "texture": "cyan_base_mover",
-        "rect": "square20",
+        "name": "cyan_basic_mover",
+        "texture": "cyan_basic_mover",
+        "rect": "basic_mover",
         "speed": 60.0
+    },
+    {
+        "name": "purple_basic_mover",
+        "texture": "purple_basic_mover",
+        "rect": "basic_mover",
+        "speed": 20.0
     }
 ]

@@ -12,10 +12,9 @@ ShootMissileSkillTemplate::ShootMissileSkillTemplate()
 {
 }
 
-bool ShootMissileSkillTemplate::init(SkillType skillType,
-                                     const rapidjson::Value& elem)
+bool ShootMissileSkillTemplate::init(const rapidjson::Value& elem)
 {
-    if (!AttackSkillTemplate::init(skillType, elem))
+    if (!AttackSkillTemplate::init(SKILL_SHOOT_MISSILE, elem))
     {
         return false;
     }

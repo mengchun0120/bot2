@@ -1,8 +1,7 @@
 #include "misc/bot_log.h"
 #include "gameobj/bot_robot.h"
-#include "skill/bot_shoot_bullet_skill.h"
-#include "skill/bot_shoot_shell_skill.h"
-#include "skill/bot_shoot_deck_piercer_skill.h"
+#include "skill/bot_shoot_missile_skill_template.h"
+#include "skill/bot_shoot_missile_skill.h"
 
 namespace bot {
 
@@ -10,40 +9,14 @@ Skill* Skill::create(const SkillTemplate* t, Robot* robot, unsigned int level)
 {
     switch (t->getType())
     {
-        case SKILL_SHOOT_BULLET:
+        case SKILL_SHOOT_MISSILE:
         {
-            const ShootBulletSkillTemplate* t1 =
-                            static_cast<const ShootBulletSkillTemplate*>(t);
-            ShootBulletSkill* s = new ShootBulletSkill();
+            const ShootMissileSkillTemplate* t1 =
+                            static_cast<const ShootMissileSkillTemplate*>(t);
+            ShootMissileSkill* s = new ShootMissileSkill();
             if (!s->init(t1, robot, level))
             {
-                LOG_ERROR("Failed to initialize ShootBulletSkill");
-                delete s;
-                return nullptr;
-            }
-            return s;
-        }
-        case SKILL_SHOOT_SHELL:
-        {
-            const ShootShellSkillTemplate* t1 =
-                             static_cast<const ShootShellSkillTemplate*>(t);
-            ShootShellSkill* s = new ShootShellSkill();
-            if (!s->init(t1, robot, level))
-            {
-                LOG_ERROR("Failed to initialize ShootShellSkill");
-                delete s;
-                return nullptr;
-            }
-            return s;
-        }
-        case SKILL_SHOOT_DECK_PIERCER:
-        {
-            const ShootDeckPiercerSkillTemplate* t1 =
-                         static_cast<const ShootDeckPiercerSkillTemplate*>(t);
-            ShootDeckPiercerSkill* s = new ShootDeckPiercerSkill();
-            if (!s->init(t1, robot, level))
-            {
-                LOG_ERROR("Failed to initialize ShootDeckPiercerSkill");
+                LOG_ERROR("Failed to initialize ShootMissileSkill");
                 delete s;
                 return nullptr;
             }

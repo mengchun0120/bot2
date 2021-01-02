@@ -49,6 +49,13 @@
         "alpha": 255
     },
     {
+        "name": "purple",
+        "red": 255,
+        "green": 0,
+        "blue": 255,
+        "alpha": 255
+    },
+    {
         "name": "gold",
         "red": 255,
         "green": 215,
@@ -67,6 +74,20 @@
         "red": 139,
         "green": 0,
         "blue": 0,
+        "alpha": 255
+    },
+    {
+        "name": "lightgray",
+        "red": 211,
+        "green": 211,
+        "blue": 211,
+        "alpha": 255
+    },
+    {
+        "name": "dimgray",
+        "red": 105,
+        "green": 105,
+        "blue": 105,
         "alpha": 255
     },
     {
@@ -103,20 +124,6 @@
         "green": 239,
         "blue": 255,
         "alpha": 150
-    },
-    {
-        "name": "lightgray",
-        "red": 211,
-        "green": 211,
-        "blue": 211,
-        "alpha": 255
-    },
-    {
-        "name": "dimgray",
-        "red": 105,
-        "green": 105,
-        "blue": 105,
-        "alpha": 255
     },
     {
         "name": "safe_color",

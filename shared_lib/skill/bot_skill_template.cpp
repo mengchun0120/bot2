@@ -1,8 +1,6 @@
 #include "misc/bot_log.h"
 #include "misc/bot_json_utils.h"
-#include "skill/bot_shoot_bullet_skill_template.h"
-#include "skill/bot_shoot_shell_skill_template.h"
-#include "skill/bot_shoot_deck_piercer_skill_template.h"
+#include "skill/bot_shoot_missile_skill_template.h"
 
 namespace bot {
 
@@ -29,38 +27,16 @@ SkillTemplate* SkillTemplate::create(const std::string& name,
 
     switch (type)
     {
-        case SKILL_SHOOT_BULLET:
+        case SKILL_SHOOT_MISSILE:
         {
-            ShootBulletSkillTemplate *t = new ShootBulletSkillTemplate();
+            ShootMissileSkillTemplate *t = new ShootMissileSkillTemplate();
             if (!t->init(elem))
             {
-                LOG_ERROR("Failed to initialize ShootBulletSkillTemplate");
+                LOG_ERROR("Failed to initialize ShootMissileSkillTemplate");
                 delete t;
                 return nullptr;
             }
-            return t;
-        }
-        case SKILL_SHOOT_SHELL:
-        {
-            ShootShellSkillTemplate* t = new ShootShellSkillTemplate();
-            if (!t->init(elem))
-            {
-                LOG_ERROR("Failed to initialize ShootShellSkillTemplate");
-                delete t;
-                return nullptr;
-            }
-            return t;
-        }
-        case SKILL_SHOOT_DECK_PIERCER:
-        {
-            ShootDeckPiercerSkillTemplate* t =
-                                        new ShootDeckPiercerSkillTemplate();
-            if (!t->init(elem))
-            {
-                LOG_ERROR("Failed to initialize ShootDeckPiercerSkillTemplate");
-                delete t;
-                return nullptr;
-            }
+            LOG_INFO("ShootMissileSkillTemplate %s", name.c_str());
             return t;
         }
         default:

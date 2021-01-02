@@ -1,34 +1,34 @@
 [
     {
-        "name": "red_bullet",
+        "name": "red_basic_bullet",
         "type": "bullet",
-        "texture": "red_bullet",
-        "rect": "square18",
+        "texture": "red_basic_bullet",
+        "rect": "bullet",
         "coverBreath": 9.0,
         "collideBreath": 6.4,
         "speed": 80.0,
         "impactEffect": "red_explosion"
     },
     {
-        "name": "blue_shell",
+        "name": "cyan_basic_shell",
         "type": "shell",
-        "texture": "blue_shell",
+        "texture": "cyan_basic_shell",
         "rect": "shell",
         "coverBreath": 12.0,
         "collideBreath": 6.4,
         "speed": 80.0,
         "explodeBreath": 20.0,
-        "explodeEffect": "blue_explosion"
+        "impactEffect": "cyan_explosion"
     },
     {
-        "name": "purple_deck_piercer",
+        "name": "purple_basic_deck_piercer",
         "type": "deck-piercer",
-        "texture": "purple_deck_piercer",
+        "texture": "purple_basic_deck_piercer",
         "rect": "deck-piercer",
         "coverBreath": 12.0,
         "collideBreath": 6.4,
         "speed": 80.0,
-        "deathEffect": "purple_explosion",
+        "impactEffect": "purple_explosion",
         "explodeOnDeath": true,
         "explodeBreath": 20.0,
         "passThroughMask": [255, 255, 255, 120]
@@ -37,7 +37,7 @@
         "name": "player_basic_bullet",
         "type": "bullet",
         "texture": "player_basic_bullet",
-        "rect": "square18",
+        "rect": "bullet",
         "coverBreath": 9.0,
         "collideBreath": 6.4,
         "speed": 300.0,
@@ -52,7 +52,7 @@
         "collideBreath": 6.4,
         "speed": 300.0,
         "explodeBreath": 20.0,
-        "explodeEffect": "green_explosion"
+        "impactEffect": "green_explosion"
     },
     {
         "name": "player_basic_deck_piercer",
@@ -62,7 +62,7 @@
         "coverBreath": 12.0,
         "collideBreath": 6.4,
         "speed": 80.0,
-        "deathEffect": "green_explosion",
+        "impactEffect": "green_explosion",
         "explodeOnDeath": true,
         "explodeBreath": 20.0,
         "passThroughMask": [255, 255, 255, 120]

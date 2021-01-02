@@ -3,20 +3,39 @@
         "name": "red_robot",
         "coverBreath": 41.875,
         "collideBreath": 21.21,
-        "base": "red_base",
-        "weapon": "red_base_gun",
-        "mover": "red_base_mover",
+        "base": "red_basic_base",
+        "weapon": "red_basic_gun",
+        "mover": "red_basic_mover",
         "goodieSpawnProb": 1.0,
-        "ai": "rush_chaser"
+        "ai": "rush_chaser",
+        "skills": [
+            "ai_shoot_red_basic_bullet_skill"
+        ]
     },
     {
         "name": "cyan_robot",
         "coverBreath": 41.875,
         "collideBreath": 21.21,
-        "base": "cyan_base",
-        "weapon": "cyan_base_gun",
-        "mover": "cyan_base_mover",
+        "base": "cyan_basic_base",
+        "weapon": "cyan_basic_gun",
+        "mover": "cyan_basic_mover",
         "goodieSpawnProb": 1.0,
-        "ai": "steady_shooter"
+        "ai": "balanced_shooter",
+        "skills": [
+            "ai_shoot_cyan_basic_shell_skill"
+        ]
+    },
+    {
+        "name": "purple_robot",
+        "coverBreath": 41.875,
+        "collideBreath": 21.21,
+        "base": "purple_basic_base",
+        "weapon": "purple_basic_gun",
+        "mover": "purple_basic_mover",
+        "goodieSpawnProb": 1.0,
+        "ai": "steady_shooter",
+        "skills": [
+            "ai_shoot_purple_basic_deck_piercer_skill"
+        ]
     }
 ]

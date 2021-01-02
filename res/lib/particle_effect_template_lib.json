@@ -46,8 +46,31 @@
         ]
     },
     {
-        "name": "blue_explosion",
-        "color": "blue",
+        "name": "cyan_explosion",
+        "color": "cyan",
+        "texture": "spark",
+        "particleSize": 10.0,
+        "coverBreath": 18.000000,
+        "collideBreath": 0.0,
+        "acceleration": 0.000100,
+        "duration": 600.000000,
+        "initSpeed": 0.060000,
+        "particles": [
+            1.000000, 0.000000,
+            0.809017, 0.587785,
+            0.309017, 0.951057,
+            -0.309017, 0.951056,
+            -0.809017, 0.587785,
+            -1.000000, -0.000000,
+            -0.809017, -0.587785,
+            -0.309017, -0.951056,
+            0.309017, -0.951056,
+            0.809017, -0.587785
+        ]
+    },
+    {
+        "name": "purple_explosion",
+        "color": "purple",
         "texture": "spark",
         "particleSize": 10.0,
         "coverBreath": 18.000000,

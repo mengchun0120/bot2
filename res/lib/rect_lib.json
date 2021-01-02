@@ -15,7 +15,27 @@
         "height": 20.0
     },
     {
+        "name": "basic_base",
+        "width": 60.0,
+        "height": 60.0
+    },
+    {
+        "name": "basic_gun",
+        "width": 20.0,
+        "height": 20.0
+    },
+    {
+        "name": "basic_mover",
+        "width": 20.0,
+        "height": 20.0
+    },
+    {
         "name": "square18",
+        "width": 18.0,
+        "height": 18.0
+    },
+    {
+        "name": "bullet",
         "width": 18.0,
         "height": 18.0
     },

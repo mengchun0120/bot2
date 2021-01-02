@@ -13,7 +13,7 @@ public:
     virtual ~ShootMissileSkillTemplate()
     {}
 
-    bool init(SkillType skillType, const rapidjson::Value& elem);
+    bool init(const rapidjson::Value& elem);
 
     const MissileTemplate* getMissileTemplate() const
     {

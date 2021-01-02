@@ -86,15 +86,15 @@ bool Base::init(const BaseTemplate* t, Robot* robot,
 
     m_maxHP = t->getHP(hpLevel);
     setHP(m_maxHP);
-    m_hpRestoreRate = t->getHPRestoreRate(hpRestoreLevel);
+    m_hpRestoreRate = t->getHPRestoreRate(hpRestoreLevel) / 1000.0f;
 
     m_maxArmor = t->getArmor(armorLevel);
     m_armor = m_maxArmor;
-    m_armorRepairRate = t->getArmorRepairRate(armorRepairLevel);
+    m_armorRepairRate = t->getArmorRepairRate(armorRepairLevel) / 1000.0f;
 
     m_maxPower = t->getPower(powerLevel);
     m_power = m_maxPower;
-    m_powerRestoreRate = t->getPowerRestoreRate(powerRestoreLevel);
+    m_powerRestoreRate = t->getPowerRestoreRate(powerRestoreLevel) / 1000.0f;
 
     resetWeaponMoverPos();
 
@@ -106,7 +106,7 @@ bool Base::init(const BaseTemplate* t, Robot* robot,
 void Base::update()
 {
     TimePoint now = Clock::now();
-    float timeDist = timeDistS(m_lastUpdateTime, now);
+    float timeDist = timeDistMs(m_lastUpdateTime, now);
 
     float newHP = m_hp + timeDist * m_hpRestoreRate;
     setHP(newHP);

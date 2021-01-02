@@ -1,8 +1,8 @@
 [
     {
-        "name": "red_base_gun",
-        "texture": "red_base_gun",
-        "rect": "square20",
+        "name": "red_basic_gun",
+        "texture": "red_basic_gun",
+        "rect": "basic_gun",
         "firePoints": [
             {
                 "firePos": [10.0, 0.0],
@@ -12,9 +12,9 @@
         "damage": 10.0
     },
     {
-        "name": "cyan_base_gun",
-        "texture": "cyan_base_gun",
-        "rect": "square20",
+        "name": "cyan_basic_gun",
+        "texture": "cyan_basic_gun",
+        "rect": "basic_gun",
         "firePoints": [
             {
                 "firePos": [10.0, 0.0],
@@ -22,5 +22,17 @@
             }
         ],
         "damage": 15.0
+    },
+    {
+        "name": "purple_basic_gun",
+        "texture": "purple_basic_gun",
+        "rect": "basic_gun",
+        "firePoints": [
+            {
+                "firePos": [10.0, 0.0],
+                "fireDirection": [1.0, 0.0]
+            }
+        ],
+        "damage": 30.0
     }
 ]

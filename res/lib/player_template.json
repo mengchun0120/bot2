@@ -1,8 +1,8 @@
 {
     "base": {
-        "name": "player_base",
-        "texture": "player_base",
-        "rect": "square60",
+        "name": "player_basic_base",
+        "texture": "player_basic_base",
+        "rect": "basic_base",
         "hp": 50.0,
         "hpPerLevel": 5.0,
         "hpRestoreRate": 5.0,
@@ -20,9 +20,9 @@
         "hpColor": "hp_text_color"
     },
     "weapon": {
-        "name": "player_base_gun",
-        "texture": "player_base_gun",
-        "rect": "square20",
+        "name": "player_basic_gun",
+        "texture": "player_basic_gun",
+        "rect": "basic_gun",
         "firePoints": [
             {
                 "firePos": [10.0, 0.0],
@@ -32,9 +32,9 @@
         "damage": 20.0
     },
     "mover": {
-        "name": "player_base_mover",
-        "texture": "player_base_mover",
-        "rect": "square20",
+        "name": "player_basic_mover",
+        "texture": "player_basic_mover",
+        "rect": "basic_mover",
         "speed": 150.0,
         "speedPerLevel": 2.0
     },

@@ -84,7 +84,7 @@ bool RobotTemplate::initSkillTemplates(
         const SkillTemplate* t = lib.getSkillTemplate(skillNames[i]);
         if (!t)
         {
-            LOG_ERROR("Failed to find SkillTemplate %s", skillNames[i]);
+            LOG_ERROR("Failed to find SkillTemplate %s", skillNames[i].c_str());
             return false;
         }
 

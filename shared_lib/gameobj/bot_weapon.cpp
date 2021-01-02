@@ -128,6 +128,7 @@ bool Weapon::fireMissile(GameScreen& screen,
                                  fp.m_firePos[0], fp.m_firePos[1],
                                  fp.m_fireDirection[0], fp.m_fireDirection[1],
                                  damage, speed);
+
         if (!missile)
         {
             LOG_ERROR("Failed to create missile");

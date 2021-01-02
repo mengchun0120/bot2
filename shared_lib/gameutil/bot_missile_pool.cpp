@@ -17,8 +17,6 @@ Missile* MissilePool::alloc(const MissileTemplate* t, Side side,
                             float directionX, float directionY,
                             float damage, float speed)
 {
-    Missile* missile = nullptr;
-
     switch (t->getMissileType())
     {
         case MISSILE_BULLET:
@@ -34,10 +32,7 @@ Missile* MissilePool::alloc(const MissileTemplate* t, Side side,
                 m_bulletPool.free(bullet);
                 return nullptr;
             }
-
-            missile = bullet;
-
-            break;
+            return bullet;
         }
         case MISSILE_SHELL:
         {
@@ -52,10 +47,7 @@ Missile* MissilePool::alloc(const MissileTemplate* t, Side side,
                 m_shellPool.free(shell);
                 return nullptr;
             }
-
-            missile = shell;
-
-            break;
+            return shell;
         }
         case MISSILE_DECK_PIERCER:
         {
@@ -71,10 +63,7 @@ Missile* MissilePool::alloc(const MissileTemplate* t, Side side,
                 m_deckPiercerPool.free(deckPiercer);
                 return nullptr;
             }
-
-            missile = deckPiercer;
-
-            break;
+            return deckPiercer;
         }
         default:
         {
@@ -83,7 +72,7 @@ Missile* MissilePool::alloc(const MissileTemplate* t, Side side,
         }
     }
 
-    return missile;
+    return nullptr;
 }
 
 void MissilePool::free(Missile* missile)

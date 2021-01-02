@@ -6,16 +6,14 @@
 namespace bot {
 
 enum SkillType {
-    SKILL_SHOOT_BULLET,
-    SKILL_SHOOT_SHELL,
-    SKILL_SHOOT_DECK_PIERCER,
+    SKILL_SHOOT_MISSILE,
     SKILL_COUNT,
     SKILL_INVALID = SKILL_COUNT
 };
 
 inline bool isValidSkillType(SkillType t)
 {
-    return t >= SKILL_SHOOT_BULLET && t < SKILL_COUNT;
+    return t >= SKILL_SHOOT_MISSILE && t < SKILL_COUNT;
 }
 
 SkillType strToSkillType(const std::string& s);
@@ -24,7 +22,7 @@ const std::string& skillTypeToStr(SkillType t);
 
 inline bool isShootMissileSkill(SkillType t)
 {
-    return t >= SKILL_SHOOT_BULLET && t <= SKILL_SHOOT_DECK_PIERCER;
+    return t == SKILL_SHOOT_MISSILE;
 }
 
 } // end of namespace bot

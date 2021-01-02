@@ -4,15 +4,13 @@
 namespace bot {
 
 static std::vector<std::string> k_skillTypeStr = {
-    "shoot-bullet",
-    "shoot-shell",
-    "shoot-deck-piercer",
+    "shoot-missile",
     "invalid"
 };
 
 SkillType strToSkillType(const std::string& s)
 {
-    for (int t = SKILL_SHOOT_BULLET; t < SKILL_COUNT; ++t)
+    for (int t = SKILL_SHOOT_MISSILE; t < SKILL_COUNT; ++t)
     {
         if (k_skillTypeStr[t] == s)
         {

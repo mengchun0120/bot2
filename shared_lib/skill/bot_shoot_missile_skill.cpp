@@ -14,7 +14,7 @@ ShootMissileSkill::ShootMissileSkill()
 bool ShootMissileSkill::init(const SkillTemplate* t, Robot* robot,
                              unsigned int level)
 {
-    if (!isShootMissileSkill(t->getType()))
+    if (t->getType() != SKILL_SHOOT_MISSILE)
     {
         LOG_ERROR("Skill type is invalid: %d", static_cast<int>(t->getType()));
         return false;

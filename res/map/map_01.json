@@ -43,6 +43,13 @@
             "y": 250.0,
             "directionX": -1.0,
             "directionY": 0.0
+        },
+        {
+            "name": "purple_robot",
+            "x": 500.0,
+            "y": 600.0,
+            "directionX": -1.0,
+            "directionY": 0.0
         }
     ]
 }

@@ -99,6 +99,8 @@ bool MissileTemplate::init(MissileType missileType,
         return false;
     }
 
+    m_missileType = missileType;
+
     std::string impactEffectName;
     std::vector<JsonParamPtr> params = {
         jsonParam(impactEffectName, "impactEffect"),
