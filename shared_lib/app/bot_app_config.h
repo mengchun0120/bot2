@@ -8,6 +8,13 @@ namespace bot {
 
 class AppConfig {
 public:
+    enum {
+        MIN_ROBOT_COUNT = 1,
+        MAX_ROBOT_COUNT = 100,
+        DEFAULT_ROBOT_COUNT = 10
+    };
+
+public:
     static bool initInstance(const std::string& appDir,
                              const std::string& cfgFile);
 
@@ -246,12 +253,12 @@ public:
         return m_mapGenerator;
     }
 
-    int getMaxRobotCount() const
+    int getRobotCount() const
     {
-        return m_maxRobotCount;
+        return m_robotCount;
     }
 
-    bool setMaxRobotCount(int count);
+    bool setRobotCount(int count);
 
     const std::string& getSkillTemplateLib() const
     {
@@ -259,16 +266,7 @@ public:
     }
 
 private:
-    AppConfig()
-        : m_width(0)
-        , m_height(0)
-        , m_eventQueueSize(0)
-        , m_timeDeltaHistoryLen(0)
-        , m_level(0)
-        , m_mapPoolFactor(0.0f)
-        , m_missilePoolSize(0)
-        , m_maxRobotCount(0)
-    {}
+    AppConfig();
 
     bool load(const std::string& appDir, const std::string& cfgFile);
 
@@ -323,7 +321,7 @@ private:
     float m_mapPoolFactor;
     int m_missilePoolSize;
     std::string m_mapGenerator;
-    int m_maxRobotCount;
+    int m_robotCount;
 };
 
 } // end of namespace bot

@@ -22,6 +22,17 @@ bool AppConfig::initInstance(const std::string& appDir,
     return true;
 }
 
+AppConfig::AppConfig()
+    : m_width(0)
+    , m_height(0)
+    , m_eventQueueSize(0)
+    , m_timeDeltaHistoryLen(0)
+    , m_level(0)
+    , m_mapPoolFactor(0.0f)
+    , m_missilePoolSize(0)
+    , m_robotCount(DEFAULT_ROBOT_COUNT)
+{}
+
 bool AppConfig::load(const std::string& appDir, const std::string& cfgFile)
 {
     m_appDir = appDir;
@@ -99,7 +110,8 @@ bool AppConfig::readConfig(const std::string& cfgFile)
         jsonParam(m_statusBarTemplateLib, "statusBarTemplateLib"),
         jsonParam(m_mapPoolFactor, "mapPoolFactor"),
         jsonParam(m_missilePoolSize, "missilePoolSize",
-                  gt(m_missilePoolSize, 0))
+                  gt(m_missilePoolSize, 0)),
+        jsonParam(m_robotCount, "robotCount", gt(m_robotCount, 0), false)
     };
 
     if (!parseJson(params, cfg))
@@ -188,11 +200,8 @@ bool AppConfig::setLevel(int level)
     return true;
 }
 
-bool AppConfig::setMaxRobotCount(int count)
+bool AppConfig::setRobotCount(int count)
 {
-    const int MIN_ROBOT_COUNT = 1;
-    const int MAX_ROBOT_COUNT = 200;
-
     if (count < MIN_ROBOT_COUNT || count > MAX_ROBOT_COUNT)
     {
         LOG_ERROR("Max robot count must be in the range [%d, %d]",
@@ -200,7 +209,7 @@ bool AppConfig::setMaxRobotCount(int count)
         return false;
     }
 
-    m_maxRobotCount = count;
+    m_robotCount = count;
 
     return true;
 }

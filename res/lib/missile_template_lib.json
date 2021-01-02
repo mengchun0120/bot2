@@ -61,7 +61,7 @@
         "rect": "deck-piercer",
         "coverBreath": 12.0,
         "collideBreath": 6.4,
-        "speed": 80.0,
+        "speed": 300.0,
         "impactEffect": "green_explosion",
         "explodeOnDeath": true,
         "explodeBreath": 20.0,

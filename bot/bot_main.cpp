@@ -186,7 +186,7 @@ int main(int argc, char* argv[])
 
     if (robotCount > 0)
     {
-        if (!cfg.setMaxRobotCount(robotCount))
+        if (!cfg.setRobotCount(robotCount))
         {
             exit(1);
         }

@@ -1,14 +1,15 @@
 [
     {
         "name": "islandMapGenerator",
-        "minRowCount": 30,
-        "maxRowCount": 40,
-        "minColCount": 30,
-        "maxColCount": 40,
+        "minRowCount": 40,
+        "maxRowCount": 60,
+        "minColCount": 40,
+        "maxColCount": 60,
         "maxRobotCount": 40,
         "robots": [
             "cyan_robot",
-            "red_robot"
+            "red_robot",
+            "purple_robot"
         ],
         "minIslandLenTiles": 2,
         "maxIslandLenTiles": 6,

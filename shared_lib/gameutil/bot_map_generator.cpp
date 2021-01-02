@@ -5,6 +5,7 @@
 #include "gameutil/bot_generated_map.h"
 #include "gameutil/bot_island_map_generator.h"
 #include "gameutil/bot_game_lib.h"
+#include "app/bot_app_config.h"
 
 namespace bot {
 
@@ -122,7 +123,14 @@ int MapGenerator::deployRobots(GeneratedMap& map)
     --freeSlotCount;
     --lastSlot;
 
-    int robotCount = std::min(m_maxRobotCount, freeSlotCount);
+    int robotCount = AppConfig::getInstance().getRobotCount();
+    int maxCount = std::min(m_maxRobotCount, freeSlotCount);
+
+    if (robotCount > maxCount)
+    {
+        robotCount = maxCount;
+    }
+
     int robotTypeCount = static_cast<int>(m_robotNames.size());
     float directionX, directionY;
 

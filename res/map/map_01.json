@@ -1,6 +1,6 @@
 {
-    "numRows": 20,
-    "numCols": 30,
+    "numRows": 40,
+    "numCols": 40,
     "player": {
         "x": 60.0,
         "y": 60.0,

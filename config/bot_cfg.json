@@ -1,7 +1,7 @@
 {
     "resDir": "res",
-    "width": 1000,
-    "height": 700,
+    "width": 1280,
+    "height": 800,
     "title": "Battle Bot",
     "glslDir": "glsl",
     "simpleVertexShaderFile": "simple_vertex_shader.glsl",
