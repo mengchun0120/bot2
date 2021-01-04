@@ -34,6 +34,7 @@ bool StartScreen::init()
     float spacing = cfg.getButtonSpacing();
     float width = cfg.getButtonWidth();
     float height = cfg.getButtonHeight();
+    const Rectangle& rect = cfg.getButtonRect();
     const std::vector<std::string>& buttonTexts = cfg.getButtonTexts();
 
     int n = static_cast<int>(buttonTexts.size());
@@ -51,7 +52,7 @@ bool StartScreen::init()
     m_buttons.init(n);
     for (int i = 0; i < n; ++i, y -= deltaY) {
         Button* button = new Button();
-        if (!button->init(x, y, width, height, buttonTexts[i]))
+        if (!button->init(x, y, width, height, &rect, buttonTexts[i]))
         {
             LOG_ERROR("Failed to initialize start game button");
             return false;

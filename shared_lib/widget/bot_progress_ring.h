@@ -9,13 +9,12 @@
 namespace bot {
 
 class Color;
-class SimpleShaderProgram;
 
 class ProgressRing {
 public:
     ProgressRing();
 
-    ~ProgressRing()
+    virtual ~ProgressRing()
     {}
 
     bool init(const rapidjson::Value& elem);

@@ -1,14 +1,11 @@
 #include "misc/bot_log.h"
-#include "geometry/bot_rectangle.h"
-#include "opengl/bot_texture.h"
 #include "widget/bot_widget.h"
 
 namespace bot {
 
 Widget::Widget()
-    : m_texture(nullptr)
-    , m_borderColor(nullptr)
-    , m_backColor(nullptr)
+    : m_width(0.0f)
+    , m_height(0.0f)
     , m_left(0.0f)
     , m_right(0.0f)
     , m_top(0.0f)
@@ -16,24 +13,27 @@ Widget::Widget()
     , m_visible(true)
     , m_acceptInput(false)
 {
-    m_pos[0] = 0.0f;
-    m_pos[1] = 0.0f;
 }
 
 bool Widget::init(float x, float y, float width, float height,
-                  const Texture* texture, const Color* borderColor,
-                  const Color* backColor, bool acceptInput)
+                  bool visible, bool acceptInput)
 {
-    if (!m_rect.init(width, height, true))
+    if (width <= 0.0f)
     {
-        LOG_ERROR("Failed to initialize rect");
+        LOG_ERROR("Invalid width %f", width);
         return false;
     }
 
-    setPos(x, y);
-    setTexture(texture);
-    setBorderColor(borderColor);
-    setBackColor(backColor);
+    if (height <= 0.0f)
+    {
+        LOG_ERROR("Invalid height %f", height);
+        return false;
+    }
+
+    m_width = width;
+    m_height = height;
+    initPos(x, y);
+    m_visible = visible;
     m_acceptInput = acceptInput;
 
     return true;
@@ -41,36 +41,15 @@ bool Widget::init(float x, float y, float width, float height,
 
 void Widget::setPos(float x, float y)
 {
-    m_pos[0] = x + m_rect.width() / 2.0f;
-    m_pos[1] = y + m_rect.height() / 2.0f;
-    m_left = x;
-    m_bottom = y;
-    m_right = x + m_rect.width();
-    m_top = y + m_rect.height();
+    initPos(x, y);
 }
 
 void Widget::shiftPos(float dx, float dy)
 {
-    m_pos[0] += dx;
-    m_pos[1] += dy;
     m_left += dx;
     m_bottom += dy;
     m_right += dx;
     m_top += dy;
-}
-
-void Widget::present()
-{
-    if (m_texture)
-    {
-        m_rect.draw(m_pos, nullptr, nullptr, nullptr,
-                    m_texture->textureId(), nullptr);
-    }
-    else if (m_borderColor || m_backColor)
-    {
-        m_rect.draw(m_pos, nullptr, m_backColor, m_borderColor,
-                    0, nullptr);
-    }
 }
 
 bool Widget::containPos(float x, float y) const
@@ -80,6 +59,14 @@ bool Widget::containPos(float x, float y) const
         return false;
     }
     return m_left <= x && x <= m_right && m_bottom <= y && y <= m_top;
+}
+
+void Widget::initPos(float x, float y)
+{
+    m_left = x;
+    m_bottom = y;
+    m_right = x + m_width;
+    m_top = y + m_height;
 }
 
 } // end of namespace bot

@@ -50,51 +50,75 @@ bool MessageBox::init(float x, float y, float width, float height,
     return true;
 }
 
-bool MessageBox::initBack(const MessageBoxConfig& cfg, float x, float y,
+bool MessageBox::initBack(const MessageBoxConfig& cfg,
+                          float x, float y,
                           float width, float height)
 {
-    Widget* back = new Widget();
-
-    bool ret = back->init(x, y, width, height, nullptr, cfg.getBoxBorderColor(),
-                          cfg.getBoxFillColor(), false);
-    if (!ret)
+    if (!m_backRect.init(width, height, false))
     {
-        LOG_ERROR("Failed to initialize background");
+        LOG_ERROR("Failed to initialize backRect");
         return false;
     }
 
-    back->setAcceptInput(false);
+    Box* back = new Box();
+
+    bool ret = back->init(x, y, width, height,
+                          &m_backRect, nullptr,
+                          cfg.getBoxBorderColor(), cfg.getBoxFillColor(),
+                          true, false);
+    if (!ret)
+    {
+        LOG_ERROR("Failed to initialize background");
+        delete back;
+        return false;
+    }
 
     setWidget(BACK_IDX, back);
 
     return true;
 }
 
-bool MessageBox::initMsg(const MessageBoxConfig& cfg, float x, float y,
+bool MessageBox::initMsg(const MessageBoxConfig& cfg,
+                         float x, float y,
                          float msgWidth, float msgHeight)
 {
+    if (!m_msgRect.init(msgWidth, msgHeight, false))
+    {
+        LOG_ERROR("Failed to initialize msgRect");
+        return false;
+    }
+
     Label* label = new Label();
 
-    bool ret = label->init(x, y, msgWidth, msgHeight, "", cfg.getTextColor(),
-                      nullptr, nullptr, ALIGN_HMIDDLE, ALIGN_VMIDDLE,
-                      TEXT_SIZE_SMALL);
+    bool ret = label->init(x, y,
+                           msgWidth, msgHeight,
+                           &m_msgRect,
+                           "", cfg.getTextColor(),
+                           nullptr, nullptr,
+                           ALIGN_HMIDDLE, ALIGN_VMIDDLE,
+                           TEXT_SIZE_SMALL);
     if (!ret)
     {
         LOG_ERROR("Failed to initialize label");
         return false;
     }
 
-    label->setAcceptInput(false);
-
     setWidget(MSG_IDX, label);
 
     return true;
 }
 
-bool MessageBox::initButtons(float x, float y, float buttonWidth,
-                             float buttonHeight, float buttonSpacing,
+bool MessageBox::initButtons(float x, float y,
+                             float buttonWidth, float buttonHeight,
+                             float buttonSpacing,
                              const std::vector<std::string>& buttonTexts)
 {
+    if (!m_buttonRect.init(buttonWidth, buttonHeight, true))
+    {
+        LOG_ERROR("Failed to initialize buttonRect");
+        return false;
+    }
+
     float dx = buttonWidth + buttonSpacing;
     int buttonCount = static_cast<int>(buttonTexts.size());
 
@@ -102,8 +126,11 @@ bool MessageBox::initButtons(float x, float y, float buttonWidth,
     {
         Button* button = new Button();
 
-        bool ret = button->init(x, y, buttonWidth, buttonHeight,
-                           buttonTexts[i], TEXT_SIZE_SMALL);
+        bool ret = button->init(x, y,
+                                buttonWidth, buttonHeight,
+                                &m_buttonRect,
+                                buttonTexts[i],
+                                TEXT_SIZE_SMALL);
         if (!ret)
         {
             LOG_ERROR("Failed to initialize button %d", i);

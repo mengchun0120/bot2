@@ -13,19 +13,17 @@ Label::Label()
 {
 }
 
-bool Label::init(float x, float y, float width, float height,
+bool Label::init(float x, float y,
+                 float width, float height,
+                 const Rectangle* rect,
                  const std::string& text, const Color* textColor,
                  const Color* backColor, const Color* borderColor,
-                 Align hAlign, Align vAlign, TextSize sz, bool acceptInput)
+                 Align hAlign, Align vAlign,
+                 TextSize sz,
+                 bool visible, bool acceptInput)
 {
-    if (!isValidTextSize(sz))
-    {
-        LOG_ERROR("Invalid text-size %d", static_cast<int>(sz));
-        return false;
-    }
-
-    bool ret = Widget::init(x, y, width, height, nullptr, borderColor,
-                            backColor, acceptInput);
+    bool ret = Box::init(x, y, width, height, rect, nullptr,
+                         backColor, borderColor, visible, acceptInput);
     if (!ret)
     {
         return false;
@@ -40,6 +38,12 @@ bool Label::init(float x, float y, float width, float height,
     if (!isValidVAlign(vAlign))
     {
         LOG_ERROR("Invalid horizontal align %d", static_cast<int>(vAlign));
+        return false;
+    }
+
+    if (!isValidTextSize(sz))
+    {
+        LOG_ERROR("Invalid text-size %d", static_cast<int>(sz));
         return false;
     }
 
@@ -60,20 +64,20 @@ void Label::setText(const std::string& text)
 
 void Label::setPos(float x, float y)
 {
-    Widget::setPos(x, y);
+    Box::setPos(x, y);
     resetTextPos();
 }
 
 void Label::shiftPos(float dx, float dy)
 {
-    Widget::shiftPos(dx, dy);
+    Box::shiftPos(dx, dy);
     m_textPos[0] += dx;
     m_textPos[1] += dy;
 }
 
 void Label::present()
 {
-    Widget::present();
+    Box::present();
 
     if (!m_text.empty())
     {
@@ -108,11 +112,13 @@ void Label::resetTextPos()
         }
         case ALIGN_HMIDDLE:
         {
-            m_textPos[0] = m_pos[0] - textWidth / 2.0f;
+            m_textPos[0] = m_left + (getWidth() - textWidth) / 2.0f;
             break;
         }
         default:
-            LOG_ERROR("Wrong value for hAlign");
+        {
+            LOG_ERROR("Wrong value for hAlign %d", static_cast<int>(m_hAlign));
+        }
     }
 
     switch(m_vAlign)
@@ -129,11 +135,13 @@ void Label::resetTextPos()
         }
         case ALIGN_VMIDDLE:
         {
-            m_textPos[1] = m_pos[1] - textHeight / 2.0f;
+            m_textPos[1] = m_bottom + (getHeight() - textHeight)/ 2.0f;
             break;
         }
         default:
-            LOG_ERROR("Wrong value for vAlign");
+        {
+            LOG_ERROR("Wrong value for vAlign %d", static_cast<int>(m_vAlign));
+        }
     }
 }
 

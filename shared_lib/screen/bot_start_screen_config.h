@@ -3,16 +3,13 @@
 
 #include <vector>
 #include <string>
+#include "geometry/bot_rectangle.h"
 
 namespace bot {
 
 class StartScreenConfig {
 public:
-    StartScreenConfig()
-        : m_buttonSpacing(0.0f)
-        , m_buttonWidth(0.0f)
-        , m_buttonHeight(0.0f)
-    {}
+    StartScreenConfig();
 
     ~StartScreenConfig()
     {}
@@ -34,6 +31,11 @@ public:
         return m_buttonHeight;
     }
 
+    const Rectangle& getButtonRect() const
+    {
+        return m_buttonRect;
+    }
+
     const std::vector<std::string>& getButtonTexts() const
     {
         return m_buttonTexts;
@@ -43,9 +45,11 @@ private:
     float m_buttonSpacing;
     float m_buttonWidth;
     float m_buttonHeight;
+    Rectangle m_buttonRect;
     std::vector<std::string> m_buttonTexts;
 };
 
 } // end of namespace bot
 
 #endif
+

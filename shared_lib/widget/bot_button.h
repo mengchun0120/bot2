@@ -3,15 +3,12 @@
 
 #include <functional>
 #include <string>
-#include "misc/bot_constants.h"
 #include "opengl/bot_text_size.h"
-#include "widget/bot_widget.h"
+#include "widget/bot_box.h"
 
 namespace bot {
 
-class Color;
-
-class Button : public Widget {
+class Button : public Box {
 public:
     typedef std::function<int()> ActionFunc;
 
@@ -20,9 +17,14 @@ public:
     virtual ~Button()
     {}
 
-    bool init(float x, float y, float width, float height,
-              const std::string& text, TextSize textSize=TEXT_SIZE_MEDIUM,
-              bool acceptInput=true);
+    bool init(float x, float y,
+              float width, float height,
+              const Rectangle* rect,
+              const std::string& text,
+              TextSize textSize=TEXT_SIZE_MEDIUM,
+              bool visible=true, bool acceptInput=true);
+
+    virtual void present();
 
     void setText(const std::string& text);
 
@@ -35,21 +37,16 @@ public:
 
     virtual void shiftPos(float dx, float dy);
 
-    virtual int processKeyEvent(const KeyEvent& event)
-    {
-        return 0;
-    }
+    virtual int processKeyEvent(const KeyEvent& event);
 
     virtual int processMouseMoveEvent(const MouseMoveEvent& event);
 
     virtual int processMouseButtonEvent(const MouseButtonEvent& event);
 
-    virtual void onLostFocus()
-    {}
-
     virtual void onMouseOut();
 
-    virtual void present();
+protected:
+    void resetTextPos();
 
 protected:
     std::string m_text;
@@ -62,3 +59,4 @@ protected:
 } // end of namespace bot
 
 #endif
+

@@ -3,25 +3,28 @@
 
 #include <string>
 #include "opengl/bot_text_size.h"
-#include "widget/bot_widget.h"
 #include "widget/bot_align.h"
+#include "widget/bot_box.h"
 
 namespace bot {
 
 class Color;
 
-class Label: public Widget {
+class Label: public Box {
 public:
     Label();
 
     virtual ~Label()
     {}
 
-    bool init(float x, float y, float width, float height,
+    bool init(float x, float y,
+              float width, float height,
+              const Rectangle* rect,
               const std::string& text, const Color* textColor,
               const Color* backColor, const Color* borderColor,
-              Align hAlign, Align vAlign, TextSize sz=TEXT_SIZE_MEDIUM,
-              bool acceptInput=false);
+              Align hAlign, Align vAlign,
+              TextSize sz=TEXT_SIZE_MEDIUM,
+              bool visible=true, bool acceptInput=false);
 
     const std::string& getText() const
     {

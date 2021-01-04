@@ -8,17 +8,30 @@
 namespace bot {
 
 Button::Button()
-    : m_textColor(nullptr)
+    : Box()
+    , m_textColor(nullptr)
     , m_textSize(TEXT_SIZE_MEDIUM)
 {
     m_textPos[0] = 0.0f;
     m_textPos[1] = 0.0f;
 }
 
-bool Button::init(float x, float y, float width, float height,
-                  const std::string& text, TextSize textSize,
-                  bool acceptInput)
+bool Button::init(float x, float y,
+                  float width, float height,
+                  const Rectangle* rect,
+                  const std::string& text,
+                  TextSize textSize,
+                  bool visible, bool acceptInput)
 {
+    const ButtonConfig& cfg = GameLib::getInstance().getButtonConfig();
+
+    bool ret = Box::init(x, y, width, height, rect, cfg.getTexture(),
+                         nullptr, nullptr, visible, acceptInput);
+    if (!ret)
+    {
+        return false;
+    }
+
     if (!isValidTextSize(textSize))
     {
         LOG_ERROR("Invalid text-size %d", static_cast<int>(textSize));
@@ -26,49 +39,69 @@ bool Button::init(float x, float y, float width, float height,
     }
 
     m_textSize = textSize;
-
-    const ButtonConfig& cfg = GameLib::getInstance().getButtonConfig();
-
-    bool ret = Widget::init(x, y, width, height, cfg.getTexture(),
-                            nullptr, nullptr, acceptInput);
-    if (!ret)
-    {
-        return false;
-    }
-
-    m_textColor = cfg.getNormalTextColor();
     setText(text);
+    m_textColor = cfg.getNormalTextColor();
 
     return true;
+}
+
+void Button::present()
+{
+    if (!m_visible)
+    {
+        return;
+    }
+
+    Box::present();
+
+    const TextSystem& textSys = TextSystem::getInstance();
+    textSys.drawString(m_text, m_textSize,
+                       m_textPos, m_textColor->getColor());
 }
 
 void Button::setText(const std::string& text)
 {
     m_text = text;
-
-    float w, h;
-    const TextSystem& textSys = TextSystem::getInstance();
-
-    textSys.getStringSize(w, h, m_textSize, m_text);
-    m_textPos[0] = m_pos[0] - w / 2.0f;
-    m_textPos[1] = m_pos[1] - h / 2.0f;
+    resetTextPos();
 }
 
 void Button::setPos(float x, float y)
 {
-    float oldX = m_pos[0], oldY = m_pos[1];
-
-    Widget::setPos(x, y);
-
-    m_textPos[0] += m_pos[0] - oldX;
-    m_textPos[1] += m_pos[1] - oldY;
+    Box::setPos(x, y);
+    resetTextPos();
 }
 
 void Button::shiftPos(float dx, float dy)
 {
-    Widget::shiftPos(dx, dy);
+    Box::shiftPos(dx, dy);
     m_textPos[0] += dx;
     m_textPos[1] += dy;
+}
+
+int Button::processKeyEvent(const KeyEvent& event)
+{
+    if (!m_acceptInput)
+    {
+        return 0;
+    }
+
+    switch(event.m_key)
+    {
+        case GLFW_KEY_ENTER:
+        {
+            if (event.m_action == GLFW_PRESS && m_actionFunc)
+            {
+                return m_actionFunc();
+            }
+            return 0;
+        }
+        default:
+        {
+            break;
+        }
+    }
+
+    return 0;
 }
 
 int Button::processMouseMoveEvent(const MouseMoveEvent& event)
@@ -114,18 +147,14 @@ void Button::onMouseOut()
     m_textColor = cfg.getNormalTextColor();
 }
 
-void Button::present()
+void Button::resetTextPos()
 {
-    if (!m_visible)
-    {
-        return;
-    }
-
+    float w, h;
     const TextSystem& textSys = TextSystem::getInstance();
 
-    Widget::present();
-    textSys.drawString(m_text, m_textSize,
-                       m_textPos, m_textColor->getColor());
+    textSys.getStringSize(w, h, m_textSize, m_text);
+    m_textPos[0] = m_left + (m_width - w) / 2.0f;
+    m_textPos[1] = m_bottom + (m_height - h) / 2.0f;
 }
 
 } // end of namespace bot

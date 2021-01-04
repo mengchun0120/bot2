@@ -1,10 +1,14 @@
 #include "misc/bot_log.h"
 #include "misc/bot_json_utils.h"
-#include "structure/bot_named_map.h"
-#include "geometry/bot_rectangle.h"
 #include "screen/bot_start_screen_config.h"
 
 namespace bot {
+
+StartScreenConfig::StartScreenConfig()
+    : m_buttonSpacing(0.0f)
+    , m_buttonWidth(0.0f)
+    , m_buttonHeight(0.0f)
+{}
 
 bool StartScreenConfig::init(const std::string& configFile)
 {
@@ -36,7 +40,14 @@ bool StartScreenConfig::init(const std::string& configFile)
         return false;
     }
 
+    if (!m_buttonRect.init(m_buttonWidth, m_buttonHeight, true))
+    {
+        LOG_ERROR("Failed to initialize buttonRect");
+        return false;
+    }
+
     return true;
 }
 
 } // end of namespace bot
+
