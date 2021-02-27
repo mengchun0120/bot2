@@ -5,7 +5,7 @@
 
 namespace bot {
 
-InputManager* k_inputMgr = nullptr;
+InputManager *k_inputMgr = nullptr;
 
 void handleMouseMove(GLFWwindow *window, double x, double y)
 {
@@ -48,8 +48,8 @@ InputManager::~InputManager()
 
 void InputManager::init()
 {
-    App& app = App::getInstance();
-    const AppConfig& cfg = AppConfig::getInstance();
+    App &app = App::getInstance();
+    const AppConfig &cfg = AppConfig::getInstance();
 
     m_window = app.getWindow();
     m_inputEvents.init(cfg.getEventQueueSize());
@@ -86,7 +86,7 @@ void InputManager::addMouseButtonEvent(float x, float y, int button,
     }
 
     InputEvent e;
-    MouseButtonEvent& btnEvent = e.m_mouseButtonEvent;
+    MouseButtonEvent &btnEvent = e.m_mouseButtonEvent;
 
     e.m_type = InputEvent::ET_MOUSE_BUTTON;
     btnEvent.m_x = x;
@@ -124,7 +124,7 @@ void InputManager::addKeyEvent(int key, int action, int scanCode, int mods)
     }
 
     InputEvent e;
-    KeyEvent& kevt = e.m_keyEvent;
+    KeyEvent &kevt = e.m_keyEvent;
 
     e.m_type = InputEvent::ET_KEY;
     kevt.m_key = key;

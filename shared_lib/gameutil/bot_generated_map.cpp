@@ -13,8 +13,8 @@ namespace bot {
 
 const float THRESHOLD = 0.01;
 
-GeneratedMap::ObjectItem::ObjectItem(const std::string* name,
-                                     const GameObjectTemplate* t,
+GeneratedMap::ObjectItem::ObjectItem(const std::string *name,
+                                     const GameObjectTemplate *t,
                                      float x, float y)
     : m_name(name)
     , m_template(t)
@@ -37,7 +37,7 @@ bool GeneratedMap::ObjectItem::outsideRegion(
            compare(m_top, topBound, THRESHOLD) > 0;
 }
 
-bool GeneratedMap::ObjectItem::overlap(const ObjectItem& item) const
+bool GeneratedMap::ObjectItem::overlap(const ObjectItem &item) const
 {
     return compare(m_left, item.m_right, THRESHOLD) < 0 &&
            compare(m_right, item.m_left, THRESHOLD) > 0 &&
@@ -45,14 +45,14 @@ bool GeneratedMap::ObjectItem::overlap(const ObjectItem& item) const
            compare(m_top, item.m_bottom, THRESHOLD) > 0;
 }
 
-GeneratedMap::TileItem::TileItem(const std::string* name, const TileTemplate* t,
+GeneratedMap::TileItem::TileItem(const std::string *name, const TileTemplate *t,
                                  float x, float y)
     : ObjectItem(name, t, x, y)
 {
 }
 
-GeneratedMap::RobotItem::RobotItem(const std::string* name,
-                                   const AIRobotTemplate* t,
+GeneratedMap::RobotItem::RobotItem(const std::string *name,
+                                   const AIRobotTemplate *t,
                                    float x, float y,
                                    float directionX, float directionY)
     : ObjectItem(name, t, x, y)
@@ -65,8 +65,8 @@ GeneratedMap::RobotItem::RobotItem(const std::string* name,
 GeneratedMap::GeneratedMap(int rowCount, int colCount, float slotSize)
     : m_rowCount(rowCount)
     , m_colCount(colCount)
-    , m_mapWidth(m_colCount* GameMap::GRID_BREATH)
-    , m_mapHeight(m_rowCount* GameMap::GRID_BREATH)
+    , m_mapWidth(m_colCount *GameMap::GRID_BREATH)
+    , m_mapHeight(m_rowCount *GameMap::GRID_BREATH)
     , m_playerTemplate(nullptr)
     , m_playerX(0.0f)
     , m_playerY(0.0f)
@@ -90,7 +90,7 @@ void GeneratedMap::initSlots()
     m_slots.resize(slotRowCount);
     for (int r = 0; r < slotRowCount; ++r)
     {
-        std::vector<Slot>& row = m_slots[r];
+        std::vector<Slot> &row = m_slots[r];
         row.resize(slotColCount);
 
         float x = m_slotSize / 2.0f;
@@ -105,11 +105,11 @@ void GeneratedMap::initSlots()
     }
 }
 
-void GeneratedMap::setPlayer(const PlayerTemplate* playerTemplate,
+void GeneratedMap::setPlayer(const PlayerTemplate *playerTemplate,
                              int row, int col,
                              float directionX, float directionY)
 {
-    Slot& slot = m_slots[row][col];
+    Slot &slot = m_slots[row][col];
     m_playerTemplate = playerTemplate;
     m_playerX = slot.m_x;
     m_playerY = slot.m_y;
@@ -118,7 +118,7 @@ void GeneratedMap::setPlayer(const PlayerTemplate* playerTemplate,
     m_playerDirectionY = directionY;
 }
 
-void GeneratedMap::addTile(const std::string* name, const TileTemplate* t,
+void GeneratedMap::addTile(const std::string *name, const TileTemplate *t,
                            float x, float y)
 {
     m_tiles.emplace_back(name, t, x, y);
@@ -132,7 +132,7 @@ void GeneratedMap::addTile(const std::string* name, const TileTemplate* t,
 
     for (int r = bottom; r <= top; ++r)
     {
-        auto& row = m_slots[r];
+        auto &row = m_slots[r];
         for (int c = left; c <= right; ++c)
         {
             row[c].m_occupied = true;
@@ -140,11 +140,11 @@ void GeneratedMap::addTile(const std::string* name, const TileTemplate* t,
     }
 }
 
-bool GeneratedMap::addRobot(const std::string* name, const AIRobotTemplate* t,
+bool GeneratedMap::addRobot(const std::string *name, const AIRobotTemplate *t,
                             int row, int col,
                             float directionX, float directionY)
 {
-    Slot& slot = m_slots[row][col];
+    Slot &slot = m_slots[row][col];
     if (slot.m_occupied)
     {
         return false;
@@ -156,7 +156,7 @@ bool GeneratedMap::addRobot(const std::string* name, const AIRobotTemplate* t,
     return true;
 }
 
-bool GeneratedMap::write(const char* fileName)
+bool GeneratedMap::write(const char *fileName)
 {
     using namespace rapidjson;
 
@@ -176,11 +176,11 @@ bool GeneratedMap::write(const char* fileName)
     return true;
 }
 
-void GeneratedMap::toJson(rapidjson::Document& doc)
+void GeneratedMap::toJson(rapidjson::Document &doc)
 {
     using namespace rapidjson;
 
-    Document::AllocatorType& allocator = doc.GetAllocator();
+    Document::AllocatorType &allocator = doc.GetAllocator();
 
     doc.SetObject();
     doc.AddMember("numRows", m_rowCount, allocator);
@@ -196,7 +196,7 @@ void GeneratedMap::toJson(rapidjson::Document& doc)
     Value tiles(kArrayType);
     tiles.Reserve(m_tiles.size(), allocator);
     int i = 0;
-    for (auto& t : m_tiles)
+    for (auto &t : m_tiles)
     {
         Value tile(kObjectType);
         tile.AddMember("name", StringRef(t.m_name->c_str()), allocator);
@@ -209,7 +209,7 @@ void GeneratedMap::toJson(rapidjson::Document& doc)
 
     Value robots(kArrayType);
     robots.Reserve(m_robots.size(), allocator);
-    for (auto& t : m_robots)
+    for (auto &t : m_robots)
     {
         Value robot(kObjectType);
         robot.AddMember("name", StringRef(t.m_name->c_str()), allocator);
@@ -222,13 +222,13 @@ void GeneratedMap::toJson(rapidjson::Document& doc)
     doc.AddMember("robots", robots, allocator);
 }
 
-void GeneratedMap::getFreeSlots(std::vector<std::pair<int,int>>& freeSlots)
+void GeneratedMap::getFreeSlots(std::vector<std::pair<int,int>> &freeSlots)
 {
     int freeSlotCount = 0;
 
-    for (auto& row: m_slots)
+    for (auto &row: m_slots)
     {
-        for (auto& slot: row)
+        for (auto &slot: row)
         {
             if (!slot.m_occupied)
             {
@@ -244,7 +244,7 @@ void GeneratedMap::getFreeSlots(std::vector<std::pair<int,int>>& freeSlots)
     freeSlots.resize(freeSlotCount);
     for (int r = 0; r < rowCount; ++r)
     {
-        auto& row = m_slots[r];
+        auto &row = m_slots[r];
         for (int c = 0; c < colCount; ++c)
         {
             if (!row[c].m_occupied)
@@ -265,7 +265,7 @@ bool GeneratedMap::validate() const
 bool GeneratedMap::validateInRegion() const
 {
     int i = 0;
-    for (auto& tile: m_tiles)
+    for (auto &tile: m_tiles)
     {
         if (tile.outsideRegion(0.0f, 0.0f, m_mapWidth, m_mapHeight))
         {
@@ -278,7 +278,7 @@ bool GeneratedMap::validateInRegion() const
     }
 
     i = 0;
-    for (auto& robot: m_robots)
+    for (auto &robot: m_robots)
     {
         if (robot.outsideRegion(0.0f, 0.0f, m_mapWidth, m_mapHeight))
         {

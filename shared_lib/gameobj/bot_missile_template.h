@@ -12,22 +12,22 @@ class ParticleEffectTemplate;
 
 class MissileTemplate : public GameObjectTemplate, public SingleUnitTemplate {
 public:
-    static MissileTemplate* create(const std::string& name,
-                                   const rapidjson::Value& elem);
+    static MissileTemplate *create(const std::string &name,
+                                   const rapidjson::Value &elem);
 
     MissileTemplate();
 
     virtual ~MissileTemplate()
     {}
 
-    bool init(MissileType missileType, const rapidjson::Value& elem);
+    bool init(MissileType missileType, const rapidjson::Value &elem);
 
     MissileType getMissileType() const
     {
         return m_missileType;
     }
 
-    const ParticleEffectTemplate* getImpactEffectTemplate() const
+    const ParticleEffectTemplate *getImpactEffectTemplate() const
     {
         return m_impactEffectTemplate;
     }
@@ -39,7 +39,7 @@ public:
 
 protected:
     MissileType m_missileType;
-    const ParticleEffectTemplate* m_impactEffectTemplate;
+    const ParticleEffectTemplate *m_impactEffectTemplate;
     float m_speed;
 };
 

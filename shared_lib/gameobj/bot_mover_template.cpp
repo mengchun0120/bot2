@@ -10,7 +10,7 @@ MoverTemplate::MoverTemplate()
 {
 }
 
-bool MoverTemplate::init(const rapidjson::Value& elem)
+bool MoverTemplate::init(const rapidjson::Value &elem)
 {
     if (!SingleUnitTemplate::init(elem))
     {

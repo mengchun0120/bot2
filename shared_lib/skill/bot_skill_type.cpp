@@ -8,7 +8,7 @@ static std::vector<std::string> k_skillTypeStr = {
     "invalid"
 };
 
-SkillType strToSkillType(const std::string& s)
+SkillType strToSkillType(const std::string &s)
 {
     for (int t = SKILL_SHOOT_MISSILE; t < SKILL_COUNT; ++t)
     {
@@ -21,7 +21,7 @@ SkillType strToSkillType(const std::string& s)
     return SKILL_INVALID;
 }
 
-const std::string& skillTypeToStr(SkillType t)
+const std::string &skillTypeToStr(SkillType t)
 {
     return isValidSkillType(t) ? k_skillTypeStr[t] :
                                  k_skillTypeStr[SKILL_INVALID];

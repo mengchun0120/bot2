@@ -15,7 +15,7 @@ ProgressBar::ProgressBar()
 {
 }
 
-bool ProgressBar::init(const ProgressBarTemplate* t, float x, float y,
+bool ProgressBar::init(const ProgressBarTemplate *t, float x, float y,
                        float initialRatio)
 {
     if (!t)
@@ -97,7 +97,7 @@ void ProgressBar::draw()
 
     if (m_visibleVertices > 0)
     {
-        SimpleShaderProgram& program = SimpleShaderProgram::getInstance();
+        SimpleShaderProgram &program = SimpleShaderProgram::getInstance();
 
         program.setUseObjRef(false);
         program.setPosition(m_bar, false);

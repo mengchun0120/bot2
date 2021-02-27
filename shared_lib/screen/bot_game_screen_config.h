@@ -13,7 +13,7 @@ public:
     ~GameScreenConfig()
     {}
 
-    bool load(const std::string& fileName);
+    bool load(const std::string &fileName);
 
     float getWidth() const
     {
@@ -55,7 +55,7 @@ public:
         return m_textButtonSpacing;
     }
 
-    const std::vector<std::string>& getButtonTexts() const
+    const std::vector<std::string> &getButtonTexts() const
     {
         return m_buttonTexts;
     }

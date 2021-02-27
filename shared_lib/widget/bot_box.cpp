@@ -17,8 +17,8 @@ Box::Box()
 }
 
 bool Box::init(float x, float y, float width, float height,
-               const Rectangle* rect, const Texture* texture,
-               const Color* backColor, const Color* borderColor,
+               const Rectangle *rect, const Texture *texture,
+               const Color *backColor, const Color *borderColor,
                bool visible, bool acceptInput)
 {
     if (!Widget::init(x, y, width, height, visible, acceptInput))

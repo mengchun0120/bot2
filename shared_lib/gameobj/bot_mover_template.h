@@ -13,7 +13,7 @@ public:
     virtual ~MoverTemplate()
     {}
 
-    bool init(const rapidjson::Value& elem);
+    bool init(const rapidjson::Value &elem);
 
     float getSpeed(int level) const;
 

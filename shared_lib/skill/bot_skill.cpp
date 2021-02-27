@@ -5,15 +5,15 @@
 
 namespace bot {
 
-Skill* Skill::create(const SkillTemplate* t, Robot* robot, unsigned int level)
+Skill *Skill::create(const SkillTemplate *t, Robot *robot, unsigned int level)
 {
     switch (t->getType())
     {
         case SKILL_SHOOT_MISSILE:
         {
-            const ShootMissileSkillTemplate* t1 =
+            const ShootMissileSkillTemplate *t1 =
                             static_cast<const ShootMissileSkillTemplate*>(t);
-            ShootMissileSkill* s = new ShootMissileSkill();
+            ShootMissileSkill *s = new ShootMissileSkill();
             if (!s->init(t1, robot, level))
             {
                 LOG_ERROR("Failed to initialize ShootMissileSkill");
@@ -39,7 +39,7 @@ Skill::Skill()
 {
 }
 
-bool Skill::init(const SkillTemplate* t, Robot* robot, unsigned int level)
+bool Skill::init(const SkillTemplate *t, Robot *robot, unsigned int level)
 {
     if (!t)
     {
@@ -62,9 +62,9 @@ bool Skill::init(const SkillTemplate* t, Robot* robot, unsigned int level)
     return true;
 }
 
-void Skill::apply(GameScreen& screen, const TimePoint& t)
+void Skill::apply(GameScreen &screen, const TimePoint &t)
 {
-    Base& base = m_robot->getBase();
+    Base &base = m_robot->getBase();
     float power = base.getPower() - m_template->getPowerCost();
 
     if (power < 0.0f)
@@ -76,7 +76,7 @@ void Skill::apply(GameScreen& screen, const TimePoint& t)
     m_lastApplyTime = t;
 }
 
-bool Skill::available(const TimePoint& t) const
+bool Skill::available(const TimePoint &t) const
 {
     float cooldown = m_template->getCooldownMS() * m_cooldownMultiplier;
     return m_robot->getBase().getPower() >= m_template->getPowerCost() &&

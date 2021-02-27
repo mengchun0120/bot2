@@ -19,7 +19,7 @@ inline bool isValidTextSize(TextSize sz)
     return sz >= TEXT_SIZE_BIG && sz < TEXT_SIZE_COUNT;
 }
 
-TextSize strToTextSize(const std::string& s);
+TextSize strToTextSize(const std::string &s);
 
 } // end of namespace bot
 

@@ -16,25 +16,25 @@ public:
     static const int MAX_CHAR = 126;
     static const int CHAR_COUNT = MAX_CHAR - MIN_CHAR + 1;
 
-    static bool initInstance(const std::string& fontFolder);
+    static bool initInstance(const std::string &fontFolder);
 
-    static const TextSystem& getInstance()
+    static const TextSystem &getInstance()
     {
         return *k_textSys;
     }
 
     virtual ~TextSystem();
 
-    const Rectangle& getRect(TextSize sz, char ch) const
+    const Rectangle &getRect(TextSize sz, char ch) const
     {
         return *(m_rectMap[sz][static_cast<int>(ch) - MIN_CHAR]);
     }
 
-    void drawString(const char* str, TextSize size,
-                    const float* pos, const float* color) const;
+    void drawString(const char *str, TextSize size,
+                    const float *pos, const float *color) const;
 
-    void drawString(const std::string& str, TextSize size,
-                    const float* pos, const float* color) const
+    void drawString(const std::string &str, TextSize size,
+                    const float *pos, const float *color) const
     {
         drawString(str.c_str(), size, pos, color);
     }
@@ -43,11 +43,11 @@ public:
 
     float getMaxCharWidth(TextSize sz) const;
 
-    void getStringSize(float& width, float& height, TextSize sz,
-                       const char* str) const;
+    void getStringSize(float &width, float &height, TextSize sz,
+                       const char *str) const;
 
-    void getStringSize(float& width, float& height, TextSize sz,
-                       const std::string& str) const
+    void getStringSize(float &width, float &height, TextSize sz,
+                       const std::string &str) const
     {
         getStringSize(width, height, sz, str.c_str());
     }
@@ -55,7 +55,7 @@ public:
 private:
     TextSystem();
 
-    bool init(const std::string& fontFolder);
+    bool init(const std::string &fontFolder);
 
 private:
     static std::shared_ptr<TextSystem> k_textSys;

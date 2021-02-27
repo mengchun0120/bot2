@@ -14,7 +14,7 @@ public:
         SCREEN_NONE
     };
 
-    static Screen* create(Type type);
+    static Screen *create(Type type);
 
     Screen()
     {}

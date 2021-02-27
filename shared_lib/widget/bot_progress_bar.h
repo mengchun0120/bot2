@@ -15,7 +15,7 @@ public:
     ~ProgressBar()
     {}
 
-    bool init(const ProgressBarTemplate* t, float x, float y,
+    bool init(const ProgressBarTemplate *t, float x, float y,
               float initialRatio=1.0f);
 
     bool setRatio(float ratio);
@@ -26,7 +26,7 @@ private:
     bool initBar(float x, float y);
 
 private:
-    const ProgressBarTemplate* m_template;
+    const ProgressBarTemplate *m_template;
     float m_pos[Constants::NUM_FLOATS_PER_POSITION];
     int m_visibleVertices;
     VertexArray m_bar;

@@ -12,7 +12,7 @@ public:
     virtual ~BulletTemplate()
     {}
 
-    bool init(const rapidjson::Value& elem);
+    bool init(const rapidjson::Value &elem);
 };
 
 } // end of namespace bot

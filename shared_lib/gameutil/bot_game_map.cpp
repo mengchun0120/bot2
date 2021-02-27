@@ -34,7 +34,7 @@ GameMap::~GameMap()
 
 void GameMap::initMap(int numRows, int numCols, int gameObjPoolSize,
                       float viewportWidth, float viewportHeight,
-                      GameObjectManager* gameObjMgr)
+                      GameObjectManager *gameObjMgr)
 {
     m_gameObjItemPool.init(gameObjPoolSize);
 
@@ -78,13 +78,13 @@ void GameMap::present()
         {
             for (int c = startCol; c <= endCol; ++c)
             {
-                LinkedList<GameObjectItem>& cell = m_map[r][c];
-                GameObjectItem* item, * next;
+                LinkedList<GameObjectItem> &cell = m_map[r][c];
+                GameObjectItem *item, * next;
                 for (item = cell.getFirst(); item; item = next)
                 {
                     next = static_cast<GameObjectItem*>(item->getNext());
 
-                    GameObject* obj = item->getObj();
+                    GameObject *obj = item->getObj();
                     bool dontShow = obj->getType() != LAYER_ORDER[i] ||
                                     obj->testFlag(DONT_DRAW_FLAGS);
                     if (dontShow)
@@ -107,7 +107,7 @@ void GameMap::clear()
 
     for (int r = 0; r < numRows; ++r)
     {
-        std::vector<LinkedList<GameObjectItem>>& row = m_map[r];
+        std::vector<LinkedList<GameObjectItem>> &row = m_map[r];
         for (int c = 0; c < numCols; ++c)
         {
             freeGameObjList(row[c]);
@@ -115,16 +115,16 @@ void GameMap::clear()
     }
 }
 
-bool GameMap::getMapPosForGameObj(int& startRow, int& endRow, int& startCol,
-                                  int& endCol, GameObject* obj) const
+bool GameMap::getMapPosForGameObj(int &startRow, int &endRow, int &startCol,
+                                  int &endCol, GameObject *obj) const
 {
     return getRectCoords(startRow, endRow, startCol, endCol,
                          obj->getCoverLeft(), obj->getCoverBottom(),
                          obj->getCoverRight(), obj->getCoverTop());
 }
 
-bool GameMap::getRectCoords(int& startRow, int& endRow,
-                            int& startCol, int& endCol,
+bool GameMap::getRectCoords(int &startRow, int &endRow,
+                            int &startCol, int &endCol,
                             float left, float bottom,
                             float right, float top) const
 {
@@ -178,7 +178,7 @@ bool GameMap::getRectCoords(int& startRow, int& endRow,
     return true;
 }
 
-bool GameMap::addObject(GameObject* obj)
+bool GameMap::addObject(GameObject *obj)
 {
     int startRow, endRow, startCol, endCol;
 
@@ -194,7 +194,7 @@ bool GameMap::addObject(GameObject* obj)
 
     if (obj->getType() == GAME_OBJ_TYPE_ROBOT)
     {
-        Robot* robot = static_cast<Robot*>(obj);
+        Robot *robot = static_cast<Robot*>(obj);
         if (robot->getSide() == SIDE_AI)
         {
             ++m_aiRobotCount;
@@ -204,14 +204,14 @@ bool GameMap::addObject(GameObject* obj)
     return true;
 }
 
-void GameMap::removeObject(GameObject* obj)
+void GameMap::removeObject(GameObject *obj)
 {
     removeObjectFromRect(obj, obj->getCoverStartRow(), obj->getCoverEndRow(),
                          obj->getCoverStartCol(), obj->getCoverEndCol());
 
     if (obj->getType() == GAME_OBJ_TYPE_ROBOT)
     {
-        Robot* robot = static_cast<Robot*>(obj);
+        Robot *robot = static_cast<Robot*>(obj);
         if (robot->getSide() == SIDE_AI)
         {
             --m_aiRobotCount;
@@ -219,7 +219,7 @@ void GameMap::removeObject(GameObject* obj)
     }
 }
 
-bool GameMap::repositionObject(GameObject* obj)
+bool GameMap::repositionObject(GameObject *obj)
 {
     int newStartRow, newEndRow, newStartCol, newEndCol;
 
@@ -301,25 +301,25 @@ bool GameMap::repositionObject(GameObject* obj)
     return true;
 }
 
-void GameMap::addObjectToRect(GameObject* obj, int startRow, int endRow,
+void GameMap::addObjectToRect(GameObject *obj, int startRow, int endRow,
                               int startCol, int endCol)
 {
     for (int r = startRow; r <= endRow; ++r)
     {
-        std::vector<LinkedList<GameObjectItem>>& row = m_map[r];
+        std::vector<LinkedList<GameObjectItem>> &row = m_map[r];
         for (int c = startCol; c <= endCol; ++c)
         {
-            GameObjectItem* item = m_gameObjItemPool.alloc();
+            GameObjectItem *item = m_gameObjItemPool.alloc();
             item->setObj(obj);
             row[c].add(item);
         }
     }
 }
 
-bool GameMap::removeObjectAt(GameObject* obj, int row, int col)
+bool GameMap::removeObjectAt(GameObject *obj, int row, int col)
 {
-    GameObjectItem* prev = nullptr, * cur;
-    LinkedList<GameObjectItem>& cell = m_map[row][col];
+    GameObjectItem *prev = nullptr, * cur;
+    LinkedList<GameObjectItem> &cell = m_map[row][col];
 
     cur = cell.getFirst();
     while (cur)
@@ -343,7 +343,7 @@ bool GameMap::removeObjectAt(GameObject* obj, int row, int col)
     return true;
 }
 
-void GameMap::removeObjectFromRect(GameObject* obj, int startRow, int endRow,
+void GameMap::removeObjectFromRect(GameObject *obj, int startRow, int endRow,
                                    int startCol, int endCol)
 {
     for (int r = startRow; r <= endRow; ++r)
@@ -355,8 +355,8 @@ void GameMap::removeObjectFromRect(GameObject* obj, int startRow, int endRow,
     }
 }
 
-void GameMap::getViewportRegion(int& startRow, int& endRow,
-                                int& startCol, int& endCol) const
+void GameMap::getViewportRegion(int &startRow, int &endRow,
+                                int &startCol, int &endCol) const
 {
     float left = m_viewportPos[0] - m_viewportBreathX;
     float bottom = m_viewportPos[1] - m_viewportBreathY;
@@ -371,10 +371,10 @@ void GameMap::clearFlagsInRect(int startRow, int endRow,
 {
     for (int r = startRow; r <= endRow; ++r)
     {
-        std::vector<LinkedList<GameObjectItem>>& row = m_map[r];
+        std::vector<LinkedList<GameObjectItem>> &row = m_map[r];
         for (int c = startCol; c <= endCol; ++c)
         {
-            GameObjectItem* item = row[c].getFirst();
+            GameObjectItem *item = row[c].getFirst();
             while (item)
             {
                 item->getObj()->clearFlag(static_cast<int>(flag));
@@ -384,7 +384,7 @@ void GameMap::clearFlagsInRect(int startRow, int endRow,
     }
 }
 
-bool GameMap::setPlayer(Player* player)
+bool GameMap::setPlayer(Player *player)
 {
     m_player = player;
 
@@ -403,9 +403,9 @@ bool GameMap::setPlayer(Player* player)
     return true;
 }
 
-void GameMap::getCollideRegion(int& startRow, int& endRow,
-                               int& startCol, int& endCol,
-                               const GameObject* obj,
+void GameMap::getCollideRegion(int &startRow, int &endRow,
+                               int &startCol, int &endCol,
+                               const GameObject *obj,
                                float speedX, float speedY,
                                float delta)
 {
@@ -441,9 +441,9 @@ void GameMap::getCollideRegion(int& startRow, int& endRow,
     endCol = clamp(endCol, 0, getNumCols() - 1);
 }
 
-bool GameMap::checkCollision(float& newDelta,
-                             LinkedList<GameObjectItem>* collideObjs,
-                             const Robot* robot,
+bool GameMap::checkCollision(float &newDelta,
+                             LinkedList<GameObjectItem> *collideObjs,
+                             const Robot *robot,
                              float speedX, float speedY,
                              float delta)
 {
@@ -463,7 +463,7 @@ bool GameMap::checkCollision(float& newDelta,
     return touch || collide;
 }
 
-bool GameMap::checkCollideNonPassthrough(float& newDelta, const Robot* robot,
+bool GameMap::checkCollideNonPassthrough(float &newDelta, const Robot *robot,
                                          float speedX, float speedY,
                                          float delta)
 {
@@ -480,13 +480,13 @@ bool GameMap::checkCollideNonPassthrough(float& newDelta, const Robot* robot,
 
     for (int r = startRow; r <= endRow; ++r)
     {
-        std::vector<LinkedList<GameObjectItem>>& row = m_map[r];
+        std::vector<LinkedList<GameObjectItem>> &row = m_map[r];
         for (int c = startCol; c <= endCol; ++c)
         {
-            GameObjectItem* item = row[c].getFirst();
+            GameObjectItem *item = row[c].getFirst();
             while (item)
             {
-                GameObject* o = item->getObj();
+                GameObject *o = item->getObj();
                 bool dontCheck = o == static_cast<const GameObject*>(robot) ||
                                  o->testFlag(DONT_CHECK_FLAG) ||
                                  (o->getType() != GAME_OBJ_TYPE_ROBOT &&
@@ -525,8 +525,8 @@ bool GameMap::checkCollideNonPassthrough(float& newDelta, const Robot* robot,
     return collide;
 }
 
-void GameMap::checkCollidePassthrough(LinkedList<GameObjectItem>* collideObjs,
-                                      const Robot* robot,
+void GameMap::checkCollidePassthrough(LinkedList<GameObjectItem> *collideObjs,
+                                      const Robot *robot,
                                       float speedX, float speedY,
                                       float delta)
 {
@@ -545,13 +545,13 @@ void GameMap::checkCollidePassthrough(LinkedList<GameObjectItem>* collideObjs,
 
     for (int r = startRow; r <= endRow; ++r)
     {
-        std::vector<LinkedList<GameObjectItem>>& row = m_map[r];
+        std::vector<LinkedList<GameObjectItem>> &row = m_map[r];
         for (int c = startCol; c <= endCol; ++c)
         {
-            GameObjectItem* item = row[c].getFirst();
+            GameObjectItem *item = row[c].getFirst();
             while (item)
             {
-                GameObject* o = item->getObj();
+                GameObject *o = item->getObj();
                 bool check = (o->getType() == GAME_OBJ_TYPE_MISSILE ||
                               (robot->getSide() == SIDE_PLAYER &&
                                o->getType() == GAME_OBJ_TYPE_GOODIE)) &&
@@ -571,7 +571,7 @@ void GameMap::checkCollidePassthrough(LinkedList<GameObjectItem>* collideObjs,
 
                 if (collide)
                 {
-                    GameObjectItem* item = m_gameObjMgr->allocGameObjItem(o);
+                    GameObjectItem *item = m_gameObjMgr->allocGameObjItem(o);
                     collideObjs->add(item);
                 }
 
@@ -582,8 +582,8 @@ void GameMap::checkCollidePassthrough(LinkedList<GameObjectItem>* collideObjs,
     }
 }
 
-ReturnCode GameMap::checkCollision(const Missile* missile,
-                                   LinkedList<GameObjectItem>* collideObjs)
+ReturnCode GameMap::checkCollision(const Missile *missile,
+                                   LinkedList<GameObjectItem> *collideObjs)
 {
     if (isOutsideViewport(missile))
     {
@@ -610,13 +610,13 @@ ReturnCode GameMap::checkCollision(const Missile* missile,
 
     for (int r = startRow; r <= endRow; ++r)
     {
-        std::vector<LinkedList<GameObjectItem>>& row = m_map[r];
+        std::vector<LinkedList<GameObjectItem>> &row = m_map[r];
         for (int c = startCol; c <= endCol; ++c)
         {
-            GameObjectItem* item = row[c].getFirst();
+            GameObjectItem *item = row[c].getFirst();
             while (item)
             {
-                GameObject* o = item->getObj();
+                GameObject *o = item->getObj();
                 bool dontCheck =
                   o == static_cast<const GameObject*>(missile) ||
                   o->testFlag(DONT_CHECK_FLAG) ||
@@ -642,7 +642,7 @@ ReturnCode GameMap::checkCollision(const Missile* missile,
                         return RET_CODE_COLLIDE;
                     }
 
-                    GameObjectItem* item = m_gameObjMgr->allocGameObjItem(o);
+                    GameObjectItem *item = m_gameObjMgr->allocGameObjItem(o);
                     collideObjs->add(item);
                 }
 
@@ -655,9 +655,9 @@ ReturnCode GameMap::checkCollision(const Missile* missile,
     return RET_CODE_OK;
 }
 
-void GameMap::freeGameObjList(LinkedList<GameObjectItem>& objs)
+void GameMap::freeGameObjList(LinkedList<GameObjectItem> &objs)
 {
-    GameObjectItem* next, * cur;
+    GameObjectItem *next, * cur;
     for (cur = objs.getFirst(); cur; cur = next)
     {
         next = static_cast<GameObjectItem*>(cur->getNext());
@@ -665,7 +665,7 @@ void GameMap::freeGameObjList(LinkedList<GameObjectItem>& objs)
     }
 }
 
-bool GameMap::isOutsideScreen(const GameObject* obj) const
+bool GameMap::isOutsideScreen(const GameObject *obj) const
 {
     return obj->getCoverTop() <= 0.0f ||
            obj->getCoverBottom() >= m_mapHeight ||
@@ -673,7 +673,7 @@ bool GameMap::isOutsideScreen(const GameObject* obj) const
            obj->getCoverLeft() >= m_mapWidth;
 }
 
-bool GameMap::isOutsideViewport(const GameObject* obj) const
+bool GameMap::isOutsideViewport(const GameObject *obj) const
 {
     return obj->getCoverTop() <= getViewportBottom() ||
            obj->getCoverBottom() >= getViewportTop() ||

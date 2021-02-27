@@ -9,7 +9,7 @@ public:
 
     virtual ~VertexArray();
 
-    bool load(const float* vertices, unsigned int numVertices,
+    bool load(const float *vertices, unsigned int numVertices,
               unsigned int vertexSize,  unsigned int stride);
 
     unsigned int numVertices() const

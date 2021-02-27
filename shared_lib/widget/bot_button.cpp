@@ -18,12 +18,12 @@ Button::Button()
 
 bool Button::init(float x, float y,
                   float width, float height,
-                  const Rectangle* rect,
-                  const std::string& text,
+                  const Rectangle *rect,
+                  const std::string &text,
                   TextSize textSize,
                   bool visible, bool acceptInput)
 {
-    const ButtonConfig& cfg = GameLib::getInstance().getButtonConfig();
+    const ButtonConfig &cfg = GameLib::getInstance().getButtonConfig();
 
     bool ret = Box::init(x, y, width, height, rect, cfg.getTexture(),
                          nullptr, nullptr, visible, acceptInput);
@@ -54,12 +54,12 @@ void Button::present()
 
     Box::present();
 
-    const TextSystem& textSys = TextSystem::getInstance();
+    const TextSystem &textSys = TextSystem::getInstance();
     textSys.drawString(m_text, m_textSize,
                        m_textPos, m_textColor->getColor());
 }
 
-void Button::setText(const std::string& text)
+void Button::setText(const std::string &text)
 {
     m_text = text;
     resetTextPos();
@@ -78,7 +78,7 @@ void Button::shiftPos(float dx, float dy)
     m_textPos[1] += dy;
 }
 
-int Button::processKeyEvent(const KeyEvent& event)
+int Button::processKeyEvent(const KeyEvent &event)
 {
     if (!m_acceptInput)
     {
@@ -104,21 +104,21 @@ int Button::processKeyEvent(const KeyEvent& event)
     return 0;
 }
 
-int Button::processMouseMoveEvent(const MouseMoveEvent& event)
+int Button::processMouseMoveEvent(const MouseMoveEvent &event)
 {
     if (!m_acceptInput)
     {
         return 0;
     }
 
-    const ButtonConfig& cfg = GameLib::getInstance().getButtonConfig();
+    const ButtonConfig &cfg = GameLib::getInstance().getButtonConfig();
 
     m_textColor = cfg.getHoverTextColor();
 
     return 0;
 }
 
-int Button::processMouseButtonEvent(const MouseButtonEvent& event)
+int Button::processMouseButtonEvent(const MouseButtonEvent &event)
 {
     if (!m_acceptInput)
     {
@@ -129,7 +129,7 @@ int Button::processMouseButtonEvent(const MouseButtonEvent& event)
     {
         if (event.m_action == GLFW_PRESS)
         {
-            const ButtonConfig& cfg = GameLib::getInstance().getButtonConfig();
+            const ButtonConfig &cfg = GameLib::getInstance().getButtonConfig();
             m_textColor = cfg.getPressTextColor();
         }
         else if (event.m_action == GLFW_RELEASE && m_actionFunc)
@@ -143,14 +143,14 @@ int Button::processMouseButtonEvent(const MouseButtonEvent& event)
 
 void Button::onMouseOut()
 {
-    const ButtonConfig& cfg = GameLib::getInstance().getButtonConfig();
+    const ButtonConfig &cfg = GameLib::getInstance().getButtonConfig();
     m_textColor = cfg.getNormalTextColor();
 }
 
 void Button::resetTextPos()
 {
     float w, h;
-    const TextSystem& textSys = TextSystem::getInstance();
+    const TextSystem &textSys = TextSystem::getInstance();
 
     textSys.getStringSize(w, h, m_textSize, m_text);
     m_textPos[0] = m_left + (m_width - w) / 2.0f;

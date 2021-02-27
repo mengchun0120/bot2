@@ -17,7 +17,7 @@ Tile::Tile()
     m_mask.init(255, 255, 255, 255);
 }
 
-bool Tile::init(const TileTemplate* tileTemplate, int level, float x, float y)
+bool Tile::init(const TileTemplate *tileTemplate, int level, float x, float y)
 {
     if (!GameObject::init(tileTemplate, x, y))
     {
@@ -39,20 +39,20 @@ bool Tile::init(const TileTemplate* tileTemplate, int level, float x, float y)
 
 void Tile::present()
 {
-    const TileTemplate* t = static_cast<const TileTemplate*>(m_template);
+    const TileTemplate *t = static_cast<const TileTemplate*>(m_template);
 
     t->getRect()->draw(m_pos, nullptr, nullptr, nullptr,
                        t->getTexture()->textureId(), &m_mask);
 }
 
-void Tile::update(float delta, GameScreen& screen)
+void Tile::update(float delta, GameScreen &screen)
 {
     if (!testFlag(GAME_OBJ_FLAG_DISSOLVE))
     {
         return;
     }
 
-    const GameConfig& cfg = GameLib::getInstance().getGameConfig();
+    const GameConfig &cfg = GameLib::getInstance().getGameConfig();
     float alpha = 1.0f - elapsedTimeMs(m_deathTime) / cfg.getDissolveTimeMS();
 
     if (alpha > 0.0f)
@@ -61,7 +61,7 @@ void Tile::update(float delta, GameScreen& screen)
     }
     else
     {
-        GameObjectManager& gameObjMgr = screen.getGameObjManager();
+        GameObjectManager &gameObjMgr = screen.getGameObjManager();
         gameObjMgr.sendToDeathQueue(this);
     }
 }
@@ -83,9 +83,9 @@ bool Tile::addHP(float deltaHP)
     return m_hp > 0;
 }
 
-void Tile::onDeath(GameScreen& screen)
+void Tile::onDeath(GameScreen &screen)
 {
-    GameObjectManager& gameObjMgr = screen.getGameObjManager();
+    GameObjectManager &gameObjMgr = screen.getGameObjManager();
 
     gameObjMgr.sendToDissolveQueue(this);
     m_deathTime = Clock::now();

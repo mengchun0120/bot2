@@ -13,7 +13,7 @@ Logger Logger::g_logger;
 
 const Logger::LogLevel Logger::DEFAULT_LOG_LEVEL = Logger::LEVEL_INFO;
 
-const char* Logger::levelString(LogLevel level)
+const char *Logger::levelString(LogLevel level)
 {
     switch(level) {
     case LEVEL_DEBUG:
@@ -42,7 +42,7 @@ Logger::~Logger()
     }
 }
 
-bool Logger::init(const char* logFile, LogLevel minLevel)
+bool Logger::init(const char *logFile, LogLevel minLevel)
 {
     m_minLevel = minLevel;
 

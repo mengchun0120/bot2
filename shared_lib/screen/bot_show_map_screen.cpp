@@ -16,16 +16,16 @@ ShowMapScreen::ShowMapScreen()
 
 bool ShowMapScreen::init()
 {
-    const AppConfig& cfg = AppConfig::getInstance();
-    const std::string& generatorName = cfg.getMapGenerator();
-    const std::string& mapFile = cfg.getMapFile();
-    GameLib& lib = GameLib::getInstance();
+    const AppConfig &cfg = AppConfig::getInstance();
+    const std::string &generatorName = cfg.getMapGenerator();
+    const std::string &mapFile = cfg.getMapFile();
+    GameLib &lib = GameLib::getInstance();
 
     if (!generatorName.empty())
     {
         LOG_INFO("Generating map %s", mapFile.c_str());
 
-        MapGenerator* generator = lib.getMapGenerator(generatorName);
+        MapGenerator *generator = lib.getMapGenerator(generatorName);
         if (!generator)
         {
             LOG_ERROR("Failed to find map generator %s", generatorName.c_str());
@@ -43,7 +43,7 @@ bool ShowMapScreen::init()
 
     m_gameObjManager.init(nullptr);
 
-    const App& app = App::getInstance();
+    const App &app = App::getInstance();
 
     GameMapLoader mapLoader(m_gameObjManager, cfg.getMapPoolFactor());
     bool success = mapLoader.load(m_map, mapFile, 1, app.getViewportWidth(),
@@ -65,8 +65,8 @@ int ShowMapScreen::update(float delta)
 
 void ShowMapScreen::present()
 {
-    SimpleShaderProgram& program = SimpleShaderProgram::getInstance();
-    const App& app = App::getInstance();
+    SimpleShaderProgram &program = SimpleShaderProgram::getInstance();
+    const App &app = App::getInstance();
 
     program.use();
     program.setViewportSize(app.getViewportSize());
@@ -92,9 +92,9 @@ int ShowMapScreen::processInput(const InputEvent &e)
     return 0;
 }
 
-int ShowMapScreen::handleKey(const KeyEvent& e)
+int ShowMapScreen::handleKey(const KeyEvent &e)
 {
-    const float* viewportPos = m_map.getViewportPos();
+    const float *viewportPos = m_map.getViewportPos();
 
     switch(e.m_key)
     {

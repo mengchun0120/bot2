@@ -4,8 +4,8 @@
 
 namespace bot {
 
-SkillTemplate* SkillTemplate::create(const std::string& name,
-                                     const rapidjson::Value& elem)
+SkillTemplate *SkillTemplate::create(const std::string &name,
+                                     const rapidjson::Value &elem)
 {
     std::string typeStr;
     std::vector<JsonParamPtr> params = {
@@ -56,7 +56,7 @@ SkillTemplate::SkillTemplate()
 {
 }
 
-bool SkillTemplate::init(SkillType type, const rapidjson::Value& elem)
+bool SkillTemplate::init(SkillType type, const rapidjson::Value &elem)
 {
     if (!isValidSkillType(type))
     {

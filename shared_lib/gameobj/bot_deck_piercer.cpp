@@ -18,7 +18,7 @@ DeckPiercer::~DeckPiercer()
 {
 }
 
-bool DeckPiercer::init(const DeckPiercerTemplate* t, Side side,
+bool DeckPiercer::init(const DeckPiercerTemplate *t, Side side,
                        float x, float y, float directionX, float directionY,
                        float damage, float speed)
 {
@@ -27,15 +27,15 @@ bool DeckPiercer::init(const DeckPiercerTemplate* t, Side side,
 
 void DeckPiercer::present()
 {
-    const DeckPiercerTemplate* t = getTemplate();
-    const Color* color = m_penetrateObjs.isEmpty() ?
+    const DeckPiercerTemplate *t = getTemplate();
+    const Color *color = m_penetrateObjs.isEmpty() ?
                                 nullptr : &(t->getPassThroughMask());
 
     t->getRect()->draw(m_pos, m_direction, nullptr, nullptr,
                        *(t->getTexture()), color);
 }
 
-void DeckPiercer::update(float delta, GameScreen& screen)
+void DeckPiercer::update(float delta, GameScreen &screen)
 {
     float deltaX = getSpeedX() * delta;
     float deltaY = getSpeedY() * delta;
@@ -45,7 +45,7 @@ void DeckPiercer::update(float delta, GameScreen& screen)
     checkCollision(screen);
 }
 
-bool DeckPiercer::onEntry(GameScreen& screen)
+bool DeckPiercer::onEntry(GameScreen &screen)
 {
     if (checkCollision(screen))
     {
@@ -56,21 +56,21 @@ bool DeckPiercer::onEntry(GameScreen& screen)
     return false;
 }
 
-void DeckPiercer::onHit(GameScreen& screen, GameObject& obj)
+void DeckPiercer::onHit(GameScreen &screen, GameObject &obj)
 {
     if (obj.getType() != GAME_OBJ_TYPE_ROBOT)
     {
         return;
     }
 
-    Robot& robot = static_cast<Robot&>(obj);
+    Robot &robot = static_cast<Robot&>(obj);
 
     if (robot.getSide() == m_side)
     {
         return;
     }
 
-    for (GameObjectItem* i = m_penetrateObjs.getFirst(); i; i = i->getNext())
+    for (GameObjectItem *i = m_penetrateObjs.getFirst(); i; i = i->getNext())
     {
         if (i->getObj() == &obj)
         {
@@ -82,7 +82,7 @@ void DeckPiercer::onHit(GameScreen& screen, GameObject& obj)
 
     if (robot.testFlag(GAME_OBJ_FLAG_INDESTRUCTABLE))
     {
-        const DeckPiercerTemplate* t = getTemplate();
+        const DeckPiercerTemplate *t = getTemplate();
 
         if (t->getExplodeOnDeath())
         {
@@ -106,15 +106,15 @@ void DeckPiercer::onHit(GameScreen& screen, GameObject& obj)
 
     if (alive)
     {
-        GameObjectManager& gameObjMgr = screen.getGameObjManager();
-        GameObjectItem* item = gameObjMgr.allocGameObjItem(&obj);
+        GameObjectManager &gameObjMgr = screen.getGameObjManager();
+        GameObjectItem *item = gameObjMgr.allocGameObjItem(&obj);
         m_penetrateObjs.add(item);
     }
 }
 
-void DeckPiercer::onDeath(GameScreen& screen)
+void DeckPiercer::onDeath(GameScreen &screen)
 {
-    GameObjectManager& gameObjMgr = screen.getGameObjManager();
+    GameObjectManager &gameObjMgr = screen.getGameObjManager();
 
     if (!m_penetrateObjs.isEmpty())
     {
@@ -131,16 +131,16 @@ void DeckPiercer::onDealloc()
         return;
     }
 
-    ScreenManager& screenMgr = ScreenManager::getInstance();
-    GameScreen* screen = static_cast<GameScreen*>(screenMgr.getCurScreen());
+    ScreenManager &screenMgr = ScreenManager::getInstance();
+    GameScreen *screen = static_cast<GameScreen*>(screenMgr.getCurScreen());
     screen->getGameObjManager().freeGameObjItems(m_penetrateObjs);
 }
 
-bool DeckPiercer::checkCollision(GameScreen& screen)
+bool DeckPiercer::checkCollision(GameScreen &screen)
 {
     LinkedList<GameObjectItem> collideObjs;
-    GameMap& map = screen.getMap();
-    GameObjectManager& gameObjMgr = screen.getGameObjManager();
+    GameMap &map = screen.getMap();
+    GameObjectManager &gameObjMgr = screen.getGameObjManager();
 
     ReturnCode rc = map.checkCollision(this, &collideObjs);
 
@@ -164,7 +164,7 @@ bool DeckPiercer::checkCollision(GameScreen& screen)
 
     if (stop)
     {
-        const DeckPiercerTemplate* t = getTemplate();
+        const DeckPiercerTemplate *t = getTemplate();
 
         if (t->getExplodeOnDeath())
         {
@@ -180,11 +180,11 @@ bool DeckPiercer::checkCollision(GameScreen& screen)
     return stop;
 }
 
-bool DeckPiercer::processPenetrateObjs(LinkedList<GameObjectItem>& collideObjs,
-                                       GameScreen& screen)
+bool DeckPiercer::processPenetrateObjs(LinkedList<GameObjectItem> &collideObjs,
+                                       GameScreen &screen)
 {
-    GameObjectItem* prev = nullptr, * next, * cur;
-    GameObjectManager& gameObjMgr = screen.getGameObjManager();
+    GameObjectItem *prev = nullptr, * next, * cur;
+    GameObjectManager &gameObjMgr = screen.getGameObjManager();
 
     for (cur = m_penetrateObjs.getFirst(); cur; cur = next)
     {
@@ -216,7 +216,7 @@ bool DeckPiercer::processPenetrateObjs(LinkedList<GameObjectItem>& collideObjs,
             continue;
         }
 
-        GameObject* o = cur->getObj();
+        GameObject *o = cur->getObj();
         bool alive = true;
 
         if (o->testFlag(GAME_OBJ_FLAG_INDESTRUCTABLE))
@@ -225,7 +225,7 @@ bool DeckPiercer::processPenetrateObjs(LinkedList<GameObjectItem>& collideObjs,
         }
         else if (o->getType() == GAME_OBJ_TYPE_ROBOT)
         {
-            Robot* robot = static_cast<Robot*>(o);
+            Robot *robot = static_cast<Robot*>(o);
             if (robot->getSide() != m_side)
             {
                 alive = robot->addHP(-m_damage);
@@ -233,7 +233,7 @@ bool DeckPiercer::processPenetrateObjs(LinkedList<GameObjectItem>& collideObjs,
         }
         else if (o->getType() == GAME_OBJ_TYPE_TILE)
         {
-            Tile* tile = static_cast<Tile*>(o);
+            Tile *tile = static_cast<Tile*>(o);
             alive = tile->addHP(-m_damage);
         }
 

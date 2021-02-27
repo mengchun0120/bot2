@@ -11,7 +11,7 @@ inline float convetionFloat(float x)
     return x > MIN_DIST ? x - MIN_DIST : 0.0f;
 }
 
-bool checkCornerCollision(float& newDelta, float nearDistX, float nearDistY, float farDistX, float farDistY,
+bool checkCornerCollision(float &newDelta, float nearDistX, float nearDistY, float farDistX, float farDistY,
                           float absSpeedX, float absSpeedY, float delta)
 {
     float movDistX = absSpeedX * delta;
@@ -26,7 +26,7 @@ bool checkCornerCollision(float& newDelta, float nearDistX, float nearDistY, flo
     float distXSpeedY = nearDistX * absSpeedY;
     if (distYSpeedX <= distXSpeedY)
     {
-        if (distXSpeedY > farDistY* absSpeedX)
+        if (distXSpeedY > farDistY *absSpeedX)
         {
             return false;
         }
@@ -35,7 +35,7 @@ bool checkCornerCollision(float& newDelta, float nearDistX, float nearDistY, flo
     }
     else
     {
-        if (distYSpeedX > farDistX* absSpeedY)
+        if (distYSpeedX > farDistX *absSpeedY)
         {
             return false;
         }
@@ -46,7 +46,7 @@ bool checkCornerCollision(float& newDelta, float nearDistX, float nearDistY, flo
     return true;
 }
 
-bool checkMiddleCollision(float& newDelta, float distX, float farDistUpY, float farDistDownY, float absSpeedX,
+bool checkMiddleCollision(float &newDelta, float distX, float farDistUpY, float farDistDownY, float absSpeedX,
                           float speedY, float delta)
 {
     float movDistX = absSpeedX * delta;
@@ -72,7 +72,7 @@ bool checkMiddleCollision(float& newDelta, float distX, float farDistUpY, float 
     return true;
 }
 
-bool checkTouchBoundary(float& newDelta, float mapWidth, float mapHeight, float x, float y,
+bool checkTouchBoundary(float &newDelta, float mapWidth, float mapHeight, float x, float y,
                         float collideBreathX, float collideBreathY, float speedX, float speedY, float delta)
 {
     bool touchBoundary = false;
@@ -113,7 +113,7 @@ bool checkTouchBoundary(float& newDelta, float mapWidth, float mapHeight, float 
     return touchBoundary;
 }
 
-bool checkObjCollision(float& newDelta, float x1, float y1, float collideBreathX1, float collideBreathY1,
+bool checkObjCollision(float &newDelta, float x1, float y1, float collideBreathX1, float collideBreathY1,
                        float speedX1, float speedY1, float x2, float y2, float collideBreathX2, float collideBreathY2,
                        float delta)
 {

@@ -3,7 +3,7 @@
 
 namespace bot {
 
-std::string trim(const std::string& s)
+std::string trim(const std::string &s)
 {
     int len = static_cast<int>(s.length());
     int start;
@@ -30,7 +30,7 @@ std::string trim(const std::string& s)
 }
 
 
-bool isBlank(const std::string& s)
+bool isBlank(const std::string &s)
 {
     int sz = static_cast<int>(s.size());
     for (int i = 0; i < sz; ++i) {
@@ -42,7 +42,7 @@ bool isBlank(const std::string& s)
     return true;
 }
 
-void tokenize(std::vector<std::string>& tokens, const std::string& s,
+void tokenize(std::vector<std::string> &tokens, const std::string &s,
     char delimiter, bool trimSpace)
 {
     std::list<std::string> tokenList;

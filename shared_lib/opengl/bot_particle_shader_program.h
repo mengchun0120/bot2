@@ -11,27 +11,27 @@ class VertexArray;
 
 class ParticleShaderProgram : public ShaderProgram {
 public:
-    static bool initInstance(const std::string& vertexShaderFile,
-                             const std::string& fragShaderFile);
+    static bool initInstance(const std::string &vertexShaderFile,
+                             const std::string &fragShaderFile);
 
-    static ParticleShaderProgram& getInstance()
+    static ParticleShaderProgram &getInstance()
     {
         return *k_program;
     }
 
     virtual ~ParticleShaderProgram();
 
-    void setViewportSize(const float* viewportSize)
+    void setViewportSize(const float *viewportSize)
     {
         glUniform2fv(m_viewportSizeLocation, 1, viewportSize);
     }
 
-    void setViewportOrigin(const float* viewportOrigin)
+    void setViewportOrigin(const float *viewportOrigin)
     {
         glUniform2fv(m_viewportOriginLocation, 1, viewportOrigin);
     }
 
-    void setRef(const float* ref)
+    void setRef(const float *ref)
     {
         glUniform2fv(m_refLocation, 1, ref);
     }
@@ -56,7 +56,7 @@ public:
         glUniform1i(m_useTexLocation, useTex ? 1 : 0);
     }
 
-    void setColor(const float* color)
+    void setColor(const float *color)
     {
         glUniform4fv(m_colorLocation, 1, color);
     }
@@ -68,13 +68,13 @@ public:
 
     void setTexture(int textureId);
 
-    void bindData(const VertexArray& va);
+    void bindData(const VertexArray &va);
 
 private:
     ParticleShaderProgram();
 
-    virtual bool init(const std::string& vertexShaderFile,
-                      const std::string& fragShaderFile);
+    virtual bool init(const std::string &vertexShaderFile,
+                      const std::string &fragShaderFile);
 
     void loadParam();
 

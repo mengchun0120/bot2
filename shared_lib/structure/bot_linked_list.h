@@ -18,51 +18,51 @@ public:
         return m_first == nullptr;
     }
 
-    T* getFirst()
+    T *getFirst()
     {
         return m_first;
     }
 
-    const T* getFirst() const
+    const T *getFirst() const
     {
         return m_first;
     }
 
-    void add(T* elem);
+    void add(T *elem);
 
-    bool unlink(T* elem);
+    bool unlink(T *elem);
 
-    void unlink(T* prev, T* elem);
-
-    template <typename MATCHER>
-    T* find(MATCHER& matcher, const T* other);
+    void unlink(T *prev, T *elem);
 
     template <typename MATCHER>
-    T* findAndUnlink(MATCHER& matcher, const T* other);
+    T *find(MATCHER &matcher, const T *other);
+
+    template <typename MATCHER>
+    T *findAndUnlink(MATCHER &matcher, const T *other);
 
     template <typename PROCESSOR>
-    int forEach(PROCESSOR& processor);
+    int forEach(PROCESSOR &processor);
 
     template <typename DEALLOCATOR>
-    void clear(DEALLOCATOR& deallocator);
+    void clear(DEALLOCATOR &deallocator);
 
     void clear();
 
 private:
-    T* m_first;
+    T *m_first;
 };
 
 template <typename T>
-void LinkedList<T>::add(T* elem)
+void LinkedList<T>::add(T *elem)
 {
     elem->setNext(m_first);
     m_first = elem;
 }
 
 template <typename T>
-bool LinkedList<T>::unlink(T* elem)
+bool LinkedList<T>::unlink(T *elem)
 {
-    T* prev = nullptr, * cur;
+    T *prev = nullptr, * cur;
 
     for (cur = m_first; cur; cur = static_cast<T*>(cur->getNext()))
     {
@@ -89,7 +89,7 @@ bool LinkedList<T>::unlink(T* elem)
 }
 
 template <typename T>
-void LinkedList<T>::unlink(T* prev, T* elem)
+void LinkedList<T>::unlink(T *prev, T *elem)
 {
     if (prev)
     {
@@ -103,9 +103,9 @@ void LinkedList<T>::unlink(T* prev, T* elem)
 
 template <typename T>
 template <typename MATCHER>
-T* LinkedList<T>::find(MATCHER& matcher, const T* other)
+T *LinkedList<T>::find(MATCHER &matcher, const T *other)
 {
-    T* cur;
+    T *cur;
     for (cur = m_first; cur; cur = cur->getNext())
     {
         if (matcher(cur, other))
@@ -119,9 +119,9 @@ T* LinkedList<T>::find(MATCHER& matcher, const T* other)
 
 template <typename T>
 template <typename MATCHER>
-T* LinkedList<T>::findAndUnlink(MATCHER& matcher, const T* other)
+T *LinkedList<T>::findAndUnlink(MATCHER &matcher, const T *other)
 {
-    T* prev = nullptr, * cur;
+    T *prev = nullptr, * cur;
     for (cur = m_first; cur; cur = cur->getNext())
     {
         if (matcher(cur, other))
@@ -150,9 +150,9 @@ T* LinkedList<T>::findAndUnlink(MATCHER& matcher, const T* other)
 
 template <typename T>
 template <typename PROCESSOR>
-int LinkedList<T>::forEach(PROCESSOR& processor)
+int LinkedList<T>::forEach(PROCESSOR &processor)
 {
-    for (T* cur = m_first; cur; cur = static_cast<T*>(cur->getNext()))
+    for (T *cur = m_first; cur; cur = static_cast<T*>(cur->getNext()))
     {
         int rc = processor(*cur);
 
@@ -167,10 +167,10 @@ int LinkedList<T>::forEach(PROCESSOR& processor)
 
 template <typename T>
 template <typename DEALLOCATOR>
-void LinkedList<T>::clear(DEALLOCATOR& deallocator)
+void LinkedList<T>::clear(DEALLOCATOR &deallocator)
 {
-    T* next;
-    for (T* cur = m_first; cur; cur = next)
+    T *next;
+    for (T *cur = m_first; cur; cur = next)
     {
         next = static_cast<T*>(cur->getNext());
         deallocator(cur);
@@ -181,8 +181,8 @@ void LinkedList<T>::clear(DEALLOCATOR& deallocator)
 template <typename T>
 void LinkedList<T>::clear()
 {
-    T* next;
-    for (T* cur = m_first; cur; cur = next)
+    T *next;
+    for (T *cur = m_first; cur; cur = next)
     {
         next = static_cast<T*>(cur->getNext());
         delete cur;

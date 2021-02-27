@@ -70,12 +70,12 @@ Color::Color()
     m_color[3] = 0.0f;
 }
 
-Color::Color(const Color& other)
+Color::Color(const Color &other)
 {
     *this = other;
 }
 
-bool Color::init(const rapidjson::Value& elem)
+bool Color::init(const rapidjson::Value &elem)
 {
     int red = 0, green = 0, blue = 0, alpha = 0;
     std::vector<JsonParamPtr> params =
@@ -150,7 +150,7 @@ bool Color::init(const std::vector<float> colorVec)
     return init(colorVec[0], colorVec[1], colorVec[2], colorVec[3]);
 }
 
-Color& Color::operator=(const Color& other)
+Color &Color::operator=(const Color &other)
 {
     for (int i = 0; i < Constants::NUM_FLOATS_COLOR; ++i)
     {
@@ -160,7 +160,7 @@ Color& Color::operator=(const Color& other)
     return *this;
 }
 
-Color& Color::operator*=(const Color& other)
+Color &Color::operator*=(const Color &other)
 {
     for (int i = 0; i < Constants::NUM_FLOATS_COLOR; ++i)
     {

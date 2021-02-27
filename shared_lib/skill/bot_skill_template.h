@@ -10,15 +10,15 @@ namespace bot {
 
 class SkillTemplate {
 public:
-    static SkillTemplate* create(const std::string& name,
-                                 const rapidjson::Value& elem);
+    static SkillTemplate *create(const std::string &name,
+                                 const rapidjson::Value &elem);
 
     SkillTemplate();
 
     virtual ~SkillTemplate()
     {}
 
-    bool init(SkillType type, const rapidjson::Value& elem);
+    bool init(SkillType type, const rapidjson::Value &elem);
 
     SkillType getType() const
     {
@@ -45,12 +45,12 @@ public:
         return testFlags(SKILL_FLAG_RANGE);
     }
 
-    const std::string& getViewName() const
+    const std::string &getViewName() const
     {
         return m_viewName;
     }
 
-    const std::string& getDescription() const
+    const std::string &getDescription() const
     {
         return m_description;
     }

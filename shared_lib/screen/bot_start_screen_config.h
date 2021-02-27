@@ -14,7 +14,7 @@ public:
     ~StartScreenConfig()
     {}
 
-    bool init(const std::string& configFile);
+    bool init(const std::string &configFile);
 
     float getButtonSpacing() const
     {
@@ -31,12 +31,12 @@ public:
         return m_buttonHeight;
     }
 
-    const Rectangle& getButtonRect() const
+    const Rectangle &getButtonRect() const
     {
         return m_buttonRect;
     }
 
-    const std::vector<std::string>& getButtonTexts() const
+    const std::vector<std::string> &getButtonTexts() const
     {
         return m_buttonTexts;
     }

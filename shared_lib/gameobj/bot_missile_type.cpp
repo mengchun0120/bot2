@@ -9,7 +9,7 @@ static const std::string k_missileTypeStr[] = {
     "invalid"
 };
 
-const std::string& missileTypeToStr(MissileType type)
+const std::string &missileTypeToStr(MissileType type)
 {
     if (!isValidMissileType(type))
     {
@@ -19,7 +19,7 @@ const std::string& missileTypeToStr(MissileType type)
     return k_missileTypeStr[type];
 }
 
-MissileType strToMissileType(const std::string& typeStr)
+MissileType strToMissileType(const std::string &typeStr)
 {
     for (int i = 0; i < MISSILE_COUNT; ++i)
     {

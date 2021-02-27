@@ -18,9 +18,9 @@ inline bool isValidMissileType(MissileType t)
     return t >= MISSILE_BULLET && t < MISSILE_COUNT;
 }
 
-const std::string& missileTypeToStr(MissileType type);
+const std::string &missileTypeToStr(MissileType type);
 
-MissileType strToMissileType(const std::string& typeStr);
+MissileType strToMissileType(const std::string &typeStr);
 
 } // end of namespace bot
 

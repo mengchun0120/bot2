@@ -12,7 +12,7 @@ public:
     virtual ~AttackSkillTemplate()
     {}
 
-    bool init(SkillType type, const rapidjson::Value& elem);
+    bool init(SkillType type, const rapidjson::Value &elem);
 
     float getDamageMultiplier(unsigned int level) const
     {

@@ -4,14 +4,14 @@
 
 namespace bot {
 
-bool Goodie::init(const GoodieTemplate* t, float x, float y)
+bool Goodie::init(const GoodieTemplate *t, float x, float y)
 {
     return GameObject::init(t, x, y);
 }
 
 void Goodie::present()
 {
-    const GoodieTemplate* t = getTemplate();
+    const GoodieTemplate *t = getTemplate();
 
     t->getRect()->draw(m_pos, nullptr, nullptr, nullptr,
                        t->getTexture()->textureId(), nullptr);

@@ -11,7 +11,7 @@ ParticleEffect::ParticleEffect()
 {
 }
 
-bool ParticleEffect::init(const ParticleEffectTemplate* t, float x, float y)
+bool ParticleEffect::init(const ParticleEffectTemplate *t, float x, float y)
 {
     if (!GameObject::init(t, x, y))
     {
@@ -26,8 +26,8 @@ bool ParticleEffect::init(const ParticleEffectTemplate* t, float x, float y)
 
 void ParticleEffect::present()
 {
-    ParticleShaderProgram& program = ParticleShaderProgram::getInstance();
-    const ParticleEffectTemplate* t = getTemplate();
+    ParticleShaderProgram &program = ParticleShaderProgram::getInstance();
+    const ParticleEffectTemplate *t = getTemplate();
 
     program.setRef(m_pos);
     program.setAcceleration(t->getAcceleration());
@@ -42,7 +42,7 @@ void ParticleEffect::present()
     glDrawArrays(GL_POINTS, 0, t->getNumParticles());
 }
 
-void ParticleEffect::update(float delta, GameScreen& screen)
+void ParticleEffect::update(float delta, GameScreen &screen)
 {
     if (screen.getMap().isOutsideViewport(this)) {
         onDeath(screen);
@@ -56,9 +56,9 @@ void ParticleEffect::update(float delta, GameScreen& screen)
     }
 }
 
-void ParticleEffect::onDeath(GameScreen& screen)
+void ParticleEffect::onDeath(GameScreen &screen)
 {
-    GameObjectManager& gameObjMgr = screen.getGameObjManager();
+    GameObjectManager &gameObjMgr = screen.getGameObjManager();
     gameObjMgr.sendToDeathQueue(this);
 }
 

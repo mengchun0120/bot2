@@ -13,38 +13,38 @@ public:
     virtual ~DoubleLinkedItem()
     {}
 
-    const DoubleLinkedItem* getPrev() const
+    const DoubleLinkedItem *getPrev() const
     {
         return m_prev;
     }
 
-    DoubleLinkedItem* getPrev()
+    DoubleLinkedItem *getPrev()
     {
         return m_prev;
     }
 
-    void setPrev(DoubleLinkedItem* prev)
+    void setPrev(DoubleLinkedItem *prev)
     {
         m_prev = prev;
     }
 
-    const DoubleLinkedItem* getNext() const
+    const DoubleLinkedItem *getNext() const
     {
         return m_next;
     }
 
-    DoubleLinkedItem* getNext()
+    DoubleLinkedItem *getNext()
     {
         return m_next;
     }
 
-    void setNext(DoubleLinkedItem* next)
+    void setNext(DoubleLinkedItem *next)
     {
         m_next = next;
     }
 
 protected:
-    DoubleLinkedItem* m_prev, *m_next;
+    DoubleLinkedItem *m_prev, *m_next;
 };
 
 } // end of namespace bot

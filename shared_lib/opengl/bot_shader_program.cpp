@@ -6,7 +6,7 @@
 
 namespace bot {
 
-const char* shaderName(GLenum type)
+const char *shaderName(GLenum type)
 {
     switch(type) {
         case GL_VERTEX_SHADER:
@@ -18,7 +18,7 @@ const char* shaderName(GLenum type)
     return "invalid shader";
 }
 
-GLuint compileShader(GLenum type, const std::string& fileName)
+GLuint compileShader(GLenum type, const std::string &fileName)
 {
     std::string source;
 
@@ -27,7 +27,7 @@ GLuint compileShader(GLenum type, const std::string& fileName)
         return 0;
     }
 
-    const GLchar* cSource = source.c_str();
+    const GLchar *cSource = source.c_str();
 
     GLuint shader = glCreateShader(type);
     if (shader == 0)
@@ -48,7 +48,7 @@ GLuint compileShader(GLenum type, const std::string& fileName)
     {
         GLint infoLen;
         glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &infoLen);
-        char* info = new char[infoLen + 1];
+        char *info = new char[infoLen + 1];
 
         glGetShaderInfoLog(shader, infoLen, NULL, info);
         LOG_INFO("Results of compilation:\n%s", info);
@@ -87,7 +87,7 @@ GLuint linkProgram(GLuint vertex_shader, GLuint frag_shader)
     {
         GLint infoLen;
         glGetProgramiv(program, GL_INFO_LOG_LENGTH, &infoLen);
-        char* info = new char[infoLen + 1];
+        char *info = new char[infoLen + 1];
 
         glGetProgramInfoLog(program, infoLen, NULL, info);
         LOG_INFO("Results of linking:\n%s", info);
@@ -146,8 +146,8 @@ ShaderProgram::~ShaderProgram()
     }
 }
 
-bool ShaderProgram::init(const std::string& vertexShaderFile,
-                          const std::string& fragShaderFile)
+bool ShaderProgram::init(const std::string &vertexShaderFile,
+                          const std::string &fragShaderFile)
 {
     m_vertexShader = compileShader(GL_VERTEX_SHADER, vertexShaderFile);
     if (m_vertexShader == 0)

@@ -11,7 +11,7 @@ public:
 
     virtual ~PlayerTemplate();
 
-    bool init(const std::string& fileName);
+    bool init(const std::string &fileName);
 
     int getGold() const
     {
@@ -83,7 +83,7 @@ public:
 
     bool setMoverLevel(int level);
 
-    const std::vector<int>& getSkillLevels() const
+    const std::vector<int> &getSkillLevels() const
     {
         return m_skillLevels;
     }

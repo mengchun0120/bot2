@@ -17,23 +17,23 @@ public:
     virtual ~ProgressRing()
     {}
 
-    bool init(const rapidjson::Value& elem);
+    bool init(const rapidjson::Value &elem);
 
     float getRadius() const
     {
         return m_radius;
     }
 
-    void draw(const float* pos, float percentage) const;
+    void draw(const float *pos, float percentage) const;
 
 private:
     bool initVertexArray(int numEdges);
 
-    const Color* getFrontColor(float percentage) const;
+    const Color *getFrontColor(float percentage) const;
 
 private:
     std::vector<const Color*> m_frontColors;
-    const Color* m_backColor;
+    const Color *m_backColor;
     VertexArray m_vertices;
     float m_radius;
     int m_maxIdx;

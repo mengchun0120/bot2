@@ -16,7 +16,7 @@ StatusBarTemplate::StatusBarTemplate()
 {
 }
 
-bool StatusBarTemplate::init(const rapidjson::Value& elem)
+bool StatusBarTemplate::init(const rapidjson::Value &elem)
 {
     std::string textureName;
     std::vector<float> rectVec;
@@ -37,7 +37,7 @@ bool StatusBarTemplate::init(const rapidjson::Value& elem)
         return false;
     }
 
-    const GameLib& lib = GameLib::getInstance();
+    const GameLib &lib = GameLib::getInstance();
 
     m_texture = lib.getTexture(textureName);
     if (!m_texture)
@@ -65,7 +65,7 @@ bool StatusBarTemplate::init(const rapidjson::Value& elem)
         return false;
     }
 
-    const TextSystem& textSys = TextSystem::getInstance();
+    const TextSystem &textSys = TextSystem::getInstance();
 
     float maxCharWidth = textSys.getMaxCharWidth(m_textSize);
     float maxTextWidth = maxCharWidth * m_textLen;

@@ -14,7 +14,7 @@ public:
     virtual ~WeaponTemplate()
     {}
 
-    bool init(const rapidjson::Value& elem);
+    bool init(const rapidjson::Value &elem);
 
     float getDamage() const
     {
@@ -26,7 +26,7 @@ public:
         return static_cast<int>(m_firePoints.size());
     }
 
-    const FirePoint& getFirePoint(int idx) const
+    const FirePoint &getFirePoint(int idx) const
     {
         return m_firePoints[idx];
     }

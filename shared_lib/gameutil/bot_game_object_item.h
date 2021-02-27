@@ -7,7 +7,7 @@ class GameObject;
 
 class GameObjectItem {
 public:
-    static bool match(const GameObjectItem* i1, const GameObjectItem* i2)
+    static bool match(const GameObjectItem *i1, const GameObjectItem *i2)
     {
         return i1->m_obj == i2->m_obj;
     }
@@ -20,34 +20,34 @@ public:
     virtual ~GameObjectItem()
     {}
 
-    GameObject* getObj()
+    GameObject *getObj()
     {
         return m_obj;
     }
 
-    const GameObject* getObj() const
+    const GameObject *getObj() const
     {
         return m_obj;
     }
 
-    void setObj(GameObject* obj)
+    void setObj(GameObject *obj)
     {
         m_obj = obj;
     }
 
-    GameObjectItem* getNext()
+    GameObjectItem *getNext()
     {
         return m_next;
     }
 
-    void setNext(GameObjectItem* n)
+    void setNext(GameObjectItem *n)
     {
         m_next = n;
     }
 
 protected:
-    GameObject* m_obj;
-    GameObjectItem* m_next;
+    GameObject *m_obj;
+    GameObjectItem *m_next;
 };
 
 } // end of namespace bot

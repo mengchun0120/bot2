@@ -15,7 +15,7 @@ Rectangle::~Rectangle()
 {
 }
 
-bool Rectangle::init(const rapidjson::Value& elem)
+bool Rectangle::init(const rapidjson::Value &elem)
 {
     std::vector<JsonParamPtr> params =
     {
@@ -37,7 +37,7 @@ bool Rectangle::init(const rapidjson::Value& elem)
     return true;
 }
 
-bool Rectangle::init(const std::vector<float>& rectVec, bool hasTexCoord)
+bool Rectangle::init(const std::vector<float> &rectVec, bool hasTexCoord)
 {
     if (rectVec.size() != 2)
     {

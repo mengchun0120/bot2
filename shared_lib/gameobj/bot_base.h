@@ -22,7 +22,7 @@ public:
     virtual ~Base()
     {}
 
-    bool init(const BaseTemplate* t, Robot* robot,
+    bool init(const BaseTemplate *t, Robot *robot,
               int hpLevel, int hpRestoreLevel,
               int armorLevel, int armorRepairLevel,
               int powerLevel, int powerRestoreLevel);
@@ -45,7 +45,7 @@ public:
         return m_hpPercent;
     }
 
-    const char* getHPPercentStr() const
+    const char *getHPPercentStr() const
     {
         return m_hpPercentStr;
     }
@@ -90,7 +90,7 @@ public:
         return m_weaponPos[1];
     }
 
-    const float* getWeaponPos() const
+    const float *getWeaponPos() const
     {
         return m_weaponPos;
     }
@@ -105,7 +105,7 @@ public:
         return m_moverPos[1];
     }
 
-    const float* getMoverPos() const
+    const float *getMoverPos() const
     {
         return m_moverPos;
     }
@@ -120,8 +120,8 @@ private:
     void resetHPStrPos();
 
 protected:
-    const BaseTemplate* m_baseTemplate;
-    Robot* m_robot;
+    const BaseTemplate *m_baseTemplate;
+    Robot *m_robot;
     float m_hp, m_maxHP, m_hpRestoreRate;
     int m_hpPercent;
     float m_armor, m_maxArmor, m_armorRepairRate;

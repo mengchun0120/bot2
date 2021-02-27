@@ -13,37 +13,37 @@ public:
     ~DoubleLinkedList()
     {}
 
-    T* getFirst()
+    T *getFirst()
     {
         return m_first;
     }
 
-    const T* getFirst() const
+    const T *getFirst() const
     {
         return m_first;
     }
 
-    void add(T* t);
+    void add(T *t);
 
-    void unlink(T* t);
+    void unlink(T *t);
 
     template <typename MATCHER>
-    T* find(MATCHER& matcher);
+    T *find(MATCHER &matcher);
 
     template <typename PROCESSOR>
-    int forEach(PROCESSOR& processor);
+    int forEach(PROCESSOR &processor);
 
     template <typename DEALLOCATOR>
-    void clear(DEALLOCATOR& deallocator);
+    void clear(DEALLOCATOR &deallocator);
 
     void clear();
 
 private:
-    T* m_first;
+    T *m_first;
 };
 
 template <typename T>
-void DoubleLinkedList<T>::add(T* t)
+void DoubleLinkedList<T>::add(T *t)
 {
     if (m_first)
     {
@@ -55,10 +55,10 @@ void DoubleLinkedList<T>::add(T* t)
 }
 
 template <typename T>
-void DoubleLinkedList<T>::unlink(T* t)
+void DoubleLinkedList<T>::unlink(T *t)
 {
-    T* prev = static_cast<T*>(t->getPrev());
-    T* next = static_cast<T*>(t->getNext());
+    T *prev = static_cast<T*>(t->getPrev());
+    T *next = static_cast<T*>(t->getNext());
 
     if (prev)
     {
@@ -77,9 +77,9 @@ void DoubleLinkedList<T>::unlink(T* t)
 
 template <typename T>
 template <typename MATCHER>
-T* DoubleLinkedList<T>::find(MATCHER& matcher)
+T *DoubleLinkedList<T>::find(MATCHER &matcher)
 {
-    for (T* t = m_first; t; t = static_cast<T*>(t->getNext()))
+    for (T *t = m_first; t; t = static_cast<T*>(t->getNext()))
     {
         if (matcher(t))
         {
@@ -92,9 +92,9 @@ T* DoubleLinkedList<T>::find(MATCHER& matcher)
 
 template <typename T>
 template <typename PROCESSOR>
-int DoubleLinkedList<T>::forEach(PROCESSOR& processor)
+int DoubleLinkedList<T>::forEach(PROCESSOR &processor)
 {
-    for (T* t = m_first; t; t = static_cast<T*>(t->getNext()))
+    for (T *t = m_first; t; t = static_cast<T*>(t->getNext()))
     {
         int rc = processor(t);
         if (0 != rc)
@@ -108,10 +108,10 @@ int DoubleLinkedList<T>::forEach(PROCESSOR& processor)
 
 template <typename T>
 template <typename DEALLOCATOR>
-void DoubleLinkedList<T>::clear(DEALLOCATOR& deallocator)
+void DoubleLinkedList<T>::clear(DEALLOCATOR &deallocator)
 {
-    T* next;
-    for (T* t = m_first; t; t = next)
+    T *next;
+    for (T *t = m_first; t; t = next)
     {
         next = static_cast<T*>(t->getNext());
         deallocator(t);
@@ -122,8 +122,8 @@ void DoubleLinkedList<T>::clear(DEALLOCATOR& deallocator)
 template <typename T>
 void DoubleLinkedList<T>::clear()
 {
-    T* next;
-    for (T* t = m_first; t; t = next)
+    T *next;
+    for (T *t = m_first; t; t = next)
     {
         next = static_cast<T*>(t->getNext());
         delete t;

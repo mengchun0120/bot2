@@ -12,26 +12,26 @@ public:
 
     virtual ~Shell();
 
-    bool init(const ShellTemplate* t, Side side, float x, float y,
+    bool init(const ShellTemplate *t, Side side, float x, float y,
               float directionX, float directionY, float damage, float speed);
 
-    const ShellTemplate* getTemplate() const
+    const ShellTemplate *getTemplate() const
     {
         return static_cast<const ShellTemplate*>(m_template);
     }
 
     virtual void present();
 
-    virtual void update(float delta, GameScreen& screen);
+    virtual void update(float delta, GameScreen &screen);
 
-    virtual bool onEntry(GameScreen& screen);
+    virtual bool onEntry(GameScreen &screen);
 
-    virtual void onHit(GameScreen& screen, GameObject& obj);
+    virtual void onHit(GameScreen &screen, GameObject &obj);
 
-    virtual void onDeath(GameScreen& screen);
+    virtual void onDeath(GameScreen &screen);
 
 private:
-    bool checkCollision(GameScreen& screen);
+    bool checkCollision(GameScreen &screen);
 };
 
 } // end of namespace bot

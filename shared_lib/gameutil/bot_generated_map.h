@@ -17,7 +17,7 @@ class GameObjectTemplate;
 
 class GeneratedMap {
     struct ObjectItem {
-        ObjectItem(const std::string* name, const GameObjectTemplate* t,
+        ObjectItem(const std::string *name, const GameObjectTemplate *t,
                    float x, float y);
 
         ~ObjectItem()
@@ -26,23 +26,23 @@ class GeneratedMap {
         bool outsideRegion(float leftBound, float bottomBound,
                            float rightBound, float topBound) const;
 
-        bool overlap(const ObjectItem& item) const;
+        bool overlap(const ObjectItem &item) const;
 
-        const std::string* m_name;
-        const GameObjectTemplate* m_template;
+        const std::string *m_name;
+        const GameObjectTemplate *m_template;
         float m_x, m_y;
         float m_left, m_bottom, m_right, m_top;
     };
 
     struct TileItem: public ObjectItem {
-        TileItem(const std::string* name, const TileTemplate* t, float x, float y);
+        TileItem(const std::string *name, const TileTemplate *t, float x, float y);
 
         ~TileItem()
         {}
     };
 
     struct RobotItem: public ObjectItem {
-        RobotItem(const std::string* name, const AIRobotTemplate* t, float x, float y,
+        RobotItem(const std::string *name, const AIRobotTemplate *t, float x, float y,
                   float directionX, float directionY);
 
         ~RobotItem()
@@ -68,17 +68,17 @@ public:
     ~GeneratedMap()
     {}
 
-    void setPlayer(const PlayerTemplate* playerTemplate, int row, int col,
+    void setPlayer(const PlayerTemplate *playerTemplate, int row, int col,
                    float directionX, float directionY);
 
-    void addTile(const std::string* name, const TileTemplate* t, float x, float y);
+    void addTile(const std::string *name, const TileTemplate *t, float x, float y);
 
-    bool addRobot(const std::string* name, const AIRobotTemplate* t, int row, int col,
+    bool addRobot(const std::string *name, const AIRobotTemplate *t, int row, int col,
                   float directionX, float directionY);
 
-    void getFreeSlots(std::vector<std::pair<int,int>>& freeSlots);
+    void getFreeSlots(std::vector<std::pair<int,int>> &freeSlots);
 
-    bool write(const char* fileName);
+    bool write(const char *fileName);
 
     int getSlotRowCount() const
     {
@@ -95,7 +95,7 @@ public:
 private:
     void initSlots();
 
-    void toJson(rapidjson::Document& doc);
+    void toJson(rapidjson::Document &doc);
 
     int getSlotIndex(float x)
     {
@@ -112,7 +112,7 @@ private:
     std::vector<std::vector<Slot>> m_slots;
     int m_rowCount, m_colCount;
     float m_mapWidth, m_mapHeight;
-    const PlayerTemplate* m_playerTemplate;
+    const PlayerTemplate *m_playerTemplate;
     float m_playerX, m_playerY;
     float m_playerDirectionX, m_playerDirectionY;
     float m_slotSize;

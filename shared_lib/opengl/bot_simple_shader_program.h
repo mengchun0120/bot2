@@ -11,10 +11,10 @@ class VertexArray;
 
 class SimpleShaderProgram: public ShaderProgram {
 public:
-    static bool initInstance(const std::string& vertexShaderFile,
-                             const std::string& fragShaderFile);
+    static bool initInstance(const std::string &vertexShaderFile,
+                             const std::string &fragShaderFile);
 
-    static SimpleShaderProgram& getInstance()
+    static SimpleShaderProgram &getInstance()
     {
         return *k_program;
     }
@@ -78,8 +78,8 @@ public:
 private:
     SimpleShaderProgram();
 
-    virtual bool init(const std::string& vertexShaderFile,
-                      const std::string& fragShaderFile);
+    virtual bool init(const std::string &vertexShaderFile,
+                      const std::string &fragShaderFile);
 
     void loadParam();
 

@@ -26,8 +26,8 @@ Player::~Player()
 {
 }
 
-bool Player::init(const PlayerTemplate* playerTemplate, float x, float y,
-                  float directionX, float directionY, Dashboard* dashboard)
+bool Player::init(const PlayerTemplate *playerTemplate, float x, float y,
+                  float directionX, float directionY, Dashboard *dashboard)
 {
     bool ret = Robot::init(playerTemplate, SIDE_PLAYER,
                            playerTemplate->getHPLevel(),
@@ -64,7 +64,7 @@ void Player::present()
     Robot::present();
 }
 
-void Player::update(float delta, GameScreen& screen)
+void Player::update(float delta, GameScreen &screen)
 {
     if (!testFlag(GAME_OBJ_FLAG_DISSOLVE))
     {
@@ -107,7 +107,7 @@ void Player::initEffects()
     m_activeEffectCount = 0;
 }
 
-void Player::consumeGoodie(Goodie* goodie, GameScreen& screen)
+void Player::consumeGoodie(Goodie *goodie, GameScreen &screen)
 {
     if (isInstantaneousGoodie(goodie->getGoodieType()))
     {
@@ -121,7 +121,7 @@ void Player::consumeGoodie(Goodie* goodie, GameScreen& screen)
     screen.getGameObjManager().sendToDeathQueue(goodie);
 }
 
-void Player::applyInstantaneousEffect(Goodie* goodie)
+void Player::applyInstantaneousEffect(Goodie *goodie)
 {
     switch (goodie->getGoodieType())
     {
@@ -139,7 +139,7 @@ void Player::applyInstantaneousEffect(Goodie* goodie)
     }
 }
 
-void Player::applyNonInstantaneousEffect(Goodie* goodie)
+void Player::applyNonInstantaneousEffect(Goodie *goodie)
 {
     if (!addEffect(goodie))
     {
@@ -182,9 +182,9 @@ void Player::applyNonInstantaneousEffect(Goodie* goodie)
     }
 }
 
-bool Player::addEffect(Goodie* goodie)
+bool Player::addEffect(Goodie *goodie)
 {
-    for (GoodieEffect* t = m_firstActiveEffect; t; t = t->getNext())
+    for (GoodieEffect *t = m_firstActiveEffect; t; t = t->getNext())
     {
         if (t->getType() == goodie->getGoodieType())
         {
@@ -199,7 +199,7 @@ bool Player::addEffect(Goodie* goodie)
         return false;
     }
 
-    GoodieEffect* next = m_firstFreeEffect->getNext();
+    GoodieEffect *next = m_firstFreeEffect->getNext();
     m_firstFreeEffect->setTemplate(goodie->getTemplate());
     m_firstFreeEffect->setNext(m_firstActiveEffect);
     m_firstActiveEffect = m_firstFreeEffect;
@@ -212,7 +212,7 @@ bool Player::addEffect(Goodie* goodie)
     return true;
 }
 
-void Player::expireEffect(GoodieEffect* effect)
+void Player::expireEffect(GoodieEffect *effect)
 {
     switch (effect->getType())
     {
@@ -252,7 +252,7 @@ void Player::expireEffect(GoodieEffect* effect)
 
 void Player::updateEffects()
 {
-    GoodieEffect* cur, * prev, * next;
+    GoodieEffect *cur, * prev, * next;
     TimePoint now = Clock::now();
 
     prev = nullptr;
@@ -299,10 +299,10 @@ void Player::resetEffectPos()
         return;
     }
 
-    const DashboardConfig& cfg = GameLib::getInstance().getDashboardConfig();
+    const DashboardConfig &cfg = GameLib::getInstance().getDashboardConfig();
     float viewportWidth = App::getInstance().getViewportWidth();
     float totalWidth = 0.0f;
-    GoodieEffect* effect;
+    GoodieEffect *effect;
 
     for (effect = m_firstActiveEffect; effect; effect = effect->getNext())
     {
@@ -320,7 +320,7 @@ void Player::resetEffectPos()
     }
 }
 
-void Player::onDeath(GameScreen& screen)
+void Player::onDeath(GameScreen &screen)
 {
     setFlag(GAME_OBJ_FLAG_DISSOLVE);
     m_deathTime = Clock::now();

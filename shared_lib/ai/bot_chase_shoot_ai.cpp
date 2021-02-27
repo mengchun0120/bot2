@@ -24,7 +24,7 @@ ChaseShootAI::ChaseShootAI()
 
 }
 
-bool ChaseShootAI::init(const rapidjson::Value& elem)
+bool ChaseShootAI::init(const rapidjson::Value &elem)
 {
     std::vector<JsonParamPtr> params =
     {
@@ -48,10 +48,10 @@ bool ChaseShootAI::init(const rapidjson::Value& elem)
     return true;
 }
 
-void ChaseShootAI::apply(AIRobot& robot, float delta, GameScreen& screen)
+void ChaseShootAI::apply(AIRobot &robot, float delta, GameScreen &screen)
 {
-    GameMap& map = screen.getMap();
-    Player* player = map.getPlayer();
+    GameMap &map = screen.getMap();
+    Player *player = map.getPlayer();
     int DEAD_FLAG = GAME_OBJ_FLAG_DISSOLVE | GAME_OBJ_FLAG_DEAD;
 
     bool dontApply = robot.testFlag(DEAD_FLAG) ||
@@ -89,10 +89,10 @@ void ChaseShootAI::apply(AIRobot& robot, float delta, GameScreen& screen)
     }
 }
 
-bool ChaseShootAI::tryChangeAction(AIRobot& robot, GameScreen& screen)
+bool ChaseShootAI::tryChangeAction(AIRobot &robot, GameScreen &screen)
 {
     bool rollDice = false;
-    const Player* player = screen.getMap().getPlayer();
+    const Player *player = screen.getMap().getPlayer();
     float d = dist(robot.getPosX(), robot.getPosY(),
                    player->getPosX(), player->getPosY());
 
@@ -160,7 +160,7 @@ bool ChaseShootAI::tryChangeAction(AIRobot& robot, GameScreen& screen)
     return true;
 }
 
-void ChaseShootAI::resetAction(AIRobot& robot, Action action)
+void ChaseShootAI::resetAction(AIRobot &robot, Action action)
 {
     switch (action)
     {
@@ -181,8 +181,8 @@ void ChaseShootAI::resetAction(AIRobot& robot, Action action)
     }
 }
 
-void ChaseShootAI::applyChaseAction(AIRobot& robot, float delta,
-                                    GameScreen& screen)
+void ChaseShootAI::applyChaseAction(AIRobot &robot, float delta,
+                                    GameScreen &screen)
 {
     bool collide = robot.updateMover(delta, screen);
     const int DEAD_FLAG = GAME_OBJ_FLAG_DEAD | GAME_OBJ_FLAG_DISSOLVE;
@@ -207,10 +207,10 @@ void ChaseShootAI::applyChaseAction(AIRobot& robot, float delta,
     }
 }
 
-void ChaseShootAI::applyShootAction(AIRobot& robot, float delta,
-                                    GameScreen& screen)
+void ChaseShootAI::applyShootAction(AIRobot &robot, float delta,
+                                    GameScreen &screen)
 {
-    Player* player = screen.getMap().getPlayer();
+    Player *player = screen.getMap().getPlayer();
     float directionX, directionY;
 
     calculateDirection(directionX, directionY, robot.getPosX(), robot.getPosY(),
@@ -218,12 +218,12 @@ void ChaseShootAI::applyShootAction(AIRobot& robot, float delta,
     robot.setDirection(directionX, directionY);
 
     unsigned int numSkills = robot.numSkills();
-    Skill* skill = nullptr;
+    Skill *skill = nullptr;
     TimePoint now = Clock::now();
 
     for (unsigned int i = 0; i < numSkills; ++i)
     {
-        Skill* s = robot.getSkill(i);
+        Skill *s = robot.getSkill(i);
         if (s->isOffensive() && s->available(now))
         {
             skill= s;
@@ -237,8 +237,8 @@ void ChaseShootAI::applyShootAction(AIRobot& robot, float delta,
     }
 }
 
-bool ChaseShootAI::resetChaseDirection(AIRobot& robot, float delta,
-                                       GameScreen& screen)
+bool ChaseShootAI::resetChaseDirection(AIRobot &robot, float delta,
+                                       GameScreen &screen)
 {
     float directionX, directionY;
 
@@ -259,12 +259,12 @@ bool ChaseShootAI::resetChaseDirection(AIRobot& robot, float delta,
     return true;
 }
 
-bool ChaseShootAI::tryFirstDirection(AIRobot& robot, float& directionX,
-                                     float& directionY, float delta,
-                                     GameScreen& screen)
+bool ChaseShootAI::tryFirstDirection(AIRobot &robot, float &directionX,
+                                     float &directionY, float delta,
+                                     GameScreen &screen)
 {
-    GameMap& map = screen.getMap();
-    Player* player = map.getPlayer();
+    GameMap &map = screen.getMap();
+    Player *player = map.getPlayer();
     float speed = robot.getSpeed();
     float speedX, speedY;
     float newDelta;
@@ -283,14 +283,14 @@ bool ChaseShootAI::tryFirstDirection(AIRobot& robot, float& directionX,
     return true;
 }
 
-int ChaseShootAI::findNewDirection(AIRobot& robot, float delta,
+int ChaseShootAI::findNewDirection(AIRobot &robot, float delta,
                                    float refDirectionX, float refDirectionY,
-                                   GameScreen& screen)
+                                   GameScreen &screen)
 {
     int tryDirections[4];
     int numTries = sortDirections(tryDirections, refDirectionX, refDirectionY);
 
-    GameMap& map = screen.getMap();
+    GameMap &map = screen.getMap();
     float speed = robot.getSpeed();
     float speedX, speedY;
     float newDelta;
@@ -311,7 +311,7 @@ int ChaseShootAI::findNewDirection(AIRobot& robot, float delta,
     return -1;
 }
 
-int ChaseShootAI::sortDirections(int* result, float refDirectionX,
+int ChaseShootAI::sortDirections(int *result, float refDirectionX,
                                  float refDirectionY)
 {
     bool matchFound = false;
@@ -319,7 +319,7 @@ int ChaseShootAI::sortDirections(int* result, float refDirectionX,
 
     for (i = 0; i < m_numDirections; ++i)
     {
-        auto& d1 = m_directions[i];
+        auto &d1 = m_directions[i];
 
         if (refDirectionX == d1.first && refDirectionY == d1.second)
         {
@@ -328,7 +328,7 @@ int ChaseShootAI::sortDirections(int* result, float refDirectionX,
         }
 
         j = (i + 1) % m_numDirections;
-        auto& d2 = m_directions[j];
+        auto &d2 = m_directions[j];
 
         bool isBetween =
             between(refDirectionX, d1.first, d2.first) &&
@@ -362,7 +362,7 @@ int ChaseShootAI::sortDirections(int* result, float refDirectionX,
     return numTries;
 }
 
-void ChaseShootAI::randomChoose(int* result, int i1, int i2)
+void ChaseShootAI::randomChoose(int *result, int i1, int i2)
 {
     float dice = m_distribution(m_generator);
 

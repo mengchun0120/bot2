@@ -9,7 +9,7 @@ std::shared_ptr<GameLib> GameLib::k_gameLib;
 
 bool GameLib::initInstance()
 {
-    GameLib* lib = new GameLib();
+    GameLib *lib = new GameLib();
     k_gameLib.reset(lib);
 
     if (!lib->load())
@@ -23,7 +23,7 @@ bool GameLib::initInstance()
 
 bool GameLib::load()
 {
-    const AppConfig& cfg = AppConfig::getInstance();
+    const AppConfig &cfg = AppConfig::getInstance();
 
     bool ret = m_textureLib.load(cfg.getTextureLib());
     if (!ret)

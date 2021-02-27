@@ -28,7 +28,7 @@ Base::Base()
 {
 }
 
-bool Base::init(const BaseTemplate* t, Robot* robot,
+bool Base::init(const BaseTemplate *t, Robot *robot,
                 int hpLevel, int hpRestoreLevel,
                 int armorLevel, int armorRepairLevel,
                 int powerLevel, int powerRestoreLevel)
@@ -127,8 +127,8 @@ void Base::present()
                                     *(m_baseTemplate->getTexture()),
                                     &(m_robot->getMask()));
 
-    SimpleShaderProgram& shader = SimpleShaderProgram::getInstance();
-    const TextSystem& textSys = TextSystem::getInstance();
+    SimpleShaderProgram &shader = SimpleShaderProgram::getInstance();
+    const TextSystem &textSys = TextSystem::getInstance();
 
     Color textColor(*(m_baseTemplate->getHPColor()));
     textColor *= m_robot->getMask();
@@ -191,7 +191,7 @@ void Base::resetHPPercentStr()
 
 void Base::resetHPStrPos()
 {
-    const TextSystem& textSys = TextSystem::getInstance();
+    const TextSystem &textSys = TextSystem::getInstance();
     float w, h;
 
     textSys.getStringSize(w, h, TEXT_SIZE_TINY, m_hpPercentStr);

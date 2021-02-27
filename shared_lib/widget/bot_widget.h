@@ -19,17 +19,17 @@ public:
     bool init(float x, float y, float width, float height,
               bool visible=true, bool acceptInput=false);
 
-    virtual int processKeyEvent(const KeyEvent& event)
+    virtual int processKeyEvent(const KeyEvent &event)
     {
         return 0;
     }
 
-    virtual int processMouseMoveEvent(const MouseMoveEvent& event)
+    virtual int processMouseMoveEvent(const MouseMoveEvent &event)
     {
         return 0;
     }
 
-    virtual int processMouseButtonEvent(const MouseButtonEvent& event)
+    virtual int processMouseButtonEvent(const MouseButtonEvent &event)
     {
         return 0;
     }

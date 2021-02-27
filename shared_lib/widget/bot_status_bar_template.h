@@ -17,14 +17,14 @@ public:
     ~StatusBarTemplate()
     {}
 
-    bool init(const rapidjson::Value& elem);
+    bool init(const rapidjson::Value &elem);
 
-    const Texture* getTexture() const
+    const Texture *getTexture() const
     {
         return m_texture;
     }
 
-    const Rectangle& getRect() const
+    const Rectangle &getRect() const
     {
         return m_rect;
     }
@@ -34,7 +34,7 @@ public:
         return m_textureTextSpacing;
     }
 
-    const Color& getTextColor() const
+    const Color &getTextColor() const
     {
         return m_textColor;
     }
@@ -60,7 +60,7 @@ public:
     }
 
 private:
-    const Texture* m_texture;
+    const Texture *m_texture;
     Rectangle m_rect;
     float m_textureTextSpacing;
     Color m_textColor;

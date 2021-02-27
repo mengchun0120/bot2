@@ -10,7 +10,7 @@ AIRobotTemplate::AIRobotTemplate()
 {
 }
 
-bool AIRobotTemplate::init(const rapidjson::Value& elem)
+bool AIRobotTemplate::init(const rapidjson::Value &elem)
 {
     if (!RobotTemplate::init(elem))
     {
@@ -36,7 +36,7 @@ bool AIRobotTemplate::init(const rapidjson::Value& elem)
         return false;
     }
 
-    GameLib& lib = GameLib::getInstance();
+    GameLib &lib = GameLib::getInstance();
 
     m_ai = lib.getAI(aiName);
     if (!m_ai)

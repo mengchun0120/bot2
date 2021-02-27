@@ -11,7 +11,7 @@ class GameScreen;
 
 class AI {
 public:
-    static AI* create(const std::string& name, const rapidjson::Value& elem);
+    static AI *create(const std::string &name, const rapidjson::Value &elem);
 
     AI()
     {}
@@ -19,9 +19,9 @@ public:
     virtual ~AI()
     {}
 
-    virtual bool init(const rapidjson::Value& elem) = 0;
+    virtual bool init(const rapidjson::Value &elem) = 0;
 
-    virtual void apply(AIRobot& robot, float delta, GameScreen& screen) = 0;
+    virtual void apply(AIRobot &robot, float delta, GameScreen &screen) = 0;
 };
 
 } // end of namespace bot

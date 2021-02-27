@@ -3,8 +3,8 @@
 
 namespace bot {
 
-bool JsonParser::parse(bool& r, const rapidjson::Value& elem,
-                       const char* name, bool required)
+bool JsonParser::parse(bool &r, const rapidjson::Value &elem,
+                       const char *name, bool required)
 {
     if (!elem.HasMember(name))
     {
@@ -19,7 +19,7 @@ bool JsonParser::parse(bool& r, const rapidjson::Value& elem,
         }
     }
 
-    const rapidjson::Value& v = elem[name];
+    const rapidjson::Value &v = elem[name];
     if (!v.IsBool())
     {
         LOG_ERROR("%s is not boolean", name);
@@ -31,8 +31,8 @@ bool JsonParser::parse(bool& r, const rapidjson::Value& elem,
     return true;
 }
 
-bool JsonParser::parse(int& r, const rapidjson::Value& elem,
-                       const char* name, bool required)
+bool JsonParser::parse(int &r, const rapidjson::Value &elem,
+                       const char *name, bool required)
 {
     if (!elem.HasMember(name))
     {
@@ -47,7 +47,7 @@ bool JsonParser::parse(int& r, const rapidjson::Value& elem,
         }
     }
 
-    const rapidjson::Value& v = elem[name];
+    const rapidjson::Value &v = elem[name];
     if (!v.IsInt())
     {
         LOG_ERROR("%s is not integer", name);
@@ -59,8 +59,8 @@ bool JsonParser::parse(int& r, const rapidjson::Value& elem,
     return true;
 }
 
-bool JsonParser::parse(float& r, const rapidjson::Value& elem,
-                       const char* name, bool required)
+bool JsonParser::parse(float &r, const rapidjson::Value &elem,
+                       const char *name, bool required)
 {
     if (!elem.HasMember(name))
     {
@@ -75,7 +75,7 @@ bool JsonParser::parse(float& r, const rapidjson::Value& elem,
         }
     }
 
-    const rapidjson::Value& v = elem[name];
+    const rapidjson::Value &v = elem[name];
     if (!v.IsFloat())
     {
         LOG_ERROR("%s is not float", name);
@@ -87,8 +87,8 @@ bool JsonParser::parse(float& r, const rapidjson::Value& elem,
     return true;
 }
 
-bool JsonParser::parse(double& r, const rapidjson::Value& elem,
-                       const char* name, bool required)
+bool JsonParser::parse(double &r, const rapidjson::Value &elem,
+                       const char *name, bool required)
 {
     if (!elem.HasMember(name))
     {
@@ -103,7 +103,7 @@ bool JsonParser::parse(double& r, const rapidjson::Value& elem,
         }
     }
 
-    const rapidjson::Value& v = elem[name];
+    const rapidjson::Value &v = elem[name];
     if (!v.IsDouble())
     {
         LOG_ERROR("%s is not double", name);
@@ -115,8 +115,8 @@ bool JsonParser::parse(double& r, const rapidjson::Value& elem,
     return true;
 }
 
-bool JsonParser::parse(std::string& r, const rapidjson::Value& elem,
-                       const char* name, bool required)
+bool JsonParser::parse(std::string &r, const rapidjson::Value &elem,
+                       const char *name, bool required)
 {
     if (!elem.HasMember(name))
     {
@@ -131,7 +131,7 @@ bool JsonParser::parse(std::string& r, const rapidjson::Value& elem,
         }
     }
 
-    const rapidjson::Value& v = elem[name];
+    const rapidjson::Value &v = elem[name];
     if (!v.IsString())
     {
         LOG_ERROR("%s is not string", name);
@@ -143,8 +143,8 @@ bool JsonParser::parse(std::string& r, const rapidjson::Value& elem,
     return true;
 }
 
-bool JsonParser::parse(std::vector<int>& r, const rapidjson::Value& elem,
-                       const char* name, bool required)
+bool JsonParser::parse(std::vector<int> &r, const rapidjson::Value &elem,
+                       const char *name, bool required)
 {
     if (!elem.HasMember(name))
     {
@@ -159,7 +159,7 @@ bool JsonParser::parse(std::vector<int>& r, const rapidjson::Value& elem,
         }
     }
 
-    const rapidjson::Value& v = elem[name];
+    const rapidjson::Value &v = elem[name];
     if (!v.IsArray())
     {
         LOG_ERROR("%s is not array", name);
@@ -186,8 +186,8 @@ bool JsonParser::parse(std::vector<int>& r, const rapidjson::Value& elem,
     return true;
 }
 
-bool JsonParser::parse(std::vector<float>& r, const rapidjson::Value& elem,
-                       const char* name, bool required)
+bool JsonParser::parse(std::vector<float> &r, const rapidjson::Value &elem,
+                       const char *name, bool required)
 {
     if (!elem.HasMember(name))
     {
@@ -202,7 +202,7 @@ bool JsonParser::parse(std::vector<float>& r, const rapidjson::Value& elem,
         }
     }
 
-    const rapidjson::Value& v = elem[name];
+    const rapidjson::Value &v = elem[name];
     if (!v.IsArray())
     {
         LOG_ERROR("%s is not array", name);
@@ -229,8 +229,8 @@ bool JsonParser::parse(std::vector<float>& r, const rapidjson::Value& elem,
     return true;
 }
 
-bool JsonParser::parse(std::vector<double>& r, const rapidjson::Value& elem,
-                       const char* name, bool required)
+bool JsonParser::parse(std::vector<double> &r, const rapidjson::Value &elem,
+                       const char *name, bool required)
 {
     if (!elem.HasMember(name))
     {
@@ -245,7 +245,7 @@ bool JsonParser::parse(std::vector<double>& r, const rapidjson::Value& elem,
         }
     }
 
-    const rapidjson::Value& v = elem[name];
+    const rapidjson::Value &v = elem[name];
     if (!v.IsArray())
     {
         LOG_ERROR("%s is not array", name);
@@ -272,8 +272,8 @@ bool JsonParser::parse(std::vector<double>& r, const rapidjson::Value& elem,
     return true;
 }
 
-bool JsonParser::parse(std::vector<bool>& r, const rapidjson::Value& elem,
-                       const char* name, bool required)
+bool JsonParser::parse(std::vector<bool> &r, const rapidjson::Value &elem,
+                       const char *name, bool required)
 {
     if (!elem.HasMember(name))
     {
@@ -288,7 +288,7 @@ bool JsonParser::parse(std::vector<bool>& r, const rapidjson::Value& elem,
         }
     }
 
-    const rapidjson::Value& v = elem[name];
+    const rapidjson::Value &v = elem[name];
     if (!v.IsArray())
     {
         LOG_ERROR("%s is not array", name);
@@ -315,9 +315,9 @@ bool JsonParser::parse(std::vector<bool>& r, const rapidjson::Value& elem,
     return true;
 }
 
-bool JsonParser::parse(std::vector<std::string>& r,
-                       const rapidjson::Value& elem,
-                       const char* name, bool required)
+bool JsonParser::parse(std::vector<std::string> &r,
+                       const rapidjson::Value &elem,
+                       const char *name, bool required)
 {
     if (!elem.HasMember(name))
     {
@@ -332,7 +332,7 @@ bool JsonParser::parse(std::vector<std::string>& r,
         }
     }
 
-    const rapidjson::Value& v = elem[name];
+    const rapidjson::Value &v = elem[name];
     if (!v.IsArray())
     {
         LOG_ERROR("%s is not array", name);

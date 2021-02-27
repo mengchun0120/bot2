@@ -14,15 +14,15 @@ public:
     virtual ~IslandMapGenerator()
     {}
 
-    virtual bool init(const rapidjson::Value& json);
+    virtual bool init(const rapidjson::Value &json);
 
-    virtual bool generate(const char* fileName);
+    virtual bool generate(const char *fileName);
 
 private:
-    void generateTiles(GeneratedMap& map);
+    void generateTiles(GeneratedMap &map);
 
-    void generateIsland(GeneratedMap& map, const std::string* tileName,
-                        const TileTemplate* t, int islandSlotX, int islandSlotY,
+    void generateIsland(GeneratedMap &map, const std::string *tileName,
+                        const TileTemplate *t, int islandSlotX, int islandSlotY,
                         int rows, int cols);
 
 private:

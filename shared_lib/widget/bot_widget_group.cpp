@@ -18,7 +18,7 @@ bool WidgetGroup::init(int widgetCount)
     return true;
 }
 
-int WidgetGroup::processInput(const InputEvent& event)
+int WidgetGroup::processInput(const InputEvent &event)
 {
     switch (event.m_type)
     {
@@ -48,13 +48,13 @@ void WidgetGroup::present()
         return;
     }
 
-    for (auto& widget : m_widgets)
+    for (auto &widget : m_widgets)
     {
         widget->present();
     }
 }
 
-Widget* WidgetGroup::getWidget(unsigned int idx)
+Widget *WidgetGroup::getWidget(unsigned int idx)
 {
     if (idx > m_widgets.size())
     {
@@ -65,7 +65,7 @@ Widget* WidgetGroup::getWidget(unsigned int idx)
     return m_widgets[idx].get();
 }
 
-bool WidgetGroup::setWidget(unsigned int idx, Widget* widget)
+bool WidgetGroup::setWidget(unsigned int idx, Widget *widget)
 {
     if (idx >= m_widgets.size())
     {
@@ -80,13 +80,13 @@ bool WidgetGroup::setWidget(unsigned int idx, Widget* widget)
 
 void WidgetGroup::shiftPos(float dx, float dy)
 {
-    for (auto& widget : m_widgets)
+    for (auto &widget : m_widgets)
     {
         widget->shiftPos(dx, dy);
     }
 }
 
-int WidgetGroup::processKeyEvent(const KeyEvent& event)
+int WidgetGroup::processKeyEvent(const KeyEvent &event)
 {
     if (m_focusWidgetIdx == -1)
     {
@@ -96,7 +96,7 @@ int WidgetGroup::processKeyEvent(const KeyEvent& event)
     return m_widgets[m_focusWidgetIdx]->processKeyEvent(event);
 }
 
-int WidgetGroup::processMouseMoveEvent(const MouseMoveEvent& event)
+int WidgetGroup::processMouseMoveEvent(const MouseMoveEvent &event)
 {
     int idx = findWidget(event.m_x, event.m_y);
 
@@ -116,7 +116,7 @@ int WidgetGroup::processMouseMoveEvent(const MouseMoveEvent& event)
     return m_widgets[m_hoverWidgetIdx]->processMouseMoveEvent(event);
 }
 
-int WidgetGroup::processMouseButtonEvent(const MouseButtonEvent& event)
+int WidgetGroup::processMouseButtonEvent(const MouseButtonEvent &event)
 {
     int idx = findWidget(event.m_x, event.m_y);
     bool process = event.m_button == GLFW_MOUSE_BUTTON_LEFT &&

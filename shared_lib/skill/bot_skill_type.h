@@ -16,9 +16,9 @@ inline bool isValidSkillType(SkillType t)
     return t >= SKILL_SHOOT_MISSILE && t < SKILL_COUNT;
 }
 
-SkillType strToSkillType(const std::string& s);
+SkillType strToSkillType(const std::string &s);
 
-const std::string& skillTypeToStr(SkillType t);
+const std::string &skillTypeToStr(SkillType t);
 
 inline bool isShootMissileSkill(SkillType t)
 {

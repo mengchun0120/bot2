@@ -26,9 +26,9 @@ public:
 
     void clear();
 
-    void enqueue(const T& t);
+    void enqueue(const T &t);
 
-    void dequeue(T& t);
+    void dequeue(T &t);
 
 private:
     std::vector<T> m_q;
@@ -62,7 +62,7 @@ void Queue<T>::clear()
 }
 
 template <typename T>
-void Queue<T>::enqueue(const T& t)
+void Queue<T>::enqueue(const T &t)
 {
     m_last = (m_last + 1) % static_cast<int>(m_q.size());
     m_q[m_last] = t;
@@ -73,7 +73,7 @@ void Queue<T>::enqueue(const T& t)
 }
 
 template <typename T>
-void Queue<T>::dequeue(T& t)
+void Queue<T>::dequeue(T &t)
 {
     t = m_q[m_first];
     if (m_first != m_last)

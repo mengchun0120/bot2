@@ -26,11 +26,11 @@ bool Polygon::init(const float *vertices, unsigned int numVertices,
     return m_vertexArray.load(vertices, numVertices, vertexSize, stride);
 }
 
-void Polygon::draw(const float* pos, const float* direction,
-                   const Color* fillColor, const Color* borderColor,
-                   unsigned int textureId, const Color* texColor) const
+void Polygon::draw(const float *pos, const float *direction,
+                   const Color *fillColor, const Color *borderColor,
+                   unsigned int textureId, const Color *texColor) const
 {
-    SimpleShaderProgram& program = SimpleShaderProgram::getInstance();
+    SimpleShaderProgram &program = SimpleShaderProgram::getInstance();
 
     if (pos)
     {

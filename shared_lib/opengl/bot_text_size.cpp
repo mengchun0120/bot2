@@ -2,7 +2,7 @@
 
 namespace bot {
 
-TextSize strToTextSize(const std::string& s)
+TextSize strToTextSize(const std::string &s)
 {
     if (s == "big")
     {

@@ -21,7 +21,7 @@ inline bool isInstantaneousGoodie(GoodieType type)
     return type == GOODIE_GOLD || type == GOODIE_HEALTH;
 }
 
-const char* getGoodieTypeStr(GoodieType t);
+const char *getGoodieTypeStr(GoodieType t);
 
 } // end of namespace bot
 

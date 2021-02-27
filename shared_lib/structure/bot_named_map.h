@@ -15,32 +15,32 @@ public:
 
     virtual ~NamedMap();
 
-    bool load(const char* fileName);
+    bool load(const char *fileName);
 
-    bool load(const std::string& fileName)
+    bool load(const std::string &fileName)
     {
         return load(fileName.c_str());
     }
 
     template <typename P>
-    bool load(const char* fileName, P& parser);
+    bool load(const char *fileName, P &parser);
 
     template <typename P>
-    bool load(const std::string& fileName, P& parser)
+    bool load(const std::string &fileName, P &parser)
     {
         return load(fileName.c_str(), parser);
     }
 
-    bool add(const char *name, T* t);
+    bool add(const char *name, T *t);
 
-    bool add(const std::string &name, T* t)
+    bool add(const std::string &name, T *t)
     {
         return add(name.c_str(), t);
     }
 
-    T* search(const char *name) const;
+    T *search(const char *name) const;
 
-    T* search(const std::string &name) const
+    T *search(const std::string &name) const
     {
         return search(name.c_str());
     }
@@ -50,17 +50,17 @@ public:
         return static_cast<int>(m_objs.size());
     }
 
-    T* getObjAt(int idx)
+    T *getObjAt(int idx)
     {
         return m_objs[idx];
     }
 
-    const T* getObjAt(int idx) const
+    const T *getObjAt(int idx) const
     {
         return m_objs[idx];
     }
 
-    const std::string& getNameAt(int idx) const
+    const std::string &getNameAt(int idx) const
     {
         return m_names[idx];
     }
@@ -73,7 +73,7 @@ private:
     struct Node {
         Node *m_left, *m_right;
         char m_ch;
-        T* m_ptr;
+        T *m_ptr;
 
         Node(char ch)
         : m_left(nullptr)
@@ -100,7 +100,7 @@ NamedMap<T>::~NamedMap()
 }
 
 template <typename T>
-bool NamedMap<T>::load(const char* fileName)
+bool NamedMap<T>::load(const char *fileName)
 {
     rapidjson::Document doc;
 
@@ -115,14 +115,14 @@ bool NamedMap<T>::load(const char* fileName)
         return false;
     }
 
-    const rapidjson::Value& arr = doc.GetArray();
+    const rapidjson::Value &arr = doc.GetArray();
     int numObjects = arr.Capacity();
 
     m_objs.resize(numObjects);
     m_names.resize(numObjects);
     for (int i = 0; i < numObjects; ++i)
     {
-        const rapidjson::Value& elem = arr[i];
+        const rapidjson::Value &elem = arr[i];
         std::string name;
 
         if (!JsonParser::parse(name, elem, "name"))
@@ -132,7 +132,7 @@ bool NamedMap<T>::load(const char* fileName)
             return false;
         }
 
-        T* t = new T();
+        T *t = new T();
         if (!t->init(elem))
         {
             LOG_ERROR("Failed to parse the %dth object of %s", i, fileName);
@@ -150,7 +150,7 @@ bool NamedMap<T>::load(const char* fileName)
 
 template <typename T>
 template <typename P>
-bool NamedMap<T>::load(const char* fileName, P& parser)
+bool NamedMap<T>::load(const char *fileName, P &parser)
 {
     rapidjson::Document doc;
 
@@ -165,14 +165,14 @@ bool NamedMap<T>::load(const char* fileName, P& parser)
         return false;
     }
 
-    const rapidjson::Value& arr = doc.GetArray();
+    const rapidjson::Value &arr = doc.GetArray();
     int numObjects = arr.Capacity();
 
     m_objs.resize(numObjects);
     m_names.resize(numObjects);
     for (int i = 0; i < numObjects; ++i)
     {
-        const rapidjson::Value& elem = arr[i];
+        const rapidjson::Value &elem = arr[i];
         std::string name;
 
         if (!JsonParser::parse(name, elem, "name"))
@@ -182,7 +182,7 @@ bool NamedMap<T>::load(const char* fileName, P& parser)
             return false;
         }
 
-        T* t = parser(name, elem);
+        T *t = parser(name, elem);
         if (!t)
         {
             LOG_ERROR("Failed to parse the %dth object of %s", i, fileName);
@@ -199,16 +199,16 @@ bool NamedMap<T>::load(const char* fileName, P& parser)
 
 
 template <typename T>
-bool NamedMap<T>::add(const char* name, T* t)
+bool NamedMap<T>::add(const char *name, T *t)
 {
-    const char* ch;
-    Node* parent = nullptr;
-    Node* n = m_root;
+    const char *ch;
+    Node *parent = nullptr;
+    Node *n = m_root;
 
     for (ch = name; *ch != '\0' && n; ++ch)
     {
-        Node* prev = nullptr;
-        Node* m = n;
+        Node *prev = nullptr;
+        Node *m = n;
 
         while (m && m->m_ch < *ch)
         {
@@ -223,7 +223,7 @@ bool NamedMap<T>::add(const char* name, T* t)
         }
         else
         {
-            Node* p = new Node(*ch);
+            Node *p = new Node(*ch);
 
             p->m_right = m;
             if (prev)
@@ -281,10 +281,10 @@ bool NamedMap<T>::add(const char* name, T* t)
 }
 
 template <typename T>
-T* NamedMap<T>::search(const char* name) const
+T *NamedMap<T>::search(const char *name) const
 {
-    Node* n = m_root;
-    const char* ch = name;
+    Node *n = m_root;
+    const char *ch = name;
 
     while (*ch != '\0' && n)
     {
@@ -321,7 +321,7 @@ void NamedMap<T>::clear()
 
     while (!q.empty())
     {
-        Node* n = q.front();
+        Node *n = q.front();
         q.pop_front();
 
         if (n->m_left)
@@ -359,7 +359,7 @@ void NamedMap<T>::log() const
 
     while (!q.empty())
     {
-        Node* n = q.front();
+        Node *n = q.front();
         q.pop_front();
 
         LOG_INFO("%p %c %p %p", n, n->m_ch, n->m_left, n->m_right);

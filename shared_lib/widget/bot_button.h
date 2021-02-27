@@ -19,16 +19,16 @@ public:
 
     bool init(float x, float y,
               float width, float height,
-              const Rectangle* rect,
-              const std::string& text,
+              const Rectangle *rect,
+              const std::string &text,
               TextSize textSize=TEXT_SIZE_MEDIUM,
               bool visible=true, bool acceptInput=true);
 
     virtual void present();
 
-    void setText(const std::string& text);
+    void setText(const std::string &text);
 
-    void setActionFunc(const ActionFunc& actionFunc)
+    void setActionFunc(const ActionFunc &actionFunc)
     {
         m_actionFunc = actionFunc;
     }
@@ -37,11 +37,11 @@ public:
 
     virtual void shiftPos(float dx, float dy);
 
-    virtual int processKeyEvent(const KeyEvent& event);
+    virtual int processKeyEvent(const KeyEvent &event);
 
-    virtual int processMouseMoveEvent(const MouseMoveEvent& event);
+    virtual int processMouseMoveEvent(const MouseMoveEvent &event);
 
-    virtual int processMouseButtonEvent(const MouseButtonEvent& event);
+    virtual int processMouseButtonEvent(const MouseButtonEvent &event);
 
     virtual void onMouseOut();
 
@@ -51,7 +51,7 @@ protected:
 protected:
     std::string m_text;
     float m_textPos[Constants::NUM_FLOATS_PER_POSITION];
-    const Color* m_textColor;
+    const Color *m_textColor;
     TextSize m_textSize;
     ActionFunc m_actionFunc;
 };

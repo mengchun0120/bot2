@@ -8,12 +8,12 @@ namespace bot {
 struct FirePoint {
     FirePoint();
 
-    FirePoint(const FirePoint& fp);
+    FirePoint(const FirePoint &fp);
 
     ~FirePoint()
     {}
 
-    FirePoint& operator=(const FirePoint& fp);
+    FirePoint &operator=(const FirePoint &fp);
 
     float m_firePos[Constants::NUM_FLOATS_PER_POSITION];
     float m_fireDirection[Constants::NUM_FLOATS_PER_POSITION];

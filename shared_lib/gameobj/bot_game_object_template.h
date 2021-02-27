@@ -13,7 +13,7 @@ public:
     virtual ~GameObjectTemplate()
     {}
 
-    bool init(const rapidjson::Value& elem);
+    bool init(const rapidjson::Value &elem);
 
     GameObjectType getType() const
     {

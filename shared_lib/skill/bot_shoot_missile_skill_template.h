@@ -13,9 +13,9 @@ public:
     virtual ~ShootMissileSkillTemplate()
     {}
 
-    bool init(const rapidjson::Value& elem);
+    bool init(const rapidjson::Value &elem);
 
-    const MissileTemplate* getMissileTemplate() const
+    const MissileTemplate *getMissileTemplate() const
     {
         return m_missileTemplate;
     }
@@ -26,7 +26,7 @@ public:
     }
 
 protected:
-    const MissileTemplate* m_missileTemplate;
+    const MissileTemplate *m_missileTemplate;
     float m_speedMultiplier;
 };
 

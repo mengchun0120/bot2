@@ -18,7 +18,7 @@ public:
     ~DashboardConfig()
     {}
 
-    bool init(const std::string& configFile);
+    bool init(const std::string &configFile);
 
     float getEffectSpacing() const
     {

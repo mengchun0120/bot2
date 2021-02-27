@@ -28,13 +28,13 @@ public:
 
     void init(int capacity);
 
-    T* alloc();
+    T *alloc();
 
-    void free(T* t);
+    void free(T *t);
 
 protected:
-    T* m_free;
-    T* m_pool;
+    T *m_free;
+    T *m_pool;
     int m_capacity;
 };
 
@@ -51,9 +51,9 @@ void ObjectPool<T>::init(int capacity)
 }
 
 template <typename T>
-T* ObjectPool<T>::alloc()
+T *ObjectPool<T>::alloc()
 {
-    T* ret = nullptr;
+    T *ret = nullptr;
     if (m_free)
     {
         ret = m_free;
@@ -67,7 +67,7 @@ T* ObjectPool<T>::alloc()
 }
 
 template <typename T>
-void ObjectPool<T>::free(T* t)
+void ObjectPool<T>::free(T *t)
 {
     if (t >= m_pool && t < m_pool + m_capacity)
     {

@@ -8,7 +8,7 @@ std::shared_ptr<ScreenManager> ScreenManager::k_screenMgr;
 
 bool ScreenManager::initInstance(Screen::Type startScreenType)
 {
-    ScreenManager* mgr = new ScreenManager();
+    ScreenManager *mgr = new ScreenManager();
     k_screenMgr.reset(mgr);
 
     if (!mgr->init(startScreenType))
@@ -43,7 +43,7 @@ ScreenManager::~ScreenManager()
 
 bool ScreenManager::init(Screen::Type startScreenType)
 {
-    Screen* screen = Screen::create(startScreenType);
+    Screen *screen = Screen::create(startScreenType);
     if (!screen)
     {
         LOG_ERROR("Failed to create start screen");
@@ -73,7 +73,7 @@ void ScreenManager::present()
     m_curScreen->present();
 }
 
-int ScreenManager::processInput(const InputEvent& e)
+int ScreenManager::processInput(const InputEvent &e)
 {
     int ret = m_curScreen->processInput(e);
     if (ret == 1)
@@ -95,7 +95,7 @@ bool ScreenManager::switchScreen(Screen::Type type)
         return true;
     }
 
-    Screen* screen = Screen::create(type);
+    Screen *screen = Screen::create(type);
     if (!screen)
     {
         LOG_ERROR("Failed to swtich screen");

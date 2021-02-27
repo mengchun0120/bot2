@@ -11,7 +11,7 @@ ShootMissileSkill::ShootMissileSkill()
 {
 }
 
-bool ShootMissileSkill::init(const SkillTemplate* t, Robot* robot,
+bool ShootMissileSkill::init(const SkillTemplate *t, Robot *robot,
                              unsigned int level)
 {
     if (t->getType() != SKILL_SHOOT_MISSILE)
@@ -23,9 +23,9 @@ bool ShootMissileSkill::init(const SkillTemplate* t, Robot* robot,
     return Skill::init(t, robot, level);
 }
 
-void ShootMissileSkill::apply(GameScreen& screen, const TimePoint& tp)
+void ShootMissileSkill::apply(GameScreen &screen, const TimePoint &tp)
 {
-    const ShootMissileSkillTemplate* t =
+    const ShootMissileSkillTemplate *t =
                     static_cast<const ShootMissileSkillTemplate*>(m_template);
     float damageMultiplier = t->getDamageMultiplier(m_level);
 

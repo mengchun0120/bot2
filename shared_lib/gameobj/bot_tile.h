@@ -16,11 +16,11 @@ public:
     virtual ~Tile()
     {}
 
-    bool init(const TileTemplate* tileTemplate, int level, float x, float y);
+    bool init(const TileTemplate *tileTemplate, int level, float x, float y);
 
     virtual void present();
 
-    virtual void update(float delta, GameScreen& screen);
+    virtual void update(float delta, GameScreen &screen);
 
     int getHP() const
     {
@@ -35,7 +35,7 @@ public:
         m_pos[1] = y;
     }
 
-    virtual void onDeath(GameScreen& screen);
+    virtual void onDeath(GameScreen &screen);
 
 protected:
     float m_hp;

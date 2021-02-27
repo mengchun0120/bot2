@@ -13,7 +13,7 @@ RobotTemplate::RobotTemplate()
 {
 }
 
-bool RobotTemplate::init(const rapidjson::Value& elem)
+bool RobotTemplate::init(const rapidjson::Value &elem)
 {
     if (!GameObjectTemplate::init(elem))
     {
@@ -34,7 +34,7 @@ bool RobotTemplate::init(const rapidjson::Value& elem)
         return false;
     }
 
-    const GameLib& lib = GameLib::getInstance();
+    const GameLib &lib = GameLib::getInstance();
 
     m_baseTemplate = lib.getBaseTemplate(baseName);
     if (!m_baseTemplate)
@@ -67,7 +67,7 @@ bool RobotTemplate::init(const rapidjson::Value& elem)
 }
 
 bool RobotTemplate::initSkillTemplates(
-                             const std::vector<std::string>& skillNames)
+                             const std::vector<std::string> &skillNames)
 {
     if (skillNames.empty())
     {
@@ -75,13 +75,13 @@ bool RobotTemplate::initSkillTemplates(
         return false;
     }
 
-    const GameLib& lib = GameLib::getInstance();
+    const GameLib &lib = GameLib::getInstance();
     unsigned int skillCount = skillNames.size();
 
     m_skillTemplates.resize(skillCount);
     for (unsigned int i = 0; i < skillCount; ++i)
     {
-        const SkillTemplate* t = lib.getSkillTemplate(skillNames[i]);
+        const SkillTemplate *t = lib.getSkillTemplate(skillNames[i]);
         if (!t)
         {
             LOG_ERROR("Failed to find SkillTemplate %s", skillNames[i].c_str());

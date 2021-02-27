@@ -7,10 +7,10 @@ namespace bot {
 
 std::shared_ptr<ParticleShaderProgram> ParticleShaderProgram::k_program;
 
-bool ParticleShaderProgram::initInstance(const std::string& vertexShaderFile,
-                                         const std::string& fragShaderFile)
+bool ParticleShaderProgram::initInstance(const std::string &vertexShaderFile,
+                                         const std::string &fragShaderFile)
 {
-    ParticleShaderProgram* program = new ParticleShaderProgram();
+    ParticleShaderProgram *program = new ParticleShaderProgram();
     k_program.reset(program);
 
     if (!program->init(vertexShaderFile, fragShaderFile))
@@ -42,8 +42,8 @@ ParticleShaderProgram::~ParticleShaderProgram()
 {
 }
 
-bool ParticleShaderProgram::init(const std::string& vertexShaderFile,
-                                 const std::string& fragShaderFile)
+bool ParticleShaderProgram::init(const std::string &vertexShaderFile,
+                                 const std::string &fragShaderFile)
 {
     if (!ShaderProgram::init(vertexShaderFile, fragShaderFile))
     {
@@ -78,7 +78,7 @@ void ParticleShaderProgram::setTexture(int textureId)
     glBindTexture(GL_TEXTURE_2D, textureId);
 }
 
-void ParticleShaderProgram::bindData(const VertexArray& va)
+void ParticleShaderProgram::bindData(const VertexArray &va)
 {
     glBindVertexArray(va.vao());
     glBindBuffer(GL_ARRAY_BUFFER, va.vbo());

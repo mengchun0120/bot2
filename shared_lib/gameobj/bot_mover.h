@@ -16,10 +16,10 @@ public:
     virtual ~Mover()
     {}
 
-    bool init(const MoverTemplate* moverTemplate, Robot* robot,
+    bool init(const MoverTemplate *moverTemplate, Robot *robot,
               int moverLevel);
 
-    bool update(GameScreen& screen, float delta);
+    bool update(GameScreen &screen, float delta);
 
     void present();
 
@@ -47,8 +47,8 @@ private:
     }
 
 protected:
-    const MoverTemplate* m_moverTemplate;
-    Robot* m_robot;
+    const MoverTemplate *m_moverTemplate;
+    Robot *m_robot;
     bool m_moving;
     float m_speed;
     float m_normalSpeed;

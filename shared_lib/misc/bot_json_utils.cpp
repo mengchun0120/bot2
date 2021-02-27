@@ -16,9 +16,9 @@ struct JsonNode {
         , m_level(0)
     {}
 
-    JsonNode(const JsonNode& other);
+    JsonNode(const JsonNode &other);
 
-    bool init(const rapidjson::Value* val, unsigned int level,
+    bool init(const rapidjson::Value *val, unsigned int level,
               unsigned int indent);
 
     bool isStart();
@@ -33,9 +33,9 @@ struct JsonNode {
 
     bool forward();
 
-    const rapidjson::Value& currentValue();
+    const rapidjson::Value &currentValue();
 
-    const rapidjson::Value* m_val;
+    const rapidjson::Value *m_val;
     union {
         rapidjson::Value::ConstValueIterator m_arrItr;
         rapidjson::Value::ConstMemberIterator m_memItr;
@@ -44,7 +44,7 @@ struct JsonNode {
     std::string m_indent;
 };
 
-JsonNode::JsonNode(const JsonNode& other)
+JsonNode::JsonNode(const JsonNode &other)
 {
     m_val = other.m_val;
     m_level = other.m_level;
@@ -60,7 +60,7 @@ JsonNode::JsonNode(const JsonNode& other)
     }
 }
 
-bool JsonNode::init(const rapidjson::Value* val, unsigned int level,
+bool JsonNode::init(const rapidjson::Value *val, unsigned int level,
                     unsigned int indent)
 {
     if (!val)
@@ -146,7 +146,7 @@ bool JsonNode::forward()
     return true;
 }
 
-const rapidjson::Value& JsonNode::currentValue()
+const rapidjson::Value &JsonNode::currentValue()
 {
     if (m_val->IsObject())
     {
@@ -157,9 +157,9 @@ const rapidjson::Value& JsonNode::currentValue()
 }
 
 
-bool readJson(rapidjson::Document& doc, const char* fileName)
+bool readJson(rapidjson::Document &doc, const char *fileName)
 {
-    FILE* fp = fopen(fileName, "rb");
+    FILE *fp = fopen(fileName, "rb");
     if (!fp)
     {
         LOG_ERROR("Cannot open %s", fileName);
@@ -181,7 +181,7 @@ bool readJson(rapidjson::Document& doc, const char* fileName)
 
     return true;
 }
-void writeJsonValue(std::ofstream& os, const rapidjson::Value& val)
+void writeJsonValue(std::ofstream &os, const rapidjson::Value &val)
 {
     if (val.IsNull())
     {
@@ -205,7 +205,7 @@ void writeJsonValue(std::ofstream& os, const rapidjson::Value& val)
     }
 }
 
-bool writeJson(const rapidjson::Document& doc, const char* fileName,
+bool writeJson(const rapidjson::Document &doc, const char *fileName,
                unsigned int indent)
 {
     std::list<JsonNode> stack;
@@ -237,7 +237,7 @@ bool writeJson(const rapidjson::Document& doc, const char* fileName,
 
     while (!stack.empty())
     {
-        JsonNode& n = stack.back();
+        JsonNode &n = stack.back();
 
         if (n.reachEnd())
         {
@@ -258,7 +258,7 @@ bool writeJson(const rapidjson::Document& doc, const char* fileName,
             os << '"' << n.m_memItr->name.GetString() << "\": ";
         }
 
-        const rapidjson::Value& val = n.currentValue();
+        const rapidjson::Value &val = n.currentValue();
 
         if (val.IsObject() || val.IsArray())
         {
@@ -294,12 +294,12 @@ bool writeJson(const rapidjson::Document& doc, const char* fileName,
 }
 
 
-bool parseJson(std::vector<JsonParamPtr>& params,
-               const rapidjson::Value& elem)
+bool parseJson(std::vector<JsonParamPtr> &params,
+               const rapidjson::Value &elem)
 {
     for (auto it = params.begin(); it != params.end(); ++it)
     {
-        JsonParamPtr& p = *it;
+        JsonParamPtr &p = *it;
         if (!p->parse(elem))
         {
             LOG_ERROR("Failed to parse %s", p->getName().c_str());

@@ -14,7 +14,7 @@ class ScreenManager {
 public:
     static bool initInstance(Screen::Type startScreenType);
 
-    static ScreenManager& getInstance()
+    static ScreenManager &getInstance()
     {
         return *k_screenMgr;
     }
@@ -25,11 +25,11 @@ public:
 
     void present();
 
-    int processInput(const InputEvent& e);
+    int processInput(const InputEvent &e);
 
     bool switchScreen(Screen::Type type);
 
-    Screen* getCurScreen()
+    Screen *getCurScreen()
     {
         return m_curScreen;
     }
@@ -42,8 +42,8 @@ private:
 private:
     static std::shared_ptr<ScreenManager> k_screenMgr;
     Screen::Type m_curScreenType;
-    Screen* m_prevScreen;
-    Screen* m_curScreen;
+    Screen *m_prevScreen;
+    Screen *m_curScreen;
 };
 
 } // end of namespace bot

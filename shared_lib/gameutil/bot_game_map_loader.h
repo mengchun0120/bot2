@@ -11,7 +11,7 @@ class GameObjectManager;
 
 class GameMapLoader {
 public:
-    GameMapLoader(GameObjectManager& gameObjManager,
+    GameMapLoader(GameObjectManager &gameObjManager,
                   float mapPoolFactor)
         : m_gameObjManager(gameObjManager)
         , m_mapPoolFactor(mapPoolFactor)
@@ -20,29 +20,29 @@ public:
     ~GameMapLoader()
     {}
 
-    bool load(GameMap& map, const std::string& mapFile,
+    bool load(GameMap &map, const std::string &mapFile,
               int level, float viewportWidth, float viewportHeight);
 
 private:
-    bool initMap(GameMap& map, const rapidjson::Value& mapJson,
+    bool initMap(GameMap &map, const rapidjson::Value &mapJson,
                  float viewportWidth, float viewportHeight);
 
-    bool loadTiles(GameMap& map, int level, const rapidjson::Value& mapJson);
+    bool loadTiles(GameMap &map, int level, const rapidjson::Value &mapJson);
 
-    bool addTile(GameMap& map, const std::string& name,
+    bool addTile(GameMap &map, const std::string &name,
                  int level, float x, float y);
 
-    bool loadRobots(GameMap& map, const rapidjson::Value& mapJson,
+    bool loadRobots(GameMap &map, const rapidjson::Value &mapJson,
                     int level);
 
-    bool addRobot(GameMap& map, const std::string& name, int level,
+    bool addRobot(GameMap &map, const std::string &name, int level,
                   float x, float y,
                   float directionX, float directionY);
 
-    bool loadPlayer(GameMap& map, const rapidjson::Value& mapJson);
+    bool loadPlayer(GameMap &map, const rapidjson::Value &mapJson);
 
 private:
-    GameObjectManager& m_gameObjManager;
+    GameObjectManager &m_gameObjManager;
     float m_mapPoolFactor;
 };
 

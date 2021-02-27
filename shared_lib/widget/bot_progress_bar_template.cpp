@@ -12,7 +12,7 @@ ProgressBarTemplate::ProgressBarTemplate()
     , m_slotCount(0)
 {}
 
-bool ProgressBarTemplate::init(const rapidjson::Value& elem)
+bool ProgressBarTemplate::init(const rapidjson::Value &elem)
 {
     std::string textureName, rectName;
     std::vector<int> colorVec;
@@ -32,7 +32,7 @@ bool ProgressBarTemplate::init(const rapidjson::Value& elem)
         return false;
     }
 
-    const GameLib& lib = GameLib::getInstance();
+    const GameLib &lib = GameLib::getInstance();
 
     m_texture = lib.getTexture(textureName);
     if (!m_texture)

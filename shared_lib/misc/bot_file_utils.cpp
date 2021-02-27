@@ -32,7 +32,7 @@ std::string constructPath(std::initializer_list<std::string> s)
     return oss.str();
 }
 
-bool readText(std::string& text, const std::string& fileName)
+bool readText(std::string &text, const std::string &fileName)
 {
     std::ifstream in;
 

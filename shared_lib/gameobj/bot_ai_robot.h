@@ -15,16 +15,16 @@ public:
     virtual ~AIRobot()
     {}
 
-    bool init(const AIRobotTemplate* t, Side side,
+    bool init(const AIRobotTemplate *t, Side side,
               int hpLevel, int hpRestoreLevel,
               int armorLevel, int armorRepairLevel,
               int powerLevel, int powerRestoreLevel,
               int weaponLevel, int moverLevel,
-              const std::vector<int>& skillLevels,
+              const std::vector<int> &skillLevels,
               float x, float y,
               float directionX, float directionY);
 
-    bool init(const AIRobotTemplate* t, Side side,
+    bool init(const AIRobotTemplate *t, Side side,
               int hpLevel, int hpRestoreLevel,
               int armorLevel, int armorRepairLevel,
               int powerLevel, int powerRestoreLevel,
@@ -32,14 +32,14 @@ public:
               float x, float y,
               float directionX, float directionY);
 
-    const AIRobotTemplate* getTemplate() const
+    const AIRobotTemplate *getTemplate() const
     {
         return static_cast<const AIRobotTemplate*>(m_template);
     }
 
     virtual void present();
 
-    virtual void update(float delta, GameScreen& screen);
+    virtual void update(float delta, GameScreen &screen);
 
     virtual void setDirection(float directionX, float directionY);
 
@@ -48,12 +48,12 @@ public:
         return getTemplate()->getGoodieSpawnProb();
     }
 
-    const TimePoint& getLastChangeActionTime() const
+    const TimePoint &getLastChangeActionTime() const
     {
         return m_lastChangeActionTime;
     }
 
-    const TimePoint& getLastChangeDirectionTime() const
+    const TimePoint &getLastChangeDirectionTime() const
     {
         return m_lastChangeDirectionTime;
     }
@@ -65,7 +65,7 @@ public:
 
     bool setCurAction(Action action);
 
-    virtual void onDeath(GameScreen& screen);
+    virtual void onDeath(GameScreen &screen);
 
 protected:
     TimePoint m_lastChangeActionTime;

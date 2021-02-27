@@ -14,7 +14,7 @@ public:
     virtual ~TileTemplate()
     {}
 
-    bool init(const rapidjson::Value& elem);
+    bool init(const rapidjson::Value &elem);
 
     float getHP(int level) const
     {

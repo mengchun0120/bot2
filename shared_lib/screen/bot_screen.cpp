@@ -5,16 +5,16 @@
 
 namespace bot {
 
-Screen* Screen::create(Type type)
+Screen *Screen::create(Type type)
 {
-    Screen* screen = nullptr;
+    Screen *screen = nullptr;
     switch(type)
     {
         case SCREEN_START:
         {
             LOG_INFO("Show start screen");
 
-            StartScreen* startScreen = new StartScreen();
+            StartScreen *startScreen = new StartScreen();
             if (startScreen->init())
             {
                 screen = startScreen;
@@ -31,7 +31,7 @@ Screen* Screen::create(Type type)
         {
             LOG_INFO("Show game screen");
 
-            GameScreen* gameScreen = new GameScreen();
+            GameScreen *gameScreen = new GameScreen();
             if (gameScreen->init())
             {
                 screen = gameScreen;
@@ -48,7 +48,7 @@ Screen* Screen::create(Type type)
         {
             LOG_INFO("Show map screen");
 
-            ShowMapScreen* showMapScreen = new ShowMapScreen();
+            ShowMapScreen *showMapScreen = new ShowMapScreen();
             if (showMapScreen->init())
             {
                 screen = showMapScreen;

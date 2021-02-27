@@ -11,7 +11,7 @@ AttackSkillTemplate::AttackSkillTemplate()
 {
 }
 
-bool AttackSkillTemplate::init(SkillType type, const rapidjson::Value& elem)
+bool AttackSkillTemplate::init(SkillType type, const rapidjson::Value &elem)
 {
     if (!SkillTemplate::init(type, elem))
     {

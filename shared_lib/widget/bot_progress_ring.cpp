@@ -15,7 +15,7 @@ ProgressRing::ProgressRing()
 {
 }
 
-bool ProgressRing::init(const rapidjson::Value& elem)
+bool ProgressRing::init(const rapidjson::Value &elem)
 {
     std::string backColorName;
     std::vector<std::string> frontColorNames;
@@ -33,7 +33,7 @@ bool ProgressRing::init(const rapidjson::Value& elem)
         return false;
     }
 
-    const GameLib& lib = GameLib::getInstance();
+    const GameLib &lib = GameLib::getInstance();
 
     m_backColor = lib.getColor(backColorName);
     if (!m_backColor)
@@ -47,7 +47,7 @@ bool ProgressRing::init(const rapidjson::Value& elem)
 
     for (int i = 0; i < m_numFrontColors; ++i)
     {
-        const Color* color = lib.getColor(frontColorNames[i]);
+        const Color *color = lib.getColor(frontColorNames[i]);
         if (!color)
         {
             LOG_ERROR("Failed to find frontColor %s",
@@ -73,7 +73,7 @@ bool ProgressRing::initVertexArray(int numEdges)
 
     int numFloatsPerTriangle = Constants::NUM_FLOATS_PER_POSITION * 3;
     int numFloats = numEdges * numFloatsPerTriangle;
-    float* vertices = new float[numFloats];
+    float *vertices = new float[numFloats];
     float delta = 2.0f * Constants::PI / numEdges;
     float theta = delta;
     float prevX = 0.0f, prevY = m_radius;
@@ -100,9 +100,9 @@ bool ProgressRing::initVertexArray(int numEdges)
     return ret;
 }
 
-void ProgressRing::draw(const float* pos, float percentage) const
+void ProgressRing::draw(const float *pos, float percentage) const
 {
-    SimpleShaderProgram& program = SimpleShaderProgram::getInstance();
+    SimpleShaderProgram &program = SimpleShaderProgram::getInstance();
 
     program.setUseObjRef(true);
     program.setObjRef(pos);
@@ -128,14 +128,14 @@ void ProgressRing::draw(const float* pos, float percentage) const
 
     if (finishedVertices < static_cast<int>(m_vertices.numVertices()))
     {
-        const Color* frontColor = getFrontColor(percentage);
+        const Color *frontColor = getFrontColor(percentage);
         program.setColor(frontColor->getColor());
         glDrawArrays(GL_TRIANGLES, finishedVertices,
                      m_vertices.numVertices() - finishedVertices);
     }
 }
 
-const Color* ProgressRing::getFrontColor(float percentage) const
+const Color *ProgressRing::getFrontColor(float percentage) const
 {
     int idx = static_cast<int>(floor(percentage * m_numFrontColors));
 

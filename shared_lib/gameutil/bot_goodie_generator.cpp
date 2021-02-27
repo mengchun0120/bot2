@@ -11,7 +11,7 @@ GoodieGenerator::GoodieGenerator()
 {
 }
 
-void GoodieGenerator::init(const NamedMap<GoodieTemplate>& goodieLib)
+void GoodieGenerator::init(const NamedMap<GoodieTemplate> &goodieLib)
 {
     int count = static_cast<int>(goodieLib.getNumObjs());
 

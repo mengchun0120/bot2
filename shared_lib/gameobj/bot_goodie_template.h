@@ -27,7 +27,7 @@ public:
     virtual ~GoodieTemplate()
     {}
 
-    bool init(const rapidjson::Value& elem);
+    bool init(const rapidjson::Value &elem);
 
     GoodieType getGoodieType() const
     {
@@ -39,42 +39,42 @@ public:
         m_goodieType = goodieType;
     }
 
-    const Rectangle* getRect() const
+    const Rectangle *getRect() const
     {
         return m_rect;
     }
 
-    void setRect(const Rectangle* rect)
+    void setRect(const Rectangle *rect)
     {
         m_rect = rect;
     }
 
-    const Rectangle* getEffectRect() const
+    const Rectangle *getEffectRect() const
     {
         return m_effectRect;
     }
 
-    void setEffectRect(const Rectangle* rect)
+    void setEffectRect(const Rectangle *rect)
     {
         m_effectRect = rect;
     }
 
-    const Texture* getTexture() const
+    const Texture *getTexture() const
     {
         return m_texture;
     }
 
-    void setTexture(const Texture* texture)
+    void setTexture(const Texture *texture)
     {
         m_texture = texture;
     }
 
-    const ProgressRing* getProgressRing() const
+    const ProgressRing *getProgressRing() const
     {
         return m_ring;
     }
 
-    void setProgressRing(const ProgressRing* ring)
+    void setProgressRing(const ProgressRing *ring)
     {
         m_ring = ring;
     }
@@ -116,10 +116,10 @@ public:
 
 private:
     GoodieType m_goodieType;
-    const Rectangle* m_rect;
-    const Rectangle* m_effectRect;
-    const Texture* m_texture;
-    const ProgressRing* m_ring;
+    const Rectangle *m_rect;
+    const Rectangle *m_effectRect;
+    const Texture *m_texture;
+    const ProgressRing *m_ring;
     float m_duration;
     float m_weight;
 };

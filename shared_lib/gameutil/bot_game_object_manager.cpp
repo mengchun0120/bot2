@@ -24,22 +24,22 @@ GameObjectManager::~GameObjectManager()
     delete m_player;
 }
 
-void GameObjectManager::init(Dashboard* dashboard)
+void GameObjectManager::init(Dashboard *dashboard)
 {
-    const AppConfig& cfg = AppConfig::getInstance();
+    const AppConfig &cfg = AppConfig::getInstance();
     m_lib = &(GameLib::getInstance());
     m_missilePool.init(cfg.getMissilePoolSize());
     m_goodieGenerator.init(m_lib->getGoodieTemplateLib());
     m_dashboard = dashboard;
 
-    const GameConfig& gameCfg = m_lib->getGameConfig();
+    const GameConfig &gameCfg = m_lib->getGameConfig();
     m_gameObjItemPool.init(gameCfg.getGameObjItemPoolSize());
 }
 
-Tile* GameObjectManager::createTile(const std::string& tileName, int level,
+Tile *GameObjectManager::createTile(const std::string &tileName, int level,
                                     float x, float y)
 {
-    const TileTemplate* tileTemplate = m_lib->getTileTemplate(tileName);
+    const TileTemplate *tileTemplate = m_lib->getTileTemplate(tileName);
     if (!tileTemplate)
     {
         LOG_ERROR("Failed to find tile template %s", tileName.c_str());
@@ -49,10 +49,10 @@ Tile* GameObjectManager::createTile(const std::string& tileName, int level,
     return createTile(tileTemplate, level, x, y);
 }
 
-Tile* GameObjectManager::createTile(const TileTemplate* tileTemplate, int level,
+Tile *GameObjectManager::createTile(const TileTemplate *tileTemplate, int level,
                                     float x, float y)
 {
-    Tile* tile = new Tile();
+    Tile *tile = new Tile();
 
     if (!tile->init(tileTemplate, level, x, y))
     {
@@ -65,16 +65,16 @@ Tile* GameObjectManager::createTile(const TileTemplate* tileTemplate, int level,
     return tile;
 }
 
-AIRobot* GameObjectManager::createRobot(
-                         const std::string& robotName, Side side,
+AIRobot *GameObjectManager::createRobot(
+                         const std::string &robotName, Side side,
                          int hpLevel, int hpRestoreLevel,
                          int armorLevel, int armorRepairLevel,
                          int powerLevel, int powerRestoreLevel,
                          int weaponLevel, int moverLevel,
-                         const std::vector<int>& skillLevels,
+                         const std::vector<int> &skillLevels,
                          float x, float y, float directionX, float directionY)
 {
-    const AIRobotTemplate* aiRobotTemplate =
+    const AIRobotTemplate *aiRobotTemplate =
                                  m_lib->getAIRobotTemplate(robotName);
     if (!aiRobotTemplate)
     {
@@ -90,16 +90,16 @@ AIRobot* GameObjectManager::createRobot(
                        x, y, directionX, directionY);
 }
 
-AIRobot* GameObjectManager::createRobot(
-                         const AIRobotTemplate* aiRobotTemplate, Side side,
+AIRobot *GameObjectManager::createRobot(
+                         const AIRobotTemplate *aiRobotTemplate, Side side,
                          int hpLevel, int hpRestoreLevel,
                          int armorLevel, int armorRepairLevel,
                          int powerLevel, int powerRestoreLevel,
                          int weaponLevel, int moverLevel,
-                         const std::vector<int>& skillLevels,
+                         const std::vector<int> &skillLevels,
                          float x, float y, float directionX, float directionY)
 {
-    AIRobot* robot = new AIRobot();
+    AIRobot *robot = new AIRobot();
     bool ret = robot->init(aiRobotTemplate, side,
                            hpLevel, hpRestoreLevel,
                            armorLevel, armorRepairLevel,
@@ -123,15 +123,15 @@ AIRobot* GameObjectManager::createRobot(
     return robot;
 }
 
-AIRobot* GameObjectManager::createRobot(
-                         const std::string& robotName, Side side,
+AIRobot *GameObjectManager::createRobot(
+                         const std::string &robotName, Side side,
                          int hpLevel, int hpRestoreLevel,
                          int armorLevel, int armorRepairLevel,
                          int powerLevel, int powerRestoreLevel,
                          int weaponLevel, int moverLevel, int skillLevel,
                          float x, float y, float directionX, float directionY)
 {
-    const AIRobotTemplate* aiRobotTemplate =
+    const AIRobotTemplate *aiRobotTemplate =
                                  m_lib->getAIRobotTemplate(robotName);
     if (!aiRobotTemplate)
     {
@@ -147,15 +147,15 @@ AIRobot* GameObjectManager::createRobot(
                        x, y, directionX, directionY);
 }
 
-AIRobot* GameObjectManager::createRobot(
-                         const AIRobotTemplate* aiRobotTemplate, Side side,
+AIRobot *GameObjectManager::createRobot(
+                         const AIRobotTemplate *aiRobotTemplate, Side side,
                          int hpLevel, int hpRestoreLevel,
                          int armorLevel, int armorRepairLevel,
                          int powerLevel, int powerRestoreLevel,
                          int weaponLevel, int moverLevel, int skillLevel,
                          float x, float y, float directionX, float directionY)
 {
-    AIRobot* robot = new AIRobot();
+    AIRobot *robot = new AIRobot();
     bool ret = robot->init(aiRobotTemplate, side,
                            hpLevel, hpRestoreLevel,
                            armorLevel, armorRepairLevel,
@@ -179,13 +179,13 @@ AIRobot* GameObjectManager::createRobot(
     return robot;
 }
 
-Missile* GameObjectManager::createMissile(
-                           const MissileTemplate* missileTemplate,
+Missile *GameObjectManager::createMissile(
+                           const MissileTemplate *missileTemplate,
                            Side side, float x, float y,
                            float directionX, float directionY,
                            float damage, float speed)
 {
-    Missile* missile = m_missilePool.alloc(
+    Missile *missile = m_missilePool.alloc(
                             missileTemplate, side, x, y,
                             directionX, directionY, damage, speed);
 
@@ -199,11 +199,11 @@ Missile* GameObjectManager::createMissile(
     return missile;
 }
 
-ParticleEffect* GameObjectManager::createParticleEffect(
-                            const ParticleEffectTemplate* t,
+ParticleEffect *GameObjectManager::createParticleEffect(
+                            const ParticleEffectTemplate *t,
                             float x, float y)
 {
-    ParticleEffect* effect = m_particleEffectPool.alloc();
+    ParticleEffect *effect = m_particleEffectPool.alloc();
     bool ret = effect->init(t, x, y);
     if (!ret)
     {
@@ -215,7 +215,7 @@ ParticleEffect* GameObjectManager::createParticleEffect(
     return effect;
 }
 
-Player* GameObjectManager::createPlayer(float x, float y,
+Player *GameObjectManager::createPlayer(float x, float y,
                                         float directionX, float directionY)
 {
     m_player = new Player();
@@ -230,7 +230,7 @@ Player* GameObjectManager::createPlayer(float x, float y,
     return m_player;
 }
 
-Goodie* GameObjectManager::createGoodie(float prob, float x, float y)
+Goodie *GameObjectManager::createGoodie(float prob, float x, float y)
 {
     int goodieIdx = m_goodieGenerator.generate(prob);
     if (goodieIdx < 0)
@@ -238,8 +238,8 @@ Goodie* GameObjectManager::createGoodie(float prob, float x, float y)
         return nullptr;
     }
 
-    const GoodieTemplate* t = m_lib->getGoodieTemplateLib().getObjAt(goodieIdx);
-    Goodie* goodie = new Goodie();
+    const GoodieTemplate *t = m_lib->getGoodieTemplateLib().getObjAt(goodieIdx);
+    Goodie *goodie = new Goodie();
     bool ret = goodie->init(t, x, y);
     if (!ret)
     {
@@ -258,20 +258,20 @@ bool GameObjectManager::isPlayerAlive() const
     return m_player && !m_player->testFlag(DEAD_FLAG);
 }
 
-void GameObjectManager::sendToDissolveQueue(GameObject* obj)
+void GameObjectManager::sendToDissolveQueue(GameObject *obj)
 {
     switch (obj->getType())
     {
         case GAME_OBJ_TYPE_TILE:
         {
-            Tile* tile = static_cast<Tile*>(obj);
+            Tile *tile = static_cast<Tile*>(obj);
             m_activeTiles.unlink(tile);
             m_dissolveObjects.add(obj);
             break;
         }
         case GAME_OBJ_TYPE_ROBOT:
         {
-            Robot* robot = static_cast<Robot*>(obj);
+            Robot *robot = static_cast<Robot*>(obj);
             if (robot->getSide() == SIDE_AI)
             {
                 m_activeRobots.unlink(robot);
@@ -294,13 +294,13 @@ void GameObjectManager::sendToDissolveQueue(GameObject* obj)
     obj->setFlag(GAME_OBJ_FLAG_DISSOLVE);
 }
 
-void GameObjectManager::sendToDeathQueue(GameObject* obj)
+void GameObjectManager::sendToDeathQueue(GameObject *obj)
 {
     switch (obj->getType())
     {
         case GAME_OBJ_TYPE_TILE:
         {
-            Tile* tile = static_cast<Tile*>(obj);
+            Tile *tile = static_cast<Tile*>(obj);
             if (tile->testFlag(GAME_OBJ_FLAG_DISSOLVE))
             {
                 m_dissolveObjects.unlink(tile);
@@ -315,7 +315,7 @@ void GameObjectManager::sendToDeathQueue(GameObject* obj)
         }
         case GAME_OBJ_TYPE_ROBOT:
         {
-            Robot* robot = static_cast<Robot*>(obj);
+            Robot *robot = static_cast<Robot*>(obj);
             if (robot->testFlag(GAME_OBJ_FLAG_DISSOLVE))
             {
                 m_dissolveObjects.unlink(robot);
@@ -330,14 +330,14 @@ void GameObjectManager::sendToDeathQueue(GameObject* obj)
         }
         case GAME_OBJ_TYPE_MISSILE:
         {
-            Missile* missile = static_cast<Missile*>(obj);
+            Missile *missile = static_cast<Missile*>(obj);
             m_activeMissiles.unlink(missile);
             m_deadObjects.add(obj);
             break;
         }
         case GAME_OBJ_TYPE_PARTICLE_EFFECT:
         {
-            ParticleEffect* effect = static_cast<ParticleEffect*>(obj);
+            ParticleEffect *effect = static_cast<ParticleEffect*>(obj);
             m_activeParticleEffect.unlink(effect);
             m_deadObjects.add(obj);
             break;
@@ -348,7 +348,7 @@ void GameObjectManager::sendToDeathQueue(GameObject* obj)
         }
         case GAME_OBJ_TYPE_GOODIE:
         {
-            Goodie* goodie = static_cast<Goodie*>(obj);
+            Goodie *goodie = static_cast<Goodie*>(obj);
             m_activeGoodies.unlink(goodie);
             m_deadObjects.add(obj);
             break;
@@ -365,7 +365,7 @@ void GameObjectManager::sendToDeathQueue(GameObject* obj)
 
 void GameObjectManager::clearDeadObjects()
 {
-    auto deallocator = [this](GameObject* obj)
+    auto deallocator = [this](GameObject *obj)
     {
         if (obj->getType() == GAME_OBJ_TYPE_MISSILE)
         {
@@ -392,7 +392,7 @@ void GameObjectManager::clearActiveObjects()
     m_numActiveAIRobots = 0;
     m_activeGoodies.clear();
 
-    auto missileDeallocator = [this](Missile* missile)
+    auto missileDeallocator = [this](Missile *missile)
     {
         missile->onDealloc();
         m_missilePool.free(missile);
@@ -400,7 +400,7 @@ void GameObjectManager::clearActiveObjects()
 
     m_activeMissiles.clear(missileDeallocator);
 
-    auto particleEffectDeallocator = [this](ParticleEffect* effect)
+    auto particleEffectDeallocator = [this](ParticleEffect *effect)
     {
         m_particleEffectPool.free(effect);
     };
@@ -413,21 +413,21 @@ void GameObjectManager::clearDissolveObjects()
     m_dissolveObjects.clear();
 }
 
-GameObjectItem* GameObjectManager::allocGameObjItem(GameObject* obj)
+GameObjectItem *GameObjectManager::allocGameObjItem(GameObject *obj)
 {
-    GameObjectItem* item = m_gameObjItemPool.alloc();
+    GameObjectItem *item = m_gameObjItemPool.alloc();
     item->setObj(obj);
     return item;
 }
 
-void GameObjectManager::freeGameObjItem(GameObjectItem* item)
+void GameObjectManager::freeGameObjItem(GameObjectItem *item)
 {
     m_gameObjItemPool.free(item);
 }
 
-void GameObjectManager::freeGameObjItems(LinkedList<GameObjectItem>& items)
+void GameObjectManager::freeGameObjItems(LinkedList<GameObjectItem> &items)
 {
-    auto deallocator = [this](GameObjectItem* i)
+    auto deallocator = [this](GameObjectItem *i)
     {
         m_gameObjItemPool.free(i);
     };

@@ -17,7 +17,7 @@ public:
     virtual ~Missile()
     {}
 
-    bool init(const MissileTemplate* t, Side side, float x, float y,
+    bool init(const MissileTemplate *t, Side side, float x, float y,
               float directionX, float directionY, float damage, float speed);
 
     Side getSide() const
@@ -67,10 +67,10 @@ public:
     void setDirection(float directionX, float directionY);
 
 protected:
-    void explode(GameScreen& screen, float explodeBreath,
-                 const ParticleEffectTemplate* explosionTemplate);
+    void explode(GameScreen &screen, float explodeBreath,
+                 const ParticleEffectTemplate *explosionTemplate);
 
-    bool checkExplosion(GameObject* obj, float left, float bottom,
+    bool checkExplosion(GameObject *obj, float left, float bottom,
                         float right, float top);
 
 protected:

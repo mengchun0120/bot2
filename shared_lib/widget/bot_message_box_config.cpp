@@ -15,8 +15,8 @@ MessageBoxConfig::MessageBoxConfig()
 {
 }
 
-bool MessageBoxConfig::init(const std::string& configFile,
-                            const NamedMap<Color>& colorLib)
+bool MessageBoxConfig::init(const std::string &configFile,
+                            const NamedMap<Color> &colorLib)
 {
     rapidjson::Document doc;
 
@@ -31,7 +31,7 @@ bool MessageBoxConfig::init(const std::string& configFile,
         return false;
     }
 
-    const rapidjson::Value& val = doc.GetObject();
+    const rapidjson::Value &val = doc.GetObject();
     std::string boxFillColorName, boxBorderColorName, textColorName;
     std::vector<JsonParamPtr> params = {
         jsonParam(boxFillColorName, "boxFillColor"),

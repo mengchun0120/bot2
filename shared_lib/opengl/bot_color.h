@@ -24,16 +24,16 @@ public:
 
     static bool validateColor(float red, float green, float blue, float alpha);
 
-    static Color* create(const rapidjson::Value& elem);
+    static Color *create(const rapidjson::Value &elem);
 
     Color();
 
-    Color(const Color& other);
+    Color(const Color &other);
 
     ~Color()
     {}
 
-    bool init(const rapidjson::Value& elem);
+    bool init(const rapidjson::Value &elem);
 
     bool init(int red, int green, int blue, int alpha);
 
@@ -43,9 +43,9 @@ public:
 
     bool init(const std::vector<float> colorVec);
 
-    Color& operator=(const Color& other);
+    Color &operator=(const Color &other);
 
-    Color& operator*=(const Color& other);
+    Color &operator*=(const Color &other);
 
     const float *getColor() const
     {

@@ -10,7 +10,7 @@ std::string getFileSeparator();
 
 std::string constructPath(std::initializer_list<std::string> s);
 
-bool readText(std::string& text, const std::string& fileName);
+bool readText(std::string &text, const std::string &fileName);
 
 } // end of namespace bot
 

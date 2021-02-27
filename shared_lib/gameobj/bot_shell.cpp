@@ -15,7 +15,7 @@ Shell::~Shell()
 {
 }
 
-bool Shell::init(const ShellTemplate* t, Side side, float x, float y,
+bool Shell::init(const ShellTemplate *t, Side side, float x, float y,
                  float directionX, float directionY, float damage, float speed)
 {
     return Missile::init(t, side, x, y, directionX, directionY, damage, speed);
@@ -23,12 +23,12 @@ bool Shell::init(const ShellTemplate* t, Side side, float x, float y,
 
 void Shell::present()
 {
-    const ShellTemplate* t = getTemplate();
+    const ShellTemplate *t = getTemplate();
     t->getRect()->draw(m_pos, m_direction, nullptr, nullptr,
                        *(t->getTexture()), nullptr);
 }
 
-void Shell::update(float delta, GameScreen& screen)
+void Shell::update(float delta, GameScreen &screen)
 {
     float deltaX = getSpeedX() * delta;
     float deltaY = getSpeedY() * delta;
@@ -37,7 +37,7 @@ void Shell::update(float delta, GameScreen& screen)
     checkCollision(screen);
 }
 
-bool Shell::onEntry(GameScreen& screen)
+bool Shell::onEntry(GameScreen &screen)
 {
     if (checkCollision(screen))
     {
@@ -48,26 +48,26 @@ bool Shell::onEntry(GameScreen& screen)
     return false;
 }
 
-void Shell::onHit(GameScreen& screen, GameObject& obj)
+void Shell::onHit(GameScreen &screen, GameObject &obj)
 {
     if (obj.getType() != GAME_OBJ_TYPE_ROBOT)
     {
         return;
     }
 
-    const ShellTemplate* t = getTemplate();
+    const ShellTemplate *t = getTemplate();
     explode(screen, t->getExplodeBreath(), t->getImpactEffectTemplate());
 }
 
-void Shell::onDeath(GameScreen& screen)
+void Shell::onDeath(GameScreen &screen)
 {
-    GameObjectManager& gameObjMgr = screen.getGameObjManager();
+    GameObjectManager &gameObjMgr = screen.getGameObjManager();
     gameObjMgr.sendToDeathQueue(this);
 }
 
-bool Shell::checkCollision(GameScreen& screen)
+bool Shell::checkCollision(GameScreen &screen)
 {
-    GameMap& map = screen.getMap();
+    GameMap &map = screen.getMap();
 
     ReturnCode rc = map.checkCollision(this, nullptr);
 
@@ -82,7 +82,7 @@ bool Shell::checkCollision(GameScreen& screen)
         return true;
     }
 
-    const ShellTemplate* t = getTemplate();
+    const ShellTemplate *t = getTemplate();
 
     explode(screen, t->getExplodeBreath(), t->getImpactEffectTemplate());
 

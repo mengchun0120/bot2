@@ -21,35 +21,35 @@ public:
     ~ButtonConfig()
     {}
 
-    bool init(const std::string& configFile,
-              const NamedMap<Texture>& textureLib,
-              const NamedMap<Color>& colorLib);
+    bool init(const std::string &configFile,
+              const NamedMap<Texture> &textureLib,
+              const NamedMap<Color> &colorLib);
 
-    const Texture* getTexture() const
+    const Texture *getTexture() const
     {
         return m_texture;
     }
 
-    const Color* getNormalTextColor() const
+    const Color *getNormalTextColor() const
     {
         return m_normalTextColor;
     }
 
-    const Color* getHoverTextColor() const
+    const Color *getHoverTextColor() const
     {
         return m_hoverTextColor;
     }
 
-    const Color* getPressTextColor() const
+    const Color *getPressTextColor() const
     {
         return m_pressTextColor;
     }
 
 private:
-    const Texture* m_texture;
-    const Color* m_normalTextColor;
-    const Color* m_hoverTextColor;
-    const Color* m_pressTextColor;
+    const Texture *m_texture;
+    const Color *m_normalTextColor;
+    const Color *m_hoverTextColor;
+    const Color *m_pressTextColor;
 };
 
 } // end of namespace bot

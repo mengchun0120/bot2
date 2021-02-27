@@ -14,9 +14,9 @@ public:
     virtual ~Goodie()
     {}
 
-    bool init(const GoodieTemplate* t, float x, float y);
+    bool init(const GoodieTemplate *t, float x, float y);
 
-    const GoodieTemplate* getTemplate() const
+    const GoodieTemplate *getTemplate() const
     {
         return static_cast<const GoodieTemplate*>(m_template);
     }
@@ -28,7 +28,7 @@ public:
 
     virtual void present();
 
-    virtual void update(float delta, GameScreen& screen)
+    virtual void update(float delta, GameScreen &screen)
     {}
 };
 

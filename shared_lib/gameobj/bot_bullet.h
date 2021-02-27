@@ -15,29 +15,29 @@ public:
 
     virtual ~Bullet();
 
-    bool init(const BulletTemplate* t, Side side, float x, float y,
+    bool init(const BulletTemplate *t, Side side, float x, float y,
               float directionX, float directionY, float damage, float speed);
 
-    const BulletTemplate* getTemplate() const
+    const BulletTemplate *getTemplate() const
     {
         return static_cast<const BulletTemplate*>(m_template);
     }
 
     virtual void present();
 
-    virtual void update(float delta, GameScreen& screen);
+    virtual void update(float delta, GameScreen &screen);
 
-    virtual bool onEntry(GameScreen& screen);
+    virtual bool onEntry(GameScreen &screen);
 
-    virtual void onHit(GameScreen& screen, GameObject& obj);
+    virtual void onHit(GameScreen &screen, GameObject &obj);
 
-    virtual void onDeath(GameScreen& screen);
+    virtual void onDeath(GameScreen &screen);
 
 private:
-    bool checkCollision(GameScreen& screen);
+    bool checkCollision(GameScreen &screen);
 
-    void processCollideObjs(GameScreen& screen,
-                            LinkedList<GameObjectItem>& collideObjs);
+    void processCollideObjs(GameScreen &screen,
+                            LinkedList<GameObjectItem> &collideObjs);
 };
 
 } // end of namespace bot

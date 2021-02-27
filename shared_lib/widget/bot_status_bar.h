@@ -12,7 +12,7 @@ public:
 
     ~StatusBar();
 
-    bool init(const StatusBarTemplate* t, float x, float y);
+    bool init(const StatusBarTemplate *t, float x, float y);
 
     float getWidth() const
     {
@@ -24,7 +24,7 @@ public:
         return m_template->getHeight();
     }
 
-    void setText(const char* text);
+    void setText(const char *text);
 
     void setText(int i);
 
@@ -33,10 +33,10 @@ public:
     void draw();
 
 private:
-    const StatusBarTemplate* m_template;
+    const StatusBarTemplate *m_template;
     float m_texturePos[Constants::NUM_FLOATS_PER_POSITION];
     float m_textPos[Constants::NUM_FLOATS_PER_POSITION];
-    char* m_text;
+    char *m_text;
 };
 
 };

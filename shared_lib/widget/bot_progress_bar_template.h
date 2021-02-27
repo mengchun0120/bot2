@@ -18,19 +18,19 @@ public:
     ~ProgressBarTemplate()
     {}
 
-    bool init(const rapidjson::Value& elem);
+    bool init(const rapidjson::Value &elem);
 
-    const Texture* getTexture() const
+    const Texture *getTexture() const
     {
         return m_texture;
     }
 
-    const Color& getColor() const
+    const Color &getColor() const
     {
         return m_color;
     }
 
-    const Rectangle* getRect() const
+    const Rectangle *getRect() const
     {
         return m_rect;
     }
@@ -71,9 +71,9 @@ public:
     }
 
 private:
-    const Texture* m_texture;
+    const Texture *m_texture;
     Color m_color;
-    const Rectangle* m_rect;
+    const Rectangle *m_rect;
     float m_startOffset[Constants::NUM_FLOATS_PER_POSITION];
     float m_barWidth;
     float m_barHeight;

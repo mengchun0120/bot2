@@ -4,7 +4,7 @@
 
 namespace bot {
 
-bool GameConfig::load(const std::string& fileName)
+bool GameConfig::load(const std::string &fileName)
 {
     rapidjson::Document doc;
 
@@ -19,7 +19,7 @@ bool GameConfig::load(const std::string& fileName)
         return false;
     }
 
-    const rapidjson::Value& val = doc.GetObject();
+    const rapidjson::Value &val = doc.GetObject();
     std::vector<JsonParamPtr> params = {
         jsonParam(m_dissolveTimeMS, "dissolveTimeMS",
                   gt(m_dissolveTimeMS, 0.0f)),

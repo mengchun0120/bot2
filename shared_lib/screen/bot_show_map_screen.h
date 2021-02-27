@@ -25,7 +25,7 @@ public:
     virtual int processInput(const InputEvent &e);
 
 private:
-    int handleKey(const KeyEvent& e);
+    int handleKey(const KeyEvent &e);
 
 private:
     GameMap m_map;

@@ -15,7 +15,7 @@ ParticleEffectTemplate::ParticleEffectTemplate()
     , m_color(nullptr)
 {}
 
-bool ParticleEffectTemplate::init(const rapidjson::Value& elem)
+bool ParticleEffectTemplate::init(const rapidjson::Value &elem)
 {
     if (!GameObjectTemplate::init(elem))
     {
@@ -57,7 +57,7 @@ bool ParticleEffectTemplate::init(const rapidjson::Value& elem)
 
     m_numParticles = static_cast<int>(data.size()) / NUM_FLOATS_PER_PARTICLE;
 
-    const GameLib& lib = GameLib::getInstance();
+    const GameLib &lib = GameLib::getInstance();
 
     m_texture = lib.getTexture(textureName);
     if (!m_texture)

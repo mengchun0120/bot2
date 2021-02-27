@@ -17,7 +17,7 @@ IslandMapGenerator::IslandMapGenerator()
 {
 }
 
-bool IslandMapGenerator::init(const rapidjson::Value& json)
+bool IslandMapGenerator::init(const rapidjson::Value &json)
 {
     if (!MapGenerator::init(json))
     {
@@ -41,13 +41,13 @@ bool IslandMapGenerator::init(const rapidjson::Value& json)
         return false;
     }
 
-    const GameLib& lib = GameLib::getInstance();
+    const GameLib &lib = GameLib::getInstance();
     int islandTileCount = static_cast<int>(m_islandTiles.size());
 
     m_islandTileTemplates.resize(islandTileCount);
     for (int i = 0; i < islandTileCount; ++i)
     {
-        const TileTemplate* t = lib.getTileTemplate(m_islandTiles[i]);
+        const TileTemplate *t = lib.getTileTemplate(m_islandTiles[i]);
         if (!t)
         {
             LOG_ERROR("Failed to find tile template %s",
@@ -72,7 +72,7 @@ bool IslandMapGenerator::init(const rapidjson::Value& json)
     return true;
 }
 
-bool IslandMapGenerator::generate(const char* fileName)
+bool IslandMapGenerator::generate(const char *fileName)
 {
     int rowCount = m_rand.get(m_minRowCount, m_maxRowCount + 1);
     int colCount = m_rand.get(m_minColCount, m_maxColCount + 1);
@@ -97,7 +97,7 @@ bool IslandMapGenerator::generate(const char* fileName)
     return true;
 }
 
-void IslandMapGenerator::generateTiles(GeneratedMap& map)
+void IslandMapGenerator::generateTiles(GeneratedMap &map)
 {
     LOG_INFO("Generating tiles");
 
@@ -138,7 +138,7 @@ void IslandMapGenerator::generateTiles(GeneratedMap& map)
         while (true)
         {
             int tileTypeIdx = m_rand.get(0, tileTypeCount);
-            const TileTemplate* t = m_islandTileTemplates[tileTypeIdx];
+            const TileTemplate *t = m_islandTileTemplates[tileTypeIdx];
             float tileHeight = t->getCoverBreath() * 2.0f;
             float tileWidth = t->getCoverBreath() * 2.0f;
 
@@ -189,8 +189,8 @@ void IslandMapGenerator::generateTiles(GeneratedMap& map)
 }
 
 void IslandMapGenerator::generateIsland(
-                            GeneratedMap& map, const std::string* tileName,
-                            const TileTemplate* t, int islandSlotX,
+                            GeneratedMap &map, const std::string *tileName,
+                            const TileTemplate *t, int islandSlotX,
                             int islandSlotY, int rows, int cols)
 {
     float tileHeight = t->getCoverBreath() * 2.0f;

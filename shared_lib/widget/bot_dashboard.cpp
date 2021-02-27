@@ -9,15 +9,15 @@
 namespace bot {
 
 bool getProgressBarTemplates(
-            std::vector<const ProgressBarTemplate*>& barTemplates,
-            const char* barNames[], int barCount)
+            std::vector<const ProgressBarTemplate*> &barTemplates,
+            const char *barNames[], int barCount)
 {
-    const GameLib& lib = GameLib::getInstance();
+    const GameLib &lib = GameLib::getInstance();
 
     barTemplates.resize(barCount);
     for (int i = 0; i < barCount; ++i)
     {
-        const ProgressBarTemplate* t = lib.getProgressBarTemplate(barNames[i]);
+        const ProgressBarTemplate *t = lib.getProgressBarTemplate(barNames[i]);
         if (!t)
         {
             LOG_ERROR("Failed to find progress-bar %s", barNames[i]);
@@ -31,15 +31,15 @@ bool getProgressBarTemplates(
 }
 
 bool getStatusBarTemplates(
-            std::vector<const StatusBarTemplate*>& statusTemplates,
-            const char* statusNames[], int statusCount)
+            std::vector<const StatusBarTemplate*> &statusTemplates,
+            const char *statusNames[], int statusCount)
 {
-    const GameLib& lib = GameLib::getInstance();
+    const GameLib &lib = GameLib::getInstance();
 
     statusTemplates.resize(statusCount);
     for (int i = 0; i < statusCount; ++i)
     {
-        const StatusBarTemplate* t = lib.getStatusBarTemplate(statusNames[i]);
+        const StatusBarTemplate *t = lib.getStatusBarTemplate(statusNames[i]);
         if (!t)
         {
             LOG_ERROR("Failed to find progress-bar %s", statusNames[i]);
@@ -57,7 +57,7 @@ Dashboard::Dashboard()
 {
 }
 
-bool Dashboard::init(const GameScreen* screen)
+bool Dashboard::init(const GameScreen *screen)
 {
     if (!screen)
     {
@@ -83,14 +83,14 @@ bool Dashboard::init(const GameScreen* screen)
 bool Dashboard::initProgressBars()
 {
     std::vector<const ProgressBarTemplate*> barTemplates;
-    const char* barNames[] = {"power_bar", "armor_bar"};
+    const char *barNames[] = {"power_bar", "armor_bar"};
 
     if (!getProgressBarTemplates(barTemplates, barNames, BAR_COUNT))
     {
         return false;
     }
 
-    const DashboardConfig& cfg = GameLib::getInstance().getDashboardConfig();
+    const DashboardConfig &cfg = GameLib::getInstance().getDashboardConfig();
     float viewportWidth = App::getInstance().getViewportWidth();
     float totalWidth = 0.0f;
 
@@ -121,15 +121,15 @@ bool Dashboard::initProgressBars()
 bool Dashboard::initStatusBars()
 {
     std::vector<const StatusBarTemplate*> statusTemplates;
-    const char* statusNames[] = {"ai_robot_status"};
+    const char *statusNames[] = {"ai_robot_status"};
 
     if (!getStatusBarTemplates(statusTemplates, statusNames, STATUS_COUNT))
     {
         return false;
     }
 
-    const App& app = App::getInstance();
-    const DashboardConfig& cfg = GameLib::getInstance().getDashboardConfig();
+    const App &app = App::getInstance();
+    const DashboardConfig &cfg = GameLib::getInstance().getDashboardConfig();
     float viewportWidth = app.getViewportWidth();
     float viewportHeight = app.getViewportHeight();
     float totalWidth = 0.0f, maxHeight = 0.0f;
@@ -189,8 +189,8 @@ bool Dashboard::setProgressBarRatio(ProgressBarIndex idx, float ratio)
 
 void Dashboard::drawEffects()
 {
-    const Player* player = m_screen->getGameObjManager().getPlayer();
-    const GoodieEffect* effect = player->getFirstActiveEffect();
+    const Player *player = m_screen->getGameObjManager().getPlayer();
+    const GoodieEffect *effect = player->getFirstActiveEffect();
 
     for (; effect; effect = effect->getNext())
 

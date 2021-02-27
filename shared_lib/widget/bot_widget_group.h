@@ -27,11 +27,11 @@ public:
         return static_cast<int>(m_widgets.size());
     }
 
-    Widget* getWidget(unsigned int idx);
+    Widget *getWidget(unsigned int idx);
 
-    bool setWidget(unsigned int idx, Widget* widget);
+    bool setWidget(unsigned int idx, Widget *widget);
 
-    int processInput(const InputEvent& event);
+    int processInput(const InputEvent &event);
 
     void present();
 
@@ -48,11 +48,11 @@ public:
     }
 
 protected:
-    int processKeyEvent(const KeyEvent& event);
+    int processKeyEvent(const KeyEvent &event);
 
-    int processMouseMoveEvent(const MouseMoveEvent& event);
+    int processMouseMoveEvent(const MouseMoveEvent &event);
 
-    int processMouseButtonEvent(const MouseButtonEvent& event);
+    int processMouseButtonEvent(const MouseButtonEvent &event);
 
     int findWidget(float x, float y);
 

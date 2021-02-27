@@ -16,7 +16,7 @@ class App {
 public:
     static bool initInstance(Screen::Type startScreenType);
 
-    static App& getInstance()
+    static App &getInstance()
     {
         return *k_app;
     }
@@ -27,7 +27,7 @@ public:
 
     bool run();
 
-    GLFWwindow* getWindow()
+    GLFWwindow *getWindow()
     {
         return m_window;
     }
@@ -42,7 +42,7 @@ public:
         return m_viewportSize[1];
     }
 
-    const float* getViewportSize() const
+    const float *getViewportSize() const
     {
         return m_viewportSize;
     }
@@ -66,7 +66,7 @@ private:
 
 private:
     static std::shared_ptr<App> k_app;
-    GLFWwindow* m_window;
+    GLFWwindow *m_window;
     float m_viewportSize[Constants::NUM_FLOATS_PER_POSITION];
     InputManager m_inputMgr;
     TimeDeltaSmoother m_timeDeltaSmoother;

@@ -17,28 +17,28 @@ public:
     ~MessageBoxConfig()
     {}
 
-    bool init(const std::string& configFile,
-              const NamedMap<Color>& colorLib);
+    bool init(const std::string &configFile,
+              const NamedMap<Color> &colorLib);
 
-    const Color* getBoxFillColor() const
+    const Color *getBoxFillColor() const
     {
         return m_boxFillColor;
     }
 
-    const Color* getBoxBorderColor() const
+    const Color *getBoxBorderColor() const
     {
         return m_boxBorderColor;
     }
 
-    const Color* getTextColor() const
+    const Color *getTextColor() const
     {
         return m_textColor;
     }
 
 private:
-    const Color* m_boxFillColor;
-    const Color* m_boxBorderColor;
-    const Color* m_textColor;
+    const Color *m_boxFillColor;
+    const Color *m_boxBorderColor;
+    const Color *m_textColor;
 };
 
 } // end of namespace bot

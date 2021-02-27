@@ -9,7 +9,7 @@
 
 namespace bot {
 
-bool GameMapLoader::load(GameMap& map, const std::string& mapFile,
+bool GameMapLoader::load(GameMap &map, const std::string &mapFile,
                          int level, float viewportWidth, float viewportHeight)
 {
     if (level < 0)
@@ -74,7 +74,7 @@ bool GameMapLoader::load(GameMap& map, const std::string& mapFile,
     return true;
 }
 
-bool GameMapLoader::initMap(GameMap& map, const rapidjson::Value& mapJson,
+bool GameMapLoader::initMap(GameMap &map, const rapidjson::Value &mapJson,
                             float viewportWidth, float viewportHeight)
 {
     int numRows, numCols;
@@ -109,8 +109,8 @@ bool GameMapLoader::initMap(GameMap& map, const rapidjson::Value& mapJson,
     return true;
 }
 
-bool GameMapLoader::loadTiles(GameMap& map, int level,
-                              const rapidjson::Value& mapJson)
+bool GameMapLoader::loadTiles(GameMap &map, int level,
+                              const rapidjson::Value &mapJson)
 {
     std::string name;
     float x, y;
@@ -120,7 +120,7 @@ bool GameMapLoader::loadTiles(GameMap& map, int level,
         jsonParam(y, "y")
     };
 
-    auto parser = [&](const rapidjson::Value& item)->bool
+    auto parser = [&](const rapidjson::Value &item)->bool
     {
         if (!parseJson(params, item))
         {
@@ -138,10 +138,10 @@ bool GameMapLoader::loadTiles(GameMap& map, int level,
     return true;
 }
 
-bool GameMapLoader::addTile(GameMap& map, const std::string& name, int level,
+bool GameMapLoader::addTile(GameMap &map, const std::string &name, int level,
                             float x, float y)
 {
-    Tile* tile = m_gameObjManager.createTile(name, level, x, y);
+    Tile *tile = m_gameObjManager.createTile(name, level, x, y);
     if (!tile)
     {
         return false;
@@ -160,7 +160,7 @@ bool GameMapLoader::addTile(GameMap& map, const std::string& name, int level,
     return true;
 }
 
-bool GameMapLoader::loadRobots(GameMap& map, const rapidjson::Value& mapJson,
+bool GameMapLoader::loadRobots(GameMap &map, const rapidjson::Value &mapJson,
                                int level)
 {
     std::string name;
@@ -173,7 +173,7 @@ bool GameMapLoader::loadRobots(GameMap& map, const rapidjson::Value& mapJson,
         jsonParam(directionY, "directionY"),
     };
 
-    auto parser = [&](const rapidjson::Value& item)->bool
+    auto parser = [&](const rapidjson::Value &item)->bool
     {
         if (!parseJson(params, item))
         {
@@ -192,11 +192,11 @@ bool GameMapLoader::loadRobots(GameMap& map, const rapidjson::Value& mapJson,
     return true;
 }
 
-bool GameMapLoader::addRobot(GameMap& map, const std::string& name,
+bool GameMapLoader::addRobot(GameMap &map, const std::string &name,
                              int level, float x, float y,
                              float directionX, float directionY)
 {
-    AIRobot* robot = m_gameObjManager.createRobot(name, SIDE_AI,
+    AIRobot *robot = m_gameObjManager.createRobot(name, SIDE_AI,
                                                   level, 0,
                                                   level, 0,
                                                   level, level,
@@ -221,7 +221,7 @@ bool GameMapLoader::addRobot(GameMap& map, const std::string& name,
     return true;
 }
 
-bool GameMapLoader::loadPlayer(GameMap& map, const rapidjson::Value& mapJson)
+bool GameMapLoader::loadPlayer(GameMap &map, const rapidjson::Value &mapJson)
 {
     if (!mapJson.HasMember("player"))
     {
@@ -229,7 +229,7 @@ bool GameMapLoader::loadPlayer(GameMap& map, const rapidjson::Value& mapJson)
         return false;
     }
 
-    const rapidjson::Value& playerJson = mapJson["player"];
+    const rapidjson::Value &playerJson = mapJson["player"];
     if (!playerJson.IsObject())
     {
         LOG_ERROR("Invalid format for player config");
@@ -250,7 +250,7 @@ bool GameMapLoader::loadPlayer(GameMap& map, const rapidjson::Value& mapJson)
         return false;
     }
 
-    Player* player = m_gameObjManager.createPlayer(x, y,
+    Player *player = m_gameObjManager.createPlayer(x, y,
                                                    directionX, directionY);
     if (!player)
     {

@@ -5,13 +5,13 @@
 
 namespace bot {
 
-std::string getTextSystemImageFile(const std::string& fontFolder, int ch)
+std::string getTextSystemImageFile(const std::string &fontFolder, int ch)
 {
     std::string file = "ascii_" + std::to_string(ch) + ".png";
     return constructPath({ fontFolder, file });
 }
 
-bool loadTextSystemTextures(const std::string& fontFolder, Texture *textures)
+bool loadTextSystemTextures(const std::string &fontFolder, Texture *textures)
 {
     for (int ch = TextSystem::MIN_CHAR; ch <= TextSystem::MAX_CHAR; ++ch)
     {
@@ -28,8 +28,8 @@ bool loadTextSystemTextures(const std::string& fontFolder, Texture *textures)
 
 bool loadTextSystemRectangles(std::unordered_map<int, Rectangle> *rects,
                               Rectangle *rectMap[][TextSystem::CHAR_COUNT],
-                              float* charHeight, float* maxCharWidth,
-                              const Texture* textures)
+                              float *charHeight, float *maxCharWidth,
+                              const Texture *textures)
 {
     const float SCALE_FACTOR[] = {1.0f, 0.75f, 0.5f, 0.36f};
 
@@ -74,9 +74,9 @@ bool loadTextSystemRectangles(std::unordered_map<int, Rectangle> *rects,
 
 std::shared_ptr<TextSystem> TextSystem::k_textSys;
 
-bool TextSystem::initInstance(const std::string& fontFolder)
+bool TextSystem::initInstance(const std::string &fontFolder)
 {
-    TextSystem* textSys = new TextSystem();
+    TextSystem *textSys = new TextSystem();
     k_textSys.reset(textSys);
 
     if (!textSys->init(fontFolder))
@@ -96,7 +96,7 @@ TextSystem::~TextSystem()
 {
 }
 
-bool TextSystem::init(const std::string& fontFolder)
+bool TextSystem::init(const std::string &fontFolder)
 {
     if (!loadTextSystemTextures(fontFolder, m_textures))
     {
@@ -113,8 +113,8 @@ bool TextSystem::init(const std::string& fontFolder)
     return true;
 }
 
-void TextSystem::drawString(const char* str, TextSize size,
-                            const float* pos, const float* color) const
+void TextSystem::drawString(const char *str, TextSize size,
+                            const float *pos, const float *color) const
 {
     if (!isValidTextSize(size))
     {
@@ -127,7 +127,7 @@ void TextSystem::drawString(const char* str, TextSize size,
         return;
     }
 
-    SimpleShaderProgram& program = SimpleShaderProgram::getInstance();
+    SimpleShaderProgram &program = SimpleShaderProgram::getInstance();
 
     program.setUseColor(false);
     program.setUseObjRef(true);
@@ -143,11 +143,11 @@ void TextSystem::drawString(const char* str, TextSize size,
     }
 
     float realPos[] = { pos[0], pos[1] };
-    Rectangle* rect = m_rectMap[size][str[0] - MIN_CHAR];
+    Rectangle *rect = m_rectMap[size][str[0] - MIN_CHAR];
     float halfWidth = rect->width() / 2.0f;
     realPos[0] += halfWidth;
     realPos[1] += rect->height() / 2.0f;
-    const char* p = str;
+    const char *p = str;
 
     while(true)
     {
@@ -190,8 +190,8 @@ float TextSystem::getMaxCharWidth(TextSize sz) const
     return m_maxCharWidth[sz];
 }
 
-void TextSystem::getStringSize(float& width, float& height, TextSize sz,
-                               const char* str) const
+void TextSystem::getStringSize(float &width, float &height, TextSize sz,
+                               const char *str) const
 {
     if (*str == '\0')
     {
@@ -200,16 +200,16 @@ void TextSystem::getStringSize(float& width, float& height, TextSize sz,
         return;
     }
 
-    const char* p = str;
+    const char *p = str;
 
-    const Rectangle& rect = getRect(sz, *p);
+    const Rectangle &rect = getRect(sz, *p);
     height = rect.height();
 
     float w = rect.width();
 
     for (++p; *p != '\0'; ++p)
     {
-        const Rectangle& r = getRect(sz, *p);
+        const Rectangle &r = getRect(sz, *p);
         w += r.width();
     }
 

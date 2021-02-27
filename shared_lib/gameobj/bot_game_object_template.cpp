@@ -11,7 +11,7 @@ GameObjectTemplate::GameObjectTemplate(GameObjectType type)
     , m_flags(0)
 {}
 
-bool GameObjectTemplate::init(const rapidjson::Value& elem)
+bool GameObjectTemplate::init(const rapidjson::Value &elem)
 {
     float coverBreath, collideBreath;
     std::vector<JsonParamPtr> params =

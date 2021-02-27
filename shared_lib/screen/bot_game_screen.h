@@ -30,7 +30,7 @@ public:
 
     bool init();
 
-    bool loadMap(const std::string& fileName);
+    bool loadMap(const std::string &fileName);
 
     virtual int update(float delta);
 
@@ -38,22 +38,22 @@ public:
 
     virtual int processInput(const InputEvent &e);
 
-    GameMap& getMap()
+    GameMap &getMap()
     {
         return m_map;
     }
 
-    const GameMap& getMap() const
+    const GameMap &getMap() const
     {
         return m_map;
     }
 
-    GameObjectManager& getGameObjManager()
+    GameObjectManager &getGameObjManager()
     {
         return m_gameObjManager;
     }
 
-    const GameObjectManager& getGameObjManager() const
+    const GameObjectManager &getGameObjManager() const
     {
         return m_gameObjManager;
     }
@@ -80,11 +80,11 @@ private:
 
     void clearDeadObjects();
 
-    int handleMouseMove(const MouseMoveEvent& e);
+    int handleMouseMove(const MouseMoveEvent &e);
 
-    int handleMouseButton(const MouseButtonEvent& e);
+    int handleMouseButton(const MouseButtonEvent &e);
 
-    int handleKey(const KeyEvent& e);
+    int handleKey(const KeyEvent &e);
 
     int switchToStart();
 
@@ -93,7 +93,7 @@ private:
     int resume();
 
 private:
-    GLFWwindow* m_window;
+    GLFWwindow *m_window;
     GameMap m_map;
     GameState m_state;
     GameObjectManager m_gameObjManager;

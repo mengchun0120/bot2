@@ -19,7 +19,7 @@ StatusBar::~StatusBar()
     delete m_text;
 }
 
-bool StatusBar::init(const StatusBarTemplate* t, float x, float y)
+bool StatusBar::init(const StatusBarTemplate *t, float x, float y)
 {
     if (!t)
     {
@@ -40,7 +40,7 @@ bool StatusBar::init(const StatusBarTemplate* t, float x, float y)
     return true;
 }
 
-void StatusBar::setText(const char* text)
+void StatusBar::setText(const char *text)
 {
     strncpy(m_text, text, m_template->getTextLen());
 }
@@ -61,7 +61,7 @@ void StatusBar::draw()
                                m_template->getTexture()->textureId(),
                                nullptr);
 
-    const TextSystem& textSys = TextSystem::getInstance();
+    const TextSystem &textSys = TextSystem::getInstance();
     textSys.drawString(m_text, m_template->getTextSize(), m_textPos,
                        m_template->getTextColor().getColor());
 }

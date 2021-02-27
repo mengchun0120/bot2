@@ -9,7 +9,7 @@
 
 namespace bot {
 
-void randomDirection(Random& rand, float& directionX, float& directionY)
+void randomDirection(Random &rand, float &directionX, float &directionY)
 {
     static double TWO_PI = 2.0 * 3.14159265358979323846;
     double theta = rand.get(0.0, TWO_PI);
@@ -17,10 +17,10 @@ void randomDirection(Random& rand, float& directionX, float& directionY)
     directionY = static_cast<float>(sin(theta));
 }
 
-MapGenerator* MapGenerator::create(const std::string& name,
-                                   const rapidjson::Value& elem)
+MapGenerator *MapGenerator::create(const std::string &name,
+                                   const rapidjson::Value &elem)
 {
-    MapGenerator* g = nullptr;
+    MapGenerator *g = nullptr;
 
     if ("islandMapGenerator" == name)
     {
@@ -51,7 +51,7 @@ MapGenerator::MapGenerator()
 {
 }
 
-bool MapGenerator::init(const rapidjson::Value& json)
+bool MapGenerator::init(const rapidjson::Value &json)
 {
 
     std::vector<JsonParamPtr> params = {
@@ -69,14 +69,14 @@ bool MapGenerator::init(const rapidjson::Value& json)
     }
 
     int count = static_cast<int>(m_robotNames.size());
-    const GameLib& lib = GameLib::getInstance();
+    const GameLib &lib = GameLib::getInstance();
 
     m_playerTemplate = &lib.getPlayerTemplate();
     m_robotSlotSize = 2.0f * m_playerTemplate->getCoverBreath();
     m_robotTemplates.resize(count);
     for (int i = 0; i < count; ++i)
     {
-        const AIRobotTemplate* t = lib.getAIRobotTemplate(m_robotNames[i]);
+        const AIRobotTemplate *t = lib.getAIRobotTemplate(m_robotNames[i]);
         if (!t)
         {
             LOG_ERROR("Failed to find robot template %s",
@@ -97,7 +97,7 @@ bool MapGenerator::init(const rapidjson::Value& json)
     return true;
 }
 
-int MapGenerator::deployRobots(GeneratedMap& map)
+int MapGenerator::deployRobots(GeneratedMap &map)
 {
     LOG_INFO("Deploying robots");
 

@@ -15,14 +15,14 @@ public:
     virtual ~AIRobotTemplate()
     {}
 
-    bool init(const rapidjson::Value& elem);
+    bool init(const rapidjson::Value &elem);
 
-    AI* getAI() const
+    AI *getAI() const
     {
         return m_ai;
     }
 
-    void setAI(AI* ai);
+    void setAI(AI *ai);
 
     float getGoodieSpawnProb() const
     {
@@ -32,7 +32,7 @@ public:
     bool setGoodieSpawnProb(float prob);
 
 protected:
-    AI* m_ai;
+    AI *m_ai;
     float m_goodieSpawnProb;
 };
 

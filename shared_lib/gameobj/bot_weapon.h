@@ -20,10 +20,10 @@ public:
     virtual ~Weapon()
     {}
 
-    bool init(const WeaponTemplate* weaponTemplate, Robot* robot,
+    bool init(const WeaponTemplate *weaponTemplate, Robot *robot,
               int weaponLevel);
 
-    bool update(GameScreen& screen);
+    bool update(GameScreen &screen);
 
     void present();
 
@@ -33,12 +33,12 @@ public:
 
     bool setDamageMultiplier(float multiplier);
 
-    bool fireMissile(GameScreen& screen, const MissileTemplate* missileTemplate,
+    bool fireMissile(GameScreen &screen, const MissileTemplate *missileTemplate,
                      float damageMultiplier, float speedMultiplier);
 
 protected:
-    const WeaponTemplate* m_weaponTemplate;
-    Robot* m_robot;
+    const WeaponTemplate *m_weaponTemplate;
+    Robot *m_robot;
     std::vector<FirePoint> m_firePoints;
     float m_damageMultiplier;
 };

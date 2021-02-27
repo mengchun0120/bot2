@@ -7,10 +7,10 @@ namespace bot {
 
 std::shared_ptr<AppConfig> AppConfig::k_appCfg;
 
-bool AppConfig::initInstance(const std::string& appDir,
-                             const std::string& cfgFile)
+bool AppConfig::initInstance(const std::string &appDir,
+                             const std::string &cfgFile)
 {
-    AppConfig* cfg = new AppConfig();
+    AppConfig *cfg = new AppConfig();
     k_appCfg.reset(cfg);
 
     if (!cfg->load(appDir, cfgFile))
@@ -33,7 +33,7 @@ AppConfig::AppConfig()
     , m_robotCount(DEFAULT_ROBOT_COUNT)
 {}
 
-bool AppConfig::load(const std::string& appDir, const std::string& cfgFile)
+bool AppConfig::load(const std::string &appDir, const std::string &cfgFile)
 {
     m_appDir = appDir;
 
@@ -47,7 +47,7 @@ bool AppConfig::load(const std::string& appDir, const std::string& cfgFile)
     return true;
 }
 
-bool AppConfig::readConfig(const std::string& cfgFile)
+bool AppConfig::readConfig(const std::string &cfgFile)
 {
     rapidjson::Document doc;
 

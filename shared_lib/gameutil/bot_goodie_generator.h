@@ -16,7 +16,7 @@ public:
     ~GoodieGenerator()
     {}
 
-    void init(const NamedMap<GoodieTemplate>& goodieLib);
+    void init(const NamedMap<GoodieTemplate> &goodieLib);
 
     int generate(float prob);
 

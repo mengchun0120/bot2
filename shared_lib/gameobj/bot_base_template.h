@@ -16,7 +16,7 @@ public:
     virtual ~BaseTemplate()
     {}
 
-    bool init(const rapidjson::Value& elem);
+    bool init(const rapidjson::Value &elem);
 
     float getHP(int level) const
     {
@@ -104,7 +104,7 @@ public:
         m_moverPos[1] = y;
     }
 
-    const Color* getHPColor() const
+    const Color *getHPColor() const
     {
         return m_hpColor;
     }
@@ -124,7 +124,7 @@ protected:
     float m_powerRestoreRatePerLevel;
     float m_weaponPos[Constants::NUM_FLOATS_PER_POSITION];
     float m_moverPos[Constants::NUM_FLOATS_PER_POSITION];
-    const Color* m_hpColor;
+    const Color *m_hpColor;
 };
 
 } // end of namespace bot

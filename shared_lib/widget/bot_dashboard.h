@@ -29,7 +29,7 @@ public:
     ~Dashboard()
     {}
 
-    bool init(const GameScreen* screen);
+    bool init(const GameScreen *screen);
 
     void draw();
 
@@ -49,7 +49,7 @@ private:
     void drawStatusBars();
 
 private:
-    const GameScreen* m_screen;
+    const GameScreen *m_screen;
     std::vector<ProgressBar> m_progressBars;
     std::vector<StatusBar> m_statusBars;
 };

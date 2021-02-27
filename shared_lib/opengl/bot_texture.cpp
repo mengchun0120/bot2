@@ -25,7 +25,7 @@ Texture::~Texture()
     }
 }
 
-bool Texture::init(const rapidjson::Value& elem)
+bool Texture::init(const rapidjson::Value &elem)
 {
     std::string fileName;
     if (!JsonParser::parse(fileName, elem, "file"))
@@ -34,7 +34,7 @@ bool Texture::init(const rapidjson::Value& elem)
         return false;
     }
 
-    const AppConfig& cfg = AppConfig::getInstance();
+    const AppConfig &cfg = AppConfig::getInstance();
     std::string filePath = constructPath({ cfg.getTextureDir(), fileName });
 
     if (!init(filePath))
@@ -46,7 +46,7 @@ bool Texture::init(const rapidjson::Value& elem)
     return true;
 }
 
-bool Texture::init(const std::string& imageFile)
+bool Texture::init(const std::string &imageFile)
 {
     glGenTextures(1, &m_textureId);
     glBindTexture(GL_TEXTURE_2D, m_textureId);

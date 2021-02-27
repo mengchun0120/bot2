@@ -14,7 +14,7 @@ std::shared_ptr<App> App::k_app;
 
 bool App::initInstance(Screen::Type startScreenType)
 {
-    App* app = new App();
+    App *app = new App();
     k_app.reset(app);
 
     if (!app->init(startScreenType))
@@ -74,7 +74,7 @@ bool App::run()
 {
     float delta;
     int ret;
-    ScreenManager& screenMgr = ScreenManager::getInstance();
+    ScreenManager &screenMgr = ScreenManager::getInstance();
     InputProcessor processor = std::bind(&ScreenManager::processInput,
                                          &screenMgr,
                                          std::placeholders::_1);
@@ -132,7 +132,7 @@ bool App::initWindow()
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    const AppConfig& cfg = AppConfig::getInstance();
+    const AppConfig &cfg = AppConfig::getInstance();
 
     m_window = glfwCreateWindow(cfg.getWidth(),
                                 cfg.getHeight(),
@@ -173,7 +173,7 @@ bool App::initOpenGL()
 {
     LOG_INFO("Initializing OpenGL");
 
-    const AppConfig& cfg = AppConfig::getInstance();
+    const AppConfig &cfg = AppConfig::getInstance();
 
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
@@ -254,7 +254,7 @@ bool App::initTimeDeltaSmoother()
 {
     LOG_INFO("Initializing time-delta smoother");
 
-    const AppConfig& cfg = AppConfig::getInstance();
+    const AppConfig &cfg = AppConfig::getInstance();
 
     m_timeDeltaSmoother.init(cfg.getTimeDeltaHistoryLen());
 

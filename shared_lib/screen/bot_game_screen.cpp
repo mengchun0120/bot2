@@ -34,8 +34,8 @@ bool GameScreen::init()
 {
     LOG_INFO("Initializing GameScreen");
 
-    App& app = App::getInstance();
-    const AppConfig& cfg = AppConfig::getInstance();
+    App &app = App::getInstance();
+    const AppConfig &cfg = AppConfig::getInstance();
     float viewportWidth = app.getViewportWidth();
     float viewportHeight = app.getViewportHeight();
 
@@ -71,8 +71,8 @@ bool GameScreen::init()
 
 bool GameScreen::initMessageBox()
 {
-    const GameScreenConfig& cfg = GameLib::getInstance().getGameScreenConfig();
-    const App& app = App::getInstance();
+    const GameScreenConfig &cfg = GameLib::getInstance().getGameScreenConfig();
+    const App &app = App::getInstance();
     float x = (app.getViewportWidth() - cfg.getWidth()) / 2.0f;
     float y = (app.getViewportHeight() - cfg.getHeight()) / 2.0f;
 
@@ -96,12 +96,12 @@ bool GameScreen::initMessageBox()
     return true;
 }
 
-bool GameScreen::loadMap(const std::string& fileName)
+bool GameScreen::loadMap(const std::string &fileName)
 {
     LOG_INFO("Loading map from %s", fileName.c_str());
 
-    const App& app = App::getInstance();
-    const AppConfig& cfg = AppConfig::getInstance();
+    const App &app = App::getInstance();
+    const AppConfig &cfg = AppConfig::getInstance();
 
     GameMapLoader mapLoader(m_gameObjManager, cfg.getMapPoolFactor());
     bool success = mapLoader.load(m_map, fileName, cfg.getLevel(),
@@ -127,7 +127,7 @@ int GameScreen::update(float delta)
         return 0;
     }
 
-    Player* player = m_map.getPlayer();
+    Player *player = m_map.getPlayer();
     if (!player)
     {
         return 0;
@@ -170,8 +170,8 @@ int GameScreen::update(float delta)
 
 void GameScreen::present()
 {
-    SimpleShaderProgram& simpleShader = SimpleShaderProgram::getInstance();
-    const App& app = App::getInstance();
+    SimpleShaderProgram &simpleShader = SimpleShaderProgram::getInstance();
+    const App &app = App::getInstance();
 
     simpleShader.use();
     simpleShader.setViewportSize(app.getViewportSize());
@@ -198,13 +198,13 @@ void GameScreen::present()
         {
             for (int c = startCol; c <= endCol; ++c)
             {
-                LinkedList<GameObjectItem>& cell = m_map.getMapCell(r, c);
-                GameObjectItem* item, * next;
+                LinkedList<GameObjectItem> &cell = m_map.getMapCell(r, c);
+                GameObjectItem *item, * next;
                 for (item = cell.getFirst(); item; item = next)
                 {
                     next = static_cast<GameObjectItem*>(item->getNext());
 
-                    GameObject* obj = item->getObj();
+                    GameObject *obj = item->getObj();
                     bool dontProcess = obj->getType() != LAYER_ORDER[i] ||
                                        obj->testFlag(DONT_DRAW_FLAGS);
                     if (dontProcess)
@@ -224,7 +224,7 @@ void GameScreen::present()
     presentOverlay();
 }
 
-int GameScreen::processInput(const InputEvent& e)
+int GameScreen::processInput(const InputEvent &e)
 {
     if (m_msgBox.isVisible())
     {
@@ -232,7 +232,7 @@ int GameScreen::processInput(const InputEvent& e)
     }
 
     const int DONT_PROCESS_FLAG = GAME_OBJ_FLAG_DEAD | GAME_OBJ_FLAG_DISSOLVE;
-    Player* player = m_map.getPlayer();
+    Player *player = m_map.getPlayer();
 
     if (!player || player->testFlag(DONT_PROCESS_FLAG)) {
         return 0;
@@ -267,12 +267,12 @@ bool GameScreen::updateRobots(float delta)
     {
         for (int c = startCol; c <= endCol; ++c)
         {
-            LinkedList<GameObjectItem>& cell = m_map.getMapCell(r, c);
-            GameObjectItem* next = nullptr;
-            for (GameObjectItem* item = cell.getFirst(); item; item = next)
+            LinkedList<GameObjectItem> &cell = m_map.getMapCell(r, c);
+            GameObjectItem *next = nullptr;
+            for (GameObjectItem *item = cell.getFirst(); item; item = next)
             {
                 next = static_cast<GameObjectItem*>(item->getNext());
-                GameObject* obj = item->getObj();
+                GameObject *obj = item->getObj();
 
                 bool dontUpdate =
                          obj->getType() != GAME_OBJ_TYPE_ROBOT ||
@@ -283,7 +283,7 @@ bool GameScreen::updateRobots(float delta)
                     continue;
                 }
 
-                Robot* robot = static_cast<Robot*>(obj);
+                Robot *robot = static_cast<Robot*>(obj);
                 robot->update(delta, *this);
                 robot->setFlag(GAME_OBJ_FLAG_UPDATED);
             }
@@ -295,8 +295,8 @@ bool GameScreen::updateRobots(float delta)
 
 bool GameScreen::updateMissiles(float delta)
 {
-    Missile* next = nullptr;
-    Missile* missile = m_gameObjManager.getFirstActiveMissile();
+    Missile *next = nullptr;
+    Missile *missile = m_gameObjManager.getFirstActiveMissile();
     for (; missile; missile = next)
     {
         next = static_cast<Missile*>(missile->getNext());
@@ -308,8 +308,8 @@ bool GameScreen::updateMissiles(float delta)
 
 void GameScreen::updateEffects(float delta)
 {
-    ParticleEffect* next = nullptr;
-    ParticleEffect* effect = m_gameObjManager.getFirstParticleEffect();
+    ParticleEffect *next = nullptr;
+    ParticleEffect *effect = m_gameObjManager.getFirstParticleEffect();
     for (; effect; effect = next)
     {
         next = static_cast<ParticleEffect*>(effect->getNext());
@@ -319,8 +319,8 @@ void GameScreen::updateEffects(float delta)
 
 void GameScreen::updateDissolveObjects(float delta)
 {
-    GameObject* next = nullptr;
-    GameObject* obj = m_gameObjManager.getFirstDissolveObject();
+    GameObject *next = nullptr;
+    GameObject *obj = m_gameObjManager.getFirstDissolveObject();
 
     for(; obj; obj = next)
     {
@@ -331,15 +331,15 @@ void GameScreen::updateDissolveObjects(float delta)
 
 void GameScreen::presentEffects()
 {
-    ParticleShaderProgram& program = ParticleShaderProgram::getInstance();
-    const App& app = App::getInstance();
+    ParticleShaderProgram &program = ParticleShaderProgram::getInstance();
+    const App &app = App::getInstance();
 
     program.use();
     program.setViewportSize(app.getViewportSize());
     program.setViewportOrigin(m_map.getViewportPos());
 
-    ParticleEffect* effect = m_gameObjManager.getFirstParticleEffect();
-    ParticleEffect* next;
+    ParticleEffect *effect = m_gameObjManager.getFirstParticleEffect();
+    ParticleEffect *next;
     for (; effect; effect = next)
     {
         next = static_cast<ParticleEffect*>(effect->getNext());
@@ -349,8 +349,8 @@ void GameScreen::presentEffects()
 
 void GameScreen::presentOverlay()
 {
-    SimpleShaderProgram& program = SimpleShaderProgram::getInstance();
-    const App& app = App::getInstance();
+    SimpleShaderProgram &program = SimpleShaderProgram::getInstance();
+    const App &app = App::getInstance();
 
     program.use();
     program.setViewportSize(app.getViewportSize());
@@ -360,9 +360,9 @@ void GameScreen::presentOverlay()
     m_msgBox.present();
 }
 
-int GameScreen::handleMouseMove(const MouseMoveEvent& e)
+int GameScreen::handleMouseMove(const MouseMoveEvent &e)
 {
-    Player* player = m_map.getPlayer();
+    Player *player = m_map.getPlayer();
 
     int btnState = glfwGetMouseButton(m_window, GLFW_MOUSE_BUTTON_RIGHT);
     if (btnState == GLFW_PRESS)
@@ -391,9 +391,9 @@ int GameScreen::handleMouseMove(const MouseMoveEvent& e)
     return 0;
 }
 
-int GameScreen::handleMouseButton(const MouseButtonEvent& e)
+int GameScreen::handleMouseButton(const MouseButtonEvent &e)
 {
-    Player* player = m_map.getPlayer();
+    Player *player = m_map.getPlayer();
     TimePoint now = Clock::now();
 
     if (e.m_button == GLFW_MOUSE_BUTTON_RIGHT)
@@ -420,9 +420,9 @@ int GameScreen::handleMouseButton(const MouseButtonEvent& e)
     return 0;
 }
 
-int GameScreen::handleKey(const KeyEvent& e)
+int GameScreen::handleKey(const KeyEvent &e)
 {
-    Player* player = m_map.getPlayer();
+    Player *player = m_map.getPlayer();
     TimePoint now = Clock::now();
     switch (e.m_key)
     {
@@ -460,7 +460,7 @@ int GameScreen::handleKey(const KeyEvent& e)
 
 void GameScreen::clearDeadObjects()
 {
-    GameObject* obj = m_gameObjManager.getFirstDeadObject();
+    GameObject *obj = m_gameObjManager.getFirstDeadObject();
     for (; obj; obj = static_cast<GameObject*>(obj->getNext()))
     {
         m_map.removeObject(obj);
@@ -471,7 +471,7 @@ void GameScreen::clearDeadObjects()
 
 int GameScreen::switchToStart()
 {
-    ScreenManager& screenMgr = ScreenManager::getInstance();
+    ScreenManager &screenMgr = ScreenManager::getInstance();
     screenMgr.switchScreen(Screen::SCREEN_START);
     return 1;
 }

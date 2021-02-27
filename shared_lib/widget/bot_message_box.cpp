@@ -11,7 +11,7 @@ bool MessageBox::init(float x, float y, float width, float height,
                       float msgWidth, float msgHeight,
                       float buttonWidth, float buttonHeight,
                       float buttonSpacing, float buttonMsgSpacing,
-                      const std::vector<std::string>& buttonTexts)
+                      const std::vector<std::string> &buttonTexts)
 {
     int buttonCount = static_cast<int>(buttonTexts.size());
 
@@ -28,7 +28,7 @@ bool MessageBox::init(float x, float y, float width, float height,
 
     float msgX, msgY;
     float buttonX;
-    const MessageBoxConfig& cfg = GameLib::getInstance().getMessageBoxConfig();
+    const MessageBoxConfig &cfg = GameLib::getInstance().getMessageBoxConfig();
 
     msgX = x + (width - msgWidth) / 2.0f;
     msgY = m_buttonY + buttonHeight + buttonMsgSpacing;
@@ -50,7 +50,7 @@ bool MessageBox::init(float x, float y, float width, float height,
     return true;
 }
 
-bool MessageBox::initBack(const MessageBoxConfig& cfg,
+bool MessageBox::initBack(const MessageBoxConfig &cfg,
                           float x, float y,
                           float width, float height)
 {
@@ -60,7 +60,7 @@ bool MessageBox::initBack(const MessageBoxConfig& cfg,
         return false;
     }
 
-    Box* back = new Box();
+    Box *back = new Box();
 
     bool ret = back->init(x, y, width, height,
                           &m_backRect, nullptr,
@@ -78,7 +78,7 @@ bool MessageBox::initBack(const MessageBoxConfig& cfg,
     return true;
 }
 
-bool MessageBox::initMsg(const MessageBoxConfig& cfg,
+bool MessageBox::initMsg(const MessageBoxConfig &cfg,
                          float x, float y,
                          float msgWidth, float msgHeight)
 {
@@ -88,7 +88,7 @@ bool MessageBox::initMsg(const MessageBoxConfig& cfg,
         return false;
     }
 
-    Label* label = new Label();
+    Label *label = new Label();
 
     bool ret = label->init(x, y,
                            msgWidth, msgHeight,
@@ -111,7 +111,7 @@ bool MessageBox::initMsg(const MessageBoxConfig& cfg,
 bool MessageBox::initButtons(float x, float y,
                              float buttonWidth, float buttonHeight,
                              float buttonSpacing,
-                             const std::vector<std::string>& buttonTexts)
+                             const std::vector<std::string> &buttonTexts)
 {
     if (!m_buttonRect.init(buttonWidth, buttonHeight, true))
     {
@@ -124,7 +124,7 @@ bool MessageBox::initButtons(float x, float y,
 
     for (int i = 0; i < buttonCount; ++i)
     {
-        Button* button = new Button();
+        Button *button = new Button();
 
         bool ret = button->init(x, y,
                                 buttonWidth, buttonHeight,
@@ -147,13 +147,13 @@ bool MessageBox::initButtons(float x, float y,
 
 void MessageBox::setPos(float x, float y)
 {
-    const Widget* back = getWidget(BACK_IDX);
+    const Widget *back = getWidget(BACK_IDX);
     float dx = x - back->getLeft();
     float dy = y - back->getBottom();
     shiftPos(dx, dy);
 }
 
-Button* MessageBox::getButton(int idx)
+Button *MessageBox::getButton(int idx)
 {
     if (idx < 0 || idx >= getWidgetCount() - BUTTON_START_IDX)
     {
@@ -163,15 +163,15 @@ Button* MessageBox::getButton(int idx)
     return static_cast<Button*>(getWidget(BUTTON_START_IDX + idx));
 }
 
-void MessageBox::setMsg(const std::string& msg)
+void MessageBox::setMsg(const std::string &msg)
 {
-    Label& label = static_cast<Label&>(*m_widgets[MSG_IDX]);
+    Label &label = static_cast<Label&>(*m_widgets[MSG_IDX]);
     label.setText(msg);
 }
 
-bool MessageBox::setAction(int idx, const Button::ActionFunc& func)
+bool MessageBox::setAction(int idx, const Button::ActionFunc &func)
 {
-    Button* button = getButton(idx);
+    Button *button = getButton(idx);
     if (!button)
     {
         LOG_ERROR("Invalid button idx %d", idx);
@@ -184,7 +184,7 @@ bool MessageBox::setAction(int idx, const Button::ActionFunc& func)
 
 bool MessageBox::setButtonVisible(int idx, bool visible)
 {
-    Button* button = getButton(idx);
+    Button *button = getButton(idx);
     if (!button)
     {
         LOG_ERROR("Invalid button idx %d", idx);
@@ -204,7 +204,7 @@ bool MessageBox::setButtonVisible(int idx, bool visible)
 
     for (int i = BUTTON_START_IDX; i < widgetCount; ++i)
     {
-        Button& btn = static_cast<Button&>(*m_widgets[i]);
+        Button &btn = static_cast<Button&>(*m_widgets[i]);
         if (btn.visible())
         {
             totalWidth += btn.getWidth();
@@ -217,12 +217,12 @@ bool MessageBox::setButtonVisible(int idx, bool visible)
         return true;
     }
 
-    const Widget& back = *m_widgets[BACK_IDX];
+    const Widget &back = *m_widgets[BACK_IDX];
     float x = back.getLeft() + (back.getWidth() - totalWidth) / 2.0f;
 
     for (int i = BUTTON_START_IDX; i < widgetCount; ++i)
     {
-        Button& btn = static_cast<Button&>(*m_widgets[i]);
+        Button &btn = static_cast<Button&>(*m_widgets[i]);
         if (btn.visible())
         {
             btn.setPos(x, m_buttonY);

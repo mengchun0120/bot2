@@ -19,21 +19,21 @@ public:
 
     bool init(float x, float y,
               float width, float height,
-              const Rectangle* rect,
-              const std::string& text, const Color* textColor,
-              const Color* backColor, const Color* borderColor,
+              const Rectangle *rect,
+              const std::string &text, const Color *textColor,
+              const Color *backColor, const Color *borderColor,
               Align hAlign, Align vAlign,
               TextSize sz=TEXT_SIZE_MEDIUM,
               bool visible=true, bool acceptInput=false);
 
-    const std::string& getText() const
+    const std::string &getText() const
     {
         return m_text;
     }
 
-    void setText(const std::string& text);
+    void setText(const std::string &text);
 
-    void setTextColor(const Color* color)
+    void setTextColor(const Color *color)
     {
         m_textColor = color;
     }
@@ -52,7 +52,7 @@ protected:
     float m_textPos[Constants::NUM_FLOATS_PER_POSITION];
     TextSize m_size;
     Align m_hAlign, m_vAlign;
-    const Color* m_textColor;
+    const Color *m_textColor;
 };
 
 } // end of namespace bot

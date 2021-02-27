@@ -30,7 +30,7 @@ public:
     void addKeyEvent(int key, int action, int scanCode, int mods);
 
     // Returns true if app should continue; false if app should exit
-    bool processInput(InputProcessor& processor);
+    bool processInput(InputProcessor &processor);
 
 protected:
     GLFWwindow *m_window;

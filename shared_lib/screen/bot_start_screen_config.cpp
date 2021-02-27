@@ -10,7 +10,7 @@ StartScreenConfig::StartScreenConfig()
     , m_buttonHeight(0.0f)
 {}
 
-bool StartScreenConfig::init(const std::string& configFile)
+bool StartScreenConfig::init(const std::string &configFile)
 {
     rapidjson::Document doc;
 
@@ -25,7 +25,7 @@ bool StartScreenConfig::init(const std::string& configFile)
         return false;
     }
 
-    const rapidjson::Value& jsonCfg = doc.GetObject();
+    const rapidjson::Value &jsonCfg = doc.GetObject();
     std::vector<JsonParamPtr> params = {
         jsonParam(m_buttonSpacing, "buttonSpacing", gt(m_buttonSpacing, 0.0f)),
         jsonParam(m_buttonWidth, "buttonWidth", gt(m_buttonWidth, 0.0f)),

@@ -8,10 +8,10 @@ namespace bot {
 
 std::shared_ptr<SimpleShaderProgram> SimpleShaderProgram::k_program;
 
-bool SimpleShaderProgram::initInstance(const std::string& vertexShaderFile,
-                                       const std::string& fragShaderFile)
+bool SimpleShaderProgram::initInstance(const std::string &vertexShaderFile,
+                                       const std::string &fragShaderFile)
 {
-    SimpleShaderProgram* program = new SimpleShaderProgram();
+    SimpleShaderProgram *program = new SimpleShaderProgram();
     k_program.reset(program);
 
     if (!program->init(vertexShaderFile, fragShaderFile))
@@ -45,8 +45,8 @@ SimpleShaderProgram::~SimpleShaderProgram()
 {
 }
 
-bool SimpleShaderProgram::init(const std::string& vertexShaderFile,
-                               const std::string& fragShaderFile)
+bool SimpleShaderProgram::init(const std::string &vertexShaderFile,
+                               const std::string &fragShaderFile)
 {
     if (!ShaderProgram::init(vertexShaderFile, fragShaderFile))
     {
@@ -83,7 +83,7 @@ void SimpleShaderProgram::setTexture(unsigned int textureId)
     glBindTexture(GL_TEXTURE_2D, textureId);
 }
 
-void SimpleShaderProgram::setPosition(const VertexArray& vertexArray,
+void SimpleShaderProgram::setPosition(const VertexArray &vertexArray,
                                       bool hasTexCoord)
 {
     glBindVertexArray(vertexArray.vao());

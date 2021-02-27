@@ -12,7 +12,7 @@ public:
         , m_gameObjItemPoolSize(0)
     {}
 
-    bool load(const std::string& fileName);
+    bool load(const std::string &fileName);
 
     float getDissolveTimeMS() const
     {

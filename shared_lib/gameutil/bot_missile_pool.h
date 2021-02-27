@@ -18,11 +18,11 @@ public:
 
     bool init(int poolSize);
 
-    Missile* alloc(const MissileTemplate* t, Side side, float x, float y,
+    Missile *alloc(const MissileTemplate *t, Side side, float x, float y,
                    float directionX, float directionY,
                    float damage, float speed);
 
-    void free(Missile* missile);
+    void free(Missile *missile);
 
 private:
     ObjectPool<Bullet> m_bulletPool;

@@ -12,7 +12,7 @@
 
 namespace bot {
 
-BaseTemplate* parseBaseTemplate(const rapidjson::Value& elem)
+BaseTemplate *parseBaseTemplate(const rapidjson::Value &elem)
 {
     const char name[] = "base";
 
@@ -22,14 +22,14 @@ BaseTemplate* parseBaseTemplate(const rapidjson::Value& elem)
         return nullptr;
     }
 
-    const rapidjson::Value& obj = elem[name];
+    const rapidjson::Value &obj = elem[name];
     if (!obj.IsObject())
     {
         LOG_ERROR("%s is ill-formatted", name);
         return nullptr;
     }
 
-    BaseTemplate* t = new BaseTemplate();
+    BaseTemplate *t = new BaseTemplate();
     if (!t->init(obj))
     {
         delete t;
@@ -39,7 +39,7 @@ BaseTemplate* parseBaseTemplate(const rapidjson::Value& elem)
     return t;
 }
 
-WeaponTemplate* parseWeaponTemplate(const rapidjson::Value& elem)
+WeaponTemplate *parseWeaponTemplate(const rapidjson::Value &elem)
 {
     const char name[] = "weapon";
 
@@ -49,14 +49,14 @@ WeaponTemplate* parseWeaponTemplate(const rapidjson::Value& elem)
         return nullptr;
     }
 
-    const rapidjson::Value& obj = elem[name];
+    const rapidjson::Value &obj = elem[name];
     if (!obj.IsObject())
     {
         LOG_ERROR("%s is ill-formatted", name);
         return nullptr;
     }
 
-    WeaponTemplate* t = new WeaponTemplate();
+    WeaponTemplate *t = new WeaponTemplate();
     if (!t->init(obj))
     {
         delete t;
@@ -66,7 +66,7 @@ WeaponTemplate* parseWeaponTemplate(const rapidjson::Value& elem)
     return t;
 }
 
-MoverTemplate* parseMoverTemplate(const rapidjson::Value& elem)
+MoverTemplate *parseMoverTemplate(const rapidjson::Value &elem)
 {
     const char name[] = "mover";
 
@@ -76,14 +76,14 @@ MoverTemplate* parseMoverTemplate(const rapidjson::Value& elem)
         return nullptr;
     }
 
-    const rapidjson::Value& obj = elem[name];
+    const rapidjson::Value &obj = elem[name];
     if (!obj.IsObject())
     {
         LOG_ERROR("%s is ill-formatted", name);
         return nullptr;
     }
 
-    MoverTemplate* t = new MoverTemplate();
+    MoverTemplate *t = new MoverTemplate();
     if (!t->init(obj))
     {
         delete t;
@@ -126,7 +126,7 @@ PlayerTemplate::~PlayerTemplate()
     }
 }
 
-bool PlayerTemplate::init(const std::string& fileName)
+bool PlayerTemplate::init(const std::string &fileName)
 {
     rapidjson::Document doc;
     if (!readJson(doc, fileName.c_str()))
@@ -140,7 +140,7 @@ bool PlayerTemplate::init(const std::string& fileName)
         return false;
     }
 
-    const rapidjson::Value& elem = doc.GetObject();
+    const rapidjson::Value &elem = doc.GetObject();
 
     m_baseTemplate = parseBaseTemplate(elem);
     if (!m_baseTemplate)
@@ -367,7 +367,7 @@ void PlayerTemplate::configCoverCollideBreath()
         return;
     }
 
-    const Rectangle* rect = m_baseTemplate->getRect();
+    const Rectangle *rect = m_baseTemplate->getRect();
     m_coverBreath = std::max(rect->width(), rect->height()) / 2.0f;
     m_collideBreath = m_coverBreath * sqrt(2.0) / 2.0;
 

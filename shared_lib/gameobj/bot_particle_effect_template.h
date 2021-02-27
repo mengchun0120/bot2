@@ -18,7 +18,7 @@ public:
     virtual ~ParticleEffectTemplate()
     {}
 
-    bool init(const rapidjson::Value& elem);
+    bool init(const rapidjson::Value &elem);
 
     int getNumParticles() const
     {
@@ -45,17 +45,17 @@ public:
         return m_particleSize;
     }
 
-    const VertexArray& getVertexArray() const
+    const VertexArray &getVertexArray() const
     {
         return m_vertexArray;
     }
 
-    const Texture* getTexture() const
+    const Texture *getTexture() const
     {
         return m_texture;
     }
 
-    const Color* getColor() const
+    const Color *getColor() const
     {
         return m_color;
     }
@@ -67,8 +67,8 @@ protected:
     float m_duration;
     float m_particleSize;
     VertexArray m_vertexArray;
-    const Texture* m_texture;
-    const Color* m_color;
+    const Texture *m_texture;
+    const Color *m_color;
 };
 
 } // end of namespace bot

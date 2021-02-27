@@ -17,7 +17,7 @@ Mover::Mover()
 {
 }
 
-bool Mover::init(const MoverTemplate* moverTemplate, Robot* robot,
+bool Mover::init(const MoverTemplate *moverTemplate, Robot *robot,
                  int moverLevel)
 {
     if (!moverTemplate)
@@ -48,7 +48,7 @@ bool Mover::init(const MoverTemplate* moverTemplate, Robot* robot,
     return true;
 }
 
-bool Mover::update(GameScreen& screen, float delta)
+bool Mover::update(GameScreen &screen, float delta)
 {
     if (!m_moving)
     {
@@ -74,7 +74,7 @@ bool Mover::update(GameScreen& screen, float delta)
     float speedY = m_speed * m_robot->getDirectionY();
     float newDelta;
     LinkedList<GameObjectItem> collideObjs;
-    GameMap& map = screen.getMap();
+    GameMap &map = screen.getMap();
 
     bool collide = map.checkCollision(newDelta, &collideObjs, m_robot,
                                       speedX, speedY, delta);
@@ -90,7 +90,7 @@ bool Mover::update(GameScreen& screen, float delta)
     if (!collideObjs.isEmpty())
     {
         m_robot->processCollisions(collideObjs, screen);
-        GameObjectManager& gameObjMgr = screen.getGameObjManager();
+        GameObjectManager &gameObjMgr = screen.getGameObjManager();
         gameObjMgr.freeGameObjItems(collideObjs);
     }
 
@@ -99,7 +99,7 @@ bool Mover::update(GameScreen& screen, float delta)
 
 void Mover::present()
 {
-    const Base& base = m_robot->getBase();
+    const Base &base = m_robot->getBase();
     m_moverTemplate->getRect()->draw(
                                 base.getMoverPos(), m_robot->getDirection(),
                                 nullptr, nullptr,

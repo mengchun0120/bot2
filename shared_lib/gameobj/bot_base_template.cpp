@@ -20,7 +20,7 @@ BaseTemplate::BaseTemplate()
     , m_hpColor(nullptr)
 {}
 
-bool BaseTemplate::init(const rapidjson::Value& elem)
+bool BaseTemplate::init(const rapidjson::Value &elem)
 {
     if (!SingleUnitTemplate::init(elem))
     {
@@ -72,7 +72,7 @@ bool BaseTemplate::init(const rapidjson::Value& elem)
         return false;
     }
 
-    const GameLib& lib = GameLib::getInstance();
+    const GameLib &lib = GameLib::getInstance();
 
     m_hpColor = lib.getColor(hpColorName);
     if (!m_hpColor)

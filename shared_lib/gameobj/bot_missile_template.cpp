@@ -7,8 +7,8 @@
 
 namespace bot {
 
-MissileTemplate* MissileTemplate::create(const std::string& name,
-                                         const rapidjson::Value& elem)
+MissileTemplate *MissileTemplate::create(const std::string &name,
+                                         const rapidjson::Value &elem)
 {
     std::string typeStr;
     std::vector<JsonParamPtr> params = {
@@ -31,7 +31,7 @@ MissileTemplate* MissileTemplate::create(const std::string& name,
     {
         case MISSILE_BULLET:
         {
-            BulletTemplate* t = new BulletTemplate();
+            BulletTemplate *t = new BulletTemplate();
             if (!t->init(elem))
             {
                 LOG_ERROR("Failed to initialize BulletTemplate");
@@ -42,7 +42,7 @@ MissileTemplate* MissileTemplate::create(const std::string& name,
         }
         case MISSILE_SHELL:
         {
-            ShellTemplate* t = new ShellTemplate();
+            ShellTemplate *t = new ShellTemplate();
             if (!t->init(elem))
             {
                 LOG_ERROR("Failed to initialize ShellTemplate");
@@ -53,7 +53,7 @@ MissileTemplate* MissileTemplate::create(const std::string& name,
         }
         case MISSILE_DECK_PIERCER:
         {
-            DeckPiercerTemplate* t = new DeckPiercerTemplate();
+            DeckPiercerTemplate *t = new DeckPiercerTemplate();
             if (!t->init(elem))
             {
                 LOG_ERROR("Failed to initialize DeckPiercerTemplate");
@@ -81,7 +81,7 @@ MissileTemplate::MissileTemplate()
 }
 
 bool MissileTemplate::init(MissileType missileType,
-                           const rapidjson::Value& elem)
+                           const rapidjson::Value &elem)
 {
     if (!GameObjectTemplate::init(elem))
     {
@@ -114,7 +114,7 @@ bool MissileTemplate::init(MissileType missileType,
 
     if (!impactEffectName.empty())
     {
-        const GameLib& lib = GameLib::getInstance();
+        const GameLib &lib = GameLib::getInstance();
 
         m_impactEffectTemplate =
                         lib.getParticleEffectTemplate(impactEffectName);

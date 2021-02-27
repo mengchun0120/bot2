@@ -3,7 +3,7 @@
 
 namespace bot {
 
-Validator operator&&(const Validator& a, const Validator& b)
+Validator operator&&(const Validator &a, const Validator &b)
 {
     Validator v;
 
@@ -15,7 +15,7 @@ Validator operator&&(const Validator& a, const Validator& b)
     );
 
     v.setRuleFunc(
-        [&](const std::string& name)->std::string
+        [&](const std::string &name)->std::string
         {
             std::ostringstream oss;
             oss << "(" << a.getRule(name) << " && " << b.getRule(name) << ")";
@@ -26,7 +26,7 @@ Validator operator&&(const Validator& a, const Validator& b)
     return v;
 }
 
-Validator operator||(const Validator& a, const Validator& b)
+Validator operator||(const Validator &a, const Validator &b)
 {
     Validator v;
 
@@ -38,7 +38,7 @@ Validator operator||(const Validator& a, const Validator& b)
     );
 
     v.setRuleFunc(
-        [&](const std::string& name)->std::string
+        [&](const std::string &name)->std::string
         {
             std::ostringstream oss;
             oss << "(" << a.getRule(name) << " || " << b.getRule(name) << ")";
@@ -49,7 +49,7 @@ Validator operator||(const Validator& a, const Validator& b)
     return v;
 }
 
-Validator operator!(const Validator& a)
+Validator operator!(const Validator &a)
 {
     Validator v;
 
@@ -61,7 +61,7 @@ Validator operator!(const Validator& a)
     );
 
     v.setRuleFunc(
-        [&](const std::string& name)->std::string
+        [&](const std::string &name)->std::string
         {
             std::ostringstream oss;
             oss << "!" << a.getRule(name);

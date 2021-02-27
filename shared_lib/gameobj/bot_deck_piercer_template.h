@@ -13,9 +13,9 @@ public:
     virtual ~DeckPiercerTemplate()
     {}
 
-    bool init(const rapidjson::Value& elem);
+    bool init(const rapidjson::Value &elem);
 
-    const Color& getPassThroughMask() const
+    const Color &getPassThroughMask() const
     {
         return m_passThroughMask;
     }

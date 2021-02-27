@@ -10,7 +10,7 @@ DeckPiercerTemplate::DeckPiercerTemplate()
 {
 }
 
-bool DeckPiercerTemplate::init(const rapidjson::Value& elem)
+bool DeckPiercerTemplate::init(const rapidjson::Value &elem)
 {
     if (!MissileTemplate::init(MISSILE_DECK_PIERCER, elem))
     {

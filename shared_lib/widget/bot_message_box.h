@@ -31,31 +31,31 @@ public:
               float msgWidth, float msgHeight,
               float buttonWidth, float buttonHeight,
               float buttonSpacing, float buttonMsgSpacing,
-              const std::vector<std::string>& buttonTexts);
+              const std::vector<std::string> &buttonTexts);
 
     void setPos(float x, float y);
 
-    void setMsg(const std::string& msg);
+    void setMsg(const std::string &msg);
 
-    bool setAction(int idx, const Button::ActionFunc& func);
+    bool setAction(int idx, const Button::ActionFunc &func);
 
     bool setButtonVisible(int idx, bool visible);
 
 private:
-    bool initBack(const MessageBoxConfig& cfg,
+    bool initBack(const MessageBoxConfig &cfg,
                   float x, float y,
                   float width, float height);
 
-    bool initMsg(const MessageBoxConfig& cfg,
+    bool initMsg(const MessageBoxConfig &cfg,
                  float x, float y,
                  float msgWidth, float msgHeight);
 
     bool initButtons(float x, float y,
                      float buttonWidth, float buttonHeight,
                      float buttonSpacing,
-                     const std::vector<std::string>& buttonTexts);
+                     const std::vector<std::string> &buttonTexts);
 
-    Button* getButton(int idx);
+    Button *getButton(int idx);
 
 private:
     float m_buttonY;

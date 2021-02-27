@@ -6,8 +6,8 @@
 
 namespace bot {
 
-bool initFirePoints(std::vector<FirePoint>& firePoints,
-                    const rapidjson::Value& elem)
+bool initFirePoints(std::vector<FirePoint> &firePoints,
+                    const rapidjson::Value &elem)
 {
     std::vector<float> firePos;
     std::vector<float> fireDirection;
@@ -16,7 +16,7 @@ bool initFirePoints(std::vector<FirePoint>& firePoints,
         jsonParam(fireDirection, "fireDirection")
     };
 
-    auto parser = [&](FirePoint& p, const rapidjson::Value& e)->bool
+    auto parser = [&](FirePoint &p, const rapidjson::Value &e)->bool
     {
         if (!parseJson(params, e))
         {
@@ -63,7 +63,7 @@ WeaponTemplate::WeaponTemplate()
     , m_damage(0.0f)
 {}
 
-bool WeaponTemplate::init(const rapidjson::Value& elem)
+bool WeaponTemplate::init(const rapidjson::Value &elem)
 {
     if (!SingleUnitTemplate::init(elem))
     {

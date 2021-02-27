@@ -12,9 +12,9 @@ public:
 
     virtual ~Texture();
 
-    bool init(const rapidjson::Value& elem);
+    bool init(const rapidjson::Value &elem);
 
-    bool init(const std::string& imageFile);
+    bool init(const std::string &imageFile);
 
     unsigned int textureId() const
     {

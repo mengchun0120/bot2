@@ -15,7 +15,7 @@ Weapon::Weapon()
 {
 }
 
-bool Weapon::init(const WeaponTemplate* weaponTemplate, Robot* robot,
+bool Weapon::init(const WeaponTemplate *weaponTemplate, Robot *robot,
                   int weaponLevel)
 {
     if (!weaponTemplate)
@@ -47,14 +47,14 @@ bool Weapon::init(const WeaponTemplate* weaponTemplate, Robot* robot,
     return true;
 }
 
-bool Weapon::update(GameScreen& screen)
+bool Weapon::update(GameScreen &screen)
 {
     return true;
 }
 
 void Weapon::present()
 {
-    const Base& base = m_robot->getBase();
+    const Base &base = m_robot->getBase();
     m_weaponTemplate->getRect()->draw(
                                 base.getWeaponPos(), m_robot->getDirection(),
                                 nullptr, nullptr,
@@ -64,7 +64,7 @@ void Weapon::present()
 
 void Weapon::shiftFirePoints(float deltaX, float deltaY)
 {
-    for (auto& fp: m_firePoints)
+    for (auto &fp: m_firePoints)
     {
         fp.m_firePos[0] += deltaX;
         fp.m_firePos[1] += deltaY;
@@ -74,7 +74,7 @@ void Weapon::shiftFirePoints(float deltaX, float deltaY)
 void Weapon::resetFirePoints()
 {
     int count = static_cast<int>(m_firePoints.size());
-    const Base& base = m_robot->getBase();
+    const Base &base = m_robot->getBase();
     float weaponX = base.getWeaponPosX();
     float weaponY = base.getWeaponPosY();
     float directionX = m_robot->getDirectionX();
@@ -82,8 +82,8 @@ void Weapon::resetFirePoints()
 
     for (int i = 0; i < count; ++i)
     {
-        FirePoint& p1 = m_firePoints[i];
-        const FirePoint& p2 = m_weaponTemplate->getFirePoint(i);
+        FirePoint &p1 = m_firePoints[i];
+        const FirePoint &p2 = m_weaponTemplate->getFirePoint(i);
         float dx = p2.m_firePos[0];
         float dy = p2.m_firePos[1];
 
@@ -112,18 +112,18 @@ bool Weapon::setDamageMultiplier(float multiplier)
     return true;
 }
 
-bool Weapon::fireMissile(GameScreen& screen,
-                         const MissileTemplate* missileTemplate,
+bool Weapon::fireMissile(GameScreen &screen,
+                         const MissileTemplate *missileTemplate,
                          float damageMultiplier, float speedMultiplier)
 {
-    GameObjectManager& gameObjMgr = screen.getGameObjManager();
+    GameObjectManager &gameObjMgr = screen.getGameObjManager();
     float damage = m_weaponTemplate->getDamage() * damageMultiplier *
                    m_damageMultiplier;
     float speed = missileTemplate->getSpeed() * speedMultiplier;
 
-    for(auto& fp: m_firePoints)
+    for(auto &fp: m_firePoints)
     {
-        Missile* missile = gameObjMgr.createMissile(
+        Missile *missile = gameObjMgr.createMissile(
                                  missileTemplate, m_robot->getSide(),
                                  fp.m_firePos[0], fp.m_firePos[1],
                                  fp.m_fireDirection[0], fp.m_fireDirection[1],

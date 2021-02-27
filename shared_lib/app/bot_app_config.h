@@ -15,10 +15,10 @@ public:
     };
 
 public:
-    static bool initInstance(const std::string& appDir,
-                             const std::string& cfgFile);
+    static bool initInstance(const std::string &appDir,
+                             const std::string &cfgFile);
 
-    static AppConfig& getInstance()
+    static AppConfig &getInstance()
     {
         return *k_appCfg;
     }
@@ -26,7 +26,7 @@ public:
     ~AppConfig()
     {}
 
-    const std::string& getResDir() const
+    const std::string &getResDir() const
     {
         return m_resDir;
     }
@@ -41,32 +41,32 @@ public:
         return m_height;
     }
 
-    const std::string& getTitle() const
+    const std::string &getTitle() const
     {
         return m_title;
     }
 
-    const std::string& getGlslDir() const
+    const std::string &getGlslDir() const
     {
         return m_glslDir;
     }
 
-    const std::string& getSimpleVertexShaderFile() const
+    const std::string &getSimpleVertexShaderFile() const
     {
         return m_simpleVertexShaderFile;
     }
 
-    const std::string& getSimpleFragShaderFile() const
+    const std::string &getSimpleFragShaderFile() const
     {
         return m_simpleFragShaderFile;
     }
 
-    const std::string& getParticleVertexShaderFile() const
+    const std::string &getParticleVertexShaderFile() const
     {
         return m_particleVertexShaderFile;
     }
 
-    const std::string& getParticleFragShaderFile() const
+    const std::string &getParticleFragShaderFile() const
     {
         return m_particleFragShaderFile;
     }
@@ -81,107 +81,107 @@ public:
         return m_timeDeltaHistoryLen;
     }
 
-    const std::string& getFontDir() const
+    const std::string &getFontDir() const
     {
         return m_fontDir;
     }
 
-    const std::string& getTextureDir() const
+    const std::string &getTextureDir() const
     {
         return m_textureDir;
     }
 
-    const std::string& getLibDir() const
+    const std::string &getLibDir() const
     {
         return m_libDir;
     }
 
-    const std::string& getMapDir() const
+    const std::string &getMapDir() const
     {
         return m_mapDir;
     }
 
-    const std::string& getTextureLib() const
+    const std::string &getTextureLib() const
     {
         return m_textureLib;
     }
 
-    const std::string& getColorLib() const
+    const std::string &getColorLib() const
     {
         return m_colorLib;
     }
 
-    const std::string& getRectLib() const
+    const std::string &getRectLib() const
     {
         return m_rectLib;
     }
 
-    const std::string& getTileTemplateLib() const
+    const std::string &getTileTemplateLib() const
     {
         return m_tileTemplateLib;
     }
 
-    const std::string& getParticleEffectTemplateLib() const
+    const std::string &getParticleEffectTemplateLib() const
     {
         return m_particleEffectTemplateLib;
     }
 
-    const std::string& getMissileTemplateLib() const
+    const std::string &getMissileTemplateLib() const
     {
         return m_missileTemplateLib;
     }
 
-    const std::string& getGoodieTemplateLib() const
+    const std::string &getGoodieTemplateLib() const
     {
         return m_goodieTemplateLib;
     }
 
-    const std::string& getAILib() const
+    const std::string &getAILib() const
     {
         return m_aiLib;
     }
 
-    const std::string& getBaseTemplateLib() const
+    const std::string &getBaseTemplateLib() const
     {
         return m_baseTemplateLib;
     }
 
-    const std::string& getWeaponTemplateLib() const
+    const std::string &getWeaponTemplateLib() const
     {
         return m_weaponTemplateLib;
     }
 
-    const std::string& getMoverTemplateLib() const
+    const std::string &getMoverTemplateLib() const
     {
         return m_moverTemplateLib;
     }
 
-    const std::string& getAIRobotTemplateLib() const
+    const std::string &getAIRobotTemplateLib() const
     {
         return m_aiRobotTemplateLib;
     }
 
-    const std::string& getProgressRingLib() const
+    const std::string &getProgressRingLib() const
     {
         return m_progressRingLib;
     }
 
-    const std::string& getPlayerTemplate() const
+    const std::string &getPlayerTemplate() const
     {
         return m_playerTemplate;
     }
 
-    const std::string& getDashboardConfigFile() const
+    const std::string &getDashboardConfigFile() const
     {
         return m_dashboardConfigFile;
     }
 
-    void setMapFile(const std::string& mapFile)
+    void setMapFile(const std::string &mapFile)
     {
         m_mapFile = mapFile;
     }
 
-    const std::string& getMapFile() const
+    const std::string &getMapFile() const
     {
         return m_mapFile;
     }
@@ -203,52 +203,52 @@ public:
         return m_missilePoolSize;
     }
 
-    const std::string& getButtonConfigFile() const
+    const std::string &getButtonConfigFile() const
     {
         return m_buttonConfigFile;
     }
 
-    const std::string& getStartScreenConfigFile() const
+    const std::string &getStartScreenConfigFile() const
     {
         return m_startScreenConfigFile;
     }
 
-    const std::string& getGameScreenConfigFile() const
+    const std::string &getGameScreenConfigFile() const
     {
         return m_gameScreenConfigFile;
     }
 
-    const std::string& getMessageBoxConfigFile() const
+    const std::string &getMessageBoxConfigFile() const
     {
         return m_messageBoxConfigFile;
     }
 
-    const std::string& getGameConfigFile() const
+    const std::string &getGameConfigFile() const
     {
         return m_gameConfigFile;
     }
 
-    const std::string& getMapGeneratorLib() const
+    const std::string &getMapGeneratorLib() const
     {
         return m_mapGeneratorLib;
     }
 
-    const std::string& getProgressBarTemplateLib() const
+    const std::string &getProgressBarTemplateLib() const
     {
         return m_progressBarTemplateLib;
     }
 
-    const std::string& getStatusBarTemplateLib() const
+    const std::string &getStatusBarTemplateLib() const
     {
         return m_statusBarTemplateLib;
     }
 
-    void setMapGenerator(const std::string& generator)
+    void setMapGenerator(const std::string &generator)
     {
         m_mapGenerator = generator;
     }
 
-    const std::string& getMapGenerator() const
+    const std::string &getMapGenerator() const
     {
         return m_mapGenerator;
     }
@@ -260,7 +260,7 @@ public:
 
     bool setRobotCount(int count);
 
-    const std::string& getSkillTemplateLib() const
+    const std::string &getSkillTemplateLib() const
     {
         return m_skillTemplateLib;
     }
@@ -268,9 +268,9 @@ public:
 private:
     AppConfig();
 
-    bool load(const std::string& appDir, const std::string& cfgFile);
+    bool load(const std::string &appDir, const std::string &cfgFile);
 
-    bool readConfig(const std::string& cfgFile);
+    bool readConfig(const std::string &cfgFile);
 
     void marshalConfig();
 

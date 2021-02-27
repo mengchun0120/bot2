@@ -15,30 +15,30 @@ public:
     virtual ~ChaseShootAI()
     {}
 
-    virtual bool init(const rapidjson::Value& elem);
+    virtual bool init(const rapidjson::Value &elem);
 
-    virtual void apply(AIRobot& robot, float delta, GameScreen& screen);
+    virtual void apply(AIRobot &robot, float delta, GameScreen &screen);
 
 protected:
-    bool tryChangeAction(AIRobot& robot, GameScreen& screen);
+    bool tryChangeAction(AIRobot &robot, GameScreen &screen);
 
-    void resetAction(AIRobot& robot, Action action);
+    void resetAction(AIRobot &robot, Action action);
 
-    void applyChaseAction(AIRobot& robot, float delta, GameScreen& screen);
+    void applyChaseAction(AIRobot &robot, float delta, GameScreen &screen);
 
-    void applyShootAction(AIRobot& robot, float delta, GameScreen& screen);
+    void applyShootAction(AIRobot &robot, float delta, GameScreen &screen);
 
-    bool resetChaseDirection(AIRobot& robot, float delta, GameScreen& screen);
+    bool resetChaseDirection(AIRobot &robot, float delta, GameScreen &screen);
 
-    bool tryFirstDirection(AIRobot& robot, float& directionX, float& directionY,
-                           float delta, GameScreen& screen);
+    bool tryFirstDirection(AIRobot &robot, float &directionX, float &directionY,
+                           float delta, GameScreen &screen);
 
-    int findNewDirection(AIRobot& robot, float delta, float refDirectionX,
-                         float refDirectionY, GameScreen& screen);
+    int findNewDirection(AIRobot &robot, float delta, float refDirectionX,
+                         float refDirectionY, GameScreen &screen);
 
-    int sortDirections(int* result, float refDirectionX, float refDirectionY);
+    int sortDirections(int *result, float refDirectionX, float refDirectionY);
 
-    void randomChoose(int* result, int i1, int i2);
+    void randomChoose(int *result, int i1, int i2);
 
 protected:
     float m_chaseDurationMs;

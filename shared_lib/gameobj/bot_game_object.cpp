@@ -15,7 +15,7 @@ GameObject::GameObject()
     m_pos[1] = 0.0f;
 }
 
-bool GameObject::init(const GameObjectTemplate* t, float x, float y)
+bool GameObject::init(const GameObjectTemplate *t, float x, float y)
 {
     if (!t)
     {

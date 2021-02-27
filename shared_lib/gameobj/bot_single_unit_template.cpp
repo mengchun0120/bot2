@@ -5,7 +5,7 @@
 
 namespace bot {
 
-bool SingleUnitTemplate::init(const rapidjson::Value& elem)
+bool SingleUnitTemplate::init(const rapidjson::Value &elem)
 {
     std::string textureName, rectName;
     std::vector<JsonParamPtr> params = {
@@ -18,7 +18,7 @@ bool SingleUnitTemplate::init(const rapidjson::Value& elem)
         return false;
     }
 
-    const GameLib& lib = GameLib::getInstance();
+    const GameLib &lib = GameLib::getInstance();
 
     m_texture = lib.getTexture(textureName);
     if (!m_texture)

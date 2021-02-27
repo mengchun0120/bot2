@@ -13,23 +13,23 @@ class ParticleEffect: public GameObject {
 public:
     ParticleEffect();
 
-    ParticleEffect(const ParticleEffectTemplate* t);
+    ParticleEffect(const ParticleEffectTemplate *t);
 
     virtual ~ParticleEffect()
     {}
 
-    bool init(const ParticleEffectTemplate* t, float x, float y);
+    bool init(const ParticleEffectTemplate *t, float x, float y);
 
-    const ParticleEffectTemplate* getTemplate() const
+    const ParticleEffectTemplate *getTemplate() const
     {
         return static_cast<const ParticleEffectTemplate*>(m_template);
     }
 
     virtual void present();
 
-    virtual void update(float delta, GameScreen& screen);
+    virtual void update(float delta, GameScreen &screen);
 
-    virtual void onDeath(GameScreen& screen);
+    virtual void onDeath(GameScreen &screen);
 
 protected:
     TimePoint m_startTime;

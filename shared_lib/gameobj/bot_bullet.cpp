@@ -14,7 +14,7 @@ Bullet::~Bullet()
 {
 }
 
-bool Bullet::init(const BulletTemplate* t, Side side, float x, float y,
+bool Bullet::init(const BulletTemplate *t, Side side, float x, float y,
                   float directionX, float directionY, float damage, float speed)
 {
     return Missile::init(t, side, x, y, directionX, directionY, damage, speed);
@@ -22,12 +22,12 @@ bool Bullet::init(const BulletTemplate* t, Side side, float x, float y,
 
 void Bullet::present()
 {
-    const BulletTemplate* t = getTemplate();
+    const BulletTemplate *t = getTemplate();
     t->getRect()->draw(m_pos, m_direction, nullptr, nullptr,
                        *(t->getTexture()), nullptr);
 }
 
-void Bullet::update(float delta, GameScreen& screen)
+void Bullet::update(float delta, GameScreen &screen)
 {
     float deltaX = getSpeedX() * delta;
     float deltaY = getSpeedY() * delta;
@@ -37,7 +37,7 @@ void Bullet::update(float delta, GameScreen& screen)
     checkCollision(screen);
 }
 
-bool Bullet::onEntry(GameScreen& screen)
+bool Bullet::onEntry(GameScreen &screen)
 {
     if (checkCollision(screen))
     {
@@ -48,7 +48,7 @@ bool Bullet::onEntry(GameScreen& screen)
     return false;
 }
 
-void Bullet::onHit(GameScreen& screen, GameObject& obj)
+void Bullet::onHit(GameScreen &screen, GameObject &obj)
 {
     if (obj.getType() != GAME_OBJ_TYPE_ROBOT)
     {
@@ -58,16 +58,16 @@ void Bullet::onHit(GameScreen& screen, GameObject& obj)
     checkCollision(screen);
 }
 
-void Bullet::onDeath(GameScreen& screen)
+void Bullet::onDeath(GameScreen &screen)
 {
-    GameObjectManager& gameObjMgr = screen.getGameObjManager();
+    GameObjectManager &gameObjMgr = screen.getGameObjManager();
     gameObjMgr.sendToDeathQueue(this);
 }
 
-bool Bullet::checkCollision(GameScreen& screen)
+bool Bullet::checkCollision(GameScreen &screen)
 {
     LinkedList<GameObjectItem> collideObjs;
-    GameMap& map = screen.getMap();
+    GameMap &map = screen.getMap();
 
     ReturnCode rc = map.checkCollision(this, &collideObjs);
 
@@ -82,16 +82,16 @@ bool Bullet::checkCollision(GameScreen& screen)
         return true;
     }
 
-    GameObjectManager& gameObjMgr = screen.getGameObjManager();
-    const BulletTemplate* t = getTemplate();
+    GameObjectManager &gameObjMgr = screen.getGameObjManager();
+    const BulletTemplate *t = getTemplate();
 
     processCollideObjs(screen, collideObjs);
     gameObjMgr.freeGameObjItems(collideObjs);
 
-    const ParticleEffectTemplate* e = t->getImpactEffectTemplate();
+    const ParticleEffectTemplate *e = t->getImpactEffectTemplate();
     if (e)
     {
-        ParticleEffect* effect = gameObjMgr.createParticleEffect(
+        ParticleEffect *effect = gameObjMgr.createParticleEffect(
                                                 e, getPosX(), getPosY());
 
         if (!map.addObject(effect))
@@ -105,19 +105,19 @@ bool Bullet::checkCollision(GameScreen& screen)
     return false;
 }
 
-void Bullet::processCollideObjs(GameScreen& screen,
-                                LinkedList<GameObjectItem>& collideObjs)
+void Bullet::processCollideObjs(GameScreen &screen,
+                                LinkedList<GameObjectItem> &collideObjs)
 {
-    GameObjectItem* item;
+    GameObjectItem *item;
 
     for (item = collideObjs.getFirst(); item; item = item->getNext())
     {
-        GameObject* obj = item->getObj();
+        GameObject *obj = item->getObj();
         switch(obj->getType())
         {
             case GAME_OBJ_TYPE_TILE:
             {
-                Tile* tile = static_cast<Tile*>(obj);
+                Tile *tile = static_cast<Tile*>(obj);
 
                 if (!tile->addHP(-m_damage))
                 {
@@ -128,7 +128,7 @@ void Bullet::processCollideObjs(GameScreen& screen,
             }
             case GAME_OBJ_TYPE_ROBOT:
             {
-                Robot* robot = static_cast<Robot*>(obj);
+                Robot *robot = static_cast<Robot*>(obj);
 
                 if (robot->getSide() != m_side)
                 {

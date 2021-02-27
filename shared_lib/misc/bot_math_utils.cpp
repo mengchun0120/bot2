@@ -3,7 +3,7 @@
 
 namespace bot {
 
-void rotate(float& x, float& y, float directionX, float directionY)
+void rotate(float &x, float &y, float directionX, float directionY)
 {
     float x1 = x * directionX - y * directionY;
     float y1 = x * directionY + y * directionX;
@@ -11,7 +11,7 @@ void rotate(float& x, float& y, float directionX, float directionY)
     y = y1;
 }
 
-void calculateDirection(float& directionX, float& directionY,
+void calculateDirection(float &directionX, float &directionY,
                         float srcX, float srcY, float dstX, float dstY)
 {
     float deltaX = dstX - srcX;

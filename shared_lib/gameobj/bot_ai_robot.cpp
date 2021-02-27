@@ -11,12 +11,12 @@ AIRobot::AIRobot()
 {
 }
 
-bool AIRobot::init(const AIRobotTemplate* t, Side side,
+bool AIRobot::init(const AIRobotTemplate *t, Side side,
                    int hpLevel, int hpRestoreLevel,
                    int armorLevel, int armorRepairLevel,
                    int powerLevel, int powerRestoreLevel,
                    int weaponLevel, int moverLevel,
-                   const std::vector<int>& skillLevels,
+                   const std::vector<int> &skillLevels,
                    float x, float y,
                    float directionX, float directionY)
 {
@@ -36,7 +36,7 @@ bool AIRobot::init(const AIRobotTemplate* t, Side side,
     return true;
 }
 
-bool AIRobot::init(const AIRobotTemplate* t, Side side,
+bool AIRobot::init(const AIRobotTemplate *t, Side side,
                    int hpLevel, int hpRestoreLevel,
                    int armorLevel, int armorRepairLevel,
                    int powerLevel, int powerRestoreLevel,
@@ -65,14 +65,14 @@ void AIRobot::present()
     Robot::present();
 }
 
-void AIRobot::update(float delta, GameScreen& screen)
+void AIRobot::update(float delta, GameScreen &screen)
 {
     if (!testFlag(GAME_OBJ_FLAG_DISSOLVE))
     {
-        const GameObjectManager& gameObjMgr = screen.getGameObjManager();
+        const GameObjectManager &gameObjMgr = screen.getGameObjManager();
         if (gameObjMgr.isPlayerAlive())
         {
-            const AIRobotTemplate* t =
+            const AIRobotTemplate *t =
                         static_cast<const AIRobotTemplate*>(m_template);
             t->getAI()->apply(*this, delta, screen);
         }
@@ -81,7 +81,7 @@ void AIRobot::update(float delta, GameScreen& screen)
     {
         if (!updateMask())
         {
-            GameObjectManager& gameObjMgr = screen.getGameObjManager();
+            GameObjectManager &gameObjMgr = screen.getGameObjManager();
             gameObjMgr.sendToDeathQueue(this);
         }
     }
@@ -111,12 +111,12 @@ bool AIRobot::setCurAction(Action action)
     return true;
 }
 
-void AIRobot::onDeath(GameScreen& screen)
+void AIRobot::onDeath(GameScreen &screen)
 {
-    GameObjectManager& gameObjMgr = screen.getGameObjManager();
-    GameMap& map = screen.getMap();
+    GameObjectManager &gameObjMgr = screen.getGameObjManager();
+    GameMap &map = screen.getMap();
 
-    Goodie* goodie = gameObjMgr.createGoodie(getGoodieSpawnProb(),
+    Goodie *goodie = gameObjMgr.createGoodie(getGoodieSpawnProb(),
                                              getPosX(), getPosY());
     if (goodie)
     {

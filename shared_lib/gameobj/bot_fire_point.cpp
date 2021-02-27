@@ -12,12 +12,12 @@ FirePoint::FirePoint()
     }
 }
 
-FirePoint::FirePoint(const FirePoint& fp)
+FirePoint::FirePoint(const FirePoint &fp)
 {
     *this = fp;
 }
 
-FirePoint& FirePoint::operator=(const FirePoint& fp)
+FirePoint &FirePoint::operator=(const FirePoint &fp)
 {
     for(unsigned int i = 0; i < Constants::NUM_FLOATS_PER_POSITION; ++i)
     {

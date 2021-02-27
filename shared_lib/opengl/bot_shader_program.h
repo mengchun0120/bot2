@@ -11,8 +11,8 @@ public:
 
     virtual ~ShaderProgram();
 
-    virtual bool init(const std::string& vertexShaderFile,
-                      const std::string& fragShaderFile);
+    virtual bool init(const std::string &vertexShaderFile,
+                      const std::string &fragShaderFile);
 
     void use();
 

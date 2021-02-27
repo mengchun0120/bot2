@@ -12,7 +12,7 @@ ShootMissileSkillTemplate::ShootMissileSkillTemplate()
 {
 }
 
-bool ShootMissileSkillTemplate::init(const rapidjson::Value& elem)
+bool ShootMissileSkillTemplate::init(const rapidjson::Value &elem)
 {
     if (!AttackSkillTemplate::init(SKILL_SHOOT_MISSILE, elem))
     {
@@ -31,7 +31,7 @@ bool ShootMissileSkillTemplate::init(const rapidjson::Value& elem)
         return false;
     }
 
-    const GameLib& lib = GameLib::getInstance();
+    const GameLib &lib = GameLib::getInstance();
 
     m_missileTemplate = lib.getMissileTemplate(missileName);
     if (!m_missileTemplate)

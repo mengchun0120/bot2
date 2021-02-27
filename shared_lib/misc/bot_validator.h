@@ -15,7 +15,7 @@ public:
     Validator()
     {}
 
-    Validator(const Validator& v)
+    Validator(const Validator &v)
         : m_verifyFunc(v.m_verifyFunc)
         , m_ruleFunc(v.m_ruleFunc)
     {}
@@ -43,7 +43,7 @@ public:
         m_ruleFunc = func;
     }
 
-    std::string getRule(const std::string& name) const
+    std::string getRule(const std::string &name) const
     {
         std::string rule;
 
@@ -61,7 +61,7 @@ private:
 };
 
 template <typename T>
-Validator eq(const T& t, const T& e)
+Validator eq(const T &t, const T &e)
 {
     Validator v;
 
@@ -73,7 +73,7 @@ Validator eq(const T& t, const T& e)
     );
 
     v.setRuleFunc(
-        [&](const std::string& name)->std::string
+        [&](const std::string &name)->std::string
         {
             std::ostringstream oss;
             oss << "(" << name << " == " << e << ")";
@@ -85,7 +85,7 @@ Validator eq(const T& t, const T& e)
 }
 
 template <typename T>
-Validator ne(const T& t, const T& e)
+Validator ne(const T &t, const T &e)
 {
     Validator v;
 
@@ -97,7 +97,7 @@ Validator ne(const T& t, const T& e)
     );
 
     v.setRuleFunc(
-        [&](const std::string& name)->std::string
+        [&](const std::string &name)->std::string
         {
             std::ostringstream oss;
             oss << "(" << name << " != " << e << ")";
@@ -109,7 +109,7 @@ Validator ne(const T& t, const T& e)
 }
 
 template <typename T>
-Validator lt(const T& t, const T& upper)
+Validator lt(const T &t, const T &upper)
 {
     Validator v;
 
@@ -121,7 +121,7 @@ Validator lt(const T& t, const T& upper)
     );
 
     v.setRuleFunc(
-        [&](const std::string& name)->std::string
+        [&](const std::string &name)->std::string
         {
             std::ostringstream oss;
             oss << "(" << name << " < " << upper << ")";
@@ -133,7 +133,7 @@ Validator lt(const T& t, const T& upper)
 }
 
 template <typename T>
-Validator le(const T& t, const T& upper)
+Validator le(const T &t, const T &upper)
 {
     Validator v;
 
@@ -145,7 +145,7 @@ Validator le(const T& t, const T& upper)
     );
 
     v.setRuleFunc(
-        [&](const std::string& name)->std::string
+        [&](const std::string &name)->std::string
         {
             std::ostringstream oss;
             oss << "(" << name << " <= " << upper << ")";
@@ -157,7 +157,7 @@ Validator le(const T& t, const T& upper)
 }
 
 template <typename T>
-Validator gt(const T& t, const T& lower)
+Validator gt(const T &t, const T &lower)
 {
     Validator v;
 
@@ -169,7 +169,7 @@ Validator gt(const T& t, const T& lower)
     );
 
     v.setRuleFunc(
-        [&](const std::string& name)->std::string
+        [&](const std::string &name)->std::string
         {
             std::ostringstream oss;
             oss << "(" << name << " > " << lower << ")";
@@ -181,7 +181,7 @@ Validator gt(const T& t, const T& lower)
 }
 
 template <typename T>
-Validator ge(const T& t, const T& lower)
+Validator ge(const T &t, const T &lower)
 {
     Validator v;
 
@@ -193,7 +193,7 @@ Validator ge(const T& t, const T& lower)
     );
 
     v.setRuleFunc(
-        [&](const std::string& name)->std::string
+        [&](const std::string &name)->std::string
         {
             std::ostringstream oss;
             oss << "(" << name << " >= " << lower << ")";
@@ -204,11 +204,11 @@ Validator ge(const T& t, const T& lower)
     return v;
 }
 
-Validator operator&&(const Validator& a, const Validator& b);
+Validator operator&&(const Validator &a, const Validator &b);
 
-Validator operator||(const Validator& a, const Validator& b);
+Validator operator||(const Validator &a, const Validator &b);
 
-Validator operator!(const Validator& a);
+Validator operator!(const Validator &a);
 
 } // end of namespace bot
 

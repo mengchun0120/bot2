@@ -11,7 +11,7 @@ class Robot;
 
 class Skill {
 public:
-    static Skill* create(const SkillTemplate* t, Robot* robot,
+    static Skill *create(const SkillTemplate *t, Robot *robot,
                          unsigned int level);
 
     Skill();
@@ -19,7 +19,7 @@ public:
     virtual ~Skill()
     {}
 
-    const SkillTemplate* getTemplate() const
+    const SkillTemplate *getTemplate() const
     {
         return m_template;
     }
@@ -39,17 +39,17 @@ public:
         return m_template->isRange();
     }
 
-    bool init(const SkillTemplate* t, Robot* robot, unsigned int level);
+    bool init(const SkillTemplate *t, Robot *robot, unsigned int level);
 
-    virtual void apply(GameScreen& screen, const TimePoint& t);
+    virtual void apply(GameScreen &screen, const TimePoint &t);
 
-    virtual bool available(const TimePoint& t) const;
+    virtual bool available(const TimePoint &t) const;
 
     bool setCooldownMultiplier(float multiplier);
 
 protected:
-    const SkillTemplate* m_template;
-    Robot* m_robot;
+    const SkillTemplate *m_template;
+    Robot *m_robot;
     TimePoint m_lastApplyTime;
     unsigned int m_level;
     float m_cooldownMultiplier;

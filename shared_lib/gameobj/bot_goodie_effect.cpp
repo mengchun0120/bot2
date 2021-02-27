@@ -12,7 +12,7 @@ void GoodieEffect::start()
     m_percent = 0.0f;
 }
 
-bool GoodieEffect::update(const TimePoint& now)
+bool GoodieEffect::update(const TimePoint &now)
 {
     float duration = getTemplate()->getDuration();
     if (duration == 0.0f)

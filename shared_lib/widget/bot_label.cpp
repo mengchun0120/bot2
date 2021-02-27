@@ -15,9 +15,9 @@ Label::Label()
 
 bool Label::init(float x, float y,
                  float width, float height,
-                 const Rectangle* rect,
-                 const std::string& text, const Color* textColor,
-                 const Color* backColor, const Color* borderColor,
+                 const Rectangle *rect,
+                 const std::string &text, const Color *textColor,
+                 const Color *backColor, const Color *borderColor,
                  Align hAlign, Align vAlign,
                  TextSize sz,
                  bool visible, bool acceptInput)
@@ -56,7 +56,7 @@ bool Label::init(float x, float y,
     return true;
 }
 
-void Label::setText(const std::string& text)
+void Label::setText(const std::string &text)
 {
     m_text = text;
     resetTextPos();
@@ -81,7 +81,7 @@ void Label::present()
 
     if (!m_text.empty())
     {
-        const TextSystem& textSys = TextSystem::getInstance();
+        const TextSystem &textSys = TextSystem::getInstance();
         textSys.drawString(m_text, m_size, m_textPos, m_textColor->getColor());
     }
 }
@@ -94,7 +94,7 @@ void Label::resetTextPos()
     }
 
     float textWidth, textHeight;
-    const TextSystem& textSys = TextSystem::getInstance();
+    const TextSystem &textSys = TextSystem::getInstance();
 
     textSys.getStringSize(textWidth, textHeight, m_size, m_text);
 

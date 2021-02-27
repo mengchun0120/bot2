@@ -19,7 +19,7 @@ Missile::Missile()
     m_direction[1] = 0.0f;
 }
 
-bool Missile::init(const MissileTemplate* t, Side side, float x, float y,
+bool Missile::init(const MissileTemplate *t, Side side, float x, float y,
                    float directionX, float directionY,
                    float damage, float speed)
 {
@@ -72,15 +72,15 @@ void Missile::setDirection(float directionX, float directionY)
     m_direction[1] = directionY;
 }
 
-void Missile::explode(GameScreen& screen, float explodeBreath,
-                      const ParticleEffectTemplate* explosionTemplate)
+void Missile::explode(GameScreen &screen, float explodeBreath,
+                      const ParticleEffectTemplate *explosionTemplate)
 {
-    GameMap& map = screen.getMap();
-    GameObjectManager& gameObjMgr = screen.getGameObjManager();
+    GameMap &map = screen.getMap();
+    GameObjectManager &gameObjMgr = screen.getGameObjManager();
 
     if (explosionTemplate)
     {
-        ParticleEffect* explosion = gameObjMgr.createParticleEffect(
+        ParticleEffect *explosion = gameObjMgr.createParticleEffect(
                                                     explosionTemplate,
                                                     getPosX(), getPosY());
         if (!map.addObject(explosion))
@@ -110,12 +110,12 @@ void Missile::explode(GameScreen& screen, float explodeBreath,
     {
         for (int c = startCol; c <= endCol; ++c)
         {
-            LinkedList<GameObjectItem>& cell = map.getMapCell(r, c);
-            GameObjectItem* item;
+            LinkedList<GameObjectItem> &cell = map.getMapCell(r, c);
+            GameObjectItem *item;
 
             for (item = cell.getFirst(); item; item = item->getNext())
             {
-                GameObject* obj = item->getObj();
+                GameObject *obj = item->getObj();
 
                 if (!checkExplosion(obj, left, bottom, right, top))
                 {
@@ -130,7 +130,7 @@ void Missile::explode(GameScreen& screen, float explodeBreath,
     onDeath(screen);
 }
 
-bool Missile::checkExplosion(GameObject* obj, float left, float bottom,
+bool Missile::checkExplosion(GameObject *obj, float left, float bottom,
                              float right, float top)
 {
     static const int UNAFFECTED_FLAGS = GAME_OBJ_FLAG_EXPLODE_CHECKED |
@@ -162,7 +162,7 @@ bool Missile::checkExplosion(GameObject* obj, float left, float bottom,
 
     if (obj->getType() == GAME_OBJ_TYPE_ROBOT)
     {
-        Robot* robot = static_cast<Robot*>(obj);
+        Robot *robot = static_cast<Robot*>(obj);
         if (robot->getSide() == m_side)
         {
             return true;
@@ -172,7 +172,7 @@ bool Missile::checkExplosion(GameObject* obj, float left, float bottom,
     }
     else
     {
-        Tile* tile = static_cast<Tile*>(obj);
+        Tile *tile = static_cast<Tile*>(obj);
         active = tile->addHP(-m_damage);
     }
 

@@ -8,24 +8,24 @@
 
 namespace bot {
 
-bool readJson(rapidjson::Document& doc, const char* fileName);
+bool readJson(rapidjson::Document &doc, const char *fileName);
 
-bool writeJson(const rapidjson::Document& doc, const char* fileName,
+bool writeJson(const rapidjson::Document &doc, const char *fileName,
                unsigned int indent);
 
-bool parseJson(std::vector<JsonParamPtr>& params,
-               const rapidjson::Value& elem);
+bool parseJson(std::vector<JsonParamPtr> &params,
+               const rapidjson::Value &elem);
 
 template <typename PARSER>
-bool parseJsonArray(const rapidjson::Value& value,
-                    PARSER& parser, const char* name)
+bool parseJsonArray(const rapidjson::Value &value,
+                    PARSER &parser, const char *name)
 {
     if (!value.HasMember(name))
     {
         return false;
     }
 
-    const rapidjson::Value& arr = value[name];
+    const rapidjson::Value &arr = value[name];
     if (!arr.IsArray())
     {
         return false;
@@ -44,15 +44,15 @@ bool parseJsonArray(const rapidjson::Value& value,
 }
 
 template <typename T, typename PARSER>
-bool parseJsonArray(std::vector<T>& vec, const rapidjson::Value& value,
-                    PARSER& parser, const char* name)
+bool parseJsonArray(std::vector<T> &vec, const rapidjson::Value &value,
+                    PARSER &parser, const char *name)
 {
     if (!value.HasMember(name))
     {
         return false;
     }
 
-    const rapidjson::Value& arr = value[name];
+    const rapidjson::Value &arr = value[name];
     if (!arr.IsArray())
     {
         return false;

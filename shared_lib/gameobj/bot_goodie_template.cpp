@@ -4,7 +4,7 @@
 
 namespace bot {
 
-GoodieType parseGoodieType(const std::string& typeName)
+GoodieType parseGoodieType(const std::string &typeName)
 {
     if (typeName == "gold")
     {
@@ -38,7 +38,7 @@ GoodieType parseGoodieType(const std::string& typeName)
     return GOODIE_UNKNOWN;
 }
 
-bool GoodieTemplate::init(const rapidjson::Value& elem)
+bool GoodieTemplate::init(const rapidjson::Value &elem)
 {
     if (!GameObjectTemplate::init(elem))
     {
@@ -62,7 +62,7 @@ bool GoodieTemplate::init(const rapidjson::Value& elem)
         return false;
     }
 
-    const GameLib& lib = GameLib::getInstance();
+    const GameLib &lib = GameLib::getInstance();
 
     m_texture = lib.getTexture(textureName);
     if (!m_texture)

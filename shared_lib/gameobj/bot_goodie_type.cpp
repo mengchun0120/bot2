@@ -2,9 +2,9 @@
 
 namespace bot {
 
-const char* getGoodieTypeStr(GoodieType t)
+const char *getGoodieTypeStr(GoodieType t)
 {
-    static const char* TYPE_STR[] = {
+    static const char *TYPE_STR[] = {
         "Gold",
         "Health",
         "Indestructable",

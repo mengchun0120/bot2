@@ -19,7 +19,7 @@ VertexArray::~VertexArray()
     destroy();
 }
 
-bool VertexArray::load(const float* vertices, unsigned int numVertices,
+bool VertexArray::load(const float *vertices, unsigned int numVertices,
                        unsigned int vertexSize, unsigned int stride)
 {
     glGenVertexArrays(1, &m_vao);

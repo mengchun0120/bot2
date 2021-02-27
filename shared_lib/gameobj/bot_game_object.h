@@ -16,7 +16,7 @@ public:
     virtual ~GameObject()
     {}
 
-    bool init(const GameObjectTemplate* t, float x, float y);
+    bool init(const GameObjectTemplate *t, float x, float y);
 
     GameObjectType getType() const
     {
@@ -25,9 +25,9 @@ public:
 
     virtual void present() = 0;
 
-    virtual void update(float delta, GameScreen& screen) = 0;
+    virtual void update(float delta, GameScreen &screen) = 0;
 
-    const float* getPos() const
+    const float *getPos() const
     {
         return m_pos;
     }
@@ -165,22 +165,22 @@ public:
         return m_flags;
     }
 
-    virtual bool onEntry(GameScreen& screen)
+    virtual bool onEntry(GameScreen &screen)
     {
         return true;
     }
 
-    virtual void onHit(GameScreen& screen, GameObject& obj)
+    virtual void onHit(GameScreen &screen, GameObject &obj)
     {}
 
-    virtual void onDeath(GameScreen& screen)
+    virtual void onDeath(GameScreen &screen)
     {}
 
     virtual void onDealloc()
     {}
 
 protected:
-    const GameObjectTemplate* m_template;
+    const GameObjectTemplate *m_template;
     int m_coverStartRow, m_coverEndRow;
     int m_coverStartCol, m_coverEndCol;
     int m_flags;

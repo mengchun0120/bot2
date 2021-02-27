@@ -7,7 +7,7 @@ BulletTemplate::BulletTemplate()
 {
 }
 
-bool BulletTemplate::init(const rapidjson::Value& elem)
+bool BulletTemplate::init(const rapidjson::Value &elem)
 {
     return MissileTemplate::init(MISSILE_BULLET, elem);
 }

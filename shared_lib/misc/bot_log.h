@@ -18,13 +18,13 @@ public:
 
     static Logger g_logger;
 
-    static const char* levelString(LogLevel level);
+    static const char *levelString(LogLevel level);
 
     Logger();
 
     ~Logger();
 
-    bool init(const char* logFile, LogLevel minLevel=DEFAULT_LOG_LEVEL);
+    bool init(const char *logFile, LogLevel minLevel=DEFAULT_LOG_LEVEL);
 
     void write(const char *format, ...);
 
@@ -49,7 +49,7 @@ private:
 #ifdef ENABLE_LOG
 #define LOG_WRITE(level, ...) \
     { \
-        bot::Logger& logger = bot::Logger::g_logger; \
+        bot::Logger &logger = bot::Logger::g_logger; \
         if(level >= logger.minLevel()) { \
             logger.logTime(); \
             logger.write(" %s:%d %s ", __FILE__, __LINE__, \

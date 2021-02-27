@@ -16,7 +16,7 @@ GameScreenConfig::GameScreenConfig()
 {
 }
 
-bool GameScreenConfig::load(const std::string& fileName)
+bool GameScreenConfig::load(const std::string &fileName)
 {
     rapidjson::Document doc;
 
@@ -31,7 +31,7 @@ bool GameScreenConfig::load(const std::string& fileName)
         return false;
     }
 
-    const rapidjson::Value& val = doc.GetObject();
+    const rapidjson::Value &val = doc.GetObject();
     std::vector<JsonParamPtr> params = {
         jsonParam(m_width, "width", gt(m_width, 0.0f)),
         jsonParam(m_height, "height", gt(m_height, 0.0f)),

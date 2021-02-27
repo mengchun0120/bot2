@@ -21,21 +21,21 @@ StartScreen::~StartScreen()
 
 bool StartScreen::init()
 {
-    const App& app = App::getInstance();
+    const App &app = App::getInstance();
     float viewportWidth = app.getViewportWidth();
     float viewportHeight = app.getViewportHeight();
 
     m_viewportOrigin[0] = viewportWidth / 2.0f;
     m_viewportOrigin[1] = viewportHeight / 2.0f;
 
-    const GameLib& lib = GameLib::getInstance();
+    const GameLib &lib = GameLib::getInstance();
 
-    const StartScreenConfig& cfg = lib.getStartScreenConfig();
+    const StartScreenConfig &cfg = lib.getStartScreenConfig();
     float spacing = cfg.getButtonSpacing();
     float width = cfg.getButtonWidth();
     float height = cfg.getButtonHeight();
-    const Rectangle& rect = cfg.getButtonRect();
-    const std::vector<std::string>& buttonTexts = cfg.getButtonTexts();
+    const Rectangle &rect = cfg.getButtonRect();
+    const std::vector<std::string> &buttonTexts = cfg.getButtonTexts();
 
     int n = static_cast<int>(buttonTexts.size());
     float x = (viewportWidth - width) / 2.0f;
@@ -51,7 +51,7 @@ bool StartScreen::init()
 
     m_buttons.init(n);
     for (int i = 0; i < n; ++i, y -= deltaY) {
-        Button* button = new Button();
+        Button *button = new Button();
         if (!button->init(x, y, width, height, &rect, buttonTexts[i]))
         {
             LOG_ERROR("Failed to initialize start game button");
@@ -71,8 +71,8 @@ int StartScreen::update(float delta)
 
 void StartScreen::present()
 {
-    SimpleShaderProgram& program = SimpleShaderProgram::getInstance();
-    const App& app = App::getInstance();
+    SimpleShaderProgram &program = SimpleShaderProgram::getInstance();
+    const App &app = App::getInstance();
 
     program.use();
     program.setViewportSize(app.getViewportSize());
@@ -81,14 +81,14 @@ void StartScreen::present()
     m_buttons.present();
 }
 
-int StartScreen::processInput(const InputEvent& e)
+int StartScreen::processInput(const InputEvent &e)
 {
     return m_buttons.processInput(e);
 }
 
 int StartScreen::startGame()
 {
-    ScreenManager& screenMgr = ScreenManager::getInstance();
+    ScreenManager &screenMgr = ScreenManager::getInstance();
     screenMgr.switchScreen(Screen::SCREEN_GAME);
     return 1;
 }

@@ -12,7 +12,7 @@ TileTemplate::TileTemplate()
 {
 }
 
-bool TileTemplate::init(const rapidjson::Value& elem)
+bool TileTemplate::init(const rapidjson::Value &elem)
 {
     if (!GameObjectTemplate::init(elem))
     {

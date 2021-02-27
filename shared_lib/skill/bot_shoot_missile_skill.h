@@ -12,9 +12,9 @@ public:
     virtual ~ShootMissileSkill()
     {}
 
-    bool init(const SkillTemplate* t, Robot* robot, unsigned int level);
+    bool init(const SkillTemplate *t, Robot *robot, unsigned int level);
 
-    virtual void apply(GameScreen& screen, const TimePoint& tp);
+    virtual void apply(GameScreen &screen, const TimePoint &tp);
 };
 
 } // end of namespace bot

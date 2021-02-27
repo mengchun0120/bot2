@@ -34,12 +34,12 @@ Robot::~Robot()
     }
 }
 
-bool Robot::init(const RobotTemplate* t, Side side,
+bool Robot::init(const RobotTemplate *t, Side side,
                  int hpLevel, int hpRestoreLevel,
                  int armorLevel, int armorRepairLevel,
                  int powerLevel, int powerRestoreLevel,
                  int weaponLevel, int moverLevel,
-                 const std::vector<int>& skillLevels,
+                 const std::vector<int> &skillLevels,
                  float x, float y,
                  float directionX, float directionY)
 {
@@ -61,7 +61,7 @@ bool Robot::init(const RobotTemplate* t, Side side,
     return true;
 }
 
-bool Robot::init(const RobotTemplate* t, Side side,
+bool Robot::init(const RobotTemplate *t, Side side,
                  int hpLevel, int hpRestoreLevel,
                  int armorLevel, int armorRepairLevel,
                  int powerLevel, int powerRestoreLevel,
@@ -86,7 +86,7 @@ bool Robot::init(const RobotTemplate* t, Side side,
     return true;
 }
 
-bool Robot::initBasic(const RobotTemplate* t, Side side,
+bool Robot::initBasic(const RobotTemplate *t, Side side,
                       int hpLevel, int hpRestoreLevel,
                       int armorLevel, int armorRepairLevel,
                       int powerLevel, int powerRestoreLevel,
@@ -133,9 +133,9 @@ bool Robot::initBasic(const RobotTemplate* t, Side side,
     return true;
 }
 
-bool Robot::initSkills(const std::vector<int>& skillLevels)
+bool Robot::initSkills(const std::vector<int> &skillLevels)
 {
-    const RobotTemplate* t = getTemplate();
+    const RobotTemplate *t = getTemplate();
     unsigned int numSkills = t->numSkills();
 
     if (numSkills == 0)
@@ -168,7 +168,7 @@ bool Robot::initSkills(const std::vector<int>& skillLevels)
 
 bool Robot::initSkills(int skillLevel)
 {
-    const RobotTemplate* t = getTemplate();
+    const RobotTemplate *t = getTemplate();
     unsigned int numSkills = t->numSkills();
 
     if (numSkills == 0)
@@ -255,15 +255,15 @@ void Robot::refillHP()
     m_base.refillHP();
 }
 
-void Robot::processCollisions(LinkedList<GameObjectItem>& collideObjs,
-                              GameScreen& screen)
+void Robot::processCollisions(LinkedList<GameObjectItem> &collideObjs,
+                              GameScreen &screen)
 {
-    GameObjectItem* item;
+    GameObjectItem *item;
     const int DEAD_FLAG = GAME_OBJ_FLAG_DEAD | GAME_OBJ_FLAG_DISSOLVE;
 
     for (item = collideObjs.getFirst(); item; item = item->getNext())
     {
-        GameObject* o = item->getObj();
+        GameObject *o = item->getObj();
 
         if (o->testFlag(DEAD_FLAG))
         {
@@ -274,7 +274,7 @@ void Robot::processCollisions(LinkedList<GameObjectItem>& collideObjs,
         {
             case GAME_OBJ_TYPE_MISSILE:
             {
-                Missile* missile = static_cast<Missile*>(o);
+                Missile *missile = static_cast<Missile*>(o);
                 missile->onHit(screen, *this);
                 break;
             }
@@ -282,8 +282,8 @@ void Robot::processCollisions(LinkedList<GameObjectItem>& collideObjs,
             {
                 if (m_side == SIDE_PLAYER)
                 {
-                    Player* player = static_cast<Player*>(this);
-                    Goodie* goodie = static_cast<Goodie*>(o);
+                    Player *player = static_cast<Player*>(this);
+                    Goodie *goodie = static_cast<Goodie*>(o);
                     player->consumeGoodie(goodie, screen);
                 }
                 break;
@@ -297,7 +297,7 @@ void Robot::processCollisions(LinkedList<GameObjectItem>& collideObjs,
     }
 }
 
-bool Robot::updateMover(float delta, GameScreen& gameScreen)
+bool Robot::updateMover(float delta, GameScreen &gameScreen)
 {
     return m_mover.update(gameScreen, delta);
 }
@@ -309,7 +309,7 @@ void Robot::updateBase()
 
 bool Robot::updateMask()
 {
-    const GameConfig& cfg = GameLib::getInstance().getGameConfig();
+    const GameConfig &cfg = GameLib::getInstance().getGameConfig();
     float alpha = 1.0f - elapsedTimeMs(m_deathTime) / cfg.getDissolveTimeMS();
     bool maskVisible = alpha > 0.0f;
 
@@ -345,7 +345,7 @@ void Robot::unsetDest()
     m_destY = 0.0f;
 }
 
-bool Robot::applySkill(GameScreen& screen, const TimePoint& t, unsigned int idx)
+bool Robot::applySkill(GameScreen &screen, const TimePoint &t, unsigned int idx)
 {
     if (idx >= numSkills())
     {
@@ -353,7 +353,7 @@ bool Robot::applySkill(GameScreen& screen, const TimePoint& t, unsigned int idx)
         return false;
     }
 
-    Skill* skill = getSkill(idx);
+    Skill *skill = getSkill(idx);
     if (!skill->available(t))
     {
         return false;

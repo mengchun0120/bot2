@@ -4,7 +4,7 @@
 
 namespace bot {
 
-AI* AI::create(const std::string& name, const rapidjson::Value& elem)
+AI *AI::create(const std::string &name, const rapidjson::Value &elem)
 {
     std::string algorithm;
     if (!JsonParser::parse(algorithm, elem, "algorithm"))
@@ -12,7 +12,7 @@ AI* AI::create(const std::string& name, const rapidjson::Value& elem)
         return nullptr;
     }
 
-    ChaseShootAI* ai = nullptr;
+    ChaseShootAI *ai = nullptr;
 
     if (algorithm == "chase_shoot")
     {

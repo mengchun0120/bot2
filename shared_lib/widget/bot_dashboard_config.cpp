@@ -4,7 +4,7 @@
 
 namespace bot {
 
-bool DashboardConfig::init(const std::string& configFile)
+bool DashboardConfig::init(const std::string &configFile)
 {
     rapidjson::Document doc;
 
@@ -19,7 +19,7 @@ bool DashboardConfig::init(const std::string& configFile)
         return false;
     }
 
-    const rapidjson::Value& val = doc.GetObject();
+    const rapidjson::Value &val = doc.GetObject();
 
     std::vector<JsonParamPtr> params = {
         jsonParam(m_effectSpacing, "effectSpacing",

@@ -22,15 +22,15 @@ public:
 
     virtual ~Robot();
 
-    bool init(const RobotTemplate* t, Side side,
+    bool init(const RobotTemplate *t, Side side,
               int hpLevel, int hpRestoreLevel,
               int armorLevel, int armorRepairLevel,
               int powerLevel, int powerRestoreLevel,
               int weaponLevel, int moverLevel,
-              const std::vector<int>& skillLevels,
+              const std::vector<int> &skillLevels,
               float x, float y, float directionX, float directionY);
 
-    bool init(const RobotTemplate* t, Side side,
+    bool init(const RobotTemplate *t, Side side,
               int hpLevel, int hpRestoreLevel,
               int armorLevel, int armorRepairLevel,
               int powerLevel, int powerRestoreLevel,
@@ -38,7 +38,7 @@ public:
               float x, float y, float directionX, float directionY);
 
 
-    const RobotTemplate* getTemplate() const
+    const RobotTemplate *getTemplate() const
     {
         return static_cast<const RobotTemplate*>(m_template);
     }
@@ -49,7 +49,7 @@ public:
 
     void setPos(float x, float y);
 
-    const float* getDirection() const
+    const float *getDirection() const
     {
         return m_direction;
     }
@@ -95,44 +95,44 @@ public:
         return m_side;
     }
 
-    bool updateMover(float delta, GameScreen& gameScreen);
+    bool updateMover(float delta, GameScreen &gameScreen);
 
     void updateBase();
 
-    void processCollisions(LinkedList<GameObjectItem>& collideObjs,
-                           GameScreen& gameScreen);
+    void processCollisions(LinkedList<GameObjectItem> &collideObjs,
+                           GameScreen &gameScreen);
 
-    Base& getBase()
+    Base &getBase()
     {
         return m_base;
     }
 
-    const Base& getBase() const
+    const Base &getBase() const
     {
         return m_base;
     }
 
-    Weapon& getWeapon()
+    Weapon &getWeapon()
     {
         return m_weapon;
     }
 
-    const Weapon& getWeapon() const
+    const Weapon &getWeapon() const
     {
         return m_weapon;
     }
 
-    Mover& getMover()
+    Mover &getMover()
     {
         return m_mover;
     }
 
-    const Mover& getMover() const
+    const Mover &getMover() const
     {
         return m_mover;
     }
 
-    const Color& getMask() const
+    const Color &getMask() const
     {
         return m_mask;
     }
@@ -163,24 +163,24 @@ public:
         return m_skills.size();
     }
 
-    Skill* getSkill(unsigned int idx)
+    Skill *getSkill(unsigned int idx)
     {
         return m_skills[idx];
     }
 
-    bool applySkill(GameScreen& screen, const TimePoint& t, unsigned int idx);
+    bool applySkill(GameScreen &screen, const TimePoint &t, unsigned int idx);
 
     bool scaleSkillCooldown(float cooldownMultiplier);
 
 protected:
-    bool initBasic(const RobotTemplate* t, Side side,
+    bool initBasic(const RobotTemplate *t, Side side,
                    int hpLevel, int hpRestoreLevel,
                    int armorLevel, int armorRepairLevel,
                    int powerLevel, int powerRestoreLevel,
                    int weaponLevel, int moverLevel,
                    float x, float y, float directionX, float directionY);
 
-    bool initSkills(const std::vector<int>& skillLevels);
+    bool initSkills(const std::vector<int> &skillLevels);
 
     bool initSkills(int skillLevel);
 

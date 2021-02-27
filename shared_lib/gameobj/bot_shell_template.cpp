@@ -9,7 +9,7 @@ ShellTemplate::ShellTemplate()
 {
 }
 
-bool ShellTemplate::init(const rapidjson::Value& elem)
+bool ShellTemplate::init(const rapidjson::Value &elem)
 {
     if (!MissileTemplate::init(MISSILE_SHELL, elem))
     {
