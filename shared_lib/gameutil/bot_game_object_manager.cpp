@@ -1,3 +1,4 @@
+#include <stdexcept>
 #include "misc/bot_log.h"
 #include "gameobj/bot_player.h"
 #include "gameutil/bot_game_map.h"
@@ -43,7 +44,7 @@ Tile *GameObjectManager::createTile(const std::string &tileName, int level,
     if (!tileTemplate)
     {
         LOG_ERROR("Failed to find tile template %s", tileName.c_str());
-        return nullptr;
+        throw std::runtime_error("Failed to find tile template %s");
     }
 
     return createTile(tileTemplate, level, x, y);
@@ -52,16 +53,8 @@ Tile *GameObjectManager::createTile(const std::string &tileName, int level,
 Tile *GameObjectManager::createTile(const TileTemplate *tileTemplate, int level,
                                     float x, float y)
 {
-    Tile *tile = new Tile();
-
-    if (!tile->init(tileTemplate, level, x, y))
-    {
-        delete tile;
-        return nullptr;
-    }
-
+    Tile *tile = new Tile(tileTemplate, level, x, y);
     m_activeTiles.add(tile);
-
     return tile;
 }
 
@@ -239,14 +232,7 @@ Goodie *GameObjectManager::createGoodie(float prob, float x, float y)
     }
 
     const GoodieTemplate *t = m_lib->getGoodieTemplateLib().getObjAt(goodieIdx);
-    Goodie *goodie = new Goodie();
-    bool ret = goodie->init(t, x, y);
-    if (!ret)
-    {
-        delete goodie;
-        return nullptr;
-    }
-
+    Goodie *goodie = new Goodie(t, x, y);
     m_activeGoodies.add(goodie);
     return goodie;
 }

@@ -11,7 +11,9 @@ class GameScreen;
 
 class GameObject: public DoubleLinkedItem {
 public:
-    GameObject();
+    GameObject() = default;
+
+    GameObject(const GameObjectTemplate *t, float x, float y) noexcept(false);
 
     virtual ~GameObject()
     {}

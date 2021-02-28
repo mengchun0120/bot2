@@ -4,11 +4,6 @@
 
 namespace bot {
 
-bool Goodie::init(const GoodieTemplate *t, float x, float y)
-{
-    return GameObject::init(t, x, y);
-}
-
 void Goodie::present()
 {
     const GoodieTemplate *t = getTemplate();

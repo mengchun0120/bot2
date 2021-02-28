@@ -1,18 +1,26 @@
+#include <stdexcept>
 #include "misc/bot_log.h"
 #include "gameobj/bot_game_object.h"
 
 namespace bot {
 
-GameObject::GameObject()
-    : m_template(nullptr)
+GameObject::GameObject(const GameObjectTemplate *t,
+                       float x, float y) noexcept(false)
+    : m_template(t)
     , m_coverStartRow(0)
     , m_coverEndRow(0)
     , m_coverStartCol(0)
     , m_coverEndCol(0)
     , m_flags(0)
 {
-    m_pos[0] = 0.0f;
-    m_pos[1] = 0.0f;
+    if (!t)
+    {
+        LOG_ERROR("GameObjectTemplate is null");
+        throw std::runtime_error("GameObjectTemplate is null");
+    }
+
+    m_pos[0] = x;
+    m_pos[1] = y;
 }
 
 bool GameObject::init(const GameObjectTemplate *t, float x, float y)
@@ -23,9 +31,9 @@ bool GameObject::init(const GameObjectTemplate *t, float x, float y)
         return false;
     }
 
-    m_template = t;
     m_pos[0] = x;
     m_pos[1] = y;
+
     m_coverStartRow = 0;
     m_coverEndRow = 0;
     m_coverStartCol = 0;
@@ -34,5 +42,6 @@ bool GameObject::init(const GameObjectTemplate *t, float x, float y)
 
     return true;
 }
+
 
 } // end of namespace bot

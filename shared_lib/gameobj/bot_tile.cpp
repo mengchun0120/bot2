@@ -10,31 +10,14 @@
 
 namespace bot {
 
-Tile::Tile()
-    : m_hp(0.0f)
-    , m_maxHP(0.0f)
+Tile::Tile(const TileTemplate *tileTemplate, int level,
+           float x, float y) noexcept(false)
+    : GameObject(tileTemplate, x, y)
+    , m_maxHP(tileTemplate->getHP(level))
+    , m_hp(m_maxHP)
 {
-    m_mask.init(255, 255, 255, 255);
-}
-
-bool Tile::init(const TileTemplate *tileTemplate, int level, float x, float y)
-{
-    if (!GameObject::init(tileTemplate, x, y))
-    {
-        return false;
-    }
-
-    if (level < 0)
-    {
-        LOG_ERROR("Invalid tile level %d", level);
-        return false;
-    }
-
-    m_maxHP = tileTemplate->getHP(level);
-    m_hp = m_maxHP;
     m_flags = tileTemplate->getFlags();
-
-    return true;
+    m_mask.init(255, 255, 255, 255);
 }
 
 void Tile::present()

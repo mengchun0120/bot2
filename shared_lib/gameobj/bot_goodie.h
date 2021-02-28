@@ -8,13 +8,12 @@ namespace bot {
 
 class Goodie : public GameObject {
 public:
-    Goodie()
+    Goodie(const GoodieTemplate *t, float x, float y) noexcept(false)
+        : GameObject(t, x, y)
     {}
 
     virtual ~Goodie()
     {}
-
-    bool init(const GoodieTemplate *t, float x, float y);
 
     const GoodieTemplate *getTemplate() const
     {

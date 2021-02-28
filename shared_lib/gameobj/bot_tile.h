@@ -11,12 +11,11 @@ class TileTemplate;
 
 class Tile : public GameObject {
 public:
-    Tile();
+    Tile(const TileTemplate *tileTemplate, int level,
+         float x, float y) noexcept(false);
 
     virtual ~Tile()
     {}
-
-    bool init(const TileTemplate *tileTemplate, int level, float x, float y);
 
     virtual void present();
 
@@ -38,8 +37,8 @@ public:
     virtual void onDeath(GameScreen &screen);
 
 protected:
-    float m_hp;
     float m_maxHP;
+    float m_hp;
     Color m_mask;
     TimePoint m_deathTime;
 };
